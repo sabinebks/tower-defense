@@ -70,11 +70,23 @@ Pour chaque semaine on y trouvera :
 ## Semaine 1
 
 ### Ce qui a été réalisé
+pour l'object Board  peut etre une classe abstract , il ya deux sous classes  , une avec un chemin precis  ,
+ défini pour la trajectoire des ballons, on va definir le debut et la fin du chemin nous meme  , 
+on commence par la case debut on a le droit de choisir entre  3 cases voisines (inspiration DSI  Chaque tuile
+du joueur a donc nécessairement 4 tuiles voisines (ou emplacements voisins)), sans la tuile ou le chemin est deja passe 
+avec une fonction random , et a chaque fois que le tuile de chemin est cree ( on a choisi une case ), on oublie la colonne d'avant
+et donc peut importe le nombre de cases de notre board ca va nous cree un chemin. 
+pour deuxieme mode on choisi dabord le nombre de ballons qu'on va repartir en deux groupes , des ballons verticale ou horizontale ,puis on va 
+choisir les chemins de maniere random , qui va choirir la case de debut pour chauque ballon , et la on va choisir le cote aussi de la meme façon 
+car le ballon il peut sortir des deux cote 
+pour le horloge , on fait avec une fonction comme thrad.sleep, et a chaque toc d'orloge on definie la vitesse du ballon ,
+pour se deplacer d'une case a une autre on fait en sorte que chaque ballon prenne un temps x pour avancer a lautre case 
 
 ### Difficultés rencontrées
-
+le chemin, le clock 
 ### Objectifs pour la semaine et répartition du travail par membre
-
+diagramme uml complet, algo des chemins 
+pour la repartion du travail on a pas eu le temps de discuter on a creer un groupe pour justement en discuter 
 ## Semaine 2
 
 ### Ce qui a été réalisé

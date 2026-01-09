@@ -8,10 +8,10 @@ N'oubliez pas d'ajouter les autres membres de votre équipe aux membres du proje
 
 # Equipe
 
-- prénom1 NOM1
-- prénom2 NOM2
-- prénom3 NOM3
-- prénom4 NOM4
+- Son Tung DO
+- sabine boukais
+- ines agueniou
+- yanni moutchou
 
 # Sujet
 

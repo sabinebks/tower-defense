@@ -90,11 +90,12 @@ pour la repartion du travail on a pas eu le temps de discuter on a creer un grou
 ## Semaine 2
 
 ### Ce qui a été réalisé
-
+Diagramme UML presque complet des Boards, et d'autres classes dont on aura besoin. L'algo des chemins. Pour le 1 er Board ,
+ on choisi pas cas de la fin, et pour le deuxieme Board on va generer des chemins qui vont a toutes les directions , pas seulement de gauche a droite 
 ### Difficultés rencontrées
-
+ le temps, pour synchroniser les ballons et les tours
 ### Objectifs pour la semaine et répartition du travail par membre
-
+finir le diagramme UML, pseudo code des chemins , finaliser le premier livrable  
 ## Semaine 3
 
 ### Ce qui a été réalisé

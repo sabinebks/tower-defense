@@ -12,7 +12,7 @@ N'oubliez pas d'ajouter les autres membres de votre équipe aux membres du proje
 - sabine boukais
 - ines agueniou
 - yanni moutchou
-- Lina Ramdane
+
 # Sujet
 
 [Le sujet 2026](https://www.fil.univ-lille.fr/~varre/portail/l2s4-projet/sujet2026.pdf)

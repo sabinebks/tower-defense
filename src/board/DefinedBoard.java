@@ -92,7 +92,11 @@ public class DefinedBoard extends Board {
             getCell(row, col).assignChemin();
 
             // condition d’arrêt : si je touche un bord, je termine
-            if (row == 0 || row == height - 1 || col == 0 || col == width - 1) {
+            /*if (row == 0 || row == height - 1 || col == 0 || col == width - 1) {
+                fin = true;
+            }*/
+
+            if ( col == width - 1) {
                 fin = true;
             }
 

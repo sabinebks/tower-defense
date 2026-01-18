@@ -27,6 +27,7 @@ public class Cell {
 
     /**
      * Vérifie si la cellule est libre (pas encore dans le chemin)
+     * On va modifier ca apres pour verifier qu'il n'y a pas de tour/ballon
      */
     public boolean estVide() {
         return !isPath;

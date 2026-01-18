@@ -40,13 +40,15 @@ public class DefinedBoard extends Board {
     /**
      * Génération d’un chemin aléatoire.
      * Le chemin commence sur le bord gauche et avance dans toutes les directions
+     * On va essayer a choisir un Cell de debut dans toute les bords ( en haut, en bas,
+     * a gauche, a droite )
      */
     public void calculerPath() {
         Random rand = new Random(); // pour choisir les directions aléatoirement
 
         // point de départ sur le bord gauche
         int row = rand.nextInt(height); // ligne aléatoire
-        int col = 0; // bord gauche fixe
+        int col = 0; // bord gauche fixe, on va essayer a creer un chemin commencer aleatoirement dans 4 bords
         getCell(row, col).assignChemin(); // je marque la première cellule comme chemin
 
         boolean fin = false; // variable pour savoir quand arrêter

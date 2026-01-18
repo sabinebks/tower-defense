@@ -22,6 +22,19 @@ pour chaque ballon B:
 
 package board;
 
-public class FreeBoard {
-    
+public class FreeBoard extends Board{
+
+    public FreeBoard( int height, int width ) {
+        super(height, width);
+    }
+
+    @Override
+    public void init() {
+        grid = new Cell[height][width]; 
+        for (int i = 0; i < height; i++) {
+            for (int j = 0;j  < width; j++) {
+                grid[i][j] = new Cell(new Position(i, j));
+            }
+        }
+    }
 }

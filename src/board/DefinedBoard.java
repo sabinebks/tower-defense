@@ -13,6 +13,12 @@ import java.util.Random;
  */
 public class DefinedBoard extends Board {
 
+    /**
+     * L'attribut de DefinedBoard
+     * Une liste des cellules chemins
+     */
+    private List<Cell> chemins;
+
     // constructeur du plateau
     public DefinedBoard(int height, int width) {
         super(height, width); // appel du constructeur de Board pour la taille
@@ -25,6 +31,7 @@ public class DefinedBoard extends Board {
     @Override
     protected void init() {
         // première étape : créer la grille
+        chemins = new ArrayList<>();
         grid = new Cell[height][width]; // tableau 2D
         for (int r = 0; r < height; r++) {
             for (int c = 0; c < width; c++) {
@@ -38,6 +45,16 @@ public class DefinedBoard extends Board {
     }
 
     /**
+     * Une methode pour recupperer la liste des cellules chemins
+     * @return la liste des chemins
+     */
+    public List<Cell> getChemins() {
+        return this.chemins;
+    } 
+
+
+
+    /**
      * Génération d’un chemin aléatoire.
      * Le chemin commence sur le bord gauche et avance dans toutes les directions
      * On va essayer a choisir un Cell de debut dans toute les bords ( en haut, en bas,
@@ -49,9 +66,11 @@ public class DefinedBoard extends Board {
         // point de départ sur le bord gauche
         int row = rand.nextInt(height); // ligne aléatoire
         int col = 0; // bord gauche fixe, on va essayer a creer un chemin commencer aleatoirement dans 4 bords
+        
         Cell c = this.getCell(row, col);
+        this.chemins.add(c);
         c.assignChemin(); // je marque la première cellule comme chemin
-
+        
         boolean fin = false; // variable pour savoir quand arrêter
 
         //  boucle pour générer le chemin
@@ -92,6 +111,7 @@ public class DefinedBoard extends Board {
             // marquer cette cellule comme faisant partie du chemin
             Cell chemin = getCell(row, col);
             chemin.assignChemin();
+            this.chemins.add(chemin);
 
             // condition d’arrêt : si je touche un bord, je termine
             /*if (row == 0 || row == height - 1 || col == 0 || col == width - 1) {

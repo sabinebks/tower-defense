@@ -26,7 +26,7 @@ public class Position {
      * Fonction pour get x
      * @return x
      */
-    public int getX() {
+    public int getX() { // La colonne
         return this.x;
     }
 
@@ -34,7 +34,7 @@ public class Position {
      * Fonction pour get y
      * @return y
      */
-    public int getY() {
+    public int getY() { // La ligne
         return this.y;
     }
 

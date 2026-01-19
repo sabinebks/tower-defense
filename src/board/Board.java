@@ -32,7 +32,7 @@ public abstract class Board {
         if (!isInside(row, col)) {
             throw new IllegalArgumentException("Coordonnées hors du plateau");
         }
-        return grid[row][col];
+        return this.grid[row][col];
     }
 
     /**

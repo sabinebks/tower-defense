@@ -6,7 +6,7 @@ Un unique fork doit être réalisé par équipe.
 Une fois cela réalisé, supprimer ces premières lignes et remplir les noms des membres de votre équipe.
 N'oubliez pas d'ajouter les autres membres de votre équipe aux membres du projet, ainsi que votre enseignant·e (statut Maintainer).
 
-# Equipe
+# Equipe 5
 
 - Son Tung DO
 - sabine boukais

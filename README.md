@@ -99,10 +99,19 @@ finir le diagramme UML, pseudo code des chemins , finaliser le premier livrable
 ## Semaine 3
 
 ### Ce qui a été réalisé
-
+on a finalisé le diagramme uml pour le board (sous reserve de modifications) on reste sur la meme idée d'une classe abstraite Board et deux sous classes DefinedBoard et FreeBoard 
+ce qui nous permettra de créer des extensions de plateaux
+pour le DefinedBoard donc le plateau avec un chemin definie notre algo choisi lui meme aleatoirement la case du debut de n'importe quel bord 
+ensuite pour la construction du chemin il choisit une de ses cases voisines, la condition d'arret est : si on touche le bord n'importe lequel 
+le chemin est fini donc le chemin ne peut pas etre sur les bords apart pour le debut et la fin 
+pour le FreeBoard donc le plateau avec un chemin non precis pour le moment on a commencer avec un pseudo code donc c'est la case du debut choisi aleatoirement
+qui decide de la trajectoire du chemin par exemple si elle est sur le bord d'en haut le chemin va tout droit vers le board du bas, si ça commence a gauche ça va vers la droite et inversement 
+on a aussi implementé des classe Cell et position pour mieux gérer les cases 
 ### Difficultés rencontrées
-
+le code exact pour l'algo des deux chemins 
 ### Objectifs pour la semaine et répartition du travail par membre
+finir le livrable 1 donc : la creation des deux types de plateaux et le calcul des chemins
+pour le repartion on mettra a jour le readme durant la semaine du travail de chaque membre
 
 ## Semaine 4
 

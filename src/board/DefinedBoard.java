@@ -52,6 +52,14 @@ public class DefinedBoard extends Board {
         return this.chemins;
     } 
 
+    /**
+     * Retourner le nombre de cellule chemin
+     * @return nombre de cellule chemin
+     */
+    public int getCheminLong() {
+        return this.chemins.size();
+    }
+
 
 
     /**

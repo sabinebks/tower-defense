@@ -20,6 +20,9 @@ public class DefinedBoardMain {
                     if( board.getChemins().indexOf(board.getCell(r, c)) == 0) {
                         System.out.print("D ");
                     }
+                    else if ( board.getChemins().indexOf(board.getCell(r, c)) == board.getCheminLong() - 1 ) {
+                        System.out.print("F ");
+                    }
                     else {
                         System.out.print("C ");
                     }

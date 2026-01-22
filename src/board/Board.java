@@ -55,4 +55,9 @@ public abstract class Board {
     public int getHeight() {
         return height;
     }
+
+    public void calculerPath() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'calculerPath'");
+    }
 }

@@ -42,45 +42,71 @@ public class FreeBoard extends Board{
         }
     }
 
-    @Override 
-    public void calculerPath(){
-        
-        Random rand = new Random();
-        int row = rand.nextInt(width);
-        int col = rand.nextInt(height);
-        
-        if(row == 0 && col == 0 || row == 0 && col == width - 1 || row == height -1 && col == 0 || row == height - 1 && col == width -1 ){
-            int d = rand.nextInt(2);
-            if( row == 0 && col == 0){
-                if( d == 0){
-                    for(int j = 0; j < width; j++){
-                        Cell cell = new Cell(new Position(0, j));
-                        cell.assignChemin();
-                        grid[0][j] = cell;
-                    }
-                    }else{
-                    for(int i = 0; i < height; i++){
-                        Cell cell = new Cell(new Position(i, 0));
-                        cell.assignChemin();
-                        grid[i][0] = cell;
-                    }
-                }
-            } else if( row == 0 && col == width - 1 ){
-                if( d == 0){
-                    for(int j = width - 1; j >= 0; j--){
-                        Cell cell = new Cell(new Position(0, j));
-                        cell.assignChemin();
-                        grid[0][j] = cell;
-                    }
-                    }else{
-                    for(int i = 0; i < height; i++){
-                        Cell cell = new Cell(new Position(i, 0));
-                        cell.assignChemin();
-                        grid[i][0] = cell;
-                    }
-                }
-            }
-        }
+    @Override
+    public void calculerPath() {
 
+        Random rand = new Random();
+
+        int row, col;
+
+        // ───── Choisir une cellule aléatoire de la bordure ─────
+        int side = rand.nextInt(4);
+
+        switch (side) {
+            case 0: // haut
+                row = 0;
+                col = rand.nextInt(width);
+            break;
+            case 1: // bas
+                row = height - 1;
+                col = rand.nextInt(width);
+            break;
+            case 2: // gauche
+                row = rand.nextInt(height);
+                col = 0;
+            break;
+            default: // droite
+                row = rand.nextInt(height);
+                col = width - 1;
     }
+
+    // ───── Déterminer la direction ─────
+    int dRow = 0;
+    int dCol = 0;
+
+    // COINS
+    if (row == 0 && col == 0) {
+        if (rand.nextInt(2) == 0) { dRow = 1; dCol = 0; }   // ↓
+        else { dRow = 0; dCol = 1; }                       // →
+    }
+    else if (row == 0 && col == width - 1) {
+        if (rand.nextInt(2) == 0) { dRow = 1; dCol = 0; }  // ↓
+        else { dRow = 0; dCol = -1; }                      // ←
+    }
+    else if (row == height - 1 && col == 0) {
+        if (rand.nextInt(2) == 0) { dRow = -1; dCol = 0; } // ↑
+        else { dRow = 0; dCol = 1; }                       // →
+    }
+    else if (row == height - 1 && col == width - 1) {
+        if (rand.nextInt(2) == 0) { dRow = -1; dCol = 0; } // ↑
+        else { dRow = 0; dCol = -1; }                      // ←
+    }
+
+    // BORDURES (hors coins)
+    else if (row == 0) { dRow = 1; dCol = 0; }             // ↓
+    else if (row == height - 1) { dRow = -1; dCol = 0; }  // ↑
+    else if (col == 0) { dRow = 0; dCol = 1; }             // →
+    else if (col == width - 1) { dRow = 0; dCol = -1; }    // ←
+
+    // ───── Tracer la trajectoire ─────
+    int r = row;
+    int c = col;
+
+    while (r >= 0 && r < height && c >= 0 && c < width) {
+        grid[r][c].assignChemin();
+        r += dRow;
+        c += dCol;
+    }
+    }
+
 }

@@ -22,6 +22,10 @@ pour chaque ballon B:
 
 package board;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class FreeBoard extends Board{
 
     public FreeBoard( int height, int width ) {
@@ -36,5 +40,47 @@ public class FreeBoard extends Board{
                 grid[i][j] = new Cell(new Position(i, j));
             }
         }
+    }
+
+    @Override 
+    public void calculerPath(){
+        
+        Random rand = new Random();
+        int row = rand.nextInt(width);
+        int col = rand.nextInt(height);
+        
+        if(row == 0 && col == 0 || row == 0 && col == width - 1 || row == height -1 && col == 0 || row == height - 1 && col == width -1 ){
+            int d = rand.nextInt(2);
+            if( row == 0 && col == 0){
+                if( d == 0){
+                    for(int j = 0; j < width; j++){
+                        Cell cell = new Cell(new Position(0, j));
+                        cell.assignChemin();
+                        grid[0][j] = cell;
+                    }
+                    }else{
+                    for(int i = 0; i < height; i++){
+                        Cell cell = new Cell(new Position(i, 0));
+                        cell.assignChemin();
+                        grid[i][0] = cell;
+                    }
+                }
+            } else if( row == 0 && col == width - 1 ){
+                if( d == 0){
+                    for(int j = width - 1; j >= 0; j--){
+                        Cell cell = new Cell(new Position(0, j));
+                        cell.assignChemin();
+                        grid[0][j] = cell;
+                    }
+                    }else{
+                    for(int i = 0; i < height; i++){
+                        Cell cell = new Cell(new Position(i, 0));
+                        cell.assignChemin();
+                        grid[i][0] = cell;
+                    }
+                }
+            }
+        }
+
     }
 }

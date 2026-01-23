@@ -22,16 +22,22 @@ pour chaque ballon B:
 
 package board;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class FreeBoard extends Board{
 
+    /**
+     * Constructeur de FreeBoard
+     * @param height
+     * @param width
+     */
     public FreeBoard( int height, int width ) {
         super(height, width);
     }
 
+    /**
+     * Methode init pour initialiser le board
+     */
     @Override
     public void init() {
         grid = new Cell[height][width]; 
@@ -42,6 +48,11 @@ public class FreeBoard extends Board{
         }
     }
 
+    /**
+     * Methode calculerPath pour creer le chemin ou les ballons marche
+     * On a du coup 4 directions pour le chemin, chaque chemin va etre creer
+     * aleatoirement vers le bord oppose
+     */
     @Override
     public void calculerPath() {
 

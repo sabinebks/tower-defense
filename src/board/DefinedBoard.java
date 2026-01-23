@@ -173,7 +173,7 @@ public class DefinedBoard extends Board {
             if( chemins.size() < minLen) {
                 List<Position> filtre = new ArrayList<>();
                 for ( Position p : mesChoix) {
-                    if ( !(isBord(p) && p.equals(pointDeDepart))) {
+                    if ( !(isBord(p) && !p.equals(pointDeDepart))) {
                         filtre.add(p);
                     }
                 }
@@ -187,6 +187,19 @@ public class DefinedBoard extends Board {
             Position randi = mesChoix.get(rand.nextInt(mesChoix.size()));
             getCell(randi).assignChemin();
             chemins.add(getCell(randi));
+
+            // Ajouter la ligne ou colonne de cheminAv(la derniere 
+            // cellule designee du chemin ) liste bloque
+            if (cheminAv.getCol() != randi.getCol()) {
+                for (int rr = 0; rr < height; rr++) {
+                    bloque.add(new Position(rr, cheminAv.getCol()));
+                }
+            } else if (cheminAv.getRow() != randi.getRow()) {
+                for (int cc = 0; cc < width; cc++) {
+                    bloque.add(new Position(cheminAv.getRow(), cc));
+                }
+            }
+
 
             //assigne la celulle quon a trouver de maniere random 
             //comme nouveau chemin precedent pour refaire la boucle 

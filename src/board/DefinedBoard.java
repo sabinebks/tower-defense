@@ -75,10 +75,10 @@ public class DefinedBoard extends Board {
         int row = rand.nextInt(height); // ligne aléatoire
         int col = 0; // bord gauche fixe, on va essayer a creer un chemin commencer aleatoirement dans 4 bords
         
-        Cell c = this.getCell(row, col);
-        this.chemins.add(c);
-        c.assignChemin(); // je marque la première cellule comme chemin
-        
+        Cell cellDebut = this.getCell(row, col);
+        cellDebut.assignChemin(); // je marque la première cellule comme chemin
+        this.chemins.add(cellDebut);
+        /* 
         boolean fin = false; // variable pour savoir quand arrêter
 
         //  boucle pour générer le chemin
@@ -120,17 +120,28 @@ public class DefinedBoard extends Board {
             Cell chemin = getCell(row, col);
             chemin.assignChemin();
             this.chemins.add(chemin);
-
-            // condition d’arrêt : si je touche un bord, je termine
-            /*if (row == 0 || row == height - 1 || col == 0 || col == width - 1) {
-                fin = true;
-            }*/
-
             if ( col == width - 1) {
                 fin = true;
-            }
+            }  */
 
             // chaque cellule visitée une seule fois
+
+            while ( col < width - 1) {
+                int nextRowCell = rand.nextInt(height); // Cela va choisir le cell de la prochaine colonne pour generer le chemin
+                // le chemin va etre generer verticalement vers nextRowCell
+                while ( row != nextRowCell) {
+                    row += ( nextRowCell > row) ? 1 : -1; // si la ligne est en haut donc - 1 sinon +1
+                    Cell cell = getCell(row, col);
+                    cell.assignChemin();
+                    chemins.add(cell);
+                }
+
+                //apres avoir fini de generer verticalement, on avance vers la droite
+                col += 1;
+                Cell newCell = getCell(row, col);
+                newCell.assignChemin();
+                chemins.add(newCell);
+            }
         }
-    }
 }
+

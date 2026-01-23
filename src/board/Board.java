@@ -13,6 +13,8 @@ public abstract class Board {
 
     /**
      * Constructeur du plateau
+     * @param height la hauteur
+     * @param width la largeur
      */
     public Board(int height, int width) {
         this.width = width;
@@ -26,7 +28,10 @@ public abstract class Board {
     protected abstract void init();
 
     /**
-     * Retourne la cellule aux coordonnées (x, y)
+     * Retourne la cellule aux coordonnées (row, col)
+     * @param row
+     * @param col
+     * @return la cellule 
      */
     public Cell getCell(int row, int col) {
         if (!isInside(row, col)) {
@@ -37,6 +42,9 @@ public abstract class Board {
 
     /**
      * Vérifie si les coordonnées sont à l'intérieur du plateau
+     * @param row la ligne
+     * @param col la colonne
+     * @return true si coor est dedans, false sinon
      */
     public boolean isInside(int row, int col) {
         return row >= 0 && row < height && col >= 0 && col < width;
@@ -44,6 +52,7 @@ public abstract class Board {
 
     /**
      * Retourne la largeur
+     * @return largeur
      */
     public int getWidth() {
         return width;
@@ -51,9 +60,18 @@ public abstract class Board {
 
     /**
      * Retourne la hauteur
+     * @return hauteur
      */
     public int getHeight() {
         return height;
+    }
+
+    /**
+     * Retourne la grille
+     * @return la grille
+     */
+    public Cell[][] getGrid() {
+        return this.grid;
     }
     /**
      * Methode abstract a override

@@ -76,27 +76,27 @@ public class FreeBoard extends Board{
 
     // COINS
     if (row == 0 && col == 0) {
-        if (rand.nextInt(2) == 0) { dRow = 1; dCol = 0; }   // ↓
-        else { dRow = 0; dCol = 1; }                       // →
+        if (rand.nextInt(2) == 0) { dRow = 1; dCol = 0; }   // va en bas
+        else { dRow = 0; dCol = 1; }                       // va a droite
     }
     else if (row == 0 && col == width - 1) {
-        if (rand.nextInt(2) == 0) { dRow = 1; dCol = 0; }  // ↓
-        else { dRow = 0; dCol = -1; }                      // ←
+        if (rand.nextInt(2) == 0) { dRow = 1; dCol = 0; }  // va en bas
+        else { dRow = 0; dCol = -1; }                      // va a gauche
     }
     else if (row == height - 1 && col == 0) {
-        if (rand.nextInt(2) == 0) { dRow = -1; dCol = 0; } // ↑
-        else { dRow = 0; dCol = 1; }                       // →
+        if (rand.nextInt(2) == 0) { dRow = -1; dCol = 0; } // va en haut
+        else { dRow = 0; dCol = 1; }                       // va a droite
     }
     else if (row == height - 1 && col == width - 1) {
-        if (rand.nextInt(2) == 0) { dRow = -1; dCol = 0; } // ↑
-        else { dRow = 0; dCol = -1; }                      // ←
+        if (rand.nextInt(2) == 0) { dRow = -1; dCol = 0; } // va en haut
+        else { dRow = 0; dCol = -1; }                      // va a gauche
     }
 
     // BORDURES (hors coins)
-    else if (row == 0) { dRow = 1; dCol = 0; }             // ↓
-    else if (row == height - 1) { dRow = -1; dCol = 0; }  // ↑
-    else if (col == 0) { dRow = 0; dCol = 1; }             // →
-    else if (col == width - 1) { dRow = 0; dCol = -1; }    // ←
+    else if (row == 0) { dRow = 1; dCol = 0; }             // bas   
+    else if (row == height - 1) { dRow = -1; dCol = 0; }  // haut
+    else if (col == 0) { dRow = 0; dCol = 1; }             // droite
+    else if (col == width - 1) { dRow = 0; dCol = -1; }    // gauche
 
     // ───── Tracer la trajectoire ─────
     int r = row;

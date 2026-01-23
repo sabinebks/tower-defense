@@ -10,7 +10,7 @@ public class DefinedBoardMain {
         DefinedBoard board = new DefinedBoard(height, width);
 
         System.out.println("Plateau de taille :" + height + " * " + width );
-        System.out.println(" D =Début  , F= Fin  , c= Chemin  , . = Vide ");
+        System.out.println(" D =Debut  , F= Fin  , c= Chemin  , . = Vide ");
 
         // Affichage du plateau
         for (int r = 0; r < board.getHeight(); r++) {

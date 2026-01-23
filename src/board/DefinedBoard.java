@@ -71,6 +71,16 @@ public class DefinedBoard extends Board {
     public int getCheminLong() {
         return chemins.size();
     }
+    /**
+     * Retourner si une position est une borde ou non
+     * @return true si bord, false sinon
+     */
+    public boolean isBord( Position p) {
+        return p.getRow() == 0 || p.getRow() == this.height - 1 || p.getCol() == 0 || p.getCol() == this.width - 1;
+    }
+
+
+
 
     /**
      * genere un chemin aleatoire , peut commencer de nymporte quel bord 
@@ -80,6 +90,11 @@ public class DefinedBoard extends Board {
     @Override
     public void calculerPath() {
         Random rand = new Random();
+
+        /*Ici c'est la taille minimum pour le chemin
+        *Cela nous aide a eviter les chemins trop courts
+        */
+        int minLen = this.width + this.height ;
 
         // cree toutes les cellules de depart possible  (tous les bords)
         //pris en compte les cellule qui peuvent etre rajouter deux fois 
@@ -104,6 +119,7 @@ public class DefinedBoard extends Board {
         // sauvegarder la la cellule de depart comme chemin
         getCell(pRandom).assignChemin();
         chemins.add(getCell(pRandom));
+
 
         // cree une liste de position qui vont etre bloque (peuvent pas etre choisi 
        // comme chemin ou comme voisin)
@@ -147,31 +163,37 @@ public class DefinedBoard extends Board {
 
             // Pas de voisin valide donc fin du chemin
             if (mesChoix.isEmpty()){
-                  break;
+                fin = true;
+                break;
             } 
+            /**
+             * Cela nous aide a eviter les chemins de fini apres une seule
+             * generation ( Depart puis Fini tout de suite )
+             */
+            if( chemins.size() < minLen) {
+                List<Position> filtre = new ArrayList<>();
+                for ( Position p : mesChoix) {
+                    if ( !(isBord(p) && p.equals(pointDeDepart))) {
+                        filtre.add(p);
+                    }
+                }
+                if (!filtre.isEmpty()) {
+                    mesChoix = filtre;
+                }
+            }
+
 
             // Choix random du chemin qui sera un des voisin  
             Position randi = mesChoix.get(rand.nextInt(mesChoix.size()));
             getCell(randi).assignChemin();
             chemins.add(getCell(randi));
 
-            // Ajouter la ligne ou colonne de cheminAv(la derniere 
-            // cellule designee du chemin ) liste bloque
-            if (cheminAv.getCol() != randi.getCol()) {
-                for (int rr = 0; rr < height; rr++) {
-                    bloque.add(new Position(rr, cheminAv.getCol()));
-                }
-            } else if (cheminAv.getRow() != randi.getRow()) {
-                for (int cc = 0; cc < width; cc++) {
-                    bloque.add(new Position(cheminAv.getRow(), cc));
-                }
-            }
             //assigne la celulle quon a trouver de maniere random 
             //comme nouveau chemin precedent pour refaire la boucle 
             cheminAv = randi;
 
             // Arrêt si on atteint le bord (different du point de depart)
-            if (listPositions.contains(randi) && !randi.equals(pointDeDepart)) {
+            if (chemins.size() >= minLen && isBord(randi) && !randi.equals(pointDeDepart)) {
                 fin = true;
             }
         }

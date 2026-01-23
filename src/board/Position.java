@@ -9,33 +9,33 @@ public class Position {
      * La coordonation x
      * La coordonation y
      */
-    private int x;
-    private int y;
+    private int col;
+    private int row;
 
     /**
      * Le constructeur de la classe
-     * @param x coor x 
-     * @param y coor y
+     * @param col coor x 
+     * @param row coor y
      */
-    public Position ( int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Position ( int row, int col) {
+        this.col = col;
+        this.row = row;
     }
 
     /**
      * Fonction pour get x
      * @return x
      */
-    public int getX() { // La colonne
-        return this.x;
+    public int getColonne() { // La colonne
+        return this.col;
     }
 
     /**
      * Fonction pour get y
      * @return y
      */
-    public int getY() { // La ligne
-        return this.y;
+    public int getRow() { // La ligne
+        return this.row;
     }
 
 }

@@ -147,7 +147,7 @@ public class DefinedBoard extends Board {
 
             // Pas de voisin valide donc fin du chemin
             if (mesChoix.isEmpty()){
-                  fin = true;
+                  break;
             } 
 
             // Choix random du chemin qui sera un des voisin  

@@ -1,37 +1,47 @@
 package board;
 
-import java.util.*;
-
 public class DefinedBoardMain {
     public static void main(String[] args) {
 
-        int height = 10;
+        int height = 15;
         int width  = 15;
 
+        // Création du plateau 
         DefinedBoard board = new DefinedBoard(height, width);
 
-        System.out.println("Plateau (" + height + " x " + width + ")");
-        System.out.println("C = chemin, X = vide");
+        System.out.println("Plateau de taille :" + height + " * " + width );
+        System.out.println(" D =Début  , F= Fin  , c= Chemin  , . = Vide ");
 
-
+        // Affichage du plateau
         for (int r = 0; r < board.getHeight(); r++) {
             for (int c = 0; c < board.getWidth(); c++) {
-                if (board.getCell(r, c).isPath()) {
-                    if( board.getChemins().indexOf(board.getCell(r, c)) == 0) {
+                Cell cell = board.getCell(r, c);
+
+                if (cell.isPath()) {
+                    // Début du chemin
+                    if (board.getChemins().indexOf(cell) == 0) {
                         System.out.print("D ");
                     }
-                    else if ( board.getChemins().indexOf(board.getCell(r, c)) == board.getCheminLong() - 1 ) {
+                    // Fin du chemin
+                    else if (board.getChemins().indexOf(cell) == board.getCheminLong() - 1) {
                         System.out.print("F ");
                     }
+                    // Chemin intermédiaire
                     else {
-                        System.out.print("C ");
+                        System.out.print("c ");
                     }
-                } 
-                else {
-                    System.out.print(". "); // . sinon
+                } else {
+                    System.out.print(". "); // Cellule vide
                 }
             }
-            System.out.println(); //nouvelle ligne
+            System.out.println(); // nouvelle ligne
         }
+
+        // afficher le chemin complet sous forme de positions
+        System.out.println("\nChemin complet :");
+        for (Cell c : board.getChemins()) {
+            System.out.print(c.getPosition() + " -> ");
+        }
+        
     }
 }

@@ -1,41 +1,71 @@
 package board;
 
 /**
- * La classe Position pour gerer les positions des ballons et tours
+ * Représente la position dune cellule dans le plateau
+ * Chaque position a une ligne (row) et une colonne (col)
  */
 public class Position {
-    /**
-     * Les attributs
-     * La coordonation x
-     * La coordonation y
-     */
-    private int col;
+
+    /**  la ligne */
     private int row;
 
+    /**  la colonne */
+    private int col;
+
     /**
-     * Le constructeur de la classe
-     * @param col coor x 
-     * @param row coor y
+     * Constructeur de Position
+     *
+     * @param row Ligne de la cellule 
+     * @param col Colonne de la cellule
      */
-    public Position ( int row, int col) {
-        this.col = col;
+    public Position(int row, int col) {
         this.row = row;
+        this.col = col;
     }
 
     /**
-     * Fonction pour get x
-     * @return x
+     * Retourne l'indice de la ligne
+     *
+     * @return Ligne de la cellule
      */
-    public int getColonne() { // La colonne
-        return this.col;
+    public int getRow() {
+        return row;
     }
 
     /**
-     * Fonction pour get y
-     * @return y
+     * Retourne l'indice de la colonne
+     *
+     * @return Colonne de la cellule
      */
-    public int getRow() { // La ligne
-        return this.row;
+    public int getCol() {
+        return col;
     }
 
+    /**
+     * methode equals pour comparer deux positions 
+     *
+     * @param obj Objet à comparer
+     * @return true si positions identiques, false sinon
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj){
+          return true;
+        } 
+        if (obj == null || getClass() != obj.getClass()) 
+            {return false;}
+        Position other = (Position) obj;
+        return this.row == other.row && this.col == other.col;
+    }
+
+   
+    /**
+     * ecrit la position
+     *
+     * @return String de la forme "(row,col)"
+     */
+    @Override
+    public String toString() {
+        return "(" + row + "," + col + ")";
+    }
 }

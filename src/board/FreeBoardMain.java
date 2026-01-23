@@ -27,7 +27,7 @@ public class FreeBoardMain {
 
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
-                if (grid[i][j].isChemin()) {
+                if (grid[i][j].isPath()) {
                     System.out.print(" * ");
                 } else {
                     System.out.print(" . ");

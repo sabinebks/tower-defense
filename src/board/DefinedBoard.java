@@ -94,7 +94,7 @@ public class DefinedBoard extends Board {
         /*Ici c'est la taille minimum pour le chemin
         *Cela nous aide a eviter les chemins trop courts
         */
-        int minLen = this.width + this.height ;
+        int minLen = (this.width + this.height) / 2 ;
 
         // cree toutes les cellules de depart possible  (tous les bords)
         //pris en compte les cellule qui peuvent etre rajouter deux fois 
@@ -193,10 +193,6 @@ public class DefinedBoard extends Board {
             if (cheminAv.getCol() != randi.getCol()) {
                 for (int rr = 0; rr < height; rr++) {
                     bloque.add(new Position(rr, cheminAv.getCol()));
-                }
-            } else if (cheminAv.getRow() != randi.getRow()) {
-                for (int cc = 0; cc < width; cc++) {
-                    bloque.add(new Position(cheminAv.getRow(), cc));
                 }
             }
 

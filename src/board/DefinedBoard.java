@@ -19,7 +19,11 @@ public class DefinedBoard extends Board {
      */
     private List<Cell> chemins;
 
-    // constructeur du plateau
+    /**
+     * Le constructeur de la classe DefinedBoard
+     * @param height
+     * @param width
+     */
     public DefinedBoard(int height, int width) {
         super(height, width); // appel du constructeur de Board pour la taille
     }
@@ -64,9 +68,10 @@ public class DefinedBoard extends Board {
 
     /**
      * Génération d’un chemin aléatoire.
-     * Le chemin commence sur le bord gauche et avance dans toutes les directions
-     * On va essayer a choisir un Cell de debut dans toute les bords ( en haut, en bas,
-     * a gauche, a droite )
+     * Le chemin commence sur le bord gauche
+     * Je viens de trouver une autre algo pour generer le chemin,
+     * On va chercher une cellule dans la prochaine colonne, puis avancer
+     * le chemin vers cette cellule et on boucle ca jusqu'au bord
      */
     public void calculerPath() {
         Random rand = new Random(); // pour choisir les directions aléatoirement

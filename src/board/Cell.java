@@ -1,72 +1,61 @@
 package board;
 
 /**
- * Une cellule du plateau.
- * Chaque cellule peut faire partie d’un chemin ou être vide.
+ * Represents a cell on the game board.
+ * Each cell has a position and can either be part of a path or empty.
  */
 public class Cell {
 
-    /** Position de la cellule dans la grille */
     private Position position;
-
-    /** true si la cellule fait partie du chemin */
     private boolean isPath;
-   
-
 
     /**
-     * Constructeur de la cellule
-     *
-     * @param position La position de la cellule dans le plateau
+     * creates a new cell at the given position
+     * @param position Position of the cell on the board
      */
     public Cell(Position position) {
         this.position = position;
-        this.isPath = false; // par défaut, la cellule n’est pas sur le chemin
+        this.isPath = false; // by default, the cell is not part of a path
     }
 
     /**
-     * Retourne la position de la cellule
-     *
-     * @return Objet Position de la cellule
+     * Returns the position of the cell.
+     * @return the cell position
      */
     public Position getPosition() {
         return position;
     }
 
     /**
-     * Vérifie si la cellule fait partie du chemin
-     *
-     * @return true si la cellule est sur le chemin, false sinon
+     * Checks if the cell is part of a path.
+     * @return true if the cell is on a path, false otherwise
      */
     public boolean isPath() {
         return isPath;
     }
 
     /**
-     * Marque la cellule comme faisant partie du chemin
+     * Marks the cell as part of a path.
      */
     public void assignChemin() {
         this.isPath = true;
     }
 
-
     /**
-     * Vérifie si la cellule est libre (pas encore utilisée dans le chemin)
-     *
-     * @return true si la cellule est vide, false si elle fait déjà partie du chemin
+     * Checks if the cell is free (not used in a path).
+     * @return true if the cell is empty, false if it is part of a path
      */
     public boolean estVide() {
         return !isPath;
     }
 
     /**
-     * Retourne une représentation lisible de la cellule pour debug/affichage
-     * Exemple : "C(2,3)" si chemin à la position (2,3) ou "X(2,3)" si vide
-     *
-     * @return String représentant la cellule
+     * Returns a string representation of the cell.
+     * @return a string describing the cell
      */
     @Override
     public String toString() {
         return (isPath ? "C" : "X") + "(" + position.getRow() + "," + position.getCol() + ")";
     }
+
 }

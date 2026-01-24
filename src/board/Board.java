@@ -3,8 +3,8 @@ package board;
 import java.util.List;
 
 /**
- * Classe abstraite représentant un plateau de jeu.
- * Contient la grille de cellules et les méthodes communes.
+ * Abstract class representing a game board.
+ * Contains the grid of cells and common methods.
  */
 public abstract class Board {
 
@@ -13,10 +13,9 @@ public abstract class Board {
     protected Cell[][] grid; // grille de cellules
 
     /**
-     * Constructeur du plateau
-     * 
-     * @param height la hauteur du plateau
-     * @param width  la largeur du plateau
+     * Board constructor.
+     * @param height the height of the board
+     * @param width  the width of the board
      */
     public Board(int height, int width) {
         this.width = width;
@@ -25,17 +24,16 @@ public abstract class Board {
     }
 
     /**
-     * Méthode abstraite : chaque plateau initialise la grille à sa façon
+     * Abstract method: each board initializes the grid in its own way.
      */
     protected abstract void init();
 
     /**
-     * Retourne la cellule aux coordonnées (row, col)
-     * 
-     * @param row Ligne
-     * @param col Colonne
-     * @return Cell correspondante
-     * @throws IllegalArgumentException si la position est hors plateau
+     * Returns the cell at the specified coordinates (row, col).
+     * @param row Row index
+     * @param col Column index
+     * @return The corresponding Cell
+     * @throws IllegalArgumentException if coordinates are outside the board
      */
     public Cell getCell(int row, int col) {
         if (!isInside(row, col)) {
@@ -45,67 +43,61 @@ public abstract class Board {
     }
 
     /**
-     * Retourne la cellule à partir d'une Position
-     * 
-     * @param p Position
-     * @return Cell correspondante
-     * @throws IllegalArgumentException si la position est hors plateau
+     * Returns the cell at a given Position.
+     * @param p Position object
+     * @return The corresponding Cell
+     * @throws IllegalArgumentException if position is outside the board
      */
     public Cell getCell(Position p) {
         return getCell(p.getRow(), p.getCol());
     }
 
     /**
-     * Vérifie si les coordonnées sont à l'intérieur du plateau
-     * 
-     * @param row Ligne
-     * @param col Colonne
-     * @return true si la position est dans le plateau, false sinon
+     * Checks if coordinates are inside the board boundaries.
+     * @param row Row index
+     * @param col Column index
+     * @return true if inside, false otherwise
      */
     public boolean isInside(int row, int col) {
         return row >= 0 && row < height && col >= 0 && col < width;
     }
 
     /**
-     * Retourne la largeur du plateau
-     * 
-     * @return largeur
+     * Returns the board width.
+     * @return width
      */
     public int getWidth() {
         return width;
     }
 
     /**
-     * Retourne la hauteur du plateau
-     * 
-     * @return hauteur
+     * Returns the board height.
+     * @return height
      */
     public int getHeight() {
         return height;
     }
 
     /**
-     * Retourne la grille complète
-     * 
-     * @return tableau 2D de cellules
+     * Returns the full grid.
+     * @return 2D array of cells
      */
     public Cell[][] getGrid() {
         return this.grid;
     }
 
     /**
-     * Méthode abstraite pour générer le chemin du plateau
-     * Chaque sous-classe doit implémenter sa propre logique de chemin
+     * Abstract method to generate the board path.
+     * Each subclass must implement its own path logic.
      */
     public abstract void calculerPath();
 
     /**
-     * //concerne juste le plateau FreeBoard
-     * Retourne la position finale d'un chemin droit partant dune celulle du bord
-     * Le chemin va directement vers le bord oppose
-     *
-     * @param depart La position de départ sur un bord
-     * @return La position finale sur le bord oppose
+     * Returns the end position of a straight path starting from a border cell.
+     * The path goes directly to the opposite border.
+     * (concerne juste le plateau FreeBoard)
+     * @param depart The starting position on a border
+     * @return The final position on the opposite border
      */
     protected Position getFinChemin(Position depart) {
         int row = depart.getRow();
@@ -128,21 +120,19 @@ public abstract class Board {
     }
 
     /**
+     * Removes the start, end, and their 4 neighbors from the blocked list.
      * concerne seulement le free board
-     * enleve dans la liste bloque les positions depart et fin
-     * ainsi que leurs 4 voisins, sans dépasser les bords du plateau
-     *
-     * @param depart Position de départ
-     * @param fin    Position de fin
-     * @param bloque Liste existante dans laquelle on sipprime les positions
-     * @param width  Largeur du plateau
-     * @param height Hauteur du plateau
+     * @param depart Start position
+     * @param fin    End position
+     * @param bloque List of blocked positions
+     * @param width  Board width
+     * @param height Board height
      */
     public static void rmPositions(Position depart, Position fin, List<Position> bloque, int width, int height) {
         // Ajouter les positions elles-mêmes
         bloque.remove(depart);
         bloque.remove(fin);
-        // re on verifie si les voisin sne depasse pas les bords avant de les ajouter
+        // on verifie si les voisin ne depassent pas les bords avant de les ajouter
         // Ajouter voisins de depart
         if (depart.getRow() > 0)
             bloque.remove(new Position(depart.getRow() - 1, depart.getCol())); // haut
@@ -165,10 +155,9 @@ public abstract class Board {
     }
 
     /**
-     * Retourne la direction d'un chemin droit entre deux positions alignee
-     * 
-     * @param depart position de depart
-     * @param fin    position de fin
+     * Returns the direction of a straight path between two aligned positions.
+     * @param depart Starting position
+     * @param fin   End position
      * @return Direction (UP, DOWN, LEFT, RIGHT)
      */
     public static Direction getDirection (Position depart, Position fin) {

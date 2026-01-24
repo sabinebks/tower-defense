@@ -25,6 +25,26 @@ Un lien vers une image de l'UML doit être fourni (une photo d'un diagramme UML 
 
 ## Livrable 1
 
+Le projet remplit actuellement les objectifs du premier livrable, à savoir la mise en place d'un système de plateau capable de générer deux types de structures de jeu distinctes. Deux types de plateaux ont été créés : le FreeBoard, où les chemins sont des lignes droites allant d’un bord à l’autre, et le DefinedBoard, où un chemin est généré de manière aléatoire en utilisant une logique de voisins pour éviter les boucles et faire en sorte que chaque cellule ne soit utilisée qu’une seule fois.
+
+Chaque cellule est représentée par un objet Cell, qui contient sa position et indique si elle fait partie du chemin. Le plateau est représenté par une classe abstraite Board, qui contient la grille de cellules ainsi que des méthodes communes pour accéder aux cellules, vérifier les limites et manipuler les chemins. Cette abstraction permet de centraliser les fonctionnalités partagées et de faciliter l’extension : de nouveaux types de plateaux peuvent être créés en héritant de Board et en implémentant leurs propres règles de génération de chemins.
+
+Pour FreeBoard, un algorithme simple parcourt les bords du plateau pour créer des chemins droits, en s’assurant que le départ et l’arrivée sont toujours sur un bord. Les positions déjà utilisées et leurs voisins sont bloqués pour éviter que les chemins se chevauchent.
+
+Pour DefinedBoard, un algorithme aléatoire génère un chemin “serpent” : à chaque étape, la cellule suivante est choisie parmi les voisins disponibles, en évitant de revenir en arrière ou de dépasser les bords. Une longueur minimale est imposée pour éviter que le chemin ne se termine trop vite. Cela garantit un chemin unique et continu sur le plateau.
+
+**Difficultés rencontrées** : il a été compliqué de trouver le code exact pour générer correctement le chemin aléatoire. Au début, des bugs apparaissaient souvent, comme des chemins très courts allant de deux cases seulement (départ et fin), ou des chemins qui se terminaient trop vite. Il a fallu ajuster l’algorithme et ajouter des vérifications pour garantir une longueur minimale et un chemin continu sans chevauchement.
+
+**Commande pour compiler toutes les classes** : javac -d classes src/**/*.java
+
+**Commande pour executer DefinedBoardMain** : java -cp classes board.DefinedBoardMain
+
+**Commande pour executer FreeBoardMain** : java -cp classes board.FreeBoardMain
+
+**Commande pour la compilation des tests** : javac -cp junit-console.jar:classes -d classes test/board/*.java
+
+**Commande pour executer les tests** : java -jar junit-console.jar -cp classes --scan-class-path
+
 ### Atteinte des objectifs
 
 ### Difficultés restant à résoudre

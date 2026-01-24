@@ -5,41 +5,34 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Plateau avec un chemin genere aleatoirment
- * Le chemin peut aller haut, bas, gauche, droite
- * Chaque cellule est utilise une seule fois pour eviter les boucles
- * Ce n’est pas parfait mais suffisant pour le livrable 1
+ * A board with a randomly generated path.
+ * The path can go up, down, left, or right.
+ * Each cell is used only once to avoid loops.
  */
 public class DefinedBoard extends Board {
 
-    /**
-     * Liste de cellules pour sauvegarder notre chemin
-     */
+    // List of cells that form the path
     private List<Cell> chemins;
 
-    /**
-     * derniere cell du chemin (pour la sauvegarder)
-     */
+    // Last cell of the path (used to continue the generation)
     private Position cheminAv;
 
-    /**
-     * declaration de la cellule de depart 
-     */
+    // Starting position of the path
     private Position pointDeDepart;
 
     /**
-     * Constructeur du plateau 
+     * Constructor for DefinedBoard.
      *
-     * @param height Hauteur du plateau haut en bas
-     * @param width  Largeur du plateau gache a droite 
+     * @param height Height of the board (top to bottom)
+     * @param width  Width of the board (left to right)
      */
     public DefinedBoard(int height, int width) {
         super(height, width);
     }
 
     /**
-     * Initialiser le plateau
-     * Crée la grille de cellules et lance la génération du chemin.
+     * Initializes the board by creating the grid
+     * and starting the path generation.
      */
     @Override
     protected void init() {
@@ -55,81 +48,78 @@ public class DefinedBoard extends Board {
     }
 
     /**
-     * Retourne la liste des cellules du chemin 
+     * Returns the list of cells that form the path.
      *
-     * @return Liste des cellules du chemin
+     * @return the list of path cells
      */
     public List<Cell> getChemins() {
         return chemins;
     }
 
     /**
-     * Retourne le nombre de cellules  chemin
+     * Returns the length of the path.
      *
-     * @return Longueur du chemin
+     * @return path length
      */
     public int getCheminLong() {
         return chemins.size();
     }
+
     /**
-     * Retourner si une position est une borde ou non
-     * @return true si bord, false sinon
+     * Checks if a position is on the board border.
+     *
+     * @param p the position to check
+     * @return true if the position is on a border, false otherwise
      */
-    public boolean isBord( Position p) {
-        return p.getRow() == 0 || p.getRow() == this.height - 1 || p.getCol() == 0 || p.getCol() == this.width - 1;
+    public boolean isBord(Position p) {
+        return p.getRow() == 0 || p.getRow() == this.height - 1
+            || p.getCol() == 0 || p.getCol() == this.width - 1;
     }
 
-
-
-
     /**
-     * genere un chemin aleatoire , peut commencer de nymporte quel bord 
-     * fini toujour dans une cellule de bord 
-     * regler le probleme du debut qui se fait que dune seule direction
+     * Generates a random path.
+     * The path starts on a border and ends on a different border cell.
      */
     @Override
     public void calculerPath() {
         Random rand = new Random();
 
-        /*Ici c'est la taille minimum pour le chemin
-        *Cela nous aide a eviter les chemins trop courts
-        */
-        int minLen = (this.width + this.height) / 2 ;
+        /* Ici c'est la taille minimum pour le chemin.
+         * Cela nous aide à éviter les chemins trop courts.
+         */
+        int minLen = (this.width + this.height) / 2;
 
-        // cree toutes les cellules de depart possible  (tous les bords)
-        //pris en compte les cellule qui peuvent etre rajouter deux fois 
-        //le rand ne sera pas biaise
+        // Crée toutes les cellules de départ possibles (tous les bords)
+        // Certaines cellules peuvent apparaître deux fois pour éviter un biais du random
         List<Position> listPositions = new ArrayList<>();
-        //sauvegarder la liste de la premiere ligne et la derniere 
+
+        // Première et dernière ligne
         for (int j = 0; j < width; j++) {
             listPositions.add(new Position(0, j));
             listPositions.add(new Position(height - 1, j));
         }
-        //sauvegarder la liste de la premiere colonne et la derniere 
+
+        // Première et dernière colonne
         for (int i = 1; i < height - 1; i++) {
             listPositions.add(new Position(i, 0));
             listPositions.add(new Position(i, width - 1));
         }
 
-        // Choix random du point de depart
+        // Choix aléatoire du point de départ
         Position pRandom = listPositions.get(rand.nextInt(listPositions.size()));
         pointDeDepart = pRandom;
         cheminAv = pRandom;
 
-        // sauvegarder la la cellule de depart comme chemin
+        // Marquer la cellule de départ comme faisant partie du chemin
         getCell(pRandom).assignChemin();
         chemins.add(getCell(pRandom));
 
-
-        // cree une liste de position qui vont etre bloque (peuvent pas etre choisi 
-       // comme chemin ou comme voisin)
+        // Liste des positions bloquées (non utilisables)
         List<Position> bloque = new ArrayList<>();
         boolean fin = false;
 
         while (!fin) {
-            // Liste des voisins valides , nest pas bloque et 
-            //peut etre en haut , bas ,a gauche ou a droite de la cellule 
-            // n'est pas deja un chemin et ne depasse pas les bords 
+            // Liste des voisins valides (haut, bas, gauche, droite)
             List<Position> mesChoix = new ArrayList<>();
 
             // voisin gauche
@@ -139,6 +129,7 @@ public class DefinedBoard extends Board {
                     mesChoix.add(voisin);
                 }
             }
+
             // voisin droit
             if (cheminAv.getCol() != width - 1) {
                 Position voisin = new Position(cheminAv.getRow(), cheminAv.getCol() + 1);
@@ -146,6 +137,7 @@ public class DefinedBoard extends Board {
                     mesChoix.add(voisin);
                 }
             }
+
             // voisin haut
             if (cheminAv.getRow() != 0) {
                 Position voisin = new Position(cheminAv.getRow() - 1, cheminAv.getCol());
@@ -153,6 +145,7 @@ public class DefinedBoard extends Board {
                     mesChoix.add(voisin);
                 }
             }
+
             // voisin bas
             if (cheminAv.getRow() != height - 1) {
                 Position voisin = new Position(cheminAv.getRow() + 1, cheminAv.getCol());
@@ -161,19 +154,18 @@ public class DefinedBoard extends Board {
                 }
             }
 
-            // Pas de voisin valide donc fin du chemin
-            if (mesChoix.isEmpty()){
-                fin = true;
+            // Aucun voisin valide : fin du chemin
+            if (mesChoix.isEmpty()) {
                 break;
-            } 
-            /**
-             * Cela nous aide a eviter les chemins de fini apres une seule
-             * generation ( Depart puis Fini tout de suite )
+            }
+
+            /* Empêche le chemin de se terminer trop tôt
+             * juste après le point de départ
              */
-            if( chemins.size() < minLen) {
+            if (chemins.size() < minLen) {
                 List<Position> filtre = new ArrayList<>();
-                for ( Position p : mesChoix) {
-                    if ( !(isBord(p) && !p.equals(pointDeDepart))) {
+                for (Position p : mesChoix) {
+                    if (!(isBord(p) && !p.equals(pointDeDepart))) {
                         filtre.add(p);
                     }
                 }
@@ -182,26 +174,22 @@ public class DefinedBoard extends Board {
                 }
             }
 
-
-            // Choix random du chemin qui sera un des voisin  
+            // Choix aléatoire du prochain voisin
             Position randi = mesChoix.get(rand.nextInt(mesChoix.size()));
             getCell(randi).assignChemin();
             chemins.add(getCell(randi));
 
-            // Ajouter la ligne ou colonne de cheminAv(la derniere 
-            // cellule designee du chemin ) liste bloque
+            // Bloque la colonne traversée pour éviter les croisements
             if (cheminAv.getCol() != randi.getCol()) {
                 for (int rr = 0; rr < height; rr++) {
                     bloque.add(new Position(rr, cheminAv.getCol()));
                 }
             }
 
-
-            //assigne la celulle quon a trouver de maniere random 
-            //comme nouveau chemin precedent pour refaire la boucle 
+            // Mise à jour de la cellule précédente
             cheminAv = randi;
 
-            // Arrêt si on atteint le bord (different du point de depart)
+            // Arrêt si on atteint un autre bord après la taille minimale
             if (chemins.size() >= minLen && isBord(randi) && !randi.equals(pointDeDepart)) {
                 fin = true;
             }

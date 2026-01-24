@@ -1,22 +1,17 @@
 package board;
 
 /**
- * Représente la position dune cellule dans le plateau
- * Chaque position a une ligne (row) et une colonne (col)
+ * Represents a specific location (row, column) on the game board.
  */
 public class Position {
 
-    /**  la ligne */
-    private int row;
-
-    /**  la colonne */
-    private int col;
+    private int row; // the row index
+    private int col; // the column index
 
     /**
-     * Constructeur de Position
-     *
-     * @param row Ligne de la cellule 
-     * @param col Colonne de la cellule
+     * Constructor for Position.
+     * @param row The row index of the cell
+     * @param col The column index of the cell
      */
     public Position(int row, int col) {
         this.row = row;
@@ -24,45 +19,37 @@ public class Position {
     }
 
     /**
-     * Retourne l'indice de la ligne
-     *
-     * @return Ligne de la cellule
+     * Returns the row index.
+     * @return Row of the cell
      */
     public int getRow() {
         return row;
     }
 
     /**
-     * Retourne l'indice de la colonne
-     *
-     * @return Colonne de la cellule
+     * Returns the column index.
+     * @return Column of the cell
      */
     public int getCol() {
         return col;
     }
 
     /**
-     * methode equals pour comparer deux positions 
-     *
-     * @param obj Objet à comparer
-     * @return true si positions identiques, false sinon
+     * Compares two positions.
+     * @param obj Object to compare
+     * @return true if positions are identical, false otherwise
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj){
-          return true;
-        } 
-        if (obj == null || getClass() != obj.getClass()) 
-            {return false;}
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
         Position other = (Position) obj;
         return this.row == other.row && this.col == other.col;
     }
 
-   
     /**
-     * ecrit la position
-     *
-     * @return String de la forme "(row,col)"
+     * Returns the position as a String.
+     * @return String formatted as "(row,col)"
      */
     @Override
     public String toString() {

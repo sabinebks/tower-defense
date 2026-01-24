@@ -1,5 +1,10 @@
 package board;
 
+/**
+ * Main class to test the DefinedBoard.
+ * It displays the generated path in the console.
+ */
+
 public class DefinedBoardMain {
     public static void main(String[] args) {
 

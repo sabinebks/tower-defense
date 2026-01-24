@@ -1,7 +1,9 @@
 package board;
 
-import java.util.HashMap;
-import java.util.Map;
+/**
+ * Main class to test the FreeBoard implementation.
+ * It initializes a board, generates straight paths, and prints the result.
+ */
 
 public class FreeBoardMain {
 
@@ -61,7 +63,7 @@ public class FreeBoardMain {
     }
 
     // Affichage des couples debut /fin de tous les chemins possibles
-    System.out.println("\ntous les chemins (debut -> fin) :::");
+    System.out.println("\ntous les chemins (debut -> fin) :");
     for (int num = 0; num < board.retourneNbrChemins(); num++) {
         //enregister chaque couple le temps de laffichage 
         Position[] chemin = board.retourneLesChemins(num);

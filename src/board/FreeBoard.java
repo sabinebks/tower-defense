@@ -20,6 +20,9 @@ public class FreeBoard extends Board {
     // cellules du chemin créées par calculerPath
     private Map<Position, Position> chemins = new HashMap<>();
 
+    // Nombre de chemins à générer (défini via le Main)
+    private int nbCheminsVoulus = 1;
+
     /**
      * Constructor for FreeBoard.
      * @param height The height of the board
@@ -27,6 +30,13 @@ public class FreeBoard extends Board {
      */
     public FreeBoard(int height, int width) {
         super(height, width);
+    }
+
+    /**
+     * Définit le nombre de chemins rectilignes à créer.
+     */
+    public void setNbCheminsVoulus(int nb) {
+        this.nbCheminsVoulus = nb;
     }
 
     /**
@@ -71,30 +81,30 @@ public class FreeBoard extends Board {
             listPositions.add(new Position(i, width - 1));
         }
 
-        boolean fin = false;
-
-        while (!fin) {
-            // Si la liste est vide, sortir de la boucle (fin de création de chemins)
-            if (listPositions.isEmpty()) {
-                fin = true;
-                break;
-            }
+        // On génère uniquement jusqu'au nombre voulu
+        while (cmp < nbCheminsVoulus && !listPositions.isEmpty()) {
 
             // Choix random du point de départ
             Position pRandom = listPositions.get(rand.nextInt(listPositions.size()));
             Position pFin = getFinChemin(pRandom);
 
-            // Marquer toutes les cellules entre le départ et la fin comme faisant partie du chemin
-            marquerCheminDroit(pRandom, pFin);
+            // Si la destination est aussi libre
+            if (listPositions.contains(pFin)) {
+                // Marquer toutes les cellules entre le départ et la fin comme faisant partie du chemin
+                marquerCheminDroit(pRandom, pFin);
 
-            // Enlever les positions déjà utilisées de la liste listPositions 
-            // (ne peuvent pas être re-choisies comme début ou fin d'un autre chemin)
-            rmPositions(pRandom, pFin, listPositions, width, height);
-            
-            // Enregistrer les données du chemin
-            chemins.put(pRandom, pFin);
-            numChemins.put(cmp, pRandom);
-            cmp++;
+                // Enlever seulement le début et la fin choisis
+                listPositions.remove(pRandom);
+                listPositions.remove(pFin);
+                
+                // Enregistrer les données du chemin
+                chemins.put(pRandom, pFin);
+                numChemins.put(cmp, pRandom);
+                cmp++;
+            } else {
+                // Si la sortie est déjà prise, on enlève juste ce départ et on réessaye
+                listPositions.remove(pRandom);
+            }
         }
     }
 
@@ -103,7 +113,7 @@ public class FreeBoard extends Board {
      * @param start Starting position
      * @param end   Ending position
      */
-    private void marquerCheminDroit(Position start, Position end) {
+    public void marquerCheminDroit(Position start, Position end) {
         Direction dir = getDirection(start, end);
 
         switch (dir) {
@@ -130,6 +140,22 @@ public class FreeBoard extends Board {
             default:
                 throw new IllegalArgumentException("Positions non alignées !");
         }
+    }
+
+    /**
+     * Calcule la cellule de fin à l'opposé du départ.
+     */
+    public Position getFinChemin(Position start) {
+        if (start.getRow() == 0) 
+            return new Position(height - 1, start.getCol());
+            
+        if (start.getRow() == height - 1) 
+            return new Position(0, start.getCol());
+            
+        if (start.getCol() == 0) 
+            return new Position(start.getRow(), width - 1);
+            
+        return new Position(start.getRow(), 0);
     }
 
     /**

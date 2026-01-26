@@ -33,10 +33,6 @@ public class Ballon {
             this.res = 0;
             this.vit = 0;
         }
-        else if (this.col == BallonColor.GREEN) {
-            this.res = 0;
-            this.vit = 0;
-        }
     }
 
     /**

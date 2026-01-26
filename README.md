@@ -49,11 +49,12 @@ Pour DefinedBoard, un algorithme aléatoire génère un chemin “serpent” : �
 
 **Création JAR pour DefinedBoardMain** : jar cvfe livrable1a.jar board.Livrable1a -C classes .
 
-**Exécution** : java -jar livrable1a.jar
+**Exécution** : java -jar livrable1a.jar (précisez la hauteur et la largeur)
 
-**Création JAR pour FreeBoardMain** : jar cvfe livrable1b.jar board.Livrable1b -C classes .
+**Création JAR pour FreeBoardMain** : jar cvfe livrable1b.jar board.Livrable1b -C classes . 
 
-**Exécution** : java -jar livrable1b.jar
+**Exécution** : java -jar livrable1b.jar (précisez la hauteur et la largeur et le nombre de chemins)
+
 
 ### Difficultés restant à résoudre
 

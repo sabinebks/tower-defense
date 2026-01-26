@@ -39,21 +39,21 @@ Pour DefinedBoard, un algorithme aléatoire génère un chemin “serpent” : �
 
 **Commande pour compiler toutes les classes** : javac -d classes src/**/*.java
 
-**Commande pour executer DefinedBoardMain** : java -cp classes board.DefinedBoardMain
+**Commande pour executer DefinedBoardMain** :  java -cp classes board.Livrable1a 11 5 (précisez la hauteur et la largeur)
 
-**Commande pour executer FreeBoardMain** : java -cp classes board.FreeBoardMain
+**Commande pour executer FreeBoardMain (Livrable1b)** : java -cp classes board.Livrable1b 11 5 1 (précisez la hauteur et la largeur et le nombre de chemins)
 
 **Commande pour la compilation des tests** : javac -cp junit-console.jar:classes -d classes test/board/*.java
 
 **Commande pour executer les tests** : java -jar junit-console.jar -cp classes --scan-class-path
 
-**Création JAR pour DefinedBoardMain** : jar cvfe DefinedBoard.jar board.DefinedBoardMain -C classes .
+**Création JAR pour DefinedBoardMain** : jar cvfe livrable1a.jar board.Livrable1a -C classes .
 
-**Exécution** : java -jar DefinedBoard.jar
+**Exécution** : java -jar livrable1a.jar
 
-**Création JAR pour FreeBoardMain** : jar cvfe FreeBoard.jar board.FreeBoardMain -C classes .
+**Création JAR pour FreeBoardMain** : jar cvfe livrable1b.jar board.Livrable1b -C classes .
 
-**Exécution** : java -jar FreeBoard.jar
+**Exécution** : java -jar livrable1b.jar
 
 ### Difficultés restant à résoudre
 

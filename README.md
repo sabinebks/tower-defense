@@ -39,7 +39,7 @@ Pour DefinedBoard, un algorithme aléatoire génère un chemin “serpent” : �
 
 **Commande pour compiler toutes les classes** : javac -d classes src/**/*.java
 
-**Commande pour executer DefinedBoardMain** :  java -cp classes board.Livrable1a 11 5 (précisez la hauteur et la largeur)
+**Commande pour executer DefinedBoardMain (Livrable1a)** :  java -cp classes board.Livrable1a 11 5 (précisez la hauteur et la largeur)
 
 **Commande pour executer FreeBoardMain (Livrable1b)** : java -cp classes board.Livrable1b 11 5 1 (précisez la hauteur et la largeur et le nombre de chemins)
 

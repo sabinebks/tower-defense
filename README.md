@@ -147,11 +147,11 @@ pour le repartion on mettra a jour le readme durant la semaine du travail de cha
 ## Semaine 4
 
 ### Ce qui a été réalisé
-
+la suite du diagramme uml avec une classe ballon, round (pour gérer les manches), un enum Level pour les niveaux de resistance et une classe horloge pour gérer les tic d'horloge (pour l'algo exact on l'a pas encore fini)
 ### Difficultés rencontrées
-
+gerer les tic d'horloge et la gestion du deplacement des ballons sur les plateaux
 ### Objectifs pour la semaine et répartition du travail par membre
-
+finir le livrable 2 et entamer le livrable 3 
 ## Semaine 5
 
 ### Ce qui a été réalisé

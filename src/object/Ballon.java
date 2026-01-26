@@ -1,61 +1,115 @@
 package object;
+
+import board.Position;
+
 /**
  * Une classe des ballons, caracterise par leur couleur
  */
 public class Ballon {
     /**
      * Les attributs
-     * La resistance ( health )
-     * La vitesse
-     * La couleur
+     * La resistance lev
+     * La vitesse vit
+     * l'id du ballon idBal
      */
-    private int res;
+
     private int vit;
-    private BallonColor col;
+    private LevelBalloon lev;
+    private boolean isFrozen;
+    private boolean isSlowed;
+    private int nbTirs;
+    //pour connaitre la position du ballon  
+    private Position position;
+    //pour compter les ticks d'horloge
+    private int tickCounter;
 
     /**
      * Le constructeur
-     * La resistance et la vitesse va etre cree selon la couleur
+     * La resistance et la vitesse va etre cree selon le niveau
      * choisie par le computer
-     * @param col la couleur du ballon
+     * 
+     * @param lev la couleur du ballon
      */
-    public Ballon ( BallonColor col) {
-        this.col = col;
-        if (this.col == BallonColor.RED) {
-            this.res = 0;
-            this.vit = 0;
-        }
-        else if ( this.col == BallonColor.BLUE) {
-            this.res = 0;
-            this.vit = 0;
-        }
-        else if ( this.col == BallonColor.YELLOW) {
-            this.res = 0;
-            this.vit = 0;
+    public Ballon(LevelBalloon lev, Position position) {
+        this.lev = lev;
+        this.position = position;
+        this.nbTirs=0;
+        this.isSlowed=false;
+        this.isFrozen=false;
+        this.tickCounter=0;
+        switch (lev) {
+            case L1:
+                /* va avance une case a chque tick d'horloge */
+                this.vit = 1;
+                break;
+            case L2:
+                /* va avance une cases a chque 2 tick d'horloge */
+                this.vit = 2;
+                break;
+
+            /* va avance une cases a chque 3 tick d'horloge */
+            default:
+                this.vit = 3;
+                break;
         }
     }
+    
+
 
     /**
-     * Fonction pour prendre la couleur du ballon
+     * Fonction pour rendre le level de resistance
+     * 
      * @return couleur du ballon
      */
-    public BallonColor getCol() {
-        return this.col;
-    }
-
-    /**
-     * Fonction pour prendre la resistance du ballon
-     * @return resistance du ballon 
-     */
-    public int getRes() {
-        return this.res;
+    public LevelBalloon getLev() {
+        return this.lev;
     }
 
     /**
      * Fonction pour prendre la vitesse du ballon
+     * 
      * @return vitesse du ballon
      */
     public int getVit() {
         return this.vit;
     }
+
+    /* fonction qui retourne si le ballon est freezed ou pas */
+    public boolean isFrozen() {
+        return isFrozen;
+    }
+
+    /* fonction qui retourne si le ballon est ralenti ou pas */
+    public boolean isSlowed() {
+        return isSlowed;
+    }
+
+    /* fonction qui retourne le nombre de tirs sur le ballon */
+    public int getNbTirs() {
+        return nbTirs;
+    }
+
+    /*
+     * procedure pour incrementer le nombre de tirs sur le ballon
+     ** 
+     * @return le nombre detirs restant pour popper le ballon
+     ** si le ballon est poppee on retourne 0
+     */
+    public int tirer() {
+        nbTirs++;
+        int res = 0;
+        switch (this.lev) {
+            case L1:
+                res = 0;
+                break;
+            case L2:
+                res = 1;
+                break;
+            case L3:
+                res = 2;
+                break;
+        }
+        return res;
+    }
+
 }

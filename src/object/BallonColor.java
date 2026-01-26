@@ -1,8 +1,8 @@
 package object;
 /**
  * Une classe enum des coulers des ballons
- * On va faire 4 types ici
+ * On va faire  types ici
  */
 public enum BallonColor {
-    RED, BLUE, YELLOW, GREEN;
+    RED, BLUE, YELLOW;
 }

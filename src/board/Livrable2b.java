@@ -37,13 +37,17 @@ public class Livrable2b {
         List<BalloonStraight> balloons = new ArrayList<>();
         int actualPaths = board.retourneNbrChemins();
 
+        int[] ticParCellList = {1,2,3};
+
         for (int i = 0; i < actualPaths; i++) {
             Position[] chemin = board.retourneLesChemins(i);
             Position start = chemin[0];
             Position end = chemin[1];
 
             // Vitesse aléatoire entre 0.5 et 3.0
-            double speed = 0.5 + random.nextDouble() * 2.5;
+            int ticParCell = ticParCellList[random.nextInt(ticParCellList.length)];
+            double speed = 1.0 / ticParCell;
+
             // Type aléatoire parmi les 3 types disponibles
             BalloonType type = BalloonType.values()[random.nextInt(3)];
 
@@ -57,19 +61,48 @@ public class Livrable2b {
         System.out.println("Spawned " + actualPaths + " bloons.\n");
 
         // 4. Simulation du mouvement
+        int maxTick = 5000;
         int currentTick = 0;
-        while (hasActiveBalloons(balloons)) {
+        int printTic = 1;
+
+        //Initialiser les ballons et les placers dans board
+        placeActiveBalloonsOnBoard(board, balloons);
+        System.out.println("TIC = 0");
+        afficherPlateau(board);
+        System.out.println();
+
+        while (hasActiveBalloons(balloons) && currentTick < maxTick) {
             currentTick++;
+
             for (BalloonStraight b : balloons) {
-                if (b.isActive()) {
+                if ( !b.isActive()) {
+                    continue;
+                }
+                else if (b.isActive()) {
+                    Position before = b.getCurrentPosition();
                     b.move(); // Déplace le ballon
+                    Position after = b.getCurrentPosition();
+
+                    //On ne affiche ce message que quand un ballon change son cell, sinon il n'affiche pas
+                    if (!after.equals(before)) {
+                    System.out.println("TIC " + currentTick
+                            + " : Bloon " + b.getId()
+                            + " change de case " + before + " -> " + after);
+                    }
 
                     // Si le ballon vient d'arriver (active devient false dans move)
-                    if (!b.isActive()) {
+                    if (!b.isActive() && b.getExitTime() == -1) {
                         System.out.print("Bloon " + b.getId() + " (speed: ");
                         System.out.printf("%.1f", b.getSpeed());
                         System.out.println(") exits at time: " + currentTick);
                     }
+                }
+                placeActiveBalloonsOnBoard(board, balloons);
+
+                if (currentTick % printTic == 0) {
+                    System.out.println("TIC = " + currentTick);
+                    afficherPlateau(board);
+                    System.out.println();
                 }
             }
         }
@@ -118,5 +151,20 @@ public class Livrable2b {
             if (b.isActive()) return true; //
         }
         return false;
+    }
+
+    /**
+     * Place tous les ballons actives sur le board
+     */
+    public static void placeActiveBalloonsOnBoard(FreeBoard board, List<BalloonStraight> balloons) {
+        for (BalloonStraight b : balloons) {
+            if (!b.isActive()) {
+                 continue;
+            }
+            Position p = b.getCurrentPosition();
+            if (board.isInside(p.getRow(), p.getCol())) {
+                board.getCell(p.getRow(), p.getCol()).addBalloon(b);
+            }
+        }
     }
 }

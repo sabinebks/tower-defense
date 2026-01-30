@@ -1,5 +1,6 @@
 package object;
 import java.util.*;
+import object.balloon.*;;
 
 public class Round {
     private int numManche;
@@ -9,7 +10,7 @@ public class Round {
     remarque pour ajouter dans notre liste il va falloir 
     faire un random et selon le niveau de la manche on va 
     ajouter des ballons de different niveau ( de niveau plus eleve ) */
-    private Set <Ballon> baloons= new HashSet<>();
+    private Set <Balloon> baloons= new HashSet<>();
 
    /* constructeur de la classe Round */
     public Round(int numManche, int nbrBalloons) {

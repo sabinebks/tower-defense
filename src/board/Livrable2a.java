@@ -8,6 +8,7 @@ import java.util.Random;
 
 /**
  * Livrable 2a - Simulation avec DefinedBoard.
+ * Progression du temps : apres chaque tic, les ballons avancent
  */
 public class Livrable2a {
     
@@ -44,9 +45,14 @@ public class Livrable2a {
         // Créer les ballons
         Random random = new Random();
         List<BalloonPath> balloons = new ArrayList<>();
+
+        //La vistesse des ballons
+        int[] ticParCellList = { 1, 2, 3};
         
         for (int i = 0; i < numBalloons; i++) {
-            double speed = 0.5 + random.nextDouble() * 2.5;
+            int ticParCell = ticParCellList[random.nextInt(ticParCellList.length)];
+            double speed = 1.0 / ticParCell;
+            
             BalloonType type = BalloonType.values()[random.nextInt(3)];
             BalloonPath balloon = new BalloonPath(i, path.get(0), speed, type, path);
             balloons.add(balloon);
@@ -60,14 +66,40 @@ public class Livrable2a {
         // Simulation
         int currentTick = 0;
         int maxTicks = 10000;
+        int printTic = 1; // On va afficher le plateau apres chaque n tic
         
+        //Ca va detecter quand un ballon change de cell
+        Position[] lastCell = new Position[numBalloons];
+        for (BalloonPath b : balloons) {
+            lastCell[b.getId()] = b.getCurrentPosition();
+        }
+
+        //Initialiser les ballons et les placers dans board
+        placeActiveBalloonsOnBoard(board, balloons);
+        System.out.println("TIC = 0");
+        afficherPlateau(board);
+        System.out.println();
+
         while (hasActiveBalloons(balloons) && currentTick < maxTicks) {
             currentTick++;
             
             for (BalloonPath b : balloons) {
-                if (b.isActive()) {
+                if (!b.isActive()) {
+                    continue;
+                }
+
+                else if (b.isActive()) {
+                    Position before = b.getCurrentPosition();
                     b.move();
-                    
+                    Position after = b.getCurrentPosition();
+
+                    //On ne affiche ce message que quand un ballon change son cell, sinon il n'affiche pas
+                    if (!after.equals(before)) {
+                    System.out.println("TIC " + currentTick
+                            + " : Bloon " + b.getId()
+                            + " change de case " + before + " -> " + after);
+                    }
+
                     if (!b.isActive() && b.getExitTime() == -1) {
                         b.setExitTime(currentTick);
                         System.out.println("Bloon " + b.getId() + 
@@ -75,6 +107,31 @@ public class Livrable2a {
                             ") exits at time: " + currentTick);
                     }
                 }
+            }
+            placeActiveBalloonsOnBoard(board, balloons);
+
+            //On affiche board
+            if (currentTick % printTic == 0) {
+                System.out.println("TIC = " + currentTick);
+                afficherPlateau(board);
+                System.out.println();
+            }
+        }
+    }
+
+    /**
+     * Placer tout les ballons actives dans leur cells
+     * @param board le board du jeu
+     * @param balloons les ballons a placer
+     */
+    public static void placeActiveBalloonsOnBoard(DefinedBoard board, List<BalloonPath> balloons) {
+        for (BalloonPath b : balloons) {
+            if (!b.isActive()) {
+                continue;
+            }
+            Position p = b.getCurrentPosition();
+            if (board.isInside(p.getRow(), p.getCol())) {
+                board.getCell(p.getRow(), p.getCol()).addBalloon(b);
             }
         }
     }

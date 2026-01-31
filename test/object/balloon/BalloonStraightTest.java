@@ -50,4 +50,20 @@ public class BalloonStraightTest {
         assertTrue(balloon.move());  // Toujours actif tant qu'il n'a pas atteint la fin
     }
 
+    /**
+     * Teste le déplacement vers la gauche.
+     */
+    @Test
+    void testMoveLeft() {
+        Position start = new Position(0, 3);
+        Position end = new Position(0, 0);
+        BalloonStraight balloon = new BalloonStraight(1, start, end, 1.0, BalloonType.BASIC);
+
+        balloon.move();
+        assertEquals(0.5, balloon.getPosY());
+        assertEquals(2.5, balloon.getPosX());
+        assertTrue(balloon.move());
+    }
+
+
 }

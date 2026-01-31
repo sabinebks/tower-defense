@@ -91,6 +91,24 @@ Cette architecture permet l'extensibilité : si un nouveau type de plateau est c
 
 **Difficultés rencontrées** : La principale difficulté a été de concevoir l'architecture des classes de ballons et de définir comment gérer leur mouvement de manière fluide avec des vitesses différentes. La synchronisation des ballons et la détection précise de leur sortie du chemin ont nécessité plusieurs ajustements pour fonctionner correctement.
 
+**Commande pour compiler toutes les classes** : javac -d classes src/board/*.java src/object/balloon/*.java
+
+**Commande pour executer (Livrable2a)** :  java -cp classes board.Livrable2a <hauteur> <largeur> <nombre_ballons>
+
+**Commande pour executer FreeBoardMain (Livrable2b)** : java -cp classes board.Livrable2b <hauteur> <largeur> <nombre_chemins>
+
+**Commande pour la compilation des tests** : javac -cp junit-console.jar:classes -d classes test/board/*.java test/object/balloon/*.java
+
+**Commande pour executer les tests** : java -jar junit-console.jar -cp classes --scan-class-path
+
+**Création JAR pour Livrable2a** : jar cvfe livrable2a.jar board.Livrable2a -C classes .
+
+**Exécution** : java -jar livrable2a.jar (précisez la hauteur et la largeur et nombres de ballons)
+
+**Création JAR pour livrable2b** : jar cvfe livrable2b.jar board.Livrable2b -C classes .
+
+**Exécution** : java -jar livrable2b.jar (précisez la hauteur et la largeur et le nombre de chemins)
+
 ### Difficultés restant à résoudre
 
 Pour le moment, toutes les fonctionnalités du livrable 1 fonctionnent correctement.

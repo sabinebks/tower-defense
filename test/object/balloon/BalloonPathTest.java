@@ -9,6 +9,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BalloonPathTest {
 
+    /**
+     * Test du constructeur.
+     * Vérifie que le ballon est bien initialisé :
+     * - actif
+     * - position X et Y correctes (centre de la cellule)
+     * - pathIndex initial = 0
+     */
     @Test
     void testConstructorInitialisation() {
         Cell start = new Cell(new Position(2, 3));
@@ -20,6 +27,13 @@ public class BalloonPathTest {
         assertEquals(2.5, balloon.getPosY());
         assertEquals(0, balloon.getPathIndex());
     }
+
+    /**
+     * Test du déplacement vers la première cellule du chemin.
+     * Vérifie que :
+     * - le ballon atteint le centre de la cellule cible si la vitesse est suffisante
+     * - le pathIndex est incrémenté
+     */
 
     @Test
     void testReachCellCenter() {
@@ -35,6 +49,11 @@ public class BalloonPathTest {
         assertEquals(1, balloon.getPathIndex());
     }
 
+    /**
+     * Test du comportement lorsqu'un ballon est inactif.
+     * - On déplace le ballon jusqu'à ce qu'il sorte du plateau
+     * - Après cela, move() doit retourner false
+     */
 
     @Test
     void testMoveReturnsFalseWhenInactive() {
@@ -47,6 +66,26 @@ public class BalloonPathTest {
         }
 
         assertFalse(balloon.move());
+    }
+
+    /**
+     * Test de la sortie complète du plateau.
+     * Vérifie que :
+     * - le ballon continue de se déplacer après la fin du chemin
+     * - il est désactivé après avoir dépassé 20 cases à droite
+     */
+    @Test
+    void testBalloonExitAfterPath() {
+        Cell start = new Cell(new Position(0, 0));
+        BalloonPath balloon = new BalloonPath(1, start, 5.0, BalloonType.BASIC, List.of());
+
+        // On simule plusieurs moves pour dépasser 20 cases
+        for (int i = 0; i < 10; i++) {
+            balloon.move();
+        }
+
+        // Le ballon doit être désactivé après être sorti du plateau
+        assertFalse(balloon.isActive());
     }
 }
 

@@ -80,5 +80,20 @@ public class BalloonStraightTest {
         assertTrue(balloon.move());
     }
 
+    /**
+     * Teste le déplacement vers le haut (UP).
+     */
+    @Test
+    void testMoveUp() {
+        Position start = new Position(3, 0);
+        Position end = new Position(0, 0);
+        BalloonStraight balloon = new BalloonStraight(1, start, end, 1.0, BalloonType.BASIC);
+
+        balloon.move();
+        assertEquals(2.5, balloon.getPosY());  // y diminue
+        assertEquals(0.5, balloon.getPosX());  // x reste
+        assertTrue(balloon.move());
+    }
+
 
 }

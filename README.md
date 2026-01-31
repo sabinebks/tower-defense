@@ -109,6 +109,8 @@ Cette architecture permet l'extensibilité : si un nouveau type de plateau est c
 
 **Exécution** : java -jar livrable2b.jar (précisez la hauteur et la largeur et le nombre de chemins)
 
+![Diagramme UML](diagramme_uml.png)
+
 ### Difficultés restant à résoudre
 
 Pour le moment, toutes les fonctionnalités du livrable 1 fonctionnent correctement.

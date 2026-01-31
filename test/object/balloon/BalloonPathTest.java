@@ -29,7 +29,7 @@ public class BalloonPathTest {
     }
 
     /**
-     * Test du déplacement vers la première cellule du chemin.
+     * Test du déplacement vers la première cellule du chemin
      * Vérifie que :
      * - le ballon atteint le centre de la cellule cible si la vitesse est suffisante
      * - le pathIndex est incrémenté
@@ -50,7 +50,7 @@ public class BalloonPathTest {
     }
 
     /**
-     * Test du comportement lorsqu'un ballon est inactif.
+     * Test du comportement lorsqu'un ballon est inactif
      * - On déplace le ballon jusqu'à ce qu'il sorte du plateau
      * - Après cela, move() doit retourner false
      */
@@ -88,4 +88,3 @@ public class BalloonPathTest {
         assertFalse(balloon.isActive());
     }
 }
-

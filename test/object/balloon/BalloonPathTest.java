@@ -22,6 +22,21 @@ public class BalloonPathTest {
     }
 
     @Test
+    void testReachCellCenter() {
+        Cell start = new Cell(new Position(0, 0));
+        Cell target = new Cell(new Position(0, 1));
+
+        BalloonPath balloon = new BalloonPath(1, start, 2.0, BalloonType.MEDIUM,List.of(target));
+
+        balloon.move();
+
+        assertEquals(0.5, balloon.getPosY());
+        assertEquals(3.5, balloon.getPosX());
+        assertEquals(1, balloon.getPathIndex());
+    }
+
+
+    @Test
     void testMoveReturnsFalseWhenInactive() {
         Cell start = new Cell(new Position(0, 0));
 
@@ -33,5 +48,5 @@ public class BalloonPathTest {
 
         assertFalse(balloon.move());
     }
-
 }
+

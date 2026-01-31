@@ -92,6 +92,7 @@ public class BalloonStraight extends Balloon {
             }
         } else if (direction == Direction.LEFT) {
             posX -= speed;
+
             if (posX <= endX) {
                 posX = endX;
                 active = false;

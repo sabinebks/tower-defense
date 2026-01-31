@@ -39,7 +39,6 @@ public class BalloonPath extends Balloon {
     /**
      * Déplace le ballon le long du chemin.
      * Override de la méthode parent.
-     * 
      * ALGORITHME :
      * 1. Vérifier si actif et pas à la fin
      * 2. Obtenir la cellule cible (prochaine case)

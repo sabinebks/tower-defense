@@ -31,9 +31,9 @@ public class Game {
         return money;
     }
     /* procedure pour mettre a jour l'argent du joueur */
-      public void addMoney(int somme) {
-    this.money += somme;
-        }
+    public void addMoney(int somme) {
+          this.money += somme;
+    }
 
     /* fonction qui retourne le numero de la manche courante */
     public int getCurrentRoundNumber() {
@@ -48,13 +48,13 @@ public class Game {
         return currentRound;
     }   
     /* procedure pour definir la manche courante */
-    public void setCurrentRound(Round currentRound) {   
+    public void setCurrentRound(Round currentRound) {
         this.currentRound = currentRound;
     }       
     /* procedure pour faire perdre une vie au joueur */
     public void loseLife() {
-    this.lives--;
-}
+        this.lives--;
+    }
 
 
 }

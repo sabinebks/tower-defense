@@ -20,4 +20,18 @@ public class BalloonPathTest {
         assertEquals(2.5, balloon.getPosY());
         assertEquals(0, balloon.getPathIndex());
     }
+
+    @Test
+    void testMoveReturnsFalseWhenInactive() {
+        Cell start = new Cell(new Position(0, 0));
+
+        BalloonPath balloon = new BalloonPath(1, start, 5.0, BalloonType.BASIC, List.of());
+
+        while(balloon.move()) {
+
+        }
+
+        assertFalse(balloon.move());
+    }
+
 }

@@ -63,8 +63,37 @@ Pour le moment, toutes les fonctionnalités du livrable 1 fonctionnent correctem
 ## Livrable 2
 
 ### Atteinte des objectifs
+Le projet remplit actuellement les objectifs du deuxième livrable, à savoir la création des ballons et la gestion de leur progression sur le plateau en fonction du temps.
+
+Les ballons sont représentés par une hiérarchie de classes utilisant l'héritage : une classe mere balloon et deux sous classes BalloonPath utilisée pour DefinedBoard et BalloonStraight utilisée pour FreeBoard, grace a la methode move():
+
+**BalloonPath.move()** : 
+- Récupérer la cellule cible actuelle dans le chemin
+- Calculer la distance jusqu'au centre de cette cellule
+- Si distance ≤ vitesse : atteindre la cellule et passer à la suivante
+- Sinon : avancer de "vitesse" unités vers la cible
+- Si fin du chemin : marquer comme inactif
+
+**BalloonStraight.move()** :
+
+- Avancer de "vitesse" unités dans la direction (UP/DOWN/LEFT/RIGHT)
+- Vérifier si la position finale est atteinte
+- Si oui : marquer comme inactif
+
+**Gestion du temps** 
+
+- Un compteur currentTick s'incrémente à chaque itération
+- À chaque tic, tous les ballons actifs appellent leur méthode move()
+- Lorsqu'un ballon termine, son temps de sortie est enregistré
+- La simulation continue tant qu'il reste au moins un ballon actif
+
+Cette architecture permet l'extensibilité : si un nouveau type de plateau est créé, il suffira de créer une nouvelle classe héritant de Balloon et d'implémenter sa propre méthode move() adaptée au type de chemin.
+
+**Difficultés rencontrées** : La principale difficulté a été de concevoir l'architecture des classes de ballons et de définir comment gérer leur mouvement de manière fluide avec des vitesses différentes. La synchronisation des ballons et la détection précise de leur sortie du chemin ont nécessité plusieurs ajustements pour fonctionner correctement.
 
 ### Difficultés restant à résoudre
+
+Pour le moment, toutes les fonctionnalités du livrable 1 fonctionnent correctement.
 
 ## Livrable 3
 

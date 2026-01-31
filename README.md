@@ -113,7 +113,7 @@ Cette architecture permet l'extensibilité : si un nouveau type de plateau est c
 
 ### Difficultés restant à résoudre
 
-Pour le moment, toutes les fonctionnalités du livrable 1 fonctionnent correctement.
+Pour le moment, toutes les fonctionnalités du livrable 2 fonctionnent correctement.
 
 ## Livrable 3
 

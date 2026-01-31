@@ -95,5 +95,22 @@ public class BalloonStraightTest {
         assertTrue(balloon.move());
     }
 
+    /**
+     * Teste que le ballon devient inactif après avoir atteint la destination.
+     */
+    @Test
+    void testBalloonStopsAtEnd() {
+        Position start = new Position(0, 0);
+        Position end = new Position(0, 1);
+        BalloonStraight balloon = new BalloonStraight(1, start, end, 1.0, BalloonType.MEDIUM);
 
+        // Déplacer jusqu'à la fin
+        while (balloon.move()) {
+            // continue moving
+        }
+
+        assertEquals(1.5, balloon.getPosX()); // position finale
+        assertEquals(0.5, balloon.getPosY());
+        assertFalse(balloon.move()); // doit être inactif
+    }
 }

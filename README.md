@@ -63,8 +63,57 @@ Pour le moment, toutes les fonctionnalités du livrable 1 fonctionnent correctem
 ## Livrable 2
 
 ### Atteinte des objectifs
+Le projet remplit actuellement les objectifs du deuxième livrable, à savoir la création des ballons et la gestion de leur progression sur le plateau en fonction du temps.
+
+Les ballons sont représentés par une hiérarchie de classes utilisant l'héritage : une classe mere balloon et deux sous classes BalloonPath utilisée pour DefinedBoard et BalloonStraight utilisée pour FreeBoard, grace a la methode move():
+
+**BalloonPath.move()** : 
+- Récupérer la cellule cible actuelle dans le chemin
+- Calculer la distance jusqu'au centre de cette cellule
+- Si distance ≤ vitesse : atteindre la cellule et passer à la suivante
+- Sinon : avancer de "vitesse" unités vers la cible
+- Si fin du chemin : marquer comme inactif
+
+**BalloonStraight.move()** :
+
+- Avancer de "vitesse" unités dans la direction (UP/DOWN/LEFT/RIGHT)
+- Vérifier si la position finale est atteinte
+- Si oui : marquer comme inactif
+
+**Gestion du temps** 
+
+- Un compteur currentTick s'incrémente à chaque itération
+- À chaque tic, tous les ballons actifs appellent leur méthode move()
+- Lorsqu'un ballon termine, son temps de sortie est enregistré
+- La simulation continue tant qu'il reste au moins un ballon actif
+
+Cette architecture permet l'extensibilité : si un nouveau type de plateau est créé, il suffira de créer une nouvelle classe héritant de Balloon et d'implémenter sa propre méthode move() adaptée au type de chemin.
+
+**Difficultés rencontrées** : La principale difficulté a été de concevoir l'architecture des classes de ballons et de définir comment gérer leur mouvement de manière fluide avec des vitesses différentes. La synchronisation des ballons et la détection précise de leur sortie du chemin ont nécessité plusieurs ajustements pour fonctionner correctement.
+
+**Commande pour compiler toutes les classes** : javac -d classes src/board/\*.java src/object/balloon/\*.java
+
+**Commande pour executer (Livrable2a)** :  java -cp classes board.Livrable2a <hauteur> <largeur> <nombre_ballons>
+
+**Commande pour executer FreeBoardMain (Livrable2b)** : java -cp classes board.Livrable2b <hauteur> <largeur> <nombre_chemins>
+
+**Commande pour la compilation des tests** : javac -cp junit-console.jar:classes -d classes test/board/*.java test/object/balloon/*.java
+
+**Commande pour executer les tests** : java -jar junit-console.jar -cp classes --scan-class-path
+
+**Création JAR pour Livrable2a** : jar cvfe livrable2a.jar board.Livrable2a -C classes .
+
+**Exécution** : java -jar livrable2a.jar (précisez la hauteur et la largeur et nombres de ballons)
+
+**Création JAR pour livrable2b** : jar cvfe livrable2b.jar board.Livrable2b -C classes .
+
+**Exécution** : java -jar livrable2b.jar (précisez la hauteur et la largeur et le nombre de chemins)
+
+![Diagramme UML](diagramme_uml.png)
 
 ### Difficultés restant à résoudre
+
+Pour le moment, toutes les fonctionnalités du livrable 2 fonctionnent correctement.
 
 ## Livrable 3
 
@@ -155,11 +204,11 @@ finir le livrable 2 et entamer le livrable 3
 ## Semaine 5
 
 ### Ce qui a été réalisé
-
+pseudo diagramme pour le livrable 3 
 ### Difficultés rencontrées
-
+gestion du temps 
 ### Objectifs pour la semaine et répartition du travail par membre
-
+revoir la structure des classes plus precisement reduire le code des main et leurs packetages 
 ## Semaine 6
 
 ### Ce qui a été réalisé

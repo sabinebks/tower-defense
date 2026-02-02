@@ -148,14 +148,14 @@ public class Livrable2a {
                 if (cell.isPath()) {
                     int index = path.indexOf(cell);
                     if (index == 0) {
-                        System.out.print("D ");  // Départ
+                        System.out.print("D | ");  // Départ
                     } else if (index == path.size() - 1) {
-                        System.out.print("F ");  // Fin
+                        System.out.print("F | ");  // Fin
                     } else {
-                        System.out.print("c ");  // Chemin
+                        System.out.print("c | ");  // Chemin
                     }
                 } else {
-                    System.out.print(". ");
+                    System.out.print(". | ");
                 }
             }
             System.out.println();

@@ -1,12 +1,22 @@
 package object.tower;
 
 import board.Position;
+import object.balloon.*;
+
+import java.util.List;
 
 /**
  * La classe interface des towers ( mieux gerer leurs actions)
  */
 public abstract class Tower {
 
+    /**
+     * les attributs de la classe abstraite Tower
+     * position : pour sa position
+     * projectil : pour le type de projectil qui lance
+     * cout : son cout pour l'acheter
+     * porte :
+     */
     protected Position position;
     protected Projectil projectil;
     protected int cout;
@@ -47,4 +57,5 @@ public abstract class Tower {
         return effectType;
     }
 
+    public abstract void shoot(List<Balloon> balloons);
 }

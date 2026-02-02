@@ -91,13 +91,13 @@ Cette architecture permet l'extensibilité : si un nouveau type de plateau est c
 
 **Difficultés rencontrées** : La principale difficulté a été de concevoir l'architecture des classes de ballons et de définir comment gérer leur mouvement de manière fluide avec des vitesses différentes. La synchronisation des ballons et la détection précise de leur sortie du chemin ont nécessité plusieurs ajustements pour fonctionner correctement.
 
-**Commande pour compiler toutes les classes** : javac -d classes src/board/*.java src/object/balloon/*.java
+**Commande pour compiler toutes les classes** : javac -d classes src/board/\*.java src/object/balloon/\*.java
 
-**Commande pour executer (Livrable2a)** :  java -cp classes board.Livrable2a <hauteur> <largeur> <nombre_ballons>
+**Commande pour executer (Livrable2a)** :  java -cp classes board.Livrable2a (précisez la hauteur et la largeur et nombres de ballons)
 
-**Commande pour executer FreeBoardMain (Livrable2b)** : java -cp classes board.Livrable2b <hauteur> <largeur> <nombre_chemins>
+**Commande pour executer FreeBoardMain (Livrable2b)** : java -cp classes board.Livrable2b (précisez la hauteur et la largeur et le nombre de chemins)
 
-**Commande pour la compilation des tests** : javac -cp junit-console.jar:classes -d classes test/board/*.java test/object/balloon/*.java
+**Commande pour la compilation des tests** : javac -cp junit-console.jar:classes -d classes test/board/\*.java test/object/balloon/\*.java
 
 **Commande pour executer les tests** : java -jar junit-console.jar -cp classes --scan-class-path
 
@@ -204,11 +204,11 @@ finir le livrable 2 et entamer le livrable 3
 ## Semaine 5
 
 ### Ce qui a été réalisé
-
+pseudo diagramme pour le livrable 3 
 ### Difficultés rencontrées
-
+gestion du temps 
 ### Objectifs pour la semaine et répartition du travail par membre
-
+revoir la structure des classes plus precisement reduire le code des main et leurs packetages 
 ## Semaine 6
 
 ### Ce qui a été réalisé

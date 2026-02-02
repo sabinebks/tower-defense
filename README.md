@@ -204,11 +204,11 @@ finir le livrable 2 et entamer le livrable 3
 ## Semaine 5
 
 ### Ce qui a été réalisé
-
+pseudo diagramme pour le livrable 3 
 ### Difficultés rencontrées
-
+gestion du temps 
 ### Objectifs pour la semaine et répartition du travail par membre
-
+revoir la structure des classes plus precisement reduire le code des main et leurs packetages 
 ## Semaine 6
 
 ### Ce qui a été réalisé

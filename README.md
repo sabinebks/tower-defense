@@ -91,7 +91,7 @@ Cette architecture permet l'extensibilité : si un nouveau type de plateau est c
 
 **Difficultés rencontrées** : La principale difficulté a été de concevoir l'architecture des classes de ballons et de définir comment gérer leur mouvement de manière fluide avec des vitesses différentes. La synchronisation des ballons et la détection précise de leur sortie du chemin ont nécessité plusieurs ajustements pour fonctionner correctement.
 
-**Commande pour compiler toutes les classes** : javac -d classes src/board/*.java src/object/balloon/*.java
+**Commande pour compiler toutes les classes** : javac -d classes src/board/\*.java src/object/balloon/\*.java
 
 **Commande pour executer (Livrable2a)** :  java -cp classes board.Livrable2a <hauteur> <largeur> <nombre_ballons>
 

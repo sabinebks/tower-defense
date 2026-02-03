@@ -1,5 +1,5 @@
-package board;
-
+package Livrables;
+import board.*;
 
 
 /**

@@ -134,4 +134,9 @@ public class BalloonStraight extends Balloon {
     public Position getEndPos() {
         return endPos;
     }
+
+    public void takeDamage(int degats) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'takeDamage'");
+    }
 }

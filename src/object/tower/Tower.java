@@ -1,12 +1,10 @@
 package object.tower;
 
 import board.Position;
+import object.balloon.BalloonStraight;
+import java.util.List;
 
-/**
- * La classe interface des towers ( mieux gerer leurs actions)
- */
 public abstract class Tower {
-
     protected Position position;
     protected Projectil projectil;
     protected int cout;
@@ -14,6 +12,8 @@ public abstract class Tower {
     protected int cadence;
     protected boolean evolution;
     protected EffectType effectType;
+    
+    protected int ticksSinceLastShot = 0;
 
     public Tower(Position position, int cout, int porte, int cadence, boolean evolution, EffectType effectType) {
         this.position = position;
@@ -24,27 +24,33 @@ public abstract class Tower {
         this.effectType = effectType;
     }
 
-    public Position getPosition() {
-        return position;
+    public void update(List<BalloonStraight> balloons) {
+        ticksSinceLastShot++;
+        // On vérifie si la tour peut tirer selon sa cadence
+        if (ticksSinceLastShot >= (cadence / 100)) { // Conversion simplifiée ms -> tics
+            if (attack(balloons)) {
+                ticksSinceLastShot = 0;
+            }
+        }
     }
 
-    public int getCout() {
-        return cout;
+    protected abstract boolean attack(List<BalloonStraight> balloons);
+
+    protected double distanceTo(BalloonStraight b) {
+        Position p = b.getCurrentPosition();
+        return Math.sqrt(Math.pow(position.getRow() - p.getRow(), 2) + 
+                         Math.pow(position.getCol() - p.getCol(), 2));
     }
 
-    public int getPorte() {
-        return porte;
+    protected BalloonStraight findTarget(List<BalloonStraight> balloons) {
+        for (BalloonStraight b : balloons) {
+            // On vérifie si le ballon est actif et à portée
+            if (b.isActive() && (porte == -1 || distanceTo(b) <= porte)) {
+                return b;
+            }
+        }
+        return null;
     }
 
-    public int getCadence() {
-        return cadence;
-    }
-
-    public boolean isEvolution() {
-        return evolution;
-    }
-    public EffectType getEffectType() {
-        return effectType;
-    }
-
+    public Position getPosition() { return position; }
 }

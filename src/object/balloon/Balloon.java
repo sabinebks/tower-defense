@@ -168,4 +168,11 @@ public class Balloon {
         return posY;
     }
 
+    /**
+     * pour stopper le ballon
+     */
+    public void freeze() {
+        this.speed = 0;
+    }
+
 }

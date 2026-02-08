@@ -1,7 +1,7 @@
 package object.tower;
 
 import board.Position;
-import object.balloon.BalloonStraight;
+import object.balloon.*;
 import java.util.List;
 
 public class IceTower extends Tower {
@@ -11,8 +11,16 @@ public class IceTower extends Tower {
     }
 
     @Override
-    protected boolean attack(List<BalloonStraight> balloons) {
+    protected boolean attack(List<Balloon> balloons) {
 
+        Balloon target = findTarget(balloons);
+        if (target != null) {
+
+
+            // Inflige les dégâts
+            target.hit(projectil.getDegats());
+
+        }
         return false;
     }
 }

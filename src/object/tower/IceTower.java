@@ -16,9 +16,14 @@ public class IceTower extends Tower {
         Balloon target = findTarget(balloons);
         if (target != null) {
 
-
             // Inflige les dégâts
             target.hit(projectil.getDegats());
+
+            // Gèle le ballon
+            target.freeze();
+
+            // La tour a tiré
+            return true;
 
         }
         return false;

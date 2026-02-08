@@ -1,7 +1,7 @@
 package object.tower;
 
 import board.Position;
-import object.balloon.BalloonStraight;
+import object.balloon.*;
 import java.util.List;
 
 public abstract class Tower {
@@ -47,7 +47,7 @@ public abstract class Tower {
         this.effectType = effectType;
     }
 
-    public void update(List<BalloonStraight> balloons) {
+    public void update(List<Balloon> balloons) {
         ticksSinceLastShot++;
         // On vérifie si la tour peut tirer selon sa cadence
         if (ticksSinceLastShot >= (cadence / 100)) { // Conversion simplifiée ms -> tics
@@ -62,14 +62,14 @@ public abstract class Tower {
      * @param balloons les ballon qui se retrouve a la grille
      * @return bein eu ou pas
      */
-    protected abstract boolean attack(List<BalloonStraight> balloons);
+    protected abstract boolean attack(List<Balloon> balloons);
 
     /**
      * méthode pour calculer la distance entre la tour et le ballon b
      * @param b le ballon b
      * @return la distance
      */
-    protected double distanceTo(BalloonStraight b) {
+    protected double distanceTo(Balloon b) {
         Position p = b.getCurrentPosition();
         return Math.sqrt(Math.pow(position.getRow() - p.getRow(), 2) +
                 Math.pow(position.getCol() - p.getCol(), 2));

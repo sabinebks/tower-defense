@@ -175,4 +175,13 @@ public class Balloon {
         this.speed = 0;
     }
 
+    /**
+     * Ralentit le ballon (réduit sa vitesse)
+     * @param factor facteur de ralentissement (ex: 0.5 = 50% plus lent)
+     */
+    public void slow(double factor) {
+        this.speed *= factor;
+    }
+
+
 }

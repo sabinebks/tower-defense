@@ -11,7 +11,7 @@ public class TackShooter extends Tower {
         this.projectil = Projectil.AIGUILLE;
     }
     @Override
-    protected boolean attack(List<BalloonStraight> balloons) {
+    protected boolean attack(List<Balloon> balloons) {
 
         boolean hit = false; // Vérifie si un tir a eu lieu
 

@@ -14,7 +14,7 @@ public class IceTower extends Tower {
     protected boolean attack(List<Balloon> balloons) {
 
         Balloon target = findTarget(balloons);
-        if (target != null) {
+        if (target != null  && target.isActive()) {
 
             // Inflige les dégâts
             target.hit(projectil.getDegats());

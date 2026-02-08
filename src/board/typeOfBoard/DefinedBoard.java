@@ -1,4 +1,7 @@
-package board;
+package board.typeOfBoard.;
+
+import board.Board;
+import board.*;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,6 @@
-package board;
+package board.typeOfBoard;
+
+import board.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

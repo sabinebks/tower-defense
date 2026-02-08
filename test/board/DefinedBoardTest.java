@@ -1,6 +1,7 @@
 package test.board;
 
 import board.*;
+import board.typeOfBoard.DefinedBoard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.RepeatedTest;

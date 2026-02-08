@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 import object.balloon.*;
+import board.typeOfBoard.*;
 
 public class Game {
 

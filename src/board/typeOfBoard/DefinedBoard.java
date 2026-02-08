@@ -1,4 +1,4 @@
-package board.typeOfBoard.;
+package board.typeOfBoard;
 
 import board.Board;
 import board.*;

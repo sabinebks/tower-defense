@@ -1,7 +1,7 @@
 package object.tower;
 
 import board.Position;
-import object.balloon.BalloonStraight;
+import object.balloon.*;
 import java.util.List;
 
 public class Gorilla extends Tower {
@@ -12,16 +12,16 @@ public class Gorilla extends Tower {
     }
 
     @Override
-    protected boolean attack(List<BalloonStraight> balloons) {
+    protected boolean attack(List<Balloon> balloons) {
 
         // On cherche un ballon dans la portée
-        BalloonStraight target = findTarget(balloons);
+        Balloon target = findTarget(balloons);
 
         // Si un ballon est trouvé
         if (target != null) {
 
             // Le ballon prend les dégâts de la fléchette pointue
-            target.takeDamage(projectil.getDegats());
+            target.hit(projectil.getDegats());
 
             // La tour a tiré
             return true;

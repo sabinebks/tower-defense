@@ -69,7 +69,7 @@ public abstract class Tower {
      * @param b le ballon b
      * @return la distance
      */
-    protected double distanceTo(Balloon b) {
+    public double distanceTo(Balloon b) {
         Position p = b.getCurrentPosition();
         return Math.sqrt(Math.pow(position.getRow() - p.getRow(), 2) +
                 Math.pow(position.getCol() - p.getCol(), 2));
@@ -81,7 +81,7 @@ public abstract class Tower {
      * @param balloons les ballons dans la grille
      * @return baloon ciblé
      */
-    protected Balloon findTarget(List<Balloon> balloons) {
+    public Balloon findTarget(List<Balloon> balloons) {
         for (Balloon b : balloons) {
             // On vérifie si le ballon est actif et à portée
             if (b.isActive() && (porte == -1 || distanceTo(b) <= porte)) {
@@ -98,4 +98,9 @@ public abstract class Tower {
     public Position getPosition() {
         return position;
     }
+
+    public int getPorte() {
+    return porte;
+}
+
 }

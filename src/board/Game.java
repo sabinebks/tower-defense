@@ -3,105 +3,20 @@ package board;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
+
+import object.Horloge;
 import object.balloon.*;
 import board.typeOfBoard.*;
-import object.*;
 
 public class Game {
-
-    /**
-     * Les attributs de la classes
-     * Le mode du jeu
-     * Le nombre de lives du joueur
-     * Le nombre d'argent
-     * Le nombre de round courant
-     * Le round courant
-     */
+    private Horloge horloge;
     private int mode;
-    private int lives;      
-    private int money;      
-    private int currentRoundNumber;
-    private Round currentRound;
-
-    /**
-     * Constructeur 
-     * @param mode le mode du jeu
-     */
+    
+    
     public Game(int mode) {
-        //peut etre un liste des towers du joueurs
         this.mode = mode;
-        this.lives = 3;
-        this.money = 0;
-        this.currentRoundNumber = 0;
-        this.currentRound = null;
+        this.horloge = new Horloge();
     }
-
-    /** 
-     * fonction qui retourne les vies du joueur
-     * @return nombre de lives restant du joueur
-     */
-    public int getLives() {
-        return lives;
-    }
-    /** 
-     * procedure pour decrementer les vies du joueur
-     * @param lives le nombre de lives
-     */
-    public void decrementLives(int lives) {
-        this.lives -= lives;
-    }
-    /** 
-     * fonction qui retourne l'argent du joueur
-     * @return le nombre de money du joueur
-     */
-    public int getMoney() {
-        return money;
-    }
-    /** 
-     * procedure pour mettre a jour l'argent du joueur
-     * @param somme le nombre de money a ajouter
-     */
-    public void addMoney(int somme) {
-          this.money += somme;
-    }
-
-    /** 
-     * fonction qui retourne le numero de la manche courante
-     * @return le nombre du round courant
-     */
-    public int getCurrentRoundNumber() {
-        return currentRoundNumber;
-    }   
-    /**
-     * procedure pour incrementer le numero de la manche courante 
-    */
-    public void incrementCurrentRoundNumber() {
-        this.currentRoundNumber++;
-    }   
-    /**
-     * fonction qui retourne la manche courante 
-     * @return le round courant
-    */
-    public Round getCurrentRound() {
-        return currentRound;
-    }   
-    /**
-     * procedure pour definir la manche courante 
-     * @param currentRound le round courant
-    */
-    public void setCurrentRound(Round currentRound) {
-        this.currentRound = currentRound;
-    }       
-    /**
-     * procedure pour faire perdre une vie au joueur 
-    */
-    public void loseLife() {
-        this.lives--;
-    }
-
-    //public addTower() - acheter un tower et diminuer l'argent
-
-    //public removeTower() - vendre un tower et augmenter l'argent
 
     /**
      * Placer tous les ballons actifs (BalloonPath) sur le plateau
@@ -224,16 +139,23 @@ public class Game {
             List<BalloonPath> balloons = new ArrayList<>();
             int[] ticParCellList = {1, 2, 3};
 
-            for (int i = 0; i < numBalloons; i++) {
-                int ticParCell = ticParCellList[random.nextInt(ticParCellList.length)];
-                double speed = 1.0 / ticParCell;
-                BalloonType type = BalloonType.values()[random.nextInt(3)];
-                BalloonPath balloon = new BalloonPath(i, path.get(0), speed, type, path);
-                balloons.add(balloon);
+         for (int i = 0; i < numBalloons; i++) {
+    int ticParCell = ticParCellList[random.nextInt(ticParCellList.length)];
+    double speed = 1.0 / ticParCell;
 
-                System.out.println(String.format("Bloon %d at %s speed: %.1f health: %d",
-                        i, path.get(0).getPosition(), speed, balloon.getHealth()));
-            }
+    BalloonType type = BalloonType.values()[random.nextInt(3)];
+    BalloonPath balloon = new BalloonPath(i, path.get(0), speed, type, path);
+    balloons.add(balloon);
+   System.out.println(
+    "baloon " + i +
+    " at " + path.get(0).getPosition() +
+    " speed: " + speed +
+    " health: " + balloon.getHealth()
+);
+
+   
+}
+
             System.out.println("Spawned " + numBalloons + " bloons.\n");
 
             // Simulation
@@ -244,24 +166,24 @@ public class Game {
             System.out.println();
 
             while (hasActiveBalloonsPath(balloons) && currentTick < maxTicks) {
-                currentTick++;
+                horloge.addTime();
                 for (BalloonPath bPath : balloons) {
                     if (!bPath.isActive()) continue;
                     Position before = bPath.getCurrentPosition();
                     bPath.move();
                     Position after = bPath.getCurrentPosition();
                     if (!after.equals(before)) {
-                        System.out.println("TIC " + currentTick + " : Bloon " + bPath.getId()
+                        System.out.println("TIC " + horloge.getTime() + " : Bloon " + bPath.getId()
                                 + " change de case " + before + " -> " + after);
                     }
                     if (!bPath.isActive() && bPath.getExitTime() == -1) {
-                        bPath.setExitTime(currentTick);
-                        System.out.println("Bloon " + bPath.getId() + " exits at time: " + currentTick);
+                        bPath.setExitTime(horloge.getTime());
+                        System.out.println("Bloon " + bPath.getId() + " exits at time: " + horloge.getTime());
                     }
                 }
                 placeActiveBalloonsOnBoardPath(board, balloons);
-                if (currentTick % printTic == 0) {
-                    System.out.println("TIC = " + currentTick);
+                if (horloge.getTime() % printTic == 0) {
+                    System.out.println("TIC = " + horloge.getTime());
                     afficherDefinedPlateau(board);
                     System.out.println();
                 }
@@ -307,6 +229,7 @@ public class Game {
 
             while (hasActiveBalloonsStraight(balloons) && currentTick < maxTick) {
                 currentTick++;
+                horloge.addTime();
                 for (BalloonStraight bPath : balloons) {
                     if (!bPath.isActive()) continue;
                     Position before = bPath.getCurrentPosition();

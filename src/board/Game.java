@@ -5,15 +5,62 @@ import java.util.ArrayList;
 import java.util.Random;
 import object.balloon.*;
 import board.typeOfBoard.*;
+import object.*;
 
 public class Game {
 
     private int mode;
+    private int lives;      
+    private int money;      
+    private int currentRoundNumber;
+    private Round currentRound;
 
     public Game(int mode) {
         this.mode = mode;
+        this.lives = 3;
+        this.money = 0;
+        this.currentRoundNumber = 0;
+        this.currentRound = null;
     }
 
+    /* fonction qui retourne les vies du joueur */
+    public int getLives() {
+        return lives;
+    }
+    /* procedure pour decrementer les vies du joueur */
+    public void decrementLives(int lives) {
+        this.lives -= lives;
+    }
+    /* fonction qui retourne l'argent du joueur */
+    public int getMoney() {
+        return money;
+    }
+    /* procedure pour mettre a jour l'argent du joueur */
+    public void addMoney(int somme) {
+          this.money += somme;
+    }
+
+    /* fonction qui retourne le numero de la manche courante */
+    public int getCurrentRoundNumber() {
+        return currentRoundNumber;
+    }   
+    /* procedure pour incrementer le numero de la manche courante */
+    public void incrementCurrentRoundNumber() {
+        this.currentRoundNumber++;
+    }   
+    /* fonction qui retourne la manche courante */
+    public Round getCurrentRound() {
+        return currentRound;
+    }   
+    /* procedure pour definir la manche courante */
+    public void setCurrentRound(Round currentRound) {
+        this.currentRound = currentRound;
+    }       
+    /* procedure pour faire perdre une vie au joueur */
+    public void loseLife() {
+        this.lives--;
+    }
+    
     /**
      * Placer tous les ballons actifs (BalloonPath) sur le plateau
      * @param board le board du jeu

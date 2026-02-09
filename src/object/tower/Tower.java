@@ -59,10 +59,12 @@ public abstract class Tower {
 
     /**
      * méthode abstraite pour l'attaque
+     * Au lieu de lancer des attaques differents dans des differents classes de towers, on va faire une seule
+     * methode d'attaque ici, puisque tous les towers faire une meme type d'attaque?
      * @param balloons les ballon qui se retrouve a la grille
      * @return bein eu ou pas
      */
-    protected abstract boolean attack(List<Balloon> balloons);
+    protected abstract boolean attack(List<Balloon> balloons); 
 
     /**
      * méthode pour calculer la distance entre la tour et le ballon b

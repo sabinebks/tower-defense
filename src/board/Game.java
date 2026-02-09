@@ -28,6 +28,7 @@ public class Game {
      * @param mode le mode du jeu
      */
     public Game(int mode) {
+        //peut etre un liste des towers du joueurs
         this.mode = mode;
         this.lives = 3;
         this.money = 0;
@@ -97,6 +98,10 @@ public class Game {
     public void loseLife() {
         this.lives--;
     }
+
+    //public addTower() - acheter un tower et diminuer l'argent
+
+    //public removeTower() - vendre un tower et augmenter l'argent
 
     /**
      * Placer tous les ballons actifs (BalloonPath) sur le plateau

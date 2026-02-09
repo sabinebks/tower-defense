@@ -64,7 +64,69 @@ public abstract class Tower {
      * @param balloons les ballon qui se retrouve a la grille
      * @return bein eu ou pas
      */
-    protected abstract boolean attack(List<Balloon> balloons); 
+    protected boolean attack(List<Balloon> balloons) {
+
+        Balloon target = findTarget(balloons);
+
+        if  ( this.effectType == EffectType.IMMEDIATE ){
+            if (target != null) {
+
+            // Le ballon prend les dégâts de la fléchette pointue
+            target.hit(projectil.getDegats());
+
+            // La tour a tiré
+            return true;
+            }
+        }
+        else if ( this.effectType == EffectType.SLOW) {
+            if (target != null && target.isActive()) {
+
+            // Inflige les dégâts
+            target.hit(projectil.getDegats());
+
+            // Ralentit le ballon (ex: -60% de vitesse)
+            target.slow(0.4);
+
+            // La tour a tiré
+            return true;
+            }
+        }
+        else if (this.effectType == EffectType.AREA ) {
+            if (target != null) {
+            // Position de l'explosion (position du ballon ciblé)
+            Position impact = target.getCurrentPosition();
+            // On parcourt tous les ballons
+            for (Balloon b : balloons) {
+                // Calcul de la distance entre le ballon et l'explosion
+                double d = Math.sqrt(
+                    Math.pow(b.getCurrentPosition().getRow() - impact.getRow(), 2) +
+                    Math.pow(b.getCurrentPosition().getCol() - impact.getCol(), 2)
+                );
+                // Si le ballon est actif et dans la zone d'explosion
+                if (b.isActive() && d <= porte) {
+                    // Le ballon prend des dégâts
+                    b.hit(projectil.getDegats());
+                }
+            }
+            // La tour a tiré
+            return true;
+            }
+        }
+        else if ( this.effectType == EffectType.FREEZE) {
+            if (target != null  && target.isActive()) {
+
+            // Inflige les dégâts
+            target.hit(projectil.getDegats());
+
+            // Gèle le ballon
+            target.freeze();
+
+            // La tour a tiré
+            return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * méthode pour calculer la distance entre la tour et le ballon b

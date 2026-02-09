@@ -9,12 +9,24 @@ import object.*;
 
 public class Game {
 
+    /**
+     * Les attributs de la classes
+     * Le mode du jeu
+     * Le nombre de lives du joueur
+     * Le nombre d'argent
+     * Le nombre de round courant
+     * Le round courant
+     */
     private int mode;
     private int lives;      
     private int money;      
     private int currentRoundNumber;
     private Round currentRound;
 
+    /**
+     * Constructeur 
+     * @param mode le mode du jeu
+     */
     public Game(int mode) {
         this.mode = mode;
         this.lives = 3;
@@ -23,44 +35,69 @@ public class Game {
         this.currentRound = null;
     }
 
-    /* fonction qui retourne les vies du joueur */
+    /** 
+     * fonction qui retourne les vies du joueur
+     * @return nombre de lives restant du joueur
+     */
     public int getLives() {
         return lives;
     }
-    /* procedure pour decrementer les vies du joueur */
+    /** 
+     * procedure pour decrementer les vies du joueur
+     * @param lives le nombre de lives
+     */
     public void decrementLives(int lives) {
         this.lives -= lives;
     }
-    /* fonction qui retourne l'argent du joueur */
+    /** 
+     * fonction qui retourne l'argent du joueur
+     * @return le nombre de money du joueur
+     */
     public int getMoney() {
         return money;
     }
-    /* procedure pour mettre a jour l'argent du joueur */
+    /** 
+     * procedure pour mettre a jour l'argent du joueur
+     * @param somme le nombre de money a ajouter
+     */
     public void addMoney(int somme) {
           this.money += somme;
     }
 
-    /* fonction qui retourne le numero de la manche courante */
+    /** 
+     * fonction qui retourne le numero de la manche courante
+     * @return le nombre du round courant
+     */
     public int getCurrentRoundNumber() {
         return currentRoundNumber;
     }   
-    /* procedure pour incrementer le numero de la manche courante */
+    /**
+     * procedure pour incrementer le numero de la manche courante 
+    */
     public void incrementCurrentRoundNumber() {
         this.currentRoundNumber++;
     }   
-    /* fonction qui retourne la manche courante */
+    /**
+     * fonction qui retourne la manche courante 
+     * @return le round courant
+    */
     public Round getCurrentRound() {
         return currentRound;
     }   
-    /* procedure pour definir la manche courante */
+    /**
+     * procedure pour definir la manche courante 
+     * @param currentRound le round courant
+    */
     public void setCurrentRound(Round currentRound) {
         this.currentRound = currentRound;
     }       
-    /* procedure pour faire perdre une vie au joueur */
+    /**
+     * procedure pour faire perdre une vie au joueur 
+    */
     public void loseLife() {
         this.lives--;
     }
-    
+
     /**
      * Placer tous les ballons actifs (BalloonPath) sur le plateau
      * @param board le board du jeu

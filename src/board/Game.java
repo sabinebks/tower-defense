@@ -16,6 +16,8 @@ public class Game {
 
     /**
      * Placer tous les ballons actifs (BalloonPath) sur le plateau
+     * @param board le board du jeu
+     * @param ballons la liste des ballons
      */
     public static void placeActiveBalloonsOnBoardPath(Board board, List<BalloonPath> balloons) {
         for (BalloonPath b : balloons) {
@@ -29,6 +31,8 @@ public class Game {
 
     /**
      * Placer tous les ballons actifs (BalloonStraight) sur le plateau
+     * @param board le board du jeu
+     * @param balloons la liste des ballons
      */
     public static void placeActiveBalloonsOnBoardStraight(Board board, List<BalloonStraight> balloons) {
         for (BalloonStraight b : balloons) {
@@ -42,6 +46,7 @@ public class Game {
 
     /**
      * Afficher le plateau défini (mode chemin unique)
+     * @param board le board du jeu
      */
     public static void afficherDefinedPlateau(DefinedBoard board) {
         List<Cell> path = board.getChemins();
@@ -63,6 +68,7 @@ public class Game {
 
     /**
      * Afficher le plateau libre (mode multi-chemins)
+     * @param board le board du jeu
      */
     public static void afficherFreePlateau(FreeBoard board) {
         Cell[][] grid = board.getGrid();
@@ -90,6 +96,7 @@ public class Game {
 
     /**
      * Vérifie si au moins un BalloonPath est actif
+     * @param balloons la liste des ballons a verifie
      */
     public static boolean hasActiveBalloonsPath(List<BalloonPath> balloons) {
         for (BalloonPath b : balloons) if (b.isActive()) return true;
@@ -98,6 +105,7 @@ public class Game {
 
     /**
      * Vérifie si au moins un BalloonStraight est actif
+     * @param balloons la liste des ballons a verifier
      */
     public static boolean hasActiveBalloonsStraight(List<BalloonStraight> balloons) {
         for (BalloonStraight b : balloons) if (b.isActive()) return true;
@@ -106,6 +114,9 @@ public class Game {
 
     /**
      * Lancer une partie
+     * @param h la hauteur du board
+     * @param w la largeur du board
+     * @param b le nombre des ballons
      */
     public void play(int h, int w, int b) {
         int height = h, width = w, numBalloons = b;

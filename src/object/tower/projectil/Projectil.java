@@ -17,7 +17,7 @@ public abstract class Projectil {
     }
 
     /**
-     * Cette méthode est appelée à chaque tic de l'horloge.
+     * cette methode est appelé à chaque tic de l'horloge
      */
     public void update() {
         if (!active || target == null) return;

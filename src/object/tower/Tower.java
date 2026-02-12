@@ -3,7 +3,8 @@ package object.tower;
 import board.Position;
 import object.balloon.*;
 import object.tower.projectil.Projectil;
-import object.tower.projectil.ProjectilType;
+
+import object.tower.projectil.*;
 
 import java.util.List;
 
@@ -18,12 +19,11 @@ public abstract class Tower {
      * cadence : vitesse de tire
      * evolution : boolean pour savoir si elle est capable d'evoluer ou pas
      * effectType : IMMEDIATE ou AREA ou FREEZE ..
-     *
+     * type pour le type de projectil
      *
      *
      */
     protected Position position;
-    protected Projectil projectil;
     protected ProjectilType type;
     protected int cout;
     protected int porte;
@@ -42,20 +42,24 @@ public abstract class Tower {
      * @param evolution true or false
      * @param effectType type d'effet
      */
-    public Tower(Position position, int cout, int porte, int cadence, boolean evolution, EffectType effectType) {
+    public Tower(Position position, int cout, int porte, int cadence, boolean evolution, EffectType effectType, ProjectilType type) {
         this.position = position;
         this.cout = cout;
         this.porte = porte;
         this.cadence = cadence;
         this.evolution = evolution;
         this.effectType = effectType;
+        this.type = type;
     }
 
-    public void update(List<Balloon> balloons) {
+    protected void update(List<Balloon> balloons, List<Projectil> activeProjectiles) throws NotMatchException {
         ticksSinceLastShot++;
         // On vérifie si la tour peut tirer selon sa cadence
         if (ticksSinceLastShot >= (cadence / 50)) { // Conversion simplifiée ms -> tics
-            if (attack(balloons)) {
+
+            Projectil p = this.attack(balloons);
+            if (p != null) {
+                activeProjectiles.add(p);
                 ticksSinceLastShot = 0;
             }
         }
@@ -68,68 +72,32 @@ public abstract class Tower {
      * @param balloons les ballon qui se retrouve a la grille
      * @return bein eu ou pas
      */
-    protected boolean attack(List<Balloon> balloons) {
-
+    protected Projectil attack(List<Balloon> balloons) throws NotMatchException {
         Balloon target = findTarget(balloons);
+        if (target == null) return null;
 
-        if  ( this.effectType == EffectType.IMMEDIATE ){
-            if (target != null) {
-
-            // Le ballon prend les dégâts de la fléchette pointue
-            target.hit(projectil.getDegats());
-
-            // La tour a tiré
-            return true;
-            }
+        if (this.effectType == EffectType.IMMEDIATE && this.porte == -1) {
+            target.hit(this.type.getDegats());
+            return null;
         }
-        else if ( this.effectType == EffectType.SLOW) {
-            if (target != null && target.isActive()) {
 
-            // Inflige les dégâts
-            target.hit(projectil.getDegats());
-
-            // Ralentit le ballon (ex: -60% de vitesse)
-            target.slow(0.4);
-
-            // La tour a tiré
-            return true;
-            }
+        if (this.effectType == EffectType.AREA) {
+            return new ProjectilBombe(
+                    this.type,
+                    position.getCol(),
+                    position.getRow(),
+                    target,
+                    3,
+                    balloons
+            );
         }
-        else if (this.effectType == EffectType.AREA ) {
-            if (target != null) {
-            // Position de l'explosion (position du ballon ciblé)
-            Position impact = target.getCurrentPosition();
-            // On parcourt tous les ballons
-            for (Balloon b : balloons) {
-                // Calcul de la distance entre le ballon et l'explosion
-                double d = Math.sqrt(
-                    Math.pow(b.getCurrentPosition().getRow() - impact.getRow(), 2) +
-                    Math.pow(b.getCurrentPosition().getCol() - impact.getCol(), 2)
-                );
-                // Si le ballon est actif et dans la zone d'explosion
-                if (b.isActive() && d <= porte) {
-                    // Le ballon prend des dégâts
-                    b.hit(projectil.getDegats());
-                }
-            }
-            // La tour a tiré
-            return true;
-            }
-        }
-        else if ( this.effectType == EffectType.FREEZE) {
-            if (target != null  && target.isActive()) {
 
-            // Inflige les dégâts
-            target.hit(projectil.getDegats());
-
-            // Gèle le ballon
-            target.freeze();
-
-            // La tour a tiré
-            return true;
-            }
-        }
-        return false;
+        return new ProjectilSimple(
+                this.type,
+                position.getCol(),
+                position.getRow(),
+                target
+        );
     }
 
     /**

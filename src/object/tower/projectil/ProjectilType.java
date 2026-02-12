@@ -5,6 +5,7 @@ package object.tower.projectil;
  */
 public enum ProjectilType {
 
+    NO_DAMAGE(0),
     FLECHETTE(1),
     FLECHETTE_POINTUE(2),
     FLECHETTE_TRES_POINTUE(4),
@@ -15,7 +16,7 @@ public enum ProjectilType {
     private final int degats;
 
     // constructeur
-    Projectil(int degats) {
+    ProjectilType(int degats) {
         this.degats = degats;
     }
 

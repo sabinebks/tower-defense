@@ -29,6 +29,10 @@ public class Balloon {
     /** Temps de sortie (-1 si pas encore sorti) */
     protected int exitTime;
 
+    protected int freezeTimer = 0;
+    protected int slowTimer = 0;
+    protected double slowFactor = 1.0;
+
     /**
      * Crée un ballon de base.
      * 
@@ -168,19 +172,35 @@ public class Balloon {
         return posY;
     }
 
+    public void updateState(){
+        if(freezeTimer > 0){
+            freezeTimer--;
+        }
+        if(slowTimer > 0){
+            slowTimer--;
+        }
+    }
+
     /**
      * pour stopper le ballon
      */
-    public void freeze() {
-        this.speed = 0;
+    public void freeze(int duration) {
+        this.freezeTimer = duration;
     }
 
     /**
      * Ralentit le ballon (réduit sa vitesse)
      * @param factor facteur de ralentissement (ex: 0.5 = 50% plus lent)
      */
-    public void slow(double factor) {
-        this.speed *= factor;
+    public void slow(double factor, int duration) {
+        this.slowFactor = factor;
+        this.slowTimer = duration;
+    }
+
+    public double getSlowFactor() {
+        if (freezeTimer > 0) {return 0;}
+        if(slowTimer > 0){return this.speed * slowFactor;}
+        return this.speed;
     }
 
     /**

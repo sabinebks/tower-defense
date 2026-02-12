@@ -1,9 +1,9 @@
-package object.tower;
+package object.tower.projectil;
 
 /**
  * enum pour les projectil
  */
-public enum Projectil {
+public enum ProjectilType {
 
     FLECHETTE(1),
     FLECHETTE_POINTUE(2),

@@ -3,6 +3,7 @@ package object.tower;
 import board.Position;
 import object.balloon.*;
 import object.tower.projectil.Projectil;
+import object.tower.projectil.ProjectilType;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public abstract class Tower {
      */
     protected Position position;
     protected Projectil projectil;
+    protected ProjectilType type;
     protected int cout;
     protected int porte;
     protected int cadence;

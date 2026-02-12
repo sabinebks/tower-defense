@@ -3,18 +3,25 @@ package board;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
+
+import object.Horloge;
 import object.balloon.*;
+import board.typeOfBoard.*;
 
 public class Game {
-
+    private Horloge horloge;
     private int mode;
-
+    
+    
     public Game(int mode) {
         this.mode = mode;
+        this.horloge = new Horloge();
     }
 
     /**
      * Placer tous les ballons actifs (BalloonPath) sur le plateau
+     * @param board le board du jeu
+     * @param ballons la liste des ballons
      */
     public static void placeActiveBalloonsOnBoardPath(Board board, List<BalloonPath> balloons) {
         for (BalloonPath b : balloons) {
@@ -28,6 +35,8 @@ public class Game {
 
     /**
      * Placer tous les ballons actifs (BalloonStraight) sur le plateau
+     * @param board le board du jeu
+     * @param balloons la liste des ballons
      */
     public static void placeActiveBalloonsOnBoardStraight(Board board, List<BalloonStraight> balloons) {
         for (BalloonStraight b : balloons) {
@@ -41,6 +50,7 @@ public class Game {
 
     /**
      * Afficher le plateau défini (mode chemin unique)
+     * @param board le board du jeu
      */
     public static void afficherDefinedPlateau(DefinedBoard board) {
         List<Cell> path = board.getChemins();
@@ -62,6 +72,7 @@ public class Game {
 
     /**
      * Afficher le plateau libre (mode multi-chemins)
+     * @param board le board du jeu
      */
     public static void afficherFreePlateau(FreeBoard board) {
         Cell[][] grid = board.getGrid();
@@ -89,6 +100,7 @@ public class Game {
 
     /**
      * Vérifie si au moins un BalloonPath est actif
+     * @param balloons la liste des ballons a verifie
      */
     public static boolean hasActiveBalloonsPath(List<BalloonPath> balloons) {
         for (BalloonPath b : balloons) if (b.isActive()) return true;
@@ -97,6 +109,7 @@ public class Game {
 
     /**
      * Vérifie si au moins un BalloonStraight est actif
+     * @param balloons la liste des ballons a verifier
      */
     public static boolean hasActiveBalloonsStraight(List<BalloonStraight> balloons) {
         for (BalloonStraight b : balloons) if (b.isActive()) return true;
@@ -105,6 +118,9 @@ public class Game {
 
     /**
      * Lancer une partie
+     * @param h la hauteur du board
+     * @param w la largeur du board
+     * @param b le nombre des ballons
      */
     public void play(int h, int w, int b) {
         int height = h, width = w, numBalloons = b;
@@ -123,16 +139,23 @@ public class Game {
             List<BalloonPath> balloons = new ArrayList<>();
             int[] ticParCellList = {1, 2, 3};
 
-            for (int i = 0; i < numBalloons; i++) {
-                int ticParCell = ticParCellList[random.nextInt(ticParCellList.length)];
-                double speed = 1.0 / ticParCell;
-                BalloonType type = BalloonType.values()[random.nextInt(3)];
-                BalloonPath balloon = new BalloonPath(i, path.get(0), speed, type, path);
-                balloons.add(balloon);
+         for (int i = 0; i < numBalloons; i++) {
+    int ticParCell = ticParCellList[random.nextInt(ticParCellList.length)];
+    double speed = 1.0 / ticParCell;
 
-                System.out.println(String.format("Bloon %d at %s speed: %.1f health: %d",
-                        i, path.get(0).getPosition(), speed, balloon.getHealth()));
-            }
+    BalloonType type = BalloonType.values()[random.nextInt(3)];
+    BalloonPath balloon = new BalloonPath(i, path.get(0), speed, type, path);
+    balloons.add(balloon);
+   System.out.println(
+    "baloon " + i +
+    " at " + path.get(0).getPosition() +
+    " speed: " + speed +
+    " health: " + balloon.getHealth()
+);
+
+   
+}
+
             System.out.println("Spawned " + numBalloons + " bloons.\n");
 
             // Simulation
@@ -143,24 +166,24 @@ public class Game {
             System.out.println();
 
             while (hasActiveBalloonsPath(balloons) && currentTick < maxTicks) {
-                currentTick++;
+                horloge.addTime();
                 for (BalloonPath bPath : balloons) {
                     if (!bPath.isActive()) continue;
                     Position before = bPath.getCurrentPosition();
                     bPath.move();
                     Position after = bPath.getCurrentPosition();
                     if (!after.equals(before)) {
-                        System.out.println("TIC " + currentTick + " : Bloon " + bPath.getId()
+                        System.out.println("TIC " + horloge.getTime() + " : Bloon " + bPath.getId()
                                 + " change de case " + before + " -> " + after);
                     }
                     if (!bPath.isActive() && bPath.getExitTime() == -1) {
-                        bPath.setExitTime(currentTick);
-                        System.out.println("Bloon " + bPath.getId() + " exits at time: " + currentTick);
+                        bPath.setExitTime(horloge.getTime());
+                        System.out.println("Bloon " + bPath.getId() + " exits at time: " + horloge.getTime());
                     }
                 }
                 placeActiveBalloonsOnBoardPath(board, balloons);
-                if (currentTick % printTic == 0) {
-                    System.out.println("TIC = " + currentTick);
+                if (horloge.getTime() % printTic == 0) {
+                    System.out.println("TIC = " + horloge.getTime());
                     afficherDefinedPlateau(board);
                     System.out.println();
                 }
@@ -206,6 +229,7 @@ public class Game {
 
             while (hasActiveBalloonsStraight(balloons) && currentTick < maxTick) {
                 currentTick++;
+                horloge.addTime();
                 for (BalloonStraight bPath : balloons) {
                     if (!bPath.isActive()) continue;
                     Position before = bPath.getCurrentPosition();

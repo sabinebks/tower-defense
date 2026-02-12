@@ -1,9 +1,10 @@
-package object.balloon;
+package test.object.balloon;
 
 import board.Cell;
 import board.Position;
 import java.util.List;
-
+import object.balloon.BalloonPath;
+import object.balloon.BalloonType;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

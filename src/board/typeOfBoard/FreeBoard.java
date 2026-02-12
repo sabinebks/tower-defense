@@ -36,6 +36,7 @@ public class FreeBoard extends Board {
 
     /**
      * Définit le nombre de chemins rectilignes à créer.
+     * @param nb nombre de chemins
      */
     public void setNbCheminsVoulus(int nb) {
         this.nbCheminsVoulus = nb;

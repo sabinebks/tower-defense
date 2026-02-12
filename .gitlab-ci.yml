@@ -1,0 +1,48 @@
+image: ubuntu:latest
+
+stages:
+  - build
+  - test
+  - package
+  - docs
+
+before_script:
+  - apt-get update
+  - apt-get install -y make openjdk-17-jdk locales
+  - locale-gen fr_FR.UTF-8
+  - export LANG=fr_FR.UTF-8
+
+classes:
+  stage: build
+  script:
+    - make classes
+  artifacts:
+    paths:
+      - classes/
+
+tests:
+  stage: build
+  script:
+    - make tests
+  artifacts:
+    paths:
+      - tests/
+
+runtests:
+  stage: test
+  script:
+    - make runtests
+
+jar:
+  stage: package
+  script:
+    - make jar
+  artifacts:
+    paths:
+      - Livrable*A.jar
+      - Livrable*B.jar
+
+docs:
+  stage: docs
+  script:
+    - make docs

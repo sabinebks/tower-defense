@@ -10,16 +10,22 @@ public class Round {
     remarque pour ajouter dans notre liste il va falloir 
     faire un random et selon le niveau de la manche on va 
     ajouter des ballons de different niveau ( de niveau plus eleve ) */
-    private Set <Balloon> baloons= new HashSet<>();
+
+    private Set<Balloon> baloons = new HashSet<>();
 
    /* constructeur de la classe Round */
     public Round(int numManche, int nbrBalloons) {
         this.numManche = numManche;
         this.nbrBalloons = nbrBalloons;
+        this.baloons = new HashSet<Balloon>();
     }
     /* fonction qui retourne le numero de la manche */
     public int getNumManche() {
         return numManche;
+    }
+
+    public void addBaloon(Balloon b) {
+        baloons.add(b);
     }
 
     /* fonction qui retourne le nombre de ballons dans la manche */

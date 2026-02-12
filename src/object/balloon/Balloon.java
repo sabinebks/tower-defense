@@ -183,5 +183,11 @@ public class Balloon {
         this.speed *= factor;
     }
 
+    /**
+     *
+     */
+    public void remove(){
+        this.active = false;
+    }
 
 }

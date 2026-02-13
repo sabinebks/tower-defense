@@ -1,5 +1,5 @@
 package Livrables;
-import board.*;
+import game.*;
 
 /**
  * Livrable 2b - Simulation de ballons rectilignes sur un FreeBoard.

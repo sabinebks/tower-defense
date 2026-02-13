@@ -132,7 +132,7 @@ public class Game {
 
     /**
      * on utilise checkEntityAt pour afficher "B" au bon endroit sur la grille
-      */
+     */
     private String checkEntityAt(int r, int c) {
         for (Balloon b : balloons) {
             // on cast en int pour l'affichage sur la grille de caractères

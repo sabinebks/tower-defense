@@ -133,11 +133,34 @@ public class Game {
     private String checkEntityAt(int r, int c) {
         for (Balloon b : balloons) {
             // on cast en int pour l'affichage sur la grille de caractères
-            if ((int)b.getLigne() == r && (int)b.getColonne() == c) return "B";
+            if ((int)b.getLigne() == r && (int)b.getColonne() == c) {
+                return "?";
+            }
         }
         //pour les towers
         for (Tower t : towers) {
-            if (t.getPosition().getRow() == r && t.getPosition().getCol() == c) return "T";
+            if (t.getPosition().getRow() == r && t.getPosition().getCol() == c && (t instanceof BombTower)) {
+                return "B";
+            }
+            else if (t.getPosition().getRow() == r && t.getPosition().getCol() == c && (t instanceof DartMonkey)) {
+                return "D";
+            }
+            else if (t.getPosition().getRow() == r && t.getPosition().getCol() == c && (t instanceof EliteSniper)) {
+                return "E";
+            }
+            else if (t.getPosition().getRow() == r && t.getPosition().getCol() == c && (t instanceof Gorilla)) {
+                return "G";
+            }
+            else if (t.getPosition().getRow() == r && t.getPosition().getCol() == c && (t instanceof IceTower)) {
+                return "I";
+            }
+            else if (t.getPosition().getRow() == r && t.getPosition().getCol() == c && (t instanceof SlowTower)) {
+                return "S";
+            }
+            else if (t.getPosition().getRow() == r && t.getPosition().getCol() == c && (t instanceof TackShooter)) {
+                return "T";
+            }
+
         }
         return null;
     }

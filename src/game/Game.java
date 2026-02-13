@@ -147,14 +147,29 @@ public class Game {
      * @param board le board de type Defined
      */
     public void afficherDefinedPlateau(DefinedBoard board) {
+        List<Cell> path = board.getChemins();
+
         for (int r = 0; r < board.getHeight(); r++) {
             for (int c = 0; c < board.getWidth(); c++) {
                 String entity = checkEntityAt(r, c);
-                if (entity != null) System.out.print(entity + " ");
+                if (entity != null) {
+                    System.out.print(entity + " ");
+                }
                 else {
                     Cell cell = board.getCell(r, c);
-                    if (cell.isPath()) System.out.print("c ");
-                    else System.out.print(". ");
+                    if (cell.isPath()) {
+                    if (!path.isEmpty() && cell == path.get(0)) {
+                        System.out.print("D ");
+                    } 
+                    else if (!path.isEmpty() && cell == path.get(path.size() - 1)) {
+                        System.out.print("F ");
+                    } 
+                    else {
+                        System.out.print("c ");
+                    }
+                } else {
+                    System.out.print(". ");
+                }
                 }
             }
             System.out.println();
@@ -167,13 +182,45 @@ public class Game {
      */
     public void afficherFreePlateau(FreeBoard board) {
         Cell[][] grid = board.getGrid();
+        int nbDeChemins = board.retourneNbrChemins();
+        
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
                 String entity = checkEntityAt(i, j);
-                if (entity != null) System.out.print(entity + " ");
+                if (entity != null) { 
+                    System.out.print(entity + " ");
+                }
                 else {
-                    if (grid[i][j].isPath()) System.out.print("c ");
-                    else System.out.print(". ");
+                    boolean isStart = false;
+                    boolean isEnd = false;
+
+                    for (int k = 0; k < nbDeChemins; k++) {
+                        Position[] chemin = board.retourneLesChemins(k);
+                        Position start = chemin[0];
+                        Position end = chemin[1];
+
+                        if (i == start.getRow() && j == start.getCol()) {
+                            isStart = true;
+                            break;
+                        }
+                        if (i == end.getRow() && j == end.getCol()) {
+                            isEnd = true;
+                            break;
+                        }
+                    }
+
+                    if (isStart) {
+                        System.out.print("D ");
+                    } 
+                    else if (isEnd) {
+                        System.out.print("F ");
+                    }
+                     else if (grid[i][j].isPath()) {
+                        System.out.print("c ");
+                    }
+                     else {
+                        System.out.print(". ");
+                    }
                 }
             }
             System.out.println();
@@ -225,5 +272,8 @@ public class Game {
             System.out.println("FreeBoard ");
         }
         System.out.println("Plateau de hauteur " + height + " et largeur " + width);
-    }
+    
+        render();
+    
+    } 
 }

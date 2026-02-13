@@ -8,7 +8,5 @@ public class Livrable3 {
         // initialisation du jeu
         Game game = new Game();
         game.play(10, 10);
-
-    
     }
 }

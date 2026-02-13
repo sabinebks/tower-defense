@@ -30,11 +30,11 @@ public class Game {
      * Le constructeur de la classe Game
      * @param board le board du jeu
      */
-    public Game(Board board) {
+    public Game() {
         this.balloons = new ArrayList<>();
         this.towers = new ArrayList<>();
         this.activeProjectils = new ArrayList<>();
-        this.board = board;
+        this.board = null;
         this.credits = 100;
     }
 
@@ -189,21 +189,41 @@ public class Game {
     }
     /**
      * Methode play de la classe Game, qui jerer le core du jeu
+     * @param height la hauteur du board
+     * @param width la largeur du board
      */
-    public void play(){
+    public void play(int height, int width){
         Scanner scan = new Scanner(System.in);
         Random rand = new Random();
-        int tick = 0;
 
         System.out.println("=== TOWER DEFENSE (Livrable 3) ===");
-        System.out.println("Commandes :");
-        System.out.println(" - run N                : N tics");
-        System.out.println(" - round N              : spawn N ballons au debut, puis jouer jusqu'a la fin du round");
-        System.out.println(" - round N MAX          : pareil mais limite MAX tics");
-        System.out.println(" - tower TYPE R C       : placer une tour de type TYPE");
-        System.out.println(" - quit                 : quitter");
-        System.out.println("==========================================");
+        System.out.println("Veuillez choisir un mode :");
+        System.out.println("1 : DefinedBoard ( Rue defini ) ");
+        System.out.println("2 : FreeBoard ( Pas de rue defini ) ");
 
-        render();
+        int mode = Integer.parseInt(scan.nextLine().trim());
+        //Mode default
+        if ( mode != 1 && mode != 2) {
+            mode = 1;
+        }
+
+        if (mode == 1) {
+            this.board = new DefinedBoard(height, width);
+        } 
+        else {
+            this.board = new FreeBoard(height, width);
+            FreeBoard fb = (FreeBoard) this.board;
+            fb.init();
+            fb.setNbCheminsVoulus(5);
+            fb.calculerPath();
+        }
+        System.out.println("Mode choisi:");
+        if ( mode == 1) {
+            System.out.println("DefinedBoard ");
+        }
+        else {
+            System.out.println("FreeBoard ");
+        }
+        System.out.println("Plateau de hauteur " + height + " et largeur " + width);
     }
 }

@@ -12,10 +12,9 @@ import object.tower.projectil.*;
 
 import java.util.Scanner;
 
-// On crée une petite classe concrète pour la tour car Tower est abstraite
+// nn crée une petite classe concrète pour la tour car Tower est abstraite
 class TestTower extends Tower {
     public TestTower(Position p) {
-        // Position, Coût (100), Portée (3), Cadence (1000ms), Evolution (false), Effet (AREA), Projectile (BOMBE)
         super(p, 100, 3, 1000, false, EffectType.AREA, ProjectilType.BOMBE);
     }
 }

@@ -23,7 +23,7 @@ public class ProjectilBombe extends Projectil {
 
         for(Balloon b : balloons) {
             if(b != target) {
-                double distance = Math.sqrt(Math.pow(b.getPosX() - this.x, 2) + Math.pow(b.getPosY() - this.y, 2));
+                double distance = Math.sqrt(Math.pow(b.getColonne() - this.x, 2) + Math.pow(b.getLigne() - this.y, 2));
 
                 if (distance <= explosionRadius){
                     b.hit(type.getDegats());

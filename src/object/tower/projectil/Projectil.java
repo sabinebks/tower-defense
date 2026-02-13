@@ -22,8 +22,8 @@ public abstract class Projectil {
     public void update() {
         if (!active || target == null) return;
 
-        double diffX = target.getPosX() - this.x;
-        double diffY = target.getPosY() - this.y;
+        double diffX = target.getColonne() - this.x;
+        double diffY = target.getLigne() - this.y;
         double distance = Math.sqrt(diffX * diffX + diffY * diffY);
 
         if (distance < 0.2) {

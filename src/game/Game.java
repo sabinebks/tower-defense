@@ -31,6 +31,10 @@ public class Game {
     private int credits;
     private int idCounter = 0;
 
+    /**
+     * Le constructeur de la classe Game
+     * @param board le board du jeu
+     */
     public Game(Board board) {
         this.balloons = new ArrayList<>();
         this.towers = new ArrayList<>();
@@ -40,7 +44,9 @@ public class Game {
     }
 
     /**
-     * cree et ajoute un ballon au jeu en fonction du type de plateau
+     * Cree et ajoute un ballon au jeu en fonction du type de plateau
+     * @param type le type de ballon 
+     * @param speed la vitesse du ballon
      */
     public void spawnBalloon(BalloonType type, double speed) {
         idCounter++;
@@ -69,8 +75,7 @@ public class Game {
     }
 
     /**
-     * methode pour gerer tout le jeu en fcontion des tick d'horloge
-     *
+     * Methode pour gerer tout le jeu en fontion des tick d'horloge
      */
 
     public void gameTick() {
@@ -112,7 +117,7 @@ public class Game {
     }
 
     /**
-     * methode principale pour l'affichage
+     * Methode principale pour l'affichage
      */
     private void render() {
         //pour effacer le contenu du terminal
@@ -131,7 +136,9 @@ public class Game {
     }
 
     /**
-     * on utilise checkEntityAt pour afficher "B" au bon endroit sur la grille
+     * On utilise checkEntityAt pour afficher "B" au bon endroit sur la grille
+     * @param r la ligne 
+     * @param c la colonne
      */
     private String checkEntityAt(int r, int c) {
         for (Balloon b : balloons) {
@@ -147,10 +154,9 @@ public class Game {
 
     /**
      * methode pour affciher exactement la grille DefinedBoard
-     * @param board
+     * @param board le board de type Defined
      */
     public void afficherDefinedPlateau(DefinedBoard board) {
-        List<Cell> path = board.getChemins();
         for (int r = 0; r < board.getHeight(); r++) {
             for (int c = 0; c < board.getWidth(); c++) {
                 String entity = checkEntityAt(r, c);
@@ -188,7 +194,9 @@ public class Game {
      * ajouter une tower t
      * @param t
      */
-    public void addTower(Tower t) { towers.add(t); }
+    public void addTower(Tower t) { 
+        towers.add(t);
+    }
 
 
 }

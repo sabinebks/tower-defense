@@ -52,7 +52,7 @@ public abstract class Tower {
     public void update(List<Balloon> balloons, List<Projectil> activeProjectiles) throws NotMatchException {
         ticksSinceLastShot++;
         // On vérifie si la tour peut tirer selon sa cadence
-        if (ticksSinceLastShot >= (cadence / 50)) { // Conversion simplifiée ms -> tics
+        if (ticksSinceLastShot >= cadence) { // Conversion simplifiée ms -> tics
 
             Projectil p = this.attack(balloons);
             if (p != null) {

@@ -215,10 +215,10 @@ public class Game {
                     else if (isEnd) {
                         System.out.print("F ");
                     }
-                     else if (grid[i][j].isPath()) {
+                    else if (grid[i][j].isPath()) {
                         System.out.print("c ");
-                    }
-                     else {
+                    }            
+                    else {
                         System.out.print(". ");
                     }
                 }
@@ -294,7 +294,7 @@ public class Game {
                 if (nb < 0) nb = 0;
 
                 System.out.println("=== NEW ROUND ===");
-                System.out.println("Spawn = " + nb + " ballons");
+                System.out.println("Generer = " + nb + " ballons");
 
                 for (int i = 0; i < nb; i++) {
                     BalloonType type = BalloonType.values()[rand.nextInt(BalloonType.values().length)];
@@ -313,9 +313,77 @@ public class Game {
                     tick++;
                 }
 
-                System.out.println("\n--- ROUND FINISHED ---");
+                System.out.println("=== ROUND FINISHED ===");
                 System.out.println("Ticks joues = " + tick);
                 continue;
+            }
+            else if (choix == 2){
+                System.out.println("Veuillez choisir la tour :");
+                System.out.println("1 : Bomb Tower");
+                System.out.println("2 : Dart Monkey");
+                System.out.println("3 : Elite Sniper");
+                System.out.println("4 : Gorilla");
+                System.out.println("5 : Ice Tower");
+                System.out.println("6 : Slow Tower");
+                System.out.println("7 : Tack Shooter");
+                
+                int tour = Integer.parseInt(scan.nextLine().trim());
+                int row = -1;
+                int col = -1;
+                while ( !board.isInside(row, col)){
+                    System.out.println("--Veuillez entrer la position--");
+                    System.out.println("Colonne : ");
+                    col = Integer.parseInt(scan.nextLine().trim());
+                    System.out.println("Ligne : ");
+                    row = Integer.parseInt(scan.nextLine().trim());
+                }
+                if (this.board instanceof DefinedBoard) {
+                    DefinedBoard db = (DefinedBoard) board;
+                    if (db.getCell(row, col).isPath()) {
+                        System.out.println("Error! Vous ne pouvez pas placer un tour sur le chemin");
+                        System.out.println("Veuillez refaire votre choix! Merci");
+                        continue;
+                    }
+                }
+                boolean isTour = false;
+                for (Tower t : towers) {
+                    if (t.getPosition().getRow() == row && t.getPosition().getCol() == col) {
+                    isTour = true;
+                    break;
+                    }
+                }
+                if (isTour) {
+                    System.out.println("Il y a deja une tour ici!");
+                    System.out.println("Veuillez refaire votre choix! Merci");
+                    continue;
+                }
+                Tower t = null;
+                switch (tour) {
+                    case 1:
+                        t = new BombTower(new Position(row, col));   
+                        break;
+                    case 2:
+                        t = new DartMonkey(new Position(row, col));
+                        break;
+                    case 3:
+                        t = new EliteSniper(new Position(row, col));
+                        break;
+                    case 4:
+                        t = new Gorilla(new Position(row, col));
+                        break;
+                    case 5:
+                        t = new IceTower(new Position(row, col));
+                        break;
+                    case 6:
+                        t = new SlowTower(new Position(row, col));
+                        break;
+                    case 7:
+                        t = new TackShooter(new Position(row, col));
+                        break;
+                }
+                this.towers.add(t);
+                System.out.println("Tour place en |" + row + " : " + col + "|");
+                render();
             }
         } 
     }

@@ -6,8 +6,7 @@ import object.balloon.*;
 import object.tower.*;
 import object.tower.projectil.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Game {
     /**
@@ -116,11 +115,6 @@ public class Game {
      * Methode principale pour l'affichage
      */
     private void render() {
-        //pour effacer le contenu du terminal
-        System.out.print("\033[H\033[2J");
-        //elle garde qlq caractere dans les buffer de processeur elle va les afficher apres
-        System.out.flush();
-
         if (this.board instanceof DefinedBoard) {
             afficherDefinedPlateau((DefinedBoard) this.board);
         } else if (this.board instanceof FreeBoard) {
@@ -128,7 +122,7 @@ public class Game {
         }
 
         System.out.println("\n--- STATS ---");
-        System.out.println("Crédits : " + this.credits + " | Ballons : " + balloons.size());
+        System.out.println("Credits : " + this.credits + " | Ballons : " + balloons.size());
     }
 
     /**
@@ -193,6 +187,23 @@ public class Game {
     public void addTower(Tower t) { 
         towers.add(t);
     }
+    /**
+     * Methode play de la classe Game, qui jerer le core du jeu
+     */
+    public void play(){
+        Scanner scan = new Scanner(System.in);
+        Random rand = new Random();
+        int tick = 0;
 
+        System.out.println("=== TOWER DEFENSE (Livrable 3) ===");
+        System.out.println("Commandes :");
+        System.out.println(" - run N                : N tics");
+        System.out.println(" - round N              : spawn N ballons au debut, puis jouer jusqu'a la fin du round");
+        System.out.println(" - round N MAX          : pareil mais limite MAX tics");
+        System.out.println(" - tower TYPE R C       : placer une tour de type TYPE");
+        System.out.println(" - quit                 : quitter");
+        System.out.println("==========================================");
 
+        render();
+    }
 }

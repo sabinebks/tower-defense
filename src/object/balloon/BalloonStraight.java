@@ -28,12 +28,11 @@ public class BalloonStraight extends Balloon {
      * @param speed vitesse du ballon
      * @param type type du ballon
      */
-    public BalloonStraight(int id, Position start, Position end, double speed, BalloonType type) {
+    public BalloonStraight(int id, Position start, Position end, BalloonType type) {
         // Appeler le constructeur parent
         super(id, 
               start.getCol() + 0.5,  // Centre de la cellule de départ
               start.getRow() + 0.5, 
-              speed, 
               type);
         
         this.startPos = start;

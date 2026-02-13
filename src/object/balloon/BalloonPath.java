@@ -24,12 +24,11 @@ public class BalloonPath extends Balloon {
      * @param type type du ballon
      * @param path chemin à suivre
      */
-    public BalloonPath(int id, Cell startCell, double speed, BalloonType type, List<Cell> path) {
+    public BalloonPath(int id, Cell startCell, BalloonType type, List<Cell> path) {
         // Appeler le constructeur parent
         super(id, 
               startCell.getPosition().getCol() + 0.5,  // Centre de la cellule
               startCell.getPosition().getRow() + 0.5, 
-              speed, 
               type);
         
         this.path = path;

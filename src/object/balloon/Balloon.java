@@ -39,14 +39,12 @@ public class Balloon {
      * @param id identifiant unique
      * @param startX position X de départ
      * @param startY position Y de départ
-     * @param speed vitesse du ballon
      * @param type type du ballon
      */
-    public Balloon(int id, double startX, double startY, double speed, BalloonType type) {
+    public Balloon(int id, double startX, double startY, BalloonType type) {
         this.id = id;
         this.posX = startX;
         this.posY = startY;
-        this.speed = speed;
         this.type = type;
         this.active = true;
         this.exitTime = -1;
@@ -54,10 +52,13 @@ public class Balloon {
         // Définir la santé selon le type
         if (type == BalloonType.BASIC) {
             this.health = 1;
+            this.speed = 3;
         } else if (type == BalloonType.MEDIUM) {
             this.health = 2;
+            this.speed = 2;
         } else if (type == BalloonType.STRONG) {
             this.health = 4;
+            this.speed = 1;
         }
     }
 

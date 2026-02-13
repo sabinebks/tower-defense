@@ -43,7 +43,7 @@ public class Game {
      * @param type le type de ballon 
      * @param speed la vitesse du ballon
      */
-    public void spawnBalloon(BalloonType type, double speed) {
+    public void spawnBalloon(BalloonType type) {
         idCounter++;
 
         //voir le type de board
@@ -53,7 +53,7 @@ public class Game {
 
             if (path != null && !path.isEmpty()) {
 
-                BalloonPath b = new BalloonPath(idCounter, path.get(0), speed, type, path);
+                BalloonPath b = new BalloonPath(idCounter, path.get(0), type, path);
                 balloons.add(b);
             }
         }
@@ -63,7 +63,7 @@ public class Game {
 
             if (positions != null && positions.length >= 2) {
 
-                BalloonStraight b = new BalloonStraight(idCounter, positions[0], positions[1], speed, type);
+                BalloonStraight b = new BalloonStraight(idCounter, positions[0], positions[1], type);
                 balloons.add(b);
             }
         }
@@ -274,6 +274,49 @@ public class Game {
         System.out.println("Plateau de hauteur " + height + " et largeur " + width);
     
         render();
-    
-    } 
+        
+        while (true) {
+            System.out.println("--- OPTION HOLA MI AMIGOS ---");
+            System.out.println("1 : Commencer le round ");
+            System.out.println("2 : Placer une tour");
+            System.out.println("3 : Quitter");
+            
+            int choix = Integer.parseInt(scan.nextLine().trim());
+
+            if (choix == 3) {
+                System.out.println("Merci de jouer ce super cool jeu!");
+                break;
+            }
+
+            else if (choix == 1) {
+                System.out.print("Combien de ballons tu veux spawn au debut du round ? > ");
+                int nb = Integer.parseInt(scan.nextLine().trim());
+                if (nb < 0) nb = 0;
+
+                System.out.println("=== NEW ROUND ===");
+                System.out.println("Spawn = " + nb + " ballons");
+
+                for (int i = 0; i < nb; i++) {
+                    BalloonType type = BalloonType.values()[rand.nextInt(BalloonType.values().length)];
+                    spawnBalloon(type);
+                    System.out.println("Balloon " + (i + 1) + " | type = " + this.balloons.get(i).getType() + " | speed = " + this.balloons.get(i).getSpeed() + " | health = " + this.balloons.get(i).getHealth());
+                }
+
+
+
+                int tick = 0;
+                int max = 10000; // ca aide a eviter des boucles trop longs
+
+                while (!(balloons.isEmpty() && activeProjectils.isEmpty()) && tick < max) {
+                    gameTick(); // dans 1 tic : ballon bouge, les tours attaquent,render le board
+                    System.out.println(" Le tick numero " + tick);
+                    tick++;
+                }
+
+                System.out.println("\n--- ROUND FINISHED ---");
+                System.out.println("Ticks joues = " + tick);
+                continue;
+            }
+        } 
+    }
 }

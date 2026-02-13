@@ -130,5 +130,65 @@ public class Game {
         System.out.println("Crédits : " + this.credits + " | Ballons : " + balloons.size());
     }
 
+    /**
+     * on utilise checkEntityAt pour afficher "B" au bon endroit sur la grille
+      */
+    private String checkEntityAt(int r, int c) {
+        for (Balloon b : balloons) {
+            // on cast en int pour l'affichage sur la grille de caractères
+            if ((int)b.getPosY() == r && (int)b.getPosX() == c) return "B";
+        }
+        //pour les towers
+        for (Tower t : towers) {
+            if (t.getPosition().getRow() == r && t.getPosition().getCol() == c) return "T";
+        }
+        return null;
+    }
+
+    /**
+     * methode pour affciher exactement la grille DefinedBoard
+     * @param board
+     */
+    public void afficherDefinedPlateau(DefinedBoard board) {
+        List<Cell> path = board.getChemins();
+        for (int r = 0; r < board.getHeight(); r++) {
+            for (int c = 0; c < board.getWidth(); c++) {
+                String entity = checkEntityAt(r, c);
+                if (entity != null) System.out.print(entity + " ");
+                else {
+                    Cell cell = board.getCell(r, c);
+                    if (cell.isPath()) System.out.print("c ");
+                    else System.out.print(". ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    /**
+     * pour afficher FreeBoard
+     * @param board
+     */
+    public void afficherFreePlateau(FreeBoard board) {
+        Cell[][] grid = board.getGrid();
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                String entity = checkEntityAt(i, j);
+                if (entity != null) System.out.print(entity + " ");
+                else {
+                    if (grid[i][j].isPath()) System.out.print("c ");
+                    else System.out.print(". ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    /**
+     * ajouter une tower t
+     * @param t
+     */
+    public void addTower(Tower t) { towers.add(t); }
+
 
 }

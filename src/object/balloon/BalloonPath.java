@@ -47,11 +47,12 @@ public class BalloonPath extends Balloon {
      *    - Passer à la case suivante
      * 5. Sinon :
      *    - Avancer de "speed" unités vers la cible
-     * 
+     * @param height la hauteur du board
+     * @param width la largeur du board
      * @return true si le ballon continue, false s'il est arrivé
      */
     @Override
-    public boolean move() {
+    public boolean move(int height, int width) {
         if (!active || freezeTimer > 0) return active;
 
         double currentSpeed = getEffectiveSpeed();
@@ -81,8 +82,11 @@ public class BalloonPath extends Balloon {
         } else {
             // Sortie du plateau après la dernière case
             posColonne += currentSpeed;
-            if (posLigne > 25) active = false; // Ajuste selon la taille de ton board
-        }
+            
+        if (posColonne < 0 || posColonne >= width || posLigne < 0 || posLigne >= height) {
+                active = false; 
+            }
+        }   
 
         return active;
     }

@@ -66,11 +66,12 @@ public class BalloonStraight extends Balloon {
      *    - LEFT : posX diminue
      *    - RIGHT : posX augmente
      * 3. Vérifier si on a atteint la destination
-     * 
+     * @param height l'hauteur
+     * @param width largeur
      * @return true si le ballon continue, false s'il est arrivé
      */
     @Override
-    public boolean move() {
+    public boolean move(int height, int width) {
         if (!active || freezeTimer > 0) return active;
 
         double currentSpeed = getEffectiveSpeed();

@@ -68,7 +68,7 @@ public class Balloon {
      * 
      * @return true si le ballon continue, false s'il est arrivé
      */
-    public boolean move() {
+    public boolean move(int height, int move) {
         // À override dans les sous-classes
         return false;
     }

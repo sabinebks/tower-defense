@@ -28,7 +28,6 @@ public class Game {
 
     /**
      * Le constructeur de la classe Game
-     * @param board le board du jeu
      */
     public Game() {
         this.balloons = new ArrayList<>();
@@ -79,7 +78,7 @@ public class Game {
             for (Balloon b : balloons) {
                 if (b.isActive()) {
                     b.updateState();
-                    b.move();
+                    b.move(this.board.getHeight(), this.board.getWidth());
                 }
             }
 
@@ -121,7 +120,7 @@ public class Game {
             afficherFreePlateau((FreeBoard) this.board);
         }
 
-        System.out.println("\n--- STATS ---");
+        System.out.println("--- STATS ---");
         System.out.println("Credits : " + this.credits + " | Ballons : " + balloons.size());
     }
 
@@ -143,7 +142,7 @@ public class Game {
                 return "B";
             }
             else if (t.getPosition().getRow() == r && t.getPosition().getCol() == c && (t instanceof DartMonkey)) {
-                return "D";
+                return "A";
             }
             else if (t.getPosition().getRow() == r && t.getPosition().getCol() == c && (t instanceof EliteSniper)) {
                 return "E";
@@ -259,6 +258,8 @@ public class Game {
     }
     /**
      * Methode play de la classe Game, qui jerer le core du jeu
+     * Il y a 3 mode ( pour maintenat ) de DefinedBoard
+     * 1 pour Commencer le round, 2 pour placer les tours, 3 pour sortir
      * @param height la hauteur du board
      * @param width la largeur du board
      */
@@ -308,6 +309,7 @@ public class Game {
 
             if (choix == 3) {
                 System.out.println("Merci de jouer ce super cool jeu!");
+                scan.close();
                 break;
             }
 

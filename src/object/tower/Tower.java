@@ -72,7 +72,6 @@ public abstract class Tower {
     protected Projectil attack(List<Balloon> balloons) throws NotMatchException {
         Balloon target = findTarget(balloons);
         if (target == null) return null;
-
         if (this.effectType == EffectType.IMMEDIATE && this.porte == -1) {
             target.hit(this.type.getDegats());
             return null;

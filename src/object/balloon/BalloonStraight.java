@@ -72,39 +72,25 @@ public class BalloonStraight extends Balloon {
      */
     @Override
     public boolean move() {
-        // Vérifier si on peut bouger
-        if (!active) {
-            return false;
-        }
-        
-        // Avancer selon la direction
-        if (direction == Direction.UP) {
-            posY -= speed;
-            if (posY <= endY) {
-                posY = endY;
-                active = false;
-            }
-        } else if (direction == Direction.DOWN) {
-            posY += speed;
-            if (posY >= endY) {
-                posY = endY;
-                active = false;
-            }
-        } else if (direction == Direction.LEFT) {
-            posX -= speed;
+        if (!active || freezeTimer > 0) return active;
 
-            if (posX <= endX) {
-                posX = endX;
-                active = false;
-            }
+        double currentSpeed = getEffectiveSpeed();
+        if (currentSpeed <= 0) return active;
+
+        if (direction == Direction.UP) {
+            posY -= currentSpeed;
+            if (posY <= endY) { posY = endY; active = false; }
+        } else if (direction == Direction.DOWN) {
+            posY += currentSpeed;
+            if (posY >= endY) { posY = endY; active = false; }
+        } else if (direction == Direction.LEFT) {
+            posX -= currentSpeed;
+            if (posX <= endX) { posX = endX; active = false; }
         } else if (direction == Direction.RIGHT) {
-            posX += speed;
-            if (posX >= endX) {
-                posX = endX;
-                active = false;
-            }
+            posX += currentSpeed;
+            if (posX >= endX) { posX = endX; active = false; }
         }
-        
+
         return active;
     }
 

@@ -53,57 +53,38 @@ public class BalloonPath extends Balloon {
      */
     @Override
     public boolean move() {
-        // Vérifier si le ballon peut encore bouger
-        if (!active) {
-            return false;  // Le ballon est déjà sorti ou détruit
-        }
-        
-        // suivre le chemin (si pas encore fini) 
+        if (!active || freezeTimer > 0) return active;
+
+        double currentSpeed = getEffectiveSpeed();
+        if (currentSpeed <= 0) return active;
+
+        // On commence par viser la case d'après celle où on est
         if (pathIndex < path.size()) {
-            // Prendre la prochaine case à atteindre
             Cell targetCell = path.get(pathIndex);
             Position targetPos = targetCell.getPosition();
-            
-            // Coordonnées du CENTRE de la case cible
-            // +0.5 pour viser le milieu de la case, pas le coin
+
             double targetX = targetPos.getCol() + 0.5;
             double targetY = targetPos.getRow() + 0.5;
-            
-            // Calculer la distance entre le ballon et la case cible
-            double dx = targetX - posX;  // Différence horizontale
-            double dy = targetY - posY;  // Différence verticale
-            double distance = Math.sqrt(dx * dx + dy * dy);  // Distance réelle (Pythagore)
-            
-            // cas1 : On peut atteindre la case en un seul déplacement
-            if (distance <= speed) {
-                // On se téléporte exactement au centre de la case
+
+            double dx = targetX - posX;
+            double dy = targetY - posY;
+            double distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance <= currentSpeed) {
                 posX = targetX;
                 posY = targetY;
-                pathIndex++;  // On passe à la case suivante du chemin
-            } 
-            // cas2: La case est trop loin pour un seul déplacement
-            else {
-                // ratio = proportion de la distance à parcourir ce tour-ci
-                double ratio = speed / distance;
-                posX += dx * ratio;  // Avancer horizontalement
-                posY += dy * ratio;  // Avancer verticalement
+                pathIndex++; // On a atteint cette case, on visera la suivante au prochain tic
+            } else {
+                // Avancement fluide
+                posX += (dx / distance) * currentSpeed;
+                posY += (dy / distance) * currentSpeed;
             }
+        } else {
+            // Sortie du plateau après la dernière case
+            posX += currentSpeed;
+            if (posX > 25) active = false; // Ajuste selon la taille de ton board
         }
-        
-        // ===== ÉTAPE 2 : SORTIR DU PLATEAU (après la dernière case) =====
-        if (pathIndex >= path.size()) {
-            // Le chemin est terminé, mais le ballon doit continuer 
-            // pour vraiment sortir du plateau
-            
-            posX += speed;
-            
-            // Quand le ballon est assez loin (hors écran), on le désactive
-            if (posX > 20) {  // 20 cases à droite = largement sorti
-                active = false;  // Le ballon a vraiment fini son parcours
-            }
-        }
-        
-        // Retourne vrai si le ballon est encore actif
+
         return active;
     }
 

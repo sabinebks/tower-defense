@@ -197,7 +197,7 @@ public class Balloon {
         this.slowTimer = duration;
     }
 
-    public double getSlowFactor() {
+    public double getEffectiveSpeed() {
         if (freezeTimer > 0) {return 0;}
         if(slowTimer > 0){return this.speed * slowFactor;}
         return this.speed;

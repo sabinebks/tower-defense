@@ -33,7 +33,7 @@ public class Main {
         //le premier affichage qui va aider le joueur a jouer
         System.out.println("=== BIENVENUE DANS TOWER DEFENSE DEBUG MODE ===");
         System.out.println("Commandes disponibles :");
-        System.out.println(" - [Entrée vide] : Avancer d'un tic (50ms)");
+        System.out.println(" - [Entree vide] : Avancer d'un tic (50ms)");
         System.out.println(" - 'balloon'     : Faire apparaitre un ballon au départ");
         System.out.println(" - 'tower R C'   : Placer une BombTower à la ligne R et colonne C");
         System.out.println(" - 'quit'        : Quitter le jeu");

@@ -65,23 +65,23 @@ public class BalloonPath extends Balloon {
             double targetX = targetPos.getCol() + 0.5;
             double targetY = targetPos.getRow() + 0.5;
 
-            double dx = targetX - posX;
-            double dy = targetY - posY;
+            double dx = targetX - posColonne;
+            double dy = targetY - posLigne;
             double distance = Math.sqrt(dx * dx + dy * dy);
 
             if (distance <= currentSpeed) {
-                posX = targetX;
-                posY = targetY;
+                posColonne = targetX;
+                posLigne = targetY;
                 pathIndex++; // On a atteint cette case, on visera la suivante au prochain tic
             } else {
                 // Avancement fluide
-                posX += (dx / distance) * currentSpeed;
-                posY += (dy / distance) * currentSpeed;
+                posColonne += (dx / distance) * currentSpeed;
+                posLigne += (dy / distance) * currentSpeed;
             }
         } else {
             // Sortie du plateau après la dernière case
-            posX += currentSpeed;
-            if (posX > 25) active = false; // Ajuste selon la taille de ton board
+            posColonne += currentSpeed;
+            if (posLigne > 25) active = false; // Ajuste selon la taille de ton board
         }
 
         return active;

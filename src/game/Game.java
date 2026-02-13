@@ -133,7 +133,7 @@ public class Game {
     private String checkEntityAt(int r, int c) {
         for (Balloon b : balloons) {
             // on cast en int pour l'affichage sur la grille de caractères
-            if ((int)b.getPosY() == r && (int)b.getPosX() == c) return "B";
+            if ((int)b.getLigne() == r && (int)b.getColonne() == c) return "B";
         }
         //pour les towers
         for (Tower t : towers) {

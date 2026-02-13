@@ -77,17 +77,17 @@ public class BalloonStraight extends Balloon {
         if (currentSpeed <= 0) return active;
 
         if (direction == Direction.UP) {
-            posY -= currentSpeed;
-            if (posY <= endY) { posY = endY; active = false; }
+            posLigne -= currentSpeed;
+            if (posLigne <= endY) { posLigne = endY; active = false; }
         } else if (direction == Direction.DOWN) {
-            posY += currentSpeed;
-            if (posY >= endY) { posY = endY; active = false; }
+            posLigne += currentSpeed;
+            if (posLigne >= endY) { posLigne = endY; active = false; }
         } else if (direction == Direction.LEFT) {
-            posX -= currentSpeed;
-            if (posX <= endX) { posX = endX; active = false; }
+            posColonne -= currentSpeed;
+            if (posColonne <= endX) { posColonne = endX; active = false; }
         } else if (direction == Direction.RIGHT) {
-            posX += currentSpeed;
-            if (posX >= endX) { posX = endX; active = false; }
+            posColonne += currentSpeed;
+            if (posColonne >= endX) { posColonne = endX; active = false; }
         }
 
         return active;

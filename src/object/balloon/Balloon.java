@@ -11,8 +11,8 @@ public class Balloon {
     protected int id;
     
     /** Position précise (avec décimales pour mouvement fluide) */
-    protected double posX;
-    protected double posY;
+    protected double posColonne; //X
+    protected double posLigne; //Y
     
     /** Vitesse (unités par tic) */
     protected double speed;
@@ -37,14 +37,14 @@ public class Balloon {
      * Crée un ballon de base.
      * 
      * @param id identifiant unique
-     * @param startX position X de départ
-     * @param startY position Y de départ
+     * @param startColonne position X de départ
+     * @param startLigne position Y de départ
      * @param type type du ballon
      */
-    public Balloon(int id, double startX, double startY, BalloonType type) {
+    public Balloon(int id, double startLigne, double startColonne, BalloonType type) {
         this.id = id;
-        this.posX = startX;
-        this.posY = startY;
+        this.posColonne = startColonne;
+        this.posLigne = startLigne;
         this.type = type;
         this.active = true;
         this.exitTime = -1;
@@ -103,7 +103,7 @@ public class Balloon {
      * @return la position de la case où se trouve le ballon
      */
     public Position getCurrentPosition() {
-        return new Position((int)posY, (int)posX);
+        return new Position((int)posColonne, (int)posLigne);
     }
 
     /**
@@ -161,16 +161,16 @@ public class Balloon {
      * Retourne la position X précise.
      * @return posX
      */
-    public double getPosX() {
-        return posX;
+    public double getColonne() {
+        return posColonne;
     }
 
     /**
      * Retourne la position Y précise.
      * @return posY
      */
-    public double getPosY() {
-        return posY;
+    public double getLigne() {
+        return posLigne;
     }
 
     public void updateState(){

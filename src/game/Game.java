@@ -1,12 +1,12 @@
-package board;
+package game;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 
-import object.Horloge;
 import object.balloon.*;
 import board.typeOfBoard.*;
+import board.*;
 
 public class Game {
     private Horloge horloge;

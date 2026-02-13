@@ -1,25 +1,15 @@
-package game;
+package Livrables;
 
 import board.*;
-import board.typeOfBoard.DefinedBoard;
-import object.balloon.Balloon;
-
-import object.balloon.BalloonType;
-import object.tower.BombTower;
-import object.tower.Tower;
-import object.tower.EffectType;
+import board.typeOfBoard.*;
+import object.balloon.*;
+import object.tower.*;
 import object.tower.projectil.*;
+import game.*;
 
 import java.util.Scanner;
 
-// nn crée une petite classe concrète pour la tour car Tower est abstraite
-class TestTower extends Tower {
-    public TestTower(Position p) {
-        super(p, 100, 3, 1000, false, EffectType.AREA, ProjectilType.BOMBE);
-    }
-}
-
-public class Main {
+public class Livrable3 {
     public static void main(String[] args) {
         // nitialisation du plateau (juste un exemple 10*10)
         DefinedBoard board = new DefinedBoard(10, 10);

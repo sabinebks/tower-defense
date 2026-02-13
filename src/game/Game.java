@@ -1,14 +1,10 @@
 package game;
 
-import board.Board;
-import board.Cell;
-import board.Position;
-import board.typeOfBoard.DefinedBoard;
-import board.typeOfBoard.FreeBoard;
+import board.*;
+import board.typeOfBoard.*;
 import object.balloon.*;
-import object.tower.Tower;
-import object.tower.projectil.NotMatchException;
-import object.tower.projectil.Projectil;
+import object.tower.*;
+import object.tower.projectil.*;
 
 import java.util.ArrayList;
 import java.util.List;

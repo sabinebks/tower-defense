@@ -111,4 +111,24 @@ public class Game {
         }
     }
 
+    /**
+     * methode principale pour l'affichage
+     */
+    private void render() {
+        //pour effacer le contenu du terminal
+        System.out.print("\033[H\033[2J");
+        //elle garde qlq caractere dans les buffer de processeur elle va les afficher apres
+        System.out.flush();
+
+        if (this.board instanceof DefinedBoard) {
+            afficherDefinedPlateau((DefinedBoard) this.board);
+        } else if (this.board instanceof FreeBoard) {
+            afficherFreePlateau((FreeBoard) this.board);
+        }
+
+        System.out.println("\n--- STATS ---");
+        System.out.println("Crédits : " + this.credits + " | Ballons : " + balloons.size());
+    }
+
+
 }

@@ -68,4 +68,47 @@ public class Game {
         }
     }
 
+    /**
+     * methode pour gerer tout le jeu en fcontion des tick d'horloge
+     *
+     */
+
+    public void gameTick() {
+        try {
+            // mise à jour des ballons en utilisant move de ballons
+            for (Balloon b : balloons) {
+                if (b.isActive()) {
+                    b.updateState();
+                    b.move();
+                }
+            }
+
+            // attaque des tours
+            for (Tower t : towers) {
+                t.update(balloons, activeProjectils);
+            }
+
+            // Vol des projectiles
+            for (Projectil p : activeProjectils) {
+                if (p.isActive()) {
+                    p.update();
+                }
+            }
+
+            // nettoyage
+            for (Balloon b : balloons) {
+                if (!b.isActive() && b.getHealth() <= 0) {
+                    this.credits += 10;
+                }
+            }
+            activeProjectils.removeIf(p -> !p.isActive());
+            balloons.removeIf(b -> !b.isActive());
+
+            render();
+
+        } catch (NotMatchException e) {
+            System.err.println("Erreur : " + e.getMessage());
+        }
+    }
+
 }

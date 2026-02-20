@@ -506,7 +506,7 @@ public class Game {
     }
 
     System.out.println("=== AUTO PLAY FINISHED ===");
-    System.out.println("Ticks joués = " + tick);
+    System.out.println("Ticks joues = " + tick);
 }
 /**
  * Lance une simulation automatique du jeu sur un plateau libre.
@@ -603,6 +603,6 @@ public void autoPlayB(int height, int width, int nbBallons) {
     }
 
     System.out.println("=== AUTO PLAY B FINISHED ===");
-    System.out.println("Ticks joués = " + tick);
-}
+    System.out.println("Ticks joues = " + tick);
+    }
 }

@@ -27,12 +27,16 @@ public class BalloonPath extends Balloon {
     public BalloonPath(int id, Cell startCell, BalloonType type, List<Cell> path) {
         // Appeler le constructeur parent
         super(id, 
-              startCell.getPosition().getCol() + 0.5,  // Centre de la cellule
-              startCell.getPosition().getRow() + 0.5, 
+              startCell.getPosition().getRow() + 0.5,  // Centre de la cellule
+              startCell.getPosition().getCol() + 0.5, 
               type);
         
         this.path = path;
-        this.pathIndex = 0;
+        if (path == null || path.isEmpty()) {
+            this.active = false;
+            this.pathIndex = 0;
+        }
+
     }
 
     /**
@@ -53,41 +57,53 @@ public class BalloonPath extends Balloon {
      */
     @Override
     public boolean move(int height, int width) {
+        if (!active) {
+            return false;
+        }
         if (!active || freezeTimer > 0) return active;
 
+        if (pathIndex >= path.size()) {
+            active = false;
+            return false;
+        }
+
+        Cell targetCell = path.get(pathIndex);
         double currentSpeed = getEffectiveSpeed();
         if (currentSpeed <= 0) return active;
 
-        // On commence par viser la case d'après celle où on est
-        if (pathIndex < path.size()) {
-            Cell targetCell = path.get(pathIndex);
-            Position targetPos = targetCell.getPosition();
+        Position targetPos = targetCell.getPosition();
 
-            double targetX = targetPos.getCol() + 0.5;
-            double targetY = targetPos.getRow() + 0.5;
+        double targetLigne = targetPos.getRow() + 0.5;
+        double targetColonne = targetPos.getCol() + 0.5;
 
-            double dx = targetX - posColonne;
-            double dy = targetY - posLigne;
-            double distance = Math.sqrt(dx * dx + dy * dy);
+        double diffCol = targetColonne - posColonne;
+        double diffRow = targetLigne - posLigne;
 
-            if (distance <= currentSpeed) {
-                posColonne = targetX;
-                posLigne = targetY;
-                pathIndex++; // On a atteint cette case, on visera la suivante au prochain tic
-                
-            } else {
-                // Avancement fluide
-                posColonne += (dx / distance) * currentSpeed;
-                posLigne += (dy / distance) * currentSpeed;
+        double distance = Math.sqrt(diffCol * diffCol + diffRow * diffRow);
+
+        if (distance == 0) {
+            pathIndex += 1;
+            if (pathIndex >= path.size()) active = false;
+            return active;
+        }
+
+        if (distance <= currentSpeed) {
+            posColonne = targetColonne;
+            posLigne = targetLigne;
+            pathIndex += 1;
+
+            if (pathIndex >= path.size()) {
+                active = false;
             }
-        } else {
-            // Sortie du plateau après la dernière case
-            posColonne += currentSpeed;
-            
+        } 
+        else {
+            posColonne += (diffCol / distance) * currentSpeed;
+            posLigne += (diffRow / distance) * currentSpeed;
+        }
+        
         if (posColonne < 0 || posColonne >= width || posLigne < 0 || posLigne >= height) {
-                active = false; 
-            }
-        }   
+            active = false;
+        }  
 
         return active;
     }

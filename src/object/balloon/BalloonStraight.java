@@ -12,8 +12,8 @@ public class BalloonStraight extends Balloon {
     private Direction direction;
     
     /** Position finale (destination) */
-    private double endX;
-    private double endY;
+    private double endCol;
+    private double endRow;
     
     /** Positions de départ et d'arrivée (pour affichage) */
     private Position startPos;
@@ -31,16 +31,16 @@ public class BalloonStraight extends Balloon {
     public BalloonStraight(int id, Position start, Position end, BalloonType type) {
         // Appeler le constructeur parent
         super(id, 
-              start.getCol() + 0.5,  // Centre de la cellule de départ
-              start.getRow() + 0.5, 
+              start.getRow() + 0.5,  // Centre de la cellule de départ
+              start.getCol() + 0.5, 
               type);
         
-        this.startPos = start;
-        this.endPos = end;
+        this.endCol = end.getCol() + 0.5;
+        this.endRow = end.getRow() + 0.5;
         
         // Position finale (centre de la cellule d'arrivée)
-        this.endX = end.getCol() + 0.5;
-        this.endY = end.getRow() + 0.5;
+        this.endCol = end.getCol() + 0.5;
+        this.endRow = end.getRow() + 0.5;
         
         // Déterminer la direction du mouvement
         if (end.getRow() > start.getRow()) {
@@ -79,16 +79,16 @@ public class BalloonStraight extends Balloon {
 
         if (direction == Direction.UP) {
             posLigne -= currentSpeed;
-            if (posLigne <= endY) { posLigne = endY; active = false; }
+            if (posLigne <= endRow) { posLigne = endRow; active = false; }
         } else if (direction == Direction.DOWN) {
             posLigne += currentSpeed;
-            if (posLigne >= endY) { posLigne = endY; active = false; }
+            if (posLigne >= endRow) { posLigne = endRow; active = false; }
         } else if (direction == Direction.LEFT) {
             posColonne -= currentSpeed;
-            if (posColonne <= endX) { posColonne = endX; active = false; }
+            if (posColonne <= endCol) { posColonne = endCol; active = false; }
         } else if (direction == Direction.RIGHT) {
             posColonne += currentSpeed;
-            if (posColonne >= endX) { posColonne = endX; active = false; }
+            if (posColonne >= endCol) { posColonne = endCol; active = false; }
         }
 
         return active;

@@ -140,6 +140,9 @@ Elle coordonne l'ensemble des entités et assure la progression automatique du j
 **La gestion du temps (gameTick) :**
 Orchestrer l'ordre des actions à chaque tic d'horloge : d'abord le déplacement des ballons, puis l'attaque des tours
 
+**La classe MainTest:**
+- Ca permet de jouer comme un jeu normal : il permet de choisir quelle action on veut lancer ( jouer, placer un tower ou terminer le jeu ), choisir quelle type de tower a placer et la position a placer, et permet aussi de generer le nombre de ballon qui nous attaque.
+
 **L'automatisation (autoPlayA et autoPlayB) :**
 - autoPlayA (DefinedBoard) : Initialise un plateau avec un chemin fixe, place aléatoirement des tours  hors du chemin, et génère la vague de ballons demandée.
 - autoPlayB (FreeBoard) : Initialise un plateau libre, génère plusieurs chemins rectilignes, place les tours aléatoirement et crée un ballon par chemin.

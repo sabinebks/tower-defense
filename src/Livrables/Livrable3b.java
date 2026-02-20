@@ -1,6 +1,6 @@
 package Livrables;
 
-import game.*;
+import game.Game;
 
 public class Livrable3b {
 

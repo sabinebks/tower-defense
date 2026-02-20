@@ -8,6 +8,8 @@ import object.tower.projectil.*;
 
 import java.util.*;
 
+import javax.swing.text.Position;
+
 public class Game {
     /**
      * les attributs :
@@ -412,6 +414,17 @@ public class Game {
             }
         } 
     }
+    /**
+ * Lance une simulation automatique du jeu sur un plateau défini.
+ * Crée le plateau avec les dimensions données, place des tours aléatoires,
+ * génère des ballons puis exécute la boucle du jeu jusqu'à leur destruction
+ * ou sortie du plateau.
+ *
+ * @param height hauteur du plateau
+ * @param width largeur du plateau
+ * @param nbBallons nombre de ballons à générer
+ * @return void (aucune valeur retournée)
+ */
    public void autoPlayA(int height, int width, int nbBallons) {
     this.board = new DefinedBoard(height, width);
     render();
@@ -487,6 +500,17 @@ public class Game {
     System.out.println("=== AUTO PLAY FINISHED ===");
     System.out.println("Ticks joués = " + tick);
 }
+/**
+ * Lance une simulation automatique du jeu sur un plateau libre.
+ * Génère des chemins, crée des ballons suivant ces chemins,
+ * place des tours aléatoires et exécute la simulation jusqu'à
+ * destruction de tous les ballons.
+ *
+ * @param height hauteur du plateau
+ * @param width largeur du plateau
+ * @param nbBallons nombre de ballons à générer
+ * @return void (aucune valeur retournée)
+ */
 public void autoPlayB(int height, int width, int nbBallons) {
     // Initialisation du board
     this.board = new FreeBoard(height, width);

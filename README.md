@@ -165,7 +165,7 @@ Ces méthodes permettent de simuler une partie complète sans intervention manue
 **Nettoyage :** make clean
 
 ### Difficultés restant à résoudre
-
+corriger les tests 
 ## Livrable 4
 
 ### Atteinte des objectifs

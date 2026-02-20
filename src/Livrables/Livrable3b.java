@@ -16,8 +16,8 @@ public class Livrable3b {
         
         Game game = new Game();
         game.initFreeBoard(height, width, nbChemins);
-        game.spawnMultipleBalloon(nbChemins);
+        game.spawnBalloon(nbChemins);
         game.addTower();
-        game.runGame();
+        game.play();
     }
 }

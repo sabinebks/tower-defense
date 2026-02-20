@@ -300,7 +300,7 @@ public class Game {
         render();
         
         while (true) {
-            System.out.println("--- MENU ---");
+            System.out.println("--- OPTION HOLA MI AMIGOS ---");
             System.out.println("1 : Commencer le round ");
             System.out.println("2 : Placer une tour");
             System.out.println("3 : Quitter");
@@ -308,7 +308,7 @@ public class Game {
             int choix = Integer.parseInt(scan.nextLine().trim());
 
             if (choix == 3) {
-                System.out.println("Merci de jouer!");
+                System.out.println("Merci de jouer ce super cool jeu!");
                 scan.close();
                 break;
             }
@@ -333,15 +333,8 @@ public class Game {
                 int max = 10000; // ca aide a eviter des boucles trop longs
 
                 while (!(balloons.isEmpty() && activeProjectils.isEmpty()) && tick < max) {
-                    System.out.println(" Le tick numero " + tick);
-                    for ( Balloon b : balloons) {
-                        int r = (int) Math.floor(b.getLigne());
-                        int c = (int) Math.floor(b.getColonne());
-                        System.out.println("Ballon type " + b.getType() + " est a pos " + b.getColonne() + " : " + b.getLigne());
-                        System.out.println("DRAW balloon " + b.getType() + " at cell ("+r+","+c+")");
-                    }
-                    
                     gameTick(); // dans 1 tic : ballon bouge, les tours attaquent,render le board
+                    System.out.println(" Le tick numero " + tick);
                     tick++;
                 }
 
@@ -419,7 +412,7 @@ public class Game {
             }
         } 
     }
-    public void autoPlayA(int height, int width, int nbBallons) {
+   public void autoPlayA(int height, int width, int nbBallons) {
     this.board = new DefinedBoard(height, width);
     render();
 
@@ -580,5 +573,4 @@ public void autoPlayB(int height, int width, int nbBallons) {
     System.out.println("=== AUTO PLAY B FINISHED ===");
     System.out.println("Ticks joués = " + tick);
 }
-
 }

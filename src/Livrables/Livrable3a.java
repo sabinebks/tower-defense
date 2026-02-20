@@ -17,9 +17,7 @@ public class Livrable3a {
 
     
         Game game = new Game();
-        game.afficherDefinedPLateau(height, width);
-        game.spawnBalloon(nbBallons);
-        game.addTower();
-        game.play();
+         // Appel de la fonction autoPlayA pour le plateau aléatoire
+        game.autoPlayA(height, width, nbBallons);
     }
 }

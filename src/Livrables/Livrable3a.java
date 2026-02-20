@@ -18,8 +18,8 @@ public class Livrable3a {
     
         Game game = new Game();
         game.initDefinedBoard(height, width);
-        game.spawnMultipleBalloon(nbBallons);
+        game.spawnBalloon(nbBallons);
         game.addTower();
-        game.runGame();
+        game.play();
     }
 }

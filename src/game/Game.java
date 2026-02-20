@@ -487,4 +487,90 @@ public class Game {
     System.out.println("=== AUTO PLAY FINISHED ===");
     System.out.println("Ticks joués = " + tick);
 }
+public void autoPlayB(int height, int width, int nbBallons) {
+    // Initialisation du board
+    this.board = new FreeBoard(height, width);
+    FreeBoard fb = (FreeBoard) this.board;
+    fb.init();
+    fb.setNbCheminsVoulus(3); // on peut générer 3 chemins
+    fb.calculerPath();
+    
+    // Initialisation des ballons droits
+    balloons.clear();
+    Random rand = new Random();
+    for (int i = 0; i < nbBallons; i++) {
+        int cheminNum = rand.nextInt(fb.retourneNbrChemins());
+        Position start = fb.retourneLesChemins(cheminNum)[0];
+        Position end = fb.retourneLesChemins(cheminNum)[1];
+        BalloonStraight b = new BalloonStraight(idCounter++, start, end, BalloonType.values()[rand.nextInt(BalloonType.values().length)]);
+        balloons.add(b);
+    }
+
+    // Placer quelques tours aléatoires (peu importe le chemin)
+    towers.clear();
+    for (int t = 1; t <= 5; t++) { // quelques tours
+        int r = rand.nextInt(height);
+        int c = rand.nextInt(width);
+        Position pos = new Position(r, c);
+        Tower tower = null;
+        switch (t) {
+            case 1: tower = new BombTower(pos); break;
+            case 2: tower = new DartMonkey(pos); break;
+            case 3: tower = new IceTower(pos); break;
+            case 4: tower = new SlowTower(pos); break;
+            case 5: tower = new TackShooter(pos); break;
+        }
+        if (tower != null) towers.add(tower);
+    }
+
+    int tick = 0;
+    boolean finished = false;
+
+    while (!finished) {
+        tick++;
+
+        // Avancer les ballons
+        for (Balloon b : balloons) {
+            if (b.isActive()) {
+                b.updateState();
+                b.move(height, width);
+            }
+        }
+
+        // Attaque des tours
+     for (Tower t : towers) {
+    try {
+        t.update(balloons, activeProjectils);
+    } catch (NotMatchException e) {
+        System.err.println("Erreur lors de l'attaque d'une tour : " + e.getMessage());
+
+    }
+}
+        // Vol des projectiles
+        for (Projectil p : activeProjectils) {
+            if (p.isActive()) p.update();
+        }
+
+        // Nettoyage
+        for (Balloon b : balloons) {
+            if (!b.isActive() && b.getHealth() <= 0) credits += 10;
+        }
+        balloons.removeIf(b -> !b.isActive());
+        activeProjectils.removeIf(p -> !p.isActive());
+
+        // Affichage du board 
+        afficherFreePlateau(fb);
+
+      
+        System.out.println("--- STATS ---");
+        System.out.println("Ticks : " + tick + " | Ballons actifs : " + balloons.size() + " | Credits : " + credits);
+        System.out.println();
+
+        // Fin si tous les ballons sont morts
+        finished = balloons.isEmpty();
+    }
+
+    System.out.println("=== AUTO PLAY B FINISHED ===");
+    System.out.println("Ticks joués = " + tick);
+}
 }

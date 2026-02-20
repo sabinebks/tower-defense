@@ -48,7 +48,12 @@ public abstract class Tower {
         this.effectType = effectType;
         this.type = type;
     }
-
+    /**
+     * Methode pour mettre a jour apres un shot
+     * @param balloons liste des ballons
+     * @param activeProjectiles liste des projectils
+     * @throws NotMatchException
+     */
     public void update(List<Balloon> balloons, List<Projectil> activeProjectiles) throws NotMatchException {
         ticksSinceLastShot++;
         // On vérifie si la tour peut tirer selon sa cadence
@@ -57,8 +62,8 @@ public abstract class Tower {
             Projectil p = this.attack(balloons);
             if (p != null) {
                 activeProjectiles.add(p);
-                ticksSinceLastShot = 0;
             }
+            ticksSinceLastShot = 0;
         }
     }
 
@@ -72,16 +77,22 @@ public abstract class Tower {
     protected Projectil attack(List<Balloon> balloons) throws NotMatchException {
         Balloon target = findTarget(balloons);
         if (target == null) return null;
+        double startX = position.getCol() + 0.5;
+        double startY = position.getRow() + 0.5;
         if (this.effectType == EffectType.IMMEDIATE && this.porte == -1) {
             target.hit(this.type.getDegats());
             return null;
         }
 
+        if (effectType == EffectType.SLOW || effectType == EffectType.FREEZE) {
+            return new ProjectilEffet(this.type, startX, startY, target, effectType);
+        }
+
         if (this.effectType == EffectType.AREA) {
             return new ProjectilBombe(
                     this.type,
-                    position.getCol(),
-                    position.getRow(),
+                    startX,
+                    startY,
                     target,
                     3,
                     balloons
@@ -90,21 +101,25 @@ public abstract class Tower {
 
         return new ProjectilSimple(
                 this.type,
-                position.getCol(),
-                position.getRow(),
+                startX,
+                startY,
                 target
         );
     }
 
+    
     /**
      * méthode pour calculer la distance entre la tour et le ballon b
      * @param b le ballon b
      * @return la distance
      */
     public double distanceTo(Balloon b) {
-        Position p = b.getCurrentPosition();
-        return Math.sqrt(Math.pow(position.getRow() - p.getRow(), 2) +
-                Math.pow(position.getCol() - p.getCol(), 2));
+        double towerRow = position.getRow() + 0.5;
+        double towerCol = position.getCol() + 0.5;
+
+        double dRow = towerRow - b.getLigne();
+        double dCol = towerCol - b.getColonne();
+        return Math.sqrt(dRow * dRow + dCol * dCol);
     }
 
     /**
@@ -116,7 +131,7 @@ public abstract class Tower {
     public Balloon findTarget(List<Balloon> balloons) {
         for (Balloon b : balloons) {
             // On vérifie si le ballon est actif et à portée
-            if (b.isActive() && (porte == -1 || distanceTo(b) <= porte)) {
+            if (b != null && b.isActive() && (porte == -1 || distanceTo(b) <= porte)) {
                 return b;
             }
         }

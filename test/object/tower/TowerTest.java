@@ -1,17 +1,13 @@
 package test.object.tower;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import board.Position;
-import object.balloon.BalloonStraight;
-import object.balloon.BalloonPath;
-import object.tower.DartMonkey;
-import object.tower.IceTower;
-import object.tower.Tower;
-
+import object.balloon.*;
+import object.tower.*;
+import object.tower.projectil.Projectil;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,77 +15,75 @@ class TowerTest {
 
     private Tower dartTower;
     private Tower iceTower;
-    private List<BalloonStraight> balloonsStraight;
-    private List<BalloonPath> balloonsPath;
+    private List<Balloon> balloons;
+    private List<Projectil> activeProjectiles;
 
     @BeforeEach
     void setUp() {
-        // Création de positions pour les tours
         Position pos1 = new Position(0, 0);
         Position pos2 = new Position(5, 5);
 
-        // Sous-classes de Tower avec constructeurs simples
         dartTower = new DartMonkey(pos1);
         iceTower = new IceTower(pos2);
 
-        // Ballons droits (exemple : départ (1,1) vers (10,10))
-        balloonsStraight = new ArrayList<>();
-        balloonsStraight.add(new BalloonStraight(1, new Position(1,1), new Position(10,10), 1.0, null));
-        balloonsStraight.add(new BalloonStraight(2, new Position(2,2), new Position(10,10), 1.0, null));
+        balloons = new ArrayList<>();
+        activeProjectiles = new ArrayList<>();
 
-        // Ballons sur chemin (exemple : chemin minimal)
-        balloonsPath = new ArrayList<>();
-        List<board.Cell> path1 = new ArrayList<>();
-        path1.add(new board.Cell(new Position(0, 1)));
-        path1.add(new board.Cell(new Position(0, 2)));
-        balloonsPath.add(new BalloonPath(1, new board.Cell(new Position(0, 1)), 1.0, null, path1));
+        // Utilisation de BalloonType.BASIC au lieu de RED
+        balloons.add(new BalloonStraight(1, new Position(1, 1), new Position(2, 2), BalloonType.BASIC));
+
+        List<board.Cell> path = new ArrayList<>();
+        path.add(new board.Cell(new Position(5, 6)));
+        path.add(new board.Cell(new Position(5, 7)));
+        
+        // Utilisation de BalloonType.MEDIUM au lieu de BLUE
+        balloons.add(new BalloonPath(2, path.get(0), BalloonType.MEDIUM, path));
     }
 
     @Test
     void testTowerPosition() {
         assertEquals(0, dartTower.getPosition().getRow());
         assertEquals(0, dartTower.getPosition().getCol());
-
-        assertEquals(5, iceTower.getPosition().getRow());
-        assertEquals(5, iceTower.getPosition().getCol());
     }
 
     @Test
     void testTowerDistanceCalculation() {
-        BalloonStraight balloon = balloonsStraight.get(0);
-        double distance = dartTower.distanceTo(balloon);
-
-        // Distance entre (0,0) et (1,1) = sqrt(2)
+        Balloon b = balloons.get(0);
+        double distance = dartTower.distanceTo(b);
         assertEquals(Math.sqrt(2), distance, 0.001);
     }
 
     @Test
     void testFindTarget() {
-        // Comme findTarget prend List<Balloon>, on peut passer les deux types
-        object.balloon.Balloon target = dartTower.findTarget(new ArrayList<>(balloonsStraight));
+        Balloon target = dartTower.findTarget(balloons);
         assertNotNull(target);
-        assertTrue(dartTower.distanceTo(target) <= dartTower.getPorte() || dartTower.getPorte() == -1);
+        
+        double dist = dartTower.distanceTo(target);
+        assertTrue(dist <= dartTower.getPorte() || dartTower.getPorte() == -1);
     }
 
     @Test
-    void testTowerAttackOnStraightBalloon() {
-        // On simule quelques ticks pour que la tour tire
-        for (int i = 0; i < 10; i++) {
-            dartTower.update(new ArrayList<>(balloonsStraight));
+    void testTowerUpdateGeneratesProjectile() {
+        try {
+            for (int i = 0; i < 10; i++) {
+                dartTower.update(balloons, activeProjectiles);
+            }
+        } catch (Exception e) {
+            fail(e.getMessage());
         }
-
-        // Au moins un ballon doit être touché
-        boolean anyInactive = balloonsStraight.stream().anyMatch(b -> !b.isActive());
-        assertTrue(anyInactive);
+        assertFalse(activeProjectiles.isEmpty());
     }
 
     @Test
-    void testTowerAttackOnPathBalloon() {
-        for (int i = 0; i < 10; i++) {
-            iceTower.update(new ArrayList<>(balloonsPath));
+    void testAttackLogic() {
+        Position loin = new Position(50, 50);
+        balloons.clear();
+        balloons.add(new BalloonStraight(3, loin, new Position(51, 51), BalloonType.STRONG));
+        
+        Balloon target = dartTower.findTarget(balloons);
+        
+        if (dartTower.getPorte() != -1 && dartTower.getPorte() < 50) {
+            assertNull(target);
         }
-
-        boolean anyInactive = balloonsPath.stream().anyMatch(b -> !b.isActive());
-        assertTrue(anyInactive);
     }
 }

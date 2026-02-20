@@ -15,7 +15,7 @@ public class Livrable3b {
 
         
         Game game = new Game();
-        game.initFreeBoard(height, width, nbChemins);
+        game.afficherFreePlateau(height, width, nbChemins);
         game.spawnBalloon(nbChemins);
         game.addTower();
         game.play();

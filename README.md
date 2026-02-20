@@ -153,14 +153,14 @@ Ces méthodes permettent de simuler une partie complète sans intervention manue
 
 **Exécution avec arguments :**
 
-- Exécuter le Livrable 3a : make livrable3a ARGS="<largeur> <hauteur> <nbBallons>"
+- Exécuter le Livrable 3a : make livrable3a ARGS="largeur hauteur nbBallons"
 
-- Exécuter le Livrable 3b : make livrable3b ARGS="<largeur> <hauteur> <Chemins>"
+- Exécuter le Livrable 3b : make livrable3b ARGS=" largeur hauteur Chemins"
 
 **Nettoyage :** make clean
 
 ### Difficultés restant à résoudre
-finaliser les tests 
+
 ## Livrable 4
 
 ### Atteinte des objectifs

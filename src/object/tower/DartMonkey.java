@@ -1,12 +1,6 @@
 package object.tower;
-
 import board.Position;
-
-
 import object.tower.projectil.ProjectilType;
-
-
-
 
 public class DartMonkey extends Tower {
     public DartMonkey(Position pos) {

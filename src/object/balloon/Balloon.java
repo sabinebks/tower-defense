@@ -70,7 +70,7 @@ public class Balloon {
      */
     public boolean move(int height, int move) {
         // À override dans les sous-classes
-        return false;
+        return active;
     }
 
     /**
@@ -103,7 +103,7 @@ public class Balloon {
      * @return la position de la case où se trouve le ballon
      */
     public Position getCurrentPosition() {
-        return new Position((int)posColonne, (int)posLigne);
+        return new Position((int)posLigne, (int)posColonne);
     }
 
     /**
@@ -179,6 +179,9 @@ public class Balloon {
         }
         if(slowTimer > 0){
             slowTimer--;
+        }
+        if (slowTimer == 0) {
+            slowFactor = 1.0;
         }
     }
 

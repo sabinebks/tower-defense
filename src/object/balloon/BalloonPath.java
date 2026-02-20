@@ -74,6 +74,7 @@ public class BalloonPath extends Balloon {
                 posColonne = targetX;
                 posLigne = targetY;
                 pathIndex++; // On a atteint cette case, on visera la suivante au prochain tic
+                
             } else {
                 // Avancement fluide
                 posColonne += (dx / distance) * currentSpeed;

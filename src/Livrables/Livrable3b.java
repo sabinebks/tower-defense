@@ -15,9 +15,8 @@ public class Livrable3b {
 
         
         Game game = new Game();
-        game.afficherFreePlateau(height, width, nbChemins);
-        game.spawnBalloon(nbChemins);
-        game.addTower();
-        game.play();
+       // Lancer l'autoplayB
+        game.autoPlayB(height, width, nbChemins);
+       
     }
 }

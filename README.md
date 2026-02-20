@@ -147,6 +147,8 @@ Ces méthodes permettent de simuler une partie complète sans intervention manue
 
 **Compilation :** make classes
 
+**Compilation des tests :** make tests
+
 **Lancer les tests :** make runtests
 
 **Création des Livrables :** make jar

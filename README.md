@@ -118,9 +118,49 @@ Pour le moment, toutes les fonctionnalités du livrable 2 fonctionnent correctem
 ## Livrable 3
 
 ### Atteinte des objectifs
+Création des tours et gestion des tirs, intégration dans la gestion du temps
+
+Les tours sont gérées par une hiérarchie de classes s'appuyant sur une classe mère abstraite Tower. Cette classe définit le comportement global des défenses grâce aux méthodes suivantes :
+
+**Tower.findTarget() :**
+
+- Parcourir la liste des ballons présents sur le plateau.
+- Vérifier si un ballon est actif et situé dans le rayon de portée (porte) de la tour.
+- Retourner le premier ballon valide comme cible.
+
+**Tower.attack() :**
+
+- Récupérer une cible via findTarget().
+- Déterminer le type d'attaque selon l'effet de la tour (EffectType).
+- Soit infliger des dégâts immédiats au ballon, soit générer un projectile 
+
+**La classe Game :**
+Elle coordonne l'ensemble des entités et assure la progression automatique du jeu grâce à deux types de méthodes :
+
+**La gestion du temps (gameTick) :**
+Orchestrer l'ordre des actions à chaque tic d'horloge : d'abord le déplacement des ballons, puis l'attaque des tours
+
+**L'automatisation (autoPlayA et autoPlayB) :**
+- autoPlayA (DefinedBoard) : Initialise un plateau avec un chemin fixe, place aléatoirement des tours  hors du chemin, et génère la vague de ballons demandée.
+- autoPlayB (FreeBoard) : Initialise un plateau libre, génère plusieurs chemins rectilignes, place les tours aléatoirement et crée un ballon par chemin.
+Ces méthodes permettent de simuler une partie complète sans intervention manuelle, en affichant les événements (ballon détruit, sorti ou ralenti) directement dans la console jusqu'à la fin du round.
+
+**Compilation :** make classes
+
+**Lancer les tests :** make runtests
+
+**Création des Livrables :** make jar
+
+**Exécution avec arguments :**
+
+- Exécuter le Livrable 3a : make livrable3a ARGS="<largeur> <hauteur> <nbBallons>"
+
+- Exécuter le Livrable 3b : make livrable3b ARGS="<largeur> <hauteur> <Chemins>"
+
+**Nettoyage :** make clean
 
 ### Difficultés restant à résoudre
-
+finaliser les tests 
 ## Livrable 4
 
 ### Atteinte des objectifs

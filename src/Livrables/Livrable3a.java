@@ -17,7 +17,7 @@ public class Livrable3a {
 
     
         Game game = new Game();
-        game.initDefinedBoard(height, width);
+        game.afficherDefinedPLateau(height, width);
         game.spawnBalloon(nbBallons);
         game.addTower();
         game.play();

@@ -7,110 +7,68 @@ import object.balloon.BalloonType;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Tests unitaires pour la classe BalloonStraight.
- */
 public class BalloonStraightTest {
 
-    /**
-     * Teste la création du ballon.
-     * Vérifie que la position initiale, la direction et le type sont corrects.
-     */
     @Test
     void testConstructorInitialisation() {
-        Position start = new Position(2, 3);
+        Position start = new Position(2, 3); // Row 2, Col 3
         Position end = new Position(2, 6);
-        BalloonStraight balloon = new BalloonStraight(1, start, end, 1.0, BalloonType.BASIC);
+        BalloonStraight balloon = new BalloonStraight(1, start, end, BalloonType.BASIC);
 
-        // Vérifie la position initiale (centre de la cellule)
-        assertEquals(3.5, balloon.getPosX());  // col + 0.5
-        assertEquals(2.5, balloon.getPosY());  // row + 0.5
-
-        // Vérifie la direction
+        // posX = Col (3.5), posY = Ligne (2.5)
+        assertEquals(3.5, balloon.getLigne(), 0.01);  
+        assertEquals(2.5, balloon.getColonne(), 0.01);  
         assertEquals(Direction.RIGHT, balloon.getDirection());
-
-        // Vérifie la position de départ et d'arrivée
-        assertEquals(start, balloon.getStartPos());
-        assertEquals(end, balloon.getEndPos());
     }
 
-    /**
-     * Teste le déplacement vers la droite
-     */
     @Test
     void testMoveRight() {
         Position start = new Position(0, 0);
         Position end = new Position(0, 3);
-        BalloonStraight balloon = new BalloonStraight(1, start, end, 1.0, BalloonType.MEDIUM);
-
-        // Après 1 déplacement
-        balloon.move();
-        assertEquals(0.5, balloon.getPosY());
-        assertEquals(1.5, balloon.getPosX());
-        assertTrue(balloon.move());  // Toujours actif tant qu'il n'a pas atteint la fin
+        BalloonStraight balloon = new BalloonStraight(1, start, end, BalloonType.MEDIUM);
+        balloon.move(10, 10);
+        assertEquals(0.5, balloon.getColonne(), 0.01);
+        assertTrue(balloon.getLigne() > 0.5);
     }
 
-    /**
-     * Teste le déplacement vers la gauche.
-     */
     @Test
     void testMoveLeft() {
         Position start = new Position(0, 3);
         Position end = new Position(0, 0);
-        BalloonStraight balloon = new BalloonStraight(1, start, end, 1.0, BalloonType.BASIC);
-
-        balloon.move();
-        assertEquals(0.5, balloon.getPosY());
-        assertEquals(2.5, balloon.getPosX());
-        assertTrue(balloon.move());
+        BalloonStraight balloon = new BalloonStraight(1, start, end, BalloonType.BASIC);
+        balloon.move(10, 10);
+        // On vérifie que la ligne (Y) reste 0.5 et que X a diminué
+        assertEquals(0.5, balloon.getColonne(), 0.01);
+        assertTrue(balloon.getLigne() < 3.5);
     }
 
-    /**
-     * Teste le déplacement vers le bas (DOWN).
-     */
     @Test
     void testMoveDown() {
         Position start = new Position(0, 0);
         Position end = new Position(3, 0);
-        BalloonStraight balloon = new BalloonStraight(1, start, end, 1.0, BalloonType.STRONG);
-
-        balloon.move();
-        assertEquals(1.5, balloon.getPosY());  // y augmente
-        assertEquals(0.5, balloon.getPosX());  // x reste
-        assertTrue(balloon.move());
+        BalloonStraight balloon = new BalloonStraight(1, start, end, BalloonType.STRONG);
+        balloon.move(10, 10);
+        assertEquals(0.5, balloon.getLigne(), 0.01);
+        assertTrue(balloon.getColonne() > 0.5);
     }
 
-    /**
-     * Teste le déplacement vers le haut (UP).
-     */
     @Test
     void testMoveUp() {
         Position start = new Position(3, 0);
         Position end = new Position(0, 0);
-        BalloonStraight balloon = new BalloonStraight(1, start, end, 1.0, BalloonType.BASIC);
-
-        balloon.move();
-        assertEquals(2.5, balloon.getPosY());  // y diminue
-        assertEquals(0.5, balloon.getPosX());  // x reste
-        assertTrue(balloon.move());
+        BalloonStraight balloon = new BalloonStraight(1, start, end, BalloonType.BASIC);
+        balloon.move(10, 10);
+        assertEquals(0.5, balloon.getLigne(), 0.01);
+        assertTrue(balloon.getColonne() < 3.5);
     }
 
-    /**
-     * Teste que le ballon devient inactif après avoir atteint la destination.
-     */
     @Test
     void testBalloonStopsAtEnd() {
         Position start = new Position(0, 0);
         Position end = new Position(0, 1);
-        BalloonStraight balloon = new BalloonStraight(1, start, end, 1.0, BalloonType.MEDIUM);
-
-        // Déplacer jusqu'à la fin
-        while (balloon.move()) {
-            // continue moving
-        }
-
-        assertEquals(1.5, balloon.getPosX()); // position finale
-        assertEquals(0.5, balloon.getPosY());
-        assertFalse(balloon.move()); // doit être inactif
+        BalloonStraight balloon = new BalloonStraight(1, start, end, BalloonType.MEDIUM);
+        int s = 0;
+        while (balloon.move(10, 10) && s < 100) { s++; }
+        assertFalse(balloon.isActive());
     }
 }

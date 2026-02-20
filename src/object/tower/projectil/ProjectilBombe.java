@@ -5,9 +5,23 @@ import object.balloon.Balloon;
 import java.util.List;
 
 public class ProjectilBombe extends Projectil {
+    /**
+     * Les attributs de la classes
+     * Une liste des ballons dans le radius
+     * Le radius du bomb
+     */
     private List<Balloon> balloons;
     private double explosionRadius ;
-
+    /**
+     * Constructeur
+     * @param type
+     * @param startX
+     * @param startY
+     * @param target
+     * @param radius
+     * @param currentBalloons
+     * @throws NotMatchException
+     */
     public ProjectilBombe(ProjectilType type, double startX, double startY, Balloon target, double radius, List<Balloon> currentBalloons) throws NotMatchException {
         super(type, startX, startY, target);
         this.explosionRadius = radius;
@@ -16,16 +30,23 @@ public class ProjectilBombe extends Projectil {
             throw new NotMatchException("Pas possible avec ce type de projectil dans cette classe");
         }
     }
-
+    /**
+     *La methode active l'impact du projectil
+     */
     @Override
     protected void triggerImpact() {
-        target.hit(type.getDegats());
+        if (target != null && target.isActive()) {
+            target.hit(type.getDegats());
+        }
 
-        for(Balloon b : balloons) {
-            if(b != target) {
-                double distance = Math.sqrt(Math.pow(b.getColonne() - this.x, 2) + Math.pow(b.getLigne() - this.y, 2));
+        if (balloons == null) return;
 
-                if (distance <= explosionRadius){
+        for (Balloon b : balloons) {
+            if (b != null && b.isActive() && b != target) {
+                double dx = b.getColonne() - this.x;
+                double dy = b.getLigne() - this.y;
+                double d = Math.sqrt(dx * dx + dy * dy);
+                if (d <= explosionRadius) {
                     b.hit(type.getDegats());
                 }
             }

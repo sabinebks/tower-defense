@@ -12,6 +12,11 @@ classes:
 	find $(SRC) $(TEST) -name "*.java" > sources.txt
 	$(JC) -d $(CLASSES) -cp $(CP) @sources.txt
 
+tests:
+	mkdir -p $(CLASSES)
+	find $(TEST) -name "*.java" > tests.txt
+	$(JC) -d $(CLASSES) -cp $(CP) @tests.txt
+	
 runtests: classes
 	java -jar $(LIB) --class-path $(CLASSES) --scan-class-path
 

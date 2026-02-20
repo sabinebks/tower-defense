@@ -412,4 +412,79 @@ public class Game {
             }
         } 
     }
+   public void autoPlayA(int height, int width, int nbBallons) {
+    this.board = new DefinedBoard(height, width);
+    render();
+
+    // Liste des positions possibles pour placer les tours
+    ArrayList<Position> pathPositions = new ArrayList<>();
+    ArrayList<Position> nonPathPositions = new ArrayList<>();
+    Cell[][] grid = board.getGrid();
+    for (int i = 0; i < grid.length; i++) {
+        for (int j = 0; j < grid[0].length; j++) {
+            Position pos = new Position(i, j);
+            if (grid[i][j].isPath()) pathPositions.add(pos);
+            else nonPathPositions.add(pos);
+        }
+    }
+
+    Random rand = new Random();
+
+    // Placer 2 tours de chaque type aléatoirement
+    for (int t = 1; t <= 7; t++) { // 1 à 7 = types de tours
+        for (int k = 0; k < 2; k++) {
+            Position pos;
+            if (t == 1 || t == 2 || t == 5) { // tours pouvant être sur le chemin par exemple
+                if (pathPositions.isEmpty()) break;
+                pos = pathPositions.remove(rand.nextInt(pathPositions.size()));
+            } else {
+                if (nonPathPositions.isEmpty()) break;
+                pos = nonPathPositions.remove(rand.nextInt(nonPathPositions.size()));
+            }
+
+            Tower tour = null;
+            switch (t) {
+                case 1: tour = new BombTower(pos); break;
+                case 2: tour = new DartMonkey(pos); break;
+                case 3: tour = new EliteSniper(pos); break;
+                case 4: tour = new Gorilla(pos); break;
+                case 5: tour = new IceTower(pos); break;
+                case 6: tour = new SlowTower(pos); break;
+                case 7: tour = new TackShooter(pos); break;
+            }
+            if (tour != null) addTower(tour);
+        }
+    }
+
+    // Créer les ballons
+    for (int i = 0; i < nbBallons; i++) {
+        BalloonType type = BalloonType.values()[rand.nextInt(BalloonType.values().length)];
+        spawnBalloon(type);
+    }
+
+    int tick = 0;
+    int max = 10000;
+
+    // Boucle principale du jeu
+    while (!(balloons.isEmpty() && activeProjectils.isEmpty()) && tick < max) {
+        gameTick();
+
+        // Affichage simple des événements
+        for (Balloon b : balloons) {
+            if (!b.isActive()) {
+                System.out.println("Tick " + tick + ": Ballon détruit | type=" + b.getType());
+            } else if (!board.isInside((int)b.getLigne(), (int)b.getColonne())) {
+                System.out.println("Tick " + tick + ": Ballon sorti | type=" + b.getType());
+                b.remove(); // retirer le ballon
+            } else if (b.getEffectiveSpeed() < b.getSpeed()) {
+                System.out.println("Tick " + tick + ": Ballon ralenti | type=" + b.getType() + " vitesse=" + b.getEffectiveSpeed());
+            }
+        }
+
+        tick++;
+    }
+
+    System.out.println("=== AUTO PLAY FINISHED ===");
+    System.out.println("Ticks joués = " + tick);
+}
 }

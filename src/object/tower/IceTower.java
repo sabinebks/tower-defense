@@ -6,6 +6,6 @@ import object.tower.projectil.ProjectilType;
 public class IceTower extends Tower {
 
     public IceTower(Position pos) {
-        super(pos, 400, 100, 1500, false, EffectType.FREEZE, ProjectilType.NO_DAMAGE);
+        super(pos, 400, 100, 5, false, EffectType.FREEZE, ProjectilType.NO_DAMAGE);
     }
 }

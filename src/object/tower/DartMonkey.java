@@ -4,6 +4,6 @@ import object.tower.projectil.ProjectilType;
 
 public class DartMonkey extends Tower {
     public DartMonkey(Position pos) {
-        super(pos, 200, 100, 1000, true, EffectType.IMMEDIATE, ProjectilType.FLECHETTE);
+        super(pos, 200, 100, 2, true, EffectType.IMMEDIATE, ProjectilType.FLECHETTE);
     }
 }

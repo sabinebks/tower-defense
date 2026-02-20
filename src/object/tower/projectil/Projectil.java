@@ -13,7 +13,7 @@ public abstract class Projectil {
     protected double x, y;
     protected Balloon target;
     protected ProjectilType type;
-    protected double speed = 0.5;
+    protected double speed = 4.0;
     protected boolean active = true;
 
     /**
@@ -38,21 +38,9 @@ public abstract class Projectil {
         if (target == null || !target.isActive()) {
             active = false;
             return;
-        }
-
-        double diffX = target.getColonne() - this.x;
-        double diffY = target.getLigne() - this.y;
-        double distance = Math.sqrt(diffX * diffX + diffY * diffY);
-
-        if (distance < 0.2) {
+        }   
             triggerImpact();
-            active = false;
-            return;
-        }
-        
-
-        this.x += (diffX / distance) * speed;
-        this.y += (diffY / distance) * speed;
+            active = false;       
     }
 
     protected abstract void triggerImpact();

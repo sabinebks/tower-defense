@@ -11,6 +11,6 @@ import java.util.List;
 public class EliteSniper extends Tower {
 
     public EliteSniper(Position pos) {
-        super(pos, 500, -1, 2000, true, EffectType.IMMEDIATE, ProjectilType.FLECHETTE_TRES_POINTUE);
+        super(pos, 500, -1, 7, true, EffectType.IMMEDIATE, ProjectilType.FLECHETTE_TRES_POINTUE);
     }
 }

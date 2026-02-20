@@ -58,7 +58,7 @@ public abstract class Tower {
         ticksSinceLastShot++;
         // On vérifie si la tour peut tirer selon sa cadence
         if (ticksSinceLastShot >= cadence) { // Conversion simplifiée ms -> tics
-
+            System.out.println("Tower a " + position + " tirer");
             Projectil p = this.attack(balloons);
             if (p != null) {
                 activeProjectiles.add(p);

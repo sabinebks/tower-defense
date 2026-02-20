@@ -8,8 +8,6 @@ import object.tower.projectil.*;
 
 import java.util.*;
 
-import javax.swing.text.Position;
-
 public class Game {
     /**
      * les attributs :
@@ -60,10 +58,15 @@ public class Game {
         }
         else if (this.board instanceof FreeBoard) {
             FreeBoard fb = (FreeBoard) board;
-            Position[] positions = fb.retourneLesChemins(0);
+
+            int nb = fb.retourneNbrChemins();
+            if (nb <= 0) return;
+
+            // choose a random straight path
+            int id = new Random().nextInt(nb);
+            Position[] positions = fb.retourneLesChemins(id);
 
             if (positions != null && positions.length >= 2) {
-
                 BalloonStraight b = new BalloonStraight(idCounter, positions[0], positions[1], type);
                 balloons.add(b);
             }
@@ -182,18 +185,19 @@ public class Game {
                 else {
                     Cell cell = board.getCell(r, c);
                     if (cell.isPath()) {
-                    if (!path.isEmpty() && cell == path.get(0)) {
-                        System.out.print("D ");
-                    } 
-                    else if (!path.isEmpty() && cell == path.get(path.size() - 1)) {
-                        System.out.print("F ");
+                        if (!path.isEmpty() && cell == path.get(0)) {
+                            System.out.print("D ");
+                        } 
+                        else if (!path.isEmpty() && cell == path.get(path.size() - 1)) {
+                            System.out.print("F ");
+                        } 
+                        else {
+                            System.out.print("c ");
+                        }
                     } 
                     else {
-                        System.out.print("c ");
-                    }
-                } else {
                     System.out.print(". ");
-                }
+                    }
                 }
             }
             System.out.println();
@@ -302,7 +306,7 @@ public class Game {
         render();
         
         while (true) {
-            System.out.println("--- OPTION HOLA MI AMIGOS ---");
+            System.out.println("--- MENU ---");
             System.out.println("1 : Commencer le round ");
             System.out.println("2 : Placer une tour");
             System.out.println("3 : Quitter");
@@ -310,7 +314,7 @@ public class Game {
             int choix = Integer.parseInt(scan.nextLine().trim());
 
             if (choix == 3) {
-                System.out.println("Merci de jouer ce super cool jeu!");
+                System.out.println("Merci de jouer!");
                 scan.close();
                 break;
             }
@@ -335,8 +339,8 @@ public class Game {
                 int max = 10000; // ca aide a eviter des boucles trop longs
 
                 while (!(balloons.isEmpty() && activeProjectils.isEmpty()) && tick < max) {
-                    gameTick(); // dans 1 tic : ballon bouge, les tours attaquent,render le board
                     System.out.println(" Le tick numero " + tick);
+                    gameTick(); // dans 1 tic : ballon bouge, les tours attaquent,render le board
                     tick++;
                 }
 
@@ -385,28 +389,32 @@ public class Game {
                     continue;
                 }
                 Tower t = null;
+                Position p = new Position(row, col);
                 switch (tour) {
                     case 1:
-                        t = new BombTower(new Position(row, col));   
+                        t = new BombTower(p);   
                         break;
                     case 2:
-                        t = new DartMonkey(new Position(row, col));
+                        t = new DartMonkey(p);
                         break;
                     case 3:
-                        t = new EliteSniper(new Position(row, col));
+                        t = new EliteSniper(p);
                         break;
                     case 4:
-                        t = new Gorilla(new Position(row, col));
+                        t = new Gorilla(p);
                         break;
                     case 5:
-                        t = new IceTower(new Position(row, col));
+                        t = new IceTower(p);
                         break;
                     case 6:
-                        t = new SlowTower(new Position(row, col));
+                        t = new SlowTower(p);
                         break;
                     case 7:
-                        t = new TackShooter(new Position(row, col));
+                        t = new TackShooter(p);
                         break;
+                    default:
+                        System.out.println("Choix invalide");
+                        continue;
                 }
                 this.towers.add(t);
                 System.out.println("Tour place en |" + row + " : " + col + "|");

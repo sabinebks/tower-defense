@@ -39,8 +39,7 @@ public class Game {
 
     /**
      * Cree et ajoute un ballon au jeu en fonction du type de plateau
-     * @param type le type de ballon 
-     * @param speed la vitesse du ballon
+     * @param type le type de ballon
      */
     public void spawnBalloon(BalloonType type) {
         idCounter++;
@@ -286,7 +285,7 @@ public class Game {
 
         if (mode == 1) {
             this.board = new DefinedBoard(height, width);
-        } 
+        }
         else {
             this.board = new FreeBoard(height, width);
             FreeBoard fb = (FreeBoard) this.board;
@@ -294,6 +293,7 @@ public class Game {
             fb.setNbCheminsVoulus(5);
             fb.calculerPath();
         }
+
         System.out.println("Mode choisi:");
         if ( mode == 1) {
             System.out.println("DefinedBoard ");

@@ -7,4 +7,5 @@ public enum BalloonType {
     BASIC,
     MEDIUM,
     STRONG;
+
 }

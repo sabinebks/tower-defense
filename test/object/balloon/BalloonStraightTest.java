@@ -16,8 +16,8 @@ public class BalloonStraightTest {
         BalloonStraight balloon = new BalloonStraight(1, start, end, BalloonType.BASIC);
 
         // posX = Col (3.5), posY = Ligne (2.5)
-        assertEquals(3.5, balloon.getLigne(), 0.01);  
-        assertEquals(2.5, balloon.getColonne(), 0.01);  
+        assertEquals(2.5, balloon.getLigne(), 0.01);  
+        assertEquals(3.5, balloon.getColonne(), 0.01);  
         assertEquals(Direction.RIGHT, balloon.getDirection());
     }
 
@@ -27,8 +27,8 @@ public class BalloonStraightTest {
         Position end = new Position(0, 3);
         BalloonStraight balloon = new BalloonStraight(1, start, end, BalloonType.MEDIUM);
         balloon.move(10, 10);
-        assertEquals(0.5, balloon.getColonne(), 0.01);
-        assertTrue(balloon.getLigne() > 0.5);
+        assertEquals(0.5, balloon.getLigne(), 0.01);
+        assertTrue(balloon.getColonne() > 0.5);
     }
 
     @Test
@@ -48,8 +48,8 @@ public class BalloonStraightTest {
         Position end = new Position(3, 0);
         BalloonStraight balloon = new BalloonStraight(1, start, end, BalloonType.STRONG);
         balloon.move(10, 10);
-        assertEquals(0.5, balloon.getLigne(), 0.01);
-        assertTrue(balloon.getColonne() > 0.5);
+        assertEquals(0.5, balloon.getColonne(), 0.01);
+        assertTrue(balloon.getLigne() > 0.5);
     }
 
     @Test

@@ -1,10 +1,10 @@
+
 JC = javac
 CLASSES = classes
 SRC = src
 TEST = test
 LIB = junit-console.jar
-CP = ".:$(SRC):$(TEST):$(CLASSES):$(LIB)"
-JAVA_FILES := $(shell find $(SRC) -name "*.java")
+CP = .:$(SRC):$(TEST):$(CLASSES):$(LIB)
 
 all: classes jar
 

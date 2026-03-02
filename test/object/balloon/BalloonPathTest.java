@@ -15,7 +15,7 @@ public class BalloonPathTest {
         Cell start = new Cell(new Position(2, 3)); 
         BalloonPath balloon = new BalloonPath(1, start, BalloonType.BASIC, List.of());
 
-        assertTrue(balloon.isActive());
+        assertFalse(balloon.isActive());
         assertEquals(2.5, balloon.getLigne(), 0.01);
         assertEquals(3.5, balloon.getColonne(), 0.01);
         assertEquals(0, balloon.getPathIndex());

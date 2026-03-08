@@ -1,6 +1,0 @@
-test/object/balloon/BalloonStraightTest.java
-test/object/balloon/BalloonPathTest.java
-test/object/tower/TowerTest.java
-test/board/DefinedBoardTest.java
-test/board/FreeBoardTest.java
-test/game/GameTest.java

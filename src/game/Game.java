@@ -39,8 +39,7 @@ public class Game {
 
     /**
      * Cree et ajoute un ballon au jeu en fonction du type de plateau
-     * @param type le type de ballon 
-     * @param speed la vitesse du ballon
+     * @param type le type de ballon
      */
     public void spawnBalloon(BalloonType type) {
         idCounter++;
@@ -431,7 +430,6 @@ public class Game {
  * @param height hauteur du plateau
  * @param width largeur du plateau
  * @param nbBallons nombre de ballons à générer
- * @return void (aucune valeur retournée)
  */
    public void autoPlayA(int height, int width, int nbBallons) {
     this.board = new DefinedBoard(height, width);
@@ -517,7 +515,6 @@ public class Game {
  * @param height hauteur du plateau
  * @param width largeur du plateau
  * @param nbBallons nombre de ballons à générer
- * @return void (aucune valeur retournée)
  */
 public void autoPlayB(int height, int width, int nbBallons) {
     // Initialisation du board

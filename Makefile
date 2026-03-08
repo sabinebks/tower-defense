@@ -1,35 +1,20 @@
 
-JC = javac
-CLASSES = classes
-SRC = src
-TEST = test
-LIB = junit-console.jar
-CP = .:$(SRC):$(TEST):$(CLASSES):$(LIB)
+all:
+	mkdir -p classes
+	javac -d classes src/board/*.java src/object/balloon/*.java
 
-all: classes jar
+tests: all
+	javac -cp junit-console.jar:classes -d classes test/board/*.java test/object/balloon/*.java
 
-classes:
-	mkdir -p $(CLASSES)
-	find $(SRC) $(TEST) -name "*.java" > sources.txt
-	$(JC) -d $(CLASSES) -cp $(CP) @sources.txt
+runtests: tests
+	java -jar junit-console.jar -cp classes --scan-class-path
 
-tests:
-	mkdir -p $(CLASSES)
-	find $(TEST) -name "*.java" > tests.txt
-	$(JC) -d $(CLASSES) -cp $(CP) @tests.txt
-	
-runtests: classes
-	java -jar $(LIB) --class-path $(CLASSES) --scan-class-path
+jar: all
+	jar cvfe livrable2a.jar board.Livrable2a -C classes .
+	jar cvfe livrable2b.jar board.Livrable2b -C classes .
 
-jar: classes
-	jar cfe livrable3a.jar Livrables.Livrable3a -C $(CLASSES) .
-	jar cfe livrable3b.jar Livrables.Livrable3b -C $(CLASSES) .
-
-livrable3a: jar
-	java -jar livrable3a.jar $(ARGS)
-
-livrable3b: jar
-	java -jar livrable3b.jar $(ARGS)
+docs:
+	javadoc -d docs src/board/*.java src/object/balloon/*.java
 
 clean:
-	rm -rf $(CLASSES) *.jar *.txt
+	rm -rf classes *.jar docs

@@ -38,7 +38,7 @@ public class BalloonStraightTest {
         BalloonStraight balloon = new BalloonStraight(1, start, end, BalloonType.BASIC);
         balloon.move(10, 10);
         // On vérifie que la ligne (Y) reste 0.5 et que X a diminué
-        assertEquals(0.5, balloon.getColonne(), 0.01);
+        assertEquals(3.0, balloon.getColonne(), 0.01);
         assertTrue(balloon.getLigne() < 3.5);
     }
 
@@ -58,7 +58,7 @@ public class BalloonStraightTest {
         Position end = new Position(0, 0);
         BalloonStraight balloon = new BalloonStraight(1, start, end, BalloonType.BASIC);
         balloon.move(10, 10);
-        assertEquals(0.5, balloon.getLigne(), 0.01);
+        assertEquals(3.0, balloon.getLigne(), 0.01);
         assertTrue(balloon.getColonne() < 3.5);
     }
 

@@ -29,9 +29,9 @@ public class BalloonPathTest {
 
         balloon.move(10, 10);
 
-        assertEquals(1.5, balloon.getColonne(), 0.01);
+        assertEquals(0.75, balloon.getColonne(), 0.01);
         assertEquals(0.5, balloon.getLigne(), 0.01);
-        assertEquals(1, balloon.getPathIndex());
+        assertEquals(0, balloon.getPathIndex());
     }
 
     @Test

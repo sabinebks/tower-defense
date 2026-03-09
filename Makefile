@@ -35,4 +35,5 @@ docs:
 		src/Livrables/*.java
 
 clean:
-	rm -rf classes *.jar doc
+	rm -rf classes doc
+	ls *.jar | grep -v '^junit-console\.jar$$' | xargs rm -f

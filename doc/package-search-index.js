@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"board"},{"l":"board.typeOfBoard"},{"l":"game"},{"l":"Livrables"},{"l":"object.balloon"},{"l":"object.tower"},{"l":"object.tower.projectil"}];updateSearchResults();

@@ -37,6 +37,9 @@ jar:
   stage: package
   script:
     - make jar
+    - test -n "$(ls Livrable*A.jar 2>/dev/null)" || exit 1
+    - test -n "$(ls Livrable*B.jar 2>/dev/null)" || exit 1
+
   artifacts:
     paths:
       - Livrable*A.jar

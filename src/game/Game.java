@@ -431,7 +431,6 @@ public class Game {
  * @param height hauteur du plateau
  * @param width largeur du plateau
  * @param nbBallons nombre de ballons à générer
- * @return void (aucune valeur retournée)
  */
    public void autoPlayA(int height, int width, int nbBallons) {
     this.board = new DefinedBoard(height, width);
@@ -517,7 +516,6 @@ public class Game {
  * @param height hauteur du plateau
  * @param width largeur du plateau
  * @param nbBallons nombre de ballons à générer
- * @return void (aucune valeur retournée)
  */
 public void autoPlayB(int height, int width, int nbBallons) {
     // Initialisation du board

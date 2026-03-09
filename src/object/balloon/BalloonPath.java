@@ -20,7 +20,6 @@ public class BalloonPath extends Balloon {
      * 
      * @param id identifiant unique
      * @param startCell cellule de départ
-     * @param speed vitesse du ballon
      * @param type type du ballon
      * @param path chemin à suivre
      */

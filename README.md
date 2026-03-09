@@ -158,14 +158,15 @@ Ces méthodes permettent de simuler une partie complète sans intervention manue
 
 **Exécution avec arguments :**
 
-- Exécuter le Livrable 3a : make livrable3a ARGS="largeur hauteur nbBallons"
+- Exécuter le Livrable 3a : java -jar livrable3a.jar (précisez la hauteur et la largeur et le nombre de ballons)
 
-- Exécuter le Livrable 3b : make livrable3b ARGS=" largeur hauteur Chemins"
+- Exécuter le Livrable 3b : java -jar livrable3b.jar (précisez la hauteur et la largeur et le nombre de chemins)
+
 
 **Nettoyage :** make clean
 
 ### Difficultés restant à résoudre
-corriger les tests 
+![Diagramme UML](diagramme.png)
 ## Livrable 4
 
 ### Atteinte des objectifs
@@ -265,7 +266,7 @@ revoir la structure des classes plus precisement reduire le code des main et leu
 ## Semaine 7
 
 ### Ce qui a été réalisé
-
+finalisation du livrable 3 (makefile et diagramme)
 ### Difficultés rencontrées
 
 ### Objectifs pour la semaine et répartition du travail par membre

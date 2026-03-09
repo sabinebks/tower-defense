@@ -25,7 +25,6 @@ public class BalloonStraight extends Balloon {
      * @param id identifiant unique
      * @param start position de départ
      * @param end position d'arrivée
-     * @param speed vitesse du ballon
      * @param type type du ballon
      */
     public BalloonStraight(int id, Position start, Position end, BalloonType type) {

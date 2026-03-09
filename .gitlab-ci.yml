@@ -37,13 +37,17 @@ jar:
   stage: package
   script:
     - make jar
-    - test -n "$(ls Livrable*A.jar 2>/dev/null)" || exit 1
-    - test -n "$(ls Livrable*B.jar 2>/dev/null)" || exit 1
+    - JARA=$(find . -iname "Livrable*A.jar" | sort -r | head -n 1)
+    - test -n "$JARA" || { echo "Jar introuvable"; exit 1; }
+    - JARB=$(find . -iname "Livrable*B.jar" | sort -r | head -n 1)
+    - test -n "$JARB" || { echo "Jar introuvable"; exit 1; }
+    - mkdir -p CI_artefacts/ && cp $JARA CI_artefacts/livrableA.jar && cp $JARB CI_artefacts/livrableB.jar
 
   artifacts:
     paths:
-      - Livrable*A.jar
-      - Livrable*B.jar
+      - CI_artefacts/livrableA
+      - CI_artefacts/livrableB
+
 
 docs:
   stage: docs

@@ -1,7 +1,7 @@
 package object.tower;
 
 import board.Position;
-import object.tower.projectil.Projectil;
+
 import object.tower.projectil.ProjectilType;
 
 

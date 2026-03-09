@@ -92,5 +92,17 @@ public class Cell {
     public int getNumBalloon() {
         return balloons.size();
     }
+    
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof Cell)){
+            return false;
+        }
+        Cell other = (Cell) o;
+        if(this.position.getCol() == other.getPosition().getCol() && this.position.getRow() == this.getPosition().getRow() && this.isPath == other.isPath){
+            return true;
+        }
+        return false;
+    }
 
 }

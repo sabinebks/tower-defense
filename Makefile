@@ -9,9 +9,7 @@ CP = .:$(SRC):$(TEST):$(CLASSES):$(LIB)
 all: classes jar
 
 classes:
-	mkdir -p $(CLASSES)
-	find $(SRC) $(TEST) -name "*.java" > sources.txt
-	$(JC) -d $(CLASSES) -cp $(CP) @sources.txt
+	javac -sourcepath src src/object/balloon/*.java src/object/tower/projectil/*.java src/object/tower/*.java src/board/*.java src/board/typeOfBoard/*.java src/game/*.java src/Livrables/*.java -d classes
 
 tests:
 	mkdir -p $(CLASSES)

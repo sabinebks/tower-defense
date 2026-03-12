@@ -1,5 +1,6 @@
 package object.tower;
 import board.Position;
+import object.tower.evolution.TypeEvolution;
 import object.tower.projectil.ProjectilType;
 
 public class SlowTower extends Tower {

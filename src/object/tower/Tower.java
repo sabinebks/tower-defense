@@ -1,6 +1,8 @@
 package object.tower;
 import board.Position;
 import object.balloon.*;
+import object.tower.evolution.Evolution;
+import object.tower.evolution.TypeEvolution;
 import object.tower.projectil.*;
 
 import java.util.List;
@@ -27,6 +29,8 @@ public abstract class Tower {
     protected int cadence;
     protected boolean evolution;
     protected EffectType effectType;
+    protected Evolution evolutions;
+    protected int degatsSup;
 
     protected int ticksSinceLastShot = 0;
 
@@ -47,6 +51,10 @@ public abstract class Tower {
         this.evolution = evolution;
         this.effectType = effectType;
         this.type = type;
+        this.degatsSup = 0;
+        if(evolution) {
+            this.evolutions = new Evolution();
+        }
     }
     /**
      * Methode pour mettre a jour apres un shot
@@ -149,5 +157,15 @@ public abstract class Tower {
     public int getPorte() {
     return porte;
 }
+
+    /**
+     * getter pour l'attribut evolution
+     * @return
+     */
+
+    public boolean getEvolution() {
+        return evolution;
+    }
+
 
 }

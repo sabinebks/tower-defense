@@ -13,4 +13,8 @@ public class SlowTower extends Tower {
         super(pos, 500, 100, 3, false, EffectType.SLOW, ProjectilType.NO_DAMAGE);
     }
 
+    @Override
+    public int appliquerEvolution(TypeEvolution typeEvo) {
+        return 0;
+    }
 }

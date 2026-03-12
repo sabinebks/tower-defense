@@ -3,16 +3,17 @@ package object.tower.evolution;
 import object.tower.Tower;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Evolution {
 
     private ArrayList<TypeEvolution> typeEvolutions;
-    private ArrayList<TypeEvolution> evolutionsPossedees;
+    private HashMap<TypeEvolution, Integer> evolutionsPossedees;
 
 
     public Evolution() {
         this.typeEvolutions = new ArrayList<>();
-        this.evolutionsPossedees = new ArrayList<>();
+        this.evolutionsPossedees = new HashMap<TypeEvolution, Integer>();
     }
 
     public void addEvolution(TypeEvolution typeEvolution) {
@@ -27,7 +28,11 @@ public class Evolution {
         return typeEvolutions;
     }
 
-    public ArrayList<TypeEvolution> getEvolutionsPossedees() {
+    public void vendreEvolution(TypeEvolution typeEvolution) {
+        this.evolutionsPossedees.remove(typeEvolution);
+    }
+
+    public HashMap<TypeEvolution, Integer> getEvolutionsPossedees() {
         return evolutionsPossedees;
     }
 }

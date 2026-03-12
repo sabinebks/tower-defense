@@ -268,7 +268,7 @@ public class Game {
      * @param height la hauteur du board
      * @param width la largeur du board
      */
-    public void play(int height, int width){
+    public void play(int height, int width) throws InvalidTowerPlacementException{
         Scanner scan = new Scanner(System.in);
         Random rand = new Random();
 
@@ -371,9 +371,9 @@ public class Game {
                 if (this.board instanceof DefinedBoard) {
                     DefinedBoard db = (DefinedBoard) board;
                     if (db.getCell(row, col).isPath()) {
-                        System.out.println("Error! Vous ne pouvez pas placer un tour sur le chemin");
-                        System.out.println("Veuillez refaire votre choix! Merci");
-                        continue;
+                        //System.out.println("Error! Vous ne pouvez pas placer un tour sur le chemin");
+                        //System.out.println("Veuillez refaire votre choix! Merci");
+                        throw new InvalidTowerPlacementException("Error! Vous ne pouvez pas placer un tour sur le chemin : Veuillez refaire votre choix! Merci");
                     }
                 }
                 boolean isTour = false;

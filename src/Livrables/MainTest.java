@@ -1,8 +1,9 @@
 package Livrables;
 import game.Game;
+import game.InvalidTowerPlacementException;
 
 public class MainTest {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InvalidTowerPlacementException {
         if (args.length < 2) {
             System.out.println("Usage: java Livrables.Livrable3b <largeur> <hauteur>");
             return;

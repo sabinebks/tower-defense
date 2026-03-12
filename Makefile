@@ -8,7 +8,8 @@ classes:
 		src/object/tower/*.java \
 		src/object/tower/projectil/*.java \
 		src/game/*.java \
-		src/Livrables/*.java -d classes
+		src/Livrables/*.java \
+		src/object/tower/evolution/*.java -d classes
 
 tests: classes
 	javac -classpath junit-console.jar:classes \
@@ -32,7 +33,8 @@ docs:
 		src/object/tower/*.java \
 		src/object/tower/projectil/*.java \
 		src/game/*.java \
-		src/Livrables/*.java
+		src/Livrables/*.java \
+		src/object/tower/evolution/*.java
 
 clean:
 	rm -rf classes doc

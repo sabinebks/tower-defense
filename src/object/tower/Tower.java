@@ -167,6 +167,10 @@ public abstract class Tower {
         return evolution;
     }
 
+    public Evolution getEvolutions() {
+        return evolutions;
+    }
+
 
     public abstract int appliquerEvolution(TypeEvolution typeEvo);
 

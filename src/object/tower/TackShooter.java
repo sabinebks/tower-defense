@@ -21,4 +21,29 @@ public class TackShooter extends Tower {
     }
 
 
+    @Override
+    public int appliquerEvolution(TypeEvolution typeEvo) {
+        if (!this.evolutions.getEvolutions().contains(typeEvo)) return 0;
+
+        if (this.evolutions.getEvolutionsPossedees().contains(typeEvo)) return 0;
+        int cout = 0;
+
+        switch (typeEvo) {
+            case PORTEE:
+                this.porte = (int)(this.porte * 1.2);
+                cout = 150;
+                this.evolutions.deleteEvolutions(TypeEvolution.PORTEE);
+                break;
+            case CANDENCE:
+                this.cadence = (int)(this.cadence * 1.25);
+                cout = 200;
+                this.evolutions.deleteEvolutions(TypeEvolution.CANDENCE);
+                break;
+
+        }
+        if (cout > 0) {
+            this.evolutions.getEvolutionsPossedees().add(typeEvo);
+        }
+        return cout;
+    }
 }

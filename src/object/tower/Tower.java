@@ -168,4 +168,6 @@ public abstract class Tower {
     }
 
 
+    public abstract int appliquerEvolution(TypeEvolution typeEvo);
+
 }

@@ -23,7 +23,7 @@ public class Gorilla extends Tower {
     public int appliquerEvolution(TypeEvolution typeEvo) {
         if (!this.evolutions.getEvolutions().contains(typeEvo)) return 0;
 
-        if (this.evolutions.getEvolutionsPossedees().contains(typeEvo)) return 0;
+        if (this.evolutions.getEvolutionsPossedees().containsKey(typeEvo)) return 0;
         int cout = 0;
 
         switch (typeEvo) {
@@ -39,7 +39,7 @@ public class Gorilla extends Tower {
                 break;
         }
         if (cout > 0) {
-            this.evolutions.getEvolutionsPossedees().add(typeEvo);
+            this.evolutions.getEvolutionsPossedees().put(typeEvo, cout);
         }
         return cout;
     }

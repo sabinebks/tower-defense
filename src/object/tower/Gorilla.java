@@ -19,5 +19,29 @@ public class Gorilla extends Tower {
         this.evolutions.addEvolution(TypeEvolution.PORTEE);
     }
 
+    @Override
+    public int appliquerEvolution(TypeEvolution typeEvo) {
+        if (!this.evolutions.getEvolutions().contains(typeEvo)) return 0;
+
+        if (this.evolutions.getEvolutionsPossedees().contains(typeEvo)) return 0;
+        int cout = 0;
+
+        switch (typeEvo) {
+            case PUISSANCE:
+                this.degatsSup += 2;
+                cout = 600;
+                this.evolutions.deleteEvolutions(TypeEvolution.PUISSANCE);
+                break;
+            case PORTEE:
+                this.porte = (int)(this.porte * 1.5);
+                cout = 400;
+                this.evolutions.deleteEvolutions(TypeEvolution.PORTEE);
+                break;
+        }
+        if (cout > 0) {
+            this.evolutions.getEvolutionsPossedees().add(typeEvo);
+        }
+        return cout;
+    }
 
 }

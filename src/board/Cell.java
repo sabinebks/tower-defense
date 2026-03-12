@@ -99,7 +99,7 @@ public class Cell {
             return false;
         }
         Cell other = (Cell) o;
-        if(this.position.getCol() == other.getPosition().getCol() && this.position.getRow() == this.getPosition().getRow() && this.isPath == other.isPath){
+        if(this.position.equals(other.getPosition()) && this.isPath == other.isPath){
             return true;
         }
         return false;

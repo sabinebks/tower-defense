@@ -21,5 +21,29 @@ public class EliteSniper extends Tower {
         this.evolutions.addEvolution(TypeEvolution.CANDENCE);
     }
 
+    @Override
+    public int appliquerEvolution(TypeEvolution typeEvo) {
+        if (!this.evolutions.getEvolutions().contains(typeEvo)) return 0;
+
+        if (this.evolutions.getEvolutionsPossedees().contains(typeEvo)) return 0;
+        int cout = 0;
+
+        switch (typeEvo) {
+            case PUISSANCE:
+                this.degatsSup += 2;
+                cout = 300;
+                this.evolutions.deleteEvolutions(TypeEvolution.PUISSANCE);
+                break;
+            case CANDENCE:
+                this.cadence = (int)(this.cadence * 1.25);
+                cout = 200;
+                this.evolutions.deleteEvolutions(TypeEvolution.CANDENCE);
+                break;
+        }
+        if (cout > 0) {
+            this.evolutions.getEvolutionsPossedees().add(typeEvo);
+        }
+        return cout;
+    }
 
 }

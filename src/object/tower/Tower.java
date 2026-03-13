@@ -171,6 +171,9 @@ public abstract class Tower {
         return evolutions;
     }
 
+    public int getCout(){
+        return cout;
+    }
 
     public abstract int appliquerEvolution(TypeEvolution typeEvo);
 

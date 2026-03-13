@@ -35,7 +35,7 @@ public class Game {
         this.towers = new ArrayList<>();
         this.activeProjectils = new ArrayList<>();
         this.board = null;
-        this.credits = 100;
+        this.credits = 1000;
     }
 
     /**
@@ -414,8 +414,14 @@ public class Game {
                         System.out.println("Choix invalide");
                         continue;
                 }
-                this.towers.add(t);
-                System.out.println("Tour place en |" + row + " : " + col + "|");
+                if (this.credits >= t.getCout()) {
+                    this.credits -= t.getCout();
+                    this.towers.add(t);
+                    System.out.println("Tour place en |" + row + " : " + col + "|" + " : ( -" + t.getCout() +" ! )");
+                }else{
+                    System.out.println("Vous n'avez pas assez de credits pour acheter cette tour!");
+                }
+
                 render();
             } else if (choix == 3) {
                 System.out.println("Entrez la position de la tour (Ligne puis Colonne) :");

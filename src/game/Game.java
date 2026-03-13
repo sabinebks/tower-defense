@@ -20,6 +20,7 @@ public class Game {
      * idCounter : pour les Id des ballons
      *
      */
+    public static final int CREDIT_INITIAL = 1000;
     private List<Balloon> balloons;
     private List<Tower> towers;
     private List<Projectil> activeProjectils;
@@ -35,7 +36,7 @@ public class Game {
         this.towers = new ArrayList<>();
         this.activeProjectils = new ArrayList<>();
         this.board = null;
-        this.credits = 1000;
+        this.credits = CREDIT_INITIAL;
     }
 
     /**

@@ -270,7 +270,7 @@ public class Game {
      * @param height la hauteur du board
      * @param width la largeur du board
      */
-    public void play(int height, int width) throws InvalidTowerPlacementException{
+    public void play(int height, int width) {
         Scanner scan = new Scanner(System.in);
         Random rand = new Random();
 

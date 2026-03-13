@@ -359,33 +359,44 @@ public class Game {
                 int tour = Integer.parseInt(scan.nextLine().trim());
                 int row = -1;
                 int col = -1;
-                while (!board.isInside(row, col)) {
+                boolean positionValide = false;
+
+                while (!positionValide) {
                     System.out.println("--Veuillez entrer la position--");
-                    System.out.println("Colonne : ");
+                    System.out.print("Colonne : ");
                     col = Integer.parseInt(scan.nextLine().trim());
-                    System.out.println("Ligne : ");
+                    System.out.print("Ligne : ");
                     row = Integer.parseInt(scan.nextLine().trim());
-                }
-                if (this.board instanceof DefinedBoard) {
-                    DefinedBoard db = (DefinedBoard) board;
-                    if (db.getCell(row, col).isPath()) {
-                        //System.out.println("Error! Vous ne pouvez pas placer un tour sur le chemin");
-                        //System.out.println("Veuillez refaire votre choix! Merci");
-                        throw new InvalidTowerPlacementException("Error! Vous ne pouvez pas placer un tour sur le chemin : Veuillez refaire votre choix! Merci");
+
+                    if (!board.isInside(row, col)) {
+                        System.out.println("Position hors du plateau !");
+                        continue;
+                    }
+
+                    if (board instanceof DefinedBoard) {
+                        DefinedBoard db = (DefinedBoard) board;
+                        if (db.getCell(row, col).isPath()) {
+                            System.out.println("Erreur ! Vous ne pouvez pas placer une tour sur le chemin.");
+                            continue;
+                        }
+                    }
+
+
+                    boolean occupe = false;
+                    for (Tower tExisting : towers) {
+                        if (tExisting.getPosition().getRow() == row && tExisting.getPosition().getCol() == col) {
+                            occupe = true;
+                            break;
+                        }
+                    }
+
+                    if (occupe) {
+                        System.out.println("Il y a déjà une tour ici !");
+                    } else {
+                        positionValide = true;
                     }
                 }
-                boolean isTour = false;
-                for (Tower t : towers) {
-                    if (t.getPosition().getRow() == row && t.getPosition().getCol() == col) {
-                        isTour = true;
-                        break;
-                    }
-                }
-                if (isTour) {
-                    System.out.println("Il y a deja une tour ici!");
-                    System.out.println("Veuillez refaire votre choix! Merci");
-                    continue;
-                }
+
                 Tower t = null;
                 Position p = new Position(row, col);
                 switch (tour) {

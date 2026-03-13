@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Evolution {
-
+    /**
+     * les attributs
+     * typeEvolutions : liste pour sauvgarder les evolution de chaque tour
+     * evolutionsPossedees : hashmap<typeEvolution,Integer> pour sauvgarder les evolution acheter pour les vendre apres
+     */
     private ArrayList<TypeEvolution> typeEvolutions;
     private HashMap<TypeEvolution, Integer> evolutionsPossedees;
 

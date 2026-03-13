@@ -452,12 +452,12 @@ public class Game {
 
                 if (tourCible == null) {
                     System.out.println("Aucune tour à cette position !");
-                    return;
+                    continue;
                 }
 
                 if (!tourCible.getEvolution()) {
                     System.out.println("Cette tour ne peut pas évoluer.");
-                    return;
+                    continue;
                 }
 
                 System.out.println("--- GESTION TOUR " + tourCible.getClass().getSimpleName() + " ---");
@@ -469,7 +469,7 @@ public class Game {
                     ArrayList<TypeEvolution> dispos = tourCible.getEvolutions().getEvolutions();
                     if (dispos.isEmpty()) {
                         System.out.println("Toutes les évolutions sont déjà achetées !");
-                        return;
+                        continue;
                     }
 
                     System.out.println("Évolutions disponibles :");
@@ -493,7 +493,7 @@ public class Game {
                     Map<TypeEvolution, Integer> possedees = tourCible.getEvolutions().getEvolutionsPossedees();
                     if (possedees.isEmpty()) {
                         System.out.println("Aucune évolution à revendre.");
-                        return;
+                        continue;
                     }
 
                     System.out.println("Évolutions possédées :");

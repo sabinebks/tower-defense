@@ -429,7 +429,7 @@ public class Game {
                 if (this.credits >= t.getCout()) {
                     this.credits -= t.getCout();
                     this.towers.add(t);
-                    System.out.println("Tour place en |" + row + " : " + col + "|" + " : ( -" + t.getCout() +" ! )");
+                    System.out.println("Tour place en |" + row + " : " + col + "|" + " : (-" + t.getCout() + " crédits)");
                 }else{
                     System.out.println("Vous n'avez pas assez de credits pour acheter cette tour!");
                 }

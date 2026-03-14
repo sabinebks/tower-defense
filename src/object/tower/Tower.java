@@ -163,18 +163,38 @@ public abstract class Tower {
      * @return
      */
 
+    //getters
+
+    /**
+     * getter pour l'attribut evolution
+     * @return
+     */
     public boolean getEvolution() {
         return evolution;
     }
 
+    /**
+     * getter pour l'attribut evolutions
+     * @return
+     */
     public Evolution getEvolutions() {
         return evolutions;
     }
 
+    /**
+     * getter pour l'attribut count
+     * @return
+     */
     public int getCout(){
         return cout;
     }
 
+    /**
+     * methode abstraite pour evoluer une tour
+     * chaque tout a ses evolution
+     * @param typeEvo type d'evolution qu'on veut appliquer
+     * @return retourner son cout
+     */
     public abstract int appliquerEvolution(TypeEvolution typeEvo);
 
 }

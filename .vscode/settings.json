@@ -4,6 +4,7 @@
         "src"
     ],
     "java.project.referencedLibraries": [
-        "junit-console.jar"
+        "junit-console.jar",
+        "c:\\Users\\user\\OneDrive\\Bureau\\ETUDES\\Projet\\l-2-s-4-projet-2026\\junit-console.jar"
     ]
 }

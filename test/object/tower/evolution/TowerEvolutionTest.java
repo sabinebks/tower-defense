@@ -23,4 +23,14 @@ public class TowerEvolutionTest {
         gorilla = new Gorilla(new Position(4, 4));
         eliteSniper = new EliteSniper(new Position(5, 5));
     }
+
+    @Test
+    void testBombTowerInit() {
+        assertNotNull(bombTower);
+        assertEquals(1, bombTower.getPosition().getRow());
+        assertEquals(1, bombTower.getPosition().getCol());
+        assertEquals(600, bombTower.getCout());
+        assertTrue(bombTower.getEvolution());
+        assertNotNull(bombTower.getEvolutions());
+    }
 }

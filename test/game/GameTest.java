@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import game.Game;
 import board.Position;
 import object.balloon.BalloonType;
-import object.tower.DartMonkey;
+import object.tower.*;
 
 public class GameTest {
 
@@ -41,6 +41,15 @@ public class GameTest {
         game.autoPlayA(10, 10, 0);
         game.addTower(new DartMonkey(new Position(1, 1)));
         assertDoesNotThrow(() -> game.gameTick());
+    }
+
+    @Test
+    void testAddMultipleTowers() {
+        game.autoPlayA(10, 10, 0);
+        assertDoesNotThrow(() -> game.addTower(new DartMonkey(new Position(1, 1))));
+        assertDoesNotThrow(() -> game.addTower(new IceTower(new Position(2, 2))));
+        assertDoesNotThrow(() -> game.addTower(new BombTower(new Position(3, 3))));
+        assertDoesNotThrow(() -> game.addTower(new SlowTower(new Position(4, 4))));
     }
 
     @Test

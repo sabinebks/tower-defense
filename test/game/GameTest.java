@@ -59,6 +59,16 @@ public class GameTest {
     }
 
     @Test
+    void testMultipleGameTick() {
+        game.autoPlayA(8, 8, 2);
+        assertDoesNotThrow(() -> {
+            for (int i = 0; i < 5; i++) {
+                game.gameTick();
+            }
+        });
+    }
+
+    @Test
     void testAutoPlayA() {
         assertDoesNotThrow(() -> game.autoPlayA(8, 8, 3));
     }

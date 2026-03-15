@@ -34,12 +34,11 @@ public class ProjectilEffet extends Projectil {
 
 
         if (this.effet == EffectType.SLOW) {
-            target.slow(0.5,100);
+            target.slow(0.5,6);
         }
 
         else if (this.effet == EffectType.FREEZE) {
-            target.freeze(60);
+            target.freeze(3);
         }
     }
-
 }

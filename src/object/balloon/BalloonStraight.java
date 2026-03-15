@@ -33,7 +33,9 @@ public class BalloonStraight extends Balloon {
               start.getRow() + 0.5,  // Centre de la cellule de départ
               start.getCol() + 0.5, 
               type);
-        
+        this.startPos = start;
+        this.endPos = end;
+
         this.endCol = end.getCol() + 0.5;
         this.endRow = end.getRow() + 0.5;
         

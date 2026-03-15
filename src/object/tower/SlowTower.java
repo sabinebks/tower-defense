@@ -10,7 +10,7 @@ public class SlowTower extends Tower {
      * @param pos la position initiale de la tour sur le plateau
      */
     public SlowTower(Position pos) {
-        super(pos, 500, 100, 3, false, EffectType.SLOW, ProjectilType.NO_DAMAGE);
+        super(pos, 500, 100, 8, false, EffectType.SLOW, ProjectilType.NO_DAMAGE);
     }
 
     @Override

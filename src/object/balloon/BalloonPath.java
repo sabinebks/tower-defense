@@ -59,7 +59,7 @@ public class BalloonPath extends Balloon {
         if (!active) {
             return false;
         }
-        if (!active || freezeTimer > 0) return active;
+        if (!active ||freezeTimer > 0) return active;
 
         if (pathIndex >= path.size()) {
             active = false;

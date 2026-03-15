@@ -11,7 +11,7 @@ public class IceTower extends Tower {
      * @param pos la position initiale de la tour sur le plateau
      */
     public IceTower(Position pos) {
-        super(pos, 400, 100, 5, false, EffectType.FREEZE, ProjectilType.NO_DAMAGE);
+        super(pos, 400, 100, 15, false, EffectType.FREEZE, ProjectilType.NO_DAMAGE);
     }
 
 

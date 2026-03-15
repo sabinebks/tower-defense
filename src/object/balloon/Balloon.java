@@ -190,7 +190,9 @@ public class Balloon {
      * pour stopper le ballon
      */
     public void freeze(int duration) {
-        this.freezeTimer = duration;
+        if (this.freezeTimer<=0) {
+            this.freezeTimer = duration;
+        }
     }
 
     /**

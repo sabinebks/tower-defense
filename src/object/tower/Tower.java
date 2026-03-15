@@ -140,6 +140,10 @@ public abstract class Tower {
         for (Balloon b : balloons) {
             // On vérifie si le ballon est actif et à portée
             if (b != null && b.isActive() && (porte == -1 || distanceTo(b) <= porte)) {
+
+                if(this.effectType == EffectType.FREEZE && b.getEffectiveSpeed() == 0){
+                    continue;
+                }
                 return b;
             }
         }

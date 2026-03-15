@@ -26,6 +26,10 @@ public class GameTest {
     void testSpawnBalloon() {
         game.autoPlayA(10, 10, 0);
         assertDoesNotThrow(() -> game.spawnBalloon(BalloonType.BASIC));
+        game.autoPlayA(10, 10, 0);
+        assertDoesNotThrow(() -> game.spawnBalloon(BalloonType.MEDIUM));
+        game.autoPlayA(10, 10, 0);
+        assertDoesNotThrow(() -> game.spawnBalloon(BalloonType.STRONG));
     }
 
     @Test

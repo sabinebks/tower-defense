@@ -258,26 +258,29 @@ revoir la structure des classes plus precisement reduire le code des main et leu
 ## Semaine 6
 
 ### Ce qui a été réalisé
-
+livrable 3 
 ### Difficultés rencontrées
 
 ### Objectifs pour la semaine et répartition du travail par membre
 
 ## Semaine 7
-
+correction du makefile, et des classes de tests, discussion sur le livrable 4
 ### Ce qui a été réalisé
-finalisation du livrable 3 (makefile et diagramme)
+
 ### Difficultés rencontrées
 
 ### Objectifs pour la semaine et répartition du travail par membre
+avancer au maximum dans le livrable 4 : cree la classe evolution avec les tests, ajouter les evolution dans le game 
 
 ## Semaine 8
 
 ### Ce qui a été réalisé
+classe Evolution et evolutionType pour gerer les evolutions avec les classes de tests
 
 ### Difficultés rencontrées
 
 ### Objectifs pour la semaine et répartition du travail par membre
+finaliser le livrable 4 
 
 ## Semaine 9
 

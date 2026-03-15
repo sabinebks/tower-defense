@@ -166,13 +166,6 @@ public abstract class Tower {
      * getter pour l'attribut evolution
      * @return
      */
-
-    //getters
-
-    /**
-     * getter pour l'attribut evolution
-     * @return
-     */
     public boolean getEvolution() {
         return evolution;
     }

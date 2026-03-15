@@ -3,7 +3,14 @@ import board.Position;
 import object.tower.evolution.TypeEvolution;
 import object.tower.projectil.ProjectilType;
 
+// DartMonkey qui tire des flechettes
 public class DartMonkey extends Tower {
+    
+    /**
+     * Cree une DartMonkey a la position specifiee.
+     *
+     * @param pos la position initiale de la tour sur le plateau
+     */
     public DartMonkey(Position pos) {
         super(pos, 200, 100, 2, true, EffectType.IMMEDIATE, ProjectilType.FLECHETTE);
         this.evolutions.addEvolution(TypeEvolution.PORTEE);
@@ -11,6 +18,11 @@ public class DartMonkey extends Tower {
         this.evolutions.addEvolution(TypeEvolution.PUISSANCE);
     }
 
+    /**
+     * methode pour appliquer une evolution a la tour
+     * @param typeEvo le type d'evolution a appliquer
+     * @return le cout de l'evolution, ou 0 si invalide ou deja achetee
+     */
     @Override
     public int appliquerEvolution(TypeEvolution typeEvo) {
         if (!this.evolutions.getEvolutions().contains(typeEvo)) return 0;

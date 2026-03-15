@@ -3,6 +3,7 @@ package object.tower;
 import board.Position;
 import object.tower.evolution.TypeEvolution;
 import object.tower.projectil.ProjectilType;
+
 public class BombTower extends Tower {
     /**
      * Crée une BombTower à la position spécifiée.
@@ -19,6 +20,11 @@ public class BombTower extends Tower {
         this.evolutions.addEvolution(TypeEvolution.PUISSANCE);
     }
 
+     /**
+     * methode pour appliquer une evolution a la tour
+     * @param typeEvo le type d'evolution a appliquer
+     * @return le cout de l'evolution, ou 0 si invalide ou deja achetee
+     */
     @Override
     public int appliquerEvolution(TypeEvolution typeEvo) {
         if (!this.evolutions.getEvolutions().contains(typeEvo)) return 0;

@@ -20,7 +20,11 @@ public class TackShooter extends Tower {
         this.evolutions.addEvolution(TypeEvolution.CANDENCE);
     }
 
-
+    /**
+     * methode pour appliquer une evolution a la tour
+     * @param typeEvo le type d'evolution a appliquer
+     * @return le cout de l'evolution, ou 0 si invalide ou deja achetee
+     */
     @Override
     public int appliquerEvolution(TypeEvolution typeEvo) {
         if (!this.evolutions.getEvolutions().contains(typeEvo)) return 0;

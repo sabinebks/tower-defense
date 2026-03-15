@@ -153,4 +153,41 @@ public class TowerEvolutionTest {
         int cout = gorilla.appliquerEvolution(TypeEvolution.CANDENCE);
         assertEquals(0, cout);
     }
+
+    @Test
+    void testEliteSniperCreation() {
+        assertNotNull(eliteSniper);
+        assertEquals(5, eliteSniper.getPosition().getRow());
+        assertEquals(5, eliteSniper.getPosition().getCol());
+        assertEquals(500, eliteSniper.getCout());
+    }
+
+    @Test
+    void testEliteSniperEvolutionPuissance() {
+        int cout = eliteSniper.appliquerEvolution(TypeEvolution.PUISSANCE);
+        assertEquals(300, cout);
+        assertTrue(eliteSniper.getEvolutions().getEvolutionsPossedees().containsKey(TypeEvolution.PUISSANCE));
+    }
+
+    @Test
+    void testEliteSniperEvolutionCadence() {
+        int cout = eliteSniper.appliquerEvolution(TypeEvolution.CANDENCE);
+        assertEquals(200, cout);
+        assertTrue(eliteSniper.getEvolutions().getEvolutionsPossedees().containsKey(TypeEvolution.CANDENCE));
+    }
+
+    @Test
+    void testEliteSniperEvolutionPorteePeutPasEvolue() {
+        int cout = eliteSniper.appliquerEvolution(TypeEvolution.PORTEE);
+        assertEquals(0, cout);
+    }
+
+    @Test
+    void testEliteSniperEvolutionPeutPasAcheterMemeEvolution() {
+        int cout1 = dartMonkey.appliquerEvolution(TypeEvolution.PORTEE);
+        int cout2 = dartMonkey.appliquerEvolution(TypeEvolution.PORTEE);
+
+        assertEquals(100, cout1);
+        assertEquals(0, cout2);
+    }
 }

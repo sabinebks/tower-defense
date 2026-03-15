@@ -10,5 +10,30 @@ public class EvolutionTest {
         assertTrue(e.getEvolutions().isEmpty());
         assertTrue(e.getEvolutionsPossedees().isEmpty());
     }
+    @Test
+    public void testAddAndDeleteEvolution() {
+        Evolution e = new Evolution();
+        e.addEvolution(TypeEvolution.PORTEE);
+        assertTrue(e.getEvolutions().contains(TypeEvolution.PORTEE));
 
+        e.deleteEvolutions(TypeEvolution.PORTEE);
+        assertFalse(e.getEvolutions().contains(TypeEvolution.PORTEE));
+    }
+
+    @Test
+    public void testVendreEvolution() {
+        Evolution e = new Evolution();
+        e.getEvolutionsPossedees().put(TypeEvolution.PUISSANCE, 100);
+
+        e.vendreEvolution(TypeEvolution.PUISSANCE);
+        assertFalse(e.getEvolutionsPossedees().containsKey(TypeEvolution.PUISSANCE));
+    }
+
+    @Test
+    public void testGetEvolutionsPossedees() {
+        Evolution e = new Evolution();
+        e.getEvolutionsPossedees().put(TypeEvolution.PROJECTILES, 150);
+
+        assertEquals(150, e.getEvolutionsPossedees().get(TypeEvolution.PROJECTILES));
+    }
 }

@@ -97,4 +97,32 @@ public class TowerEvolutionTest {
         int cout = dartMonkey.appliquerEvolution(TypeEvolution.PROJECTILES);
         assertEquals(0, cout);
     }
+
+    @Test
+    void testTackShooterInit() {
+        assertNotNull(tackShooter);
+        assertEquals(3, tackShooter.getPosition().getRow());
+        assertEquals(3, tackShooter.getPosition().getCol());
+        assertEquals(350, tackShooter.getCout());
+    }
+
+    @Test
+    void testTackShooterEvolutionPortee() {
+        int cout = tackShooter.appliquerEvolution(TypeEvolution.PORTEE);
+        assertEquals(150, cout);
+        assertTrue(tackShooter.getEvolutions().getEvolutionsPossedees().containsKey(TypeEvolution.PORTEE));
+    }
+
+    @Test
+    void testTackShooterEvolutionCadence() {
+        int cout = tackShooter.appliquerEvolution(TypeEvolution.CANDENCE);
+        assertEquals(200, cout);
+        assertTrue(tackShooter.getEvolutions().getEvolutionsPossedees().containsKey(TypeEvolution.CANDENCE));
+    }
+
+    @Test
+    void testTackShooterEvolutionPasDePuissanceEvolue() {
+        int cout = tackShooter.appliquerEvolution(TypeEvolution.PUISSANCE);
+        assertEquals(0, cout);
+    }
 }

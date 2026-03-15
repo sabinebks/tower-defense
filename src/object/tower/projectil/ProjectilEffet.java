@@ -34,7 +34,7 @@ public class ProjectilEffet extends Projectil {
 
 
         if (this.effet == EffectType.SLOW) {
-            target.slow(0.5,6);
+            target.slow(0.5,5);
         }
 
         else if (this.effet == EffectType.FREEZE) {

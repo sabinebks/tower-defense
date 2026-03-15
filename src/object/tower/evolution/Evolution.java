@@ -1,7 +1,5 @@
 package object.tower.evolution;
 
-import object.tower.Tower;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 

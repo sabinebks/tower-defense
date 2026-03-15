@@ -77,4 +77,16 @@ public class GameTest {
     void testAutoPlayB() {
         assertDoesNotThrow(() -> game.autoPlayB(8, 8, 3));
     }
+
+    @Test
+    void testMultipleTowerInMultipleTick() {
+        game.autoPlayA(10, 10, 3);
+        game.addTower(new DartMonkey(new Position(1, 1)));
+        game.addTower(new IceTower(new Position(2, 2)));
+        assertDoesNotThrow(() -> {
+            for (int i = 0; i < 5; i++) {
+                game.gameTick();
+            }
+        });
+    }
 }

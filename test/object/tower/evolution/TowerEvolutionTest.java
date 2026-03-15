@@ -62,4 +62,12 @@ public class TowerEvolutionTest {
         assertEquals(400, cout);
         assertTrue(bombTower.getEvolutions().getEvolutionsPossedees().containsKey(TypeEvolution.PROJECTILES));
     }
+
+    @Test
+    void testDartMonkeyInit() {
+        assertNotNull(dartMonkey);
+        assertEquals(2, dartMonkey.getPosition().getRow());
+        assertEquals(2, dartMonkey.getPosition().getCol());
+        assertEquals(200, dartMonkey.getCout());
+    }
 }

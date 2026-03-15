@@ -125,4 +125,32 @@ public class TowerEvolutionTest {
         int cout = tackShooter.appliquerEvolution(TypeEvolution.PUISSANCE);
         assertEquals(0, cout);
     }
+
+    @Test
+    void testGorillaInit() {
+        assertNotNull(gorilla);
+        assertEquals(4, gorilla.getPosition().getRow());
+        assertEquals(4, gorilla.getPosition().getCol());
+        assertEquals(1200, gorilla.getCout());
+    }
+
+    @Test
+    void testGorillaEvolutionPuissance() {
+        int cout = gorilla.appliquerEvolution(TypeEvolution.PUISSANCE);
+        assertEquals(600, cout);
+        assertTrue(gorilla.getEvolutions().getEvolutionsPossedees().containsKey(TypeEvolution.PUISSANCE));
+    }
+
+    @Test
+    void testGorillaEvolutionPortee() {
+        int cout = gorilla.appliquerEvolution(TypeEvolution.PORTEE);
+        assertEquals(400, cout);
+        assertTrue(gorilla.getEvolutions().getEvolutionsPossedees().containsKey(TypeEvolution.PORTEE));
+    }
+
+    @Test
+    void testGorillaEvolutionCadendeEvoluePasPossible() {
+        int cout = gorilla.appliquerEvolution(TypeEvolution.CANDENCE);
+        assertEquals(0, cout);
+    }
 }

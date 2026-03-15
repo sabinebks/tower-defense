@@ -70,4 +70,31 @@ public class TowerEvolutionTest {
         assertEquals(2, dartMonkey.getPosition().getCol());
         assertEquals(200, dartMonkey.getCout());
     }
+
+    @Test
+    void testDartMonkeyEvolutionPuissance() {
+        int cout = dartMonkey.appliquerEvolution(TypeEvolution.PUISSANCE);
+        assertEquals(250, cout);
+        assertTrue(dartMonkey.getEvolutions().getEvolutionsPossedees().containsKey(TypeEvolution.PUISSANCE));
+    }
+
+    @Test
+    void testDartMonkeyEvolutionPortee() {
+        int cout = dartMonkey.appliquerEvolution(TypeEvolution.PORTEE);
+        assertEquals(100, cout);
+        assertTrue(dartMonkey.getEvolutions().getEvolutionsPossedees().containsKey(TypeEvolution.PORTEE));
+    }
+
+    @Test
+    void testDartMonkeyEvolutionCadence() {
+        int cout = dartMonkey.appliquerEvolution(TypeEvolution.CANDENCE);
+        assertEquals(150, cout);
+        assertTrue(dartMonkey.getEvolutions().getEvolutionsPossedees().containsKey(TypeEvolution.CANDENCE));
+    }
+
+    @Test
+    void testDartMonkeyEvolutionPasDeProjectileEvolue() {
+        int cout = dartMonkey.appliquerEvolution(TypeEvolution.PROJECTILES);
+        assertEquals(0, cout);
+    }
 }

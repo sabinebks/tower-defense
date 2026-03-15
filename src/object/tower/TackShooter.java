@@ -52,4 +52,11 @@ public class TackShooter extends Tower {
         }
         return cout;
     }
+
+    /**
+     * retourne le symbole de la TackShooter
+     * @return "T"
+     */    
+    @Override
+    public String getSymbol() { return "T"; }
 }

@@ -54,6 +54,13 @@ public class DartMonkey extends Tower {
         }
         return cout;
     }
+    
+    /**
+     * retourne le symbole de la DartMonkey
+     * @return "A"
+     */
+    @Override
+    public String getSymbol() { return "A"; }
 
 }
 

@@ -24,4 +24,11 @@ public class SlowTower extends Tower {
     public int appliquerEvolution(TypeEvolution typeEvo) {
         return 0;
     }
+
+    /**
+     * retourne le symbole de la SlowTower
+     * @return "S"
+     */
+    @Override
+    public String getSymbol() { return "S"; }
 }

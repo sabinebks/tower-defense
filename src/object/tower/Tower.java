@@ -194,4 +194,10 @@ public abstract class Tower {
      */
     public abstract int appliquerEvolution(TypeEvolution typeEvo);
 
+    /**
+     * retourne le symbole de la tour pour l'affichage 
+     * @return le symbole de la tour
+     */
+    public abstract String getSymbol();
+
 }

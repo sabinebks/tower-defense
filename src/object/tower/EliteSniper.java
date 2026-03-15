@@ -53,4 +53,11 @@ public class EliteSniper extends Tower {
         return cout;
     }
 
+    /**
+     * retourne le symbole de la EliteSniper
+     * @return "E"
+     */
+    @Override    
+    public String getSymbol() { return "E"; }
+
 }

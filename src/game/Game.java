@@ -131,7 +131,7 @@ public class Game {
     }
 
     /**
-     * On utilise checkEntityAt pour afficher "B" au bon endroit sur la grille
+     * retourne le symbole de l'entite a la position donnee pour l'affichage
      * @param r la ligne 
      * @param c la colonne
      */
@@ -144,31 +144,12 @@ public class Game {
         }
         //pour les towers
         for (Tower t : towers) {
-            if (t.getPosition().getRow() == r && t.getPosition().getCol() == c && (t instanceof BombTower)) {
-                return "B";
-            }
-            else if (t.getPosition().getRow() == r && t.getPosition().getCol() == c && (t instanceof DartMonkey)) {
-                return "A";
-            }
-            else if (t.getPosition().getRow() == r && t.getPosition().getCol() == c && (t instanceof EliteSniper)) {
-                return "E";
-            }
-            else if (t.getPosition().getRow() == r && t.getPosition().getCol() == c && (t instanceof Gorilla)) {
-                return "G";
-            }
-            else if (t.getPosition().getRow() == r && t.getPosition().getCol() == c && (t instanceof IceTower)) {
-                return "I";
-            }
-            else if (t.getPosition().getRow() == r && t.getPosition().getCol() == c && (t instanceof SlowTower)) {
-                return "S";
-            }
-            else if (t.getPosition().getRow() == r && t.getPosition().getCol() == c && (t instanceof TackShooter)) {
-                return "T";
-            }
-
+        if (t.getPosition().getRow() == r && t.getPosition().getCol() == c) {
+            return t.getSymbol();
         }
-        return null;
     }
+    return null;
+}
 
     /**
      * methode pour affciher exactement la grille DefinedBoard

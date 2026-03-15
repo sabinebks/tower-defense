@@ -59,4 +59,10 @@ public class BombTower extends Tower {
         }
         return cout;
     }
+
+    /**
+     * retourne le symbole de la BombTower
+     * @return "B"
+     */
+    public String getSymbol() { return "B"; }
 }

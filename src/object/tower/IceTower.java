@@ -25,4 +25,11 @@ public class IceTower extends Tower {
         return 0;
     }
 
+    /**
+     * retourne le symbole de la IceTower
+     * @return "I"
+     */
+    @Override
+    public String getSymbol() { return "I"; }
+
 }

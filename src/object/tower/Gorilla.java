@@ -51,4 +51,11 @@ public class Gorilla extends Tower {
         return cout;
     }
 
+    /**
+     * retourne le symbole de la Gorilla
+     * @return "G"
+     */    
+    @Override
+    public String getSymbol() { return "G"; }
+
 }

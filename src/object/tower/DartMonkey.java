@@ -34,6 +34,8 @@ public class DartMonkey extends Tower {
                 cout = 150;
                 this.evolutions.deleteEvolutions(TypeEvolution.CANDENCE);
                 break;
+            default:
+                break;
         }
         if (cout > 0) {
             this.evolutions.getEvolutionsPossedees().put(typeEvo, cout);

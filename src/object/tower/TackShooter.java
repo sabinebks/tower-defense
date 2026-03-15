@@ -39,6 +39,8 @@ public class TackShooter extends Tower {
                 cout = 200;
                 this.evolutions.deleteEvolutions(TypeEvolution.CANDENCE);
                 break;
+            default:
+                break;
 
         }
         if (cout > 0) {

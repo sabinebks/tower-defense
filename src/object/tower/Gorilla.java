@@ -37,6 +37,8 @@ public class Gorilla extends Tower {
                 cout = 400;
                 this.evolutions.deleteEvolutions(TypeEvolution.PORTEE);
                 break;
+            default:
+                break;
         }
         if (cout > 0) {
             this.evolutions.getEvolutionsPossedees().put(typeEvo, cout);

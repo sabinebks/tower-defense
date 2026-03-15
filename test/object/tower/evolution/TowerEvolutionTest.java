@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 
 import object.tower.*;
+import object.tower.evolution.*;
 import board.*;
 
 public class TowerEvolutionTest {
@@ -32,5 +33,33 @@ public class TowerEvolutionTest {
         assertEquals(600, bombTower.getCout());
         assertTrue(bombTower.getEvolution());
         assertNotNull(bombTower.getEvolutions());
+    }
+
+    @Test
+    void testBombTowerEvolutionPuissance() {
+        int cout = bombTower.appliquerEvolution(TypeEvolution.PUISSANCE);
+        assertEquals(200, cout);
+        assertTrue(bombTower.getEvolutions().getEvolutionsPossedees().containsKey(TypeEvolution.PUISSANCE));
+    }
+
+    @Test
+    void testBombTowerEvolutionPortee() {
+        int cout = bombTower.appliquerEvolution(TypeEvolution.PORTEE);
+        assertEquals(250, cout);
+        assertTrue(bombTower.getEvolutions().getEvolutionsPossedees().containsKey(TypeEvolution.PORTEE));
+    }
+
+    @Test
+    void testBombTowerEvolutionCadence() {
+        int cout = bombTower.appliquerEvolution(TypeEvolution.CANDENCE);
+        assertEquals(300, cout);
+        assertTrue(bombTower.getEvolutions().getEvolutionsPossedees().containsKey(TypeEvolution.CANDENCE));
+    }
+
+    @Test
+    void testBombTowerEvolutionProjectiles() {
+        int cout = bombTower.appliquerEvolution(TypeEvolution.PROJECTILES);
+        assertEquals(400, cout);
+        assertTrue(bombTower.getEvolutions().getEvolutionsPossedees().containsKey(TypeEvolution.PROJECTILES));
     }
 }

@@ -283,11 +283,34 @@ classe Evolution et evolutionType pour gerer les evolutions avec les classes de 
 finaliser le livrable 4 
 
 ## Semaine 9
+Discussion générale
+
+Nous avons soulevé des problèmes conceptuels, notamment par rapport à l’approche adoptée lors des commits précédents, qui se rapproche plus du fonctionnel que de la conception orientée objet.
+
+Il est nécessaire de :
+
+¤  Détailer le README.
+
+¤  Gérer l’affichage des plateaux (tout ne doit pas être géré dans la classe   Game).
+
+¤  Pour les ballons, il faut avoir une seule classe Ballon et gérer leurs comportements ailleurs.
+
+¤  Découper les méthodes play(Board b) pour éviter la duplication de code.
+
+¤  Prévoir un exemple de chooseTower pour choisir les tours soit manuellement, soit aléatoirement.
+
+¤  Supprimer les méthodes séparées de play et centraliser leur gestion dans play(Board b).
+
+¤  Gérer également la duplication de code dans les classes Projectil.
 
 ### Ce qui a été réalisé
+Nous avons travaillé sur le début du livrable 4, en mettant en place la structure générale. Nous essayons de gérer au mieux la duplication de code, sans toutefois impacter le fonctionnement du livrable 3.
 
 ### Difficultés rencontrées
 
+¤  Duplication de code dans plusieurs classes.
+
+¤  Suivi d’une approche orientée objet.
 ### Objectifs pour la semaine et répartition du travail par membre
 
 ## Semaine 10

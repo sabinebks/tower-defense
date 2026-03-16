@@ -304,7 +304,7 @@ Il est nécessaire de :
 ¤  Gérer également la duplication de code dans les classes Projectil.
 
 ### Ce qui a été réalisé
-Nous avons travaillé sur le début du livrable 4, en mettant en place la structure générale. Nous essayons de gérer au mieux la duplication de code, sans toutefois impacter le fonctionnement du livrable 3.
+Nous avons travaillé sur le début du livrable 5, en mettant en place la structure générale. Nous essayons de gérer au mieux la duplication de code, sans toutefois impacter le fonctionnement du livrable 4.
 
 ### Difficultés rencontrées
 
@@ -313,6 +313,11 @@ Nous avons travaillé sur le début du livrable 4, en mettant en place la struct
 ¤  Suivi d’une approche orientée objet.
 ### Objectifs pour la semaine et répartition du travail par membre
 
+ Améliorer au mieux la duplication de code.
+
+Finaliser le livrable 4.
+
+Gérer les actions du joueur.
 ## Semaine 10
 
 ### Ce qui a été réalisé

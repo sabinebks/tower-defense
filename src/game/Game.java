@@ -367,28 +367,21 @@ public class Game {
     }
 
     int tick = 0;
-    int max = 10000;
-    Map<Integer, Double> oldSpeed = new HashMap<>();
+int max = 10000;
+Map<Integer, Double> oldSpeed;
+Map<Integer, Integer> oldHealth;
 
-    render();
-    while (!(balloons.isEmpty() && activeProjectils.isEmpty()) && tick < max) {
+render();
+while (!(balloons.isEmpty() && activeProjectils.isEmpty()) && tick < max) {
+     oldSpeed = saveOldSpeeds();
+     oldHealth = saveOldHealth();
 
-        oldSpeed.clear();
-        Map<Integer, Integer> oldHealth = new HashMap<>();
+    gameTick();
 
-        for (Balloon b : balloons) {
-            oldSpeed.put(b.getId(), b.getEffectiveSpeed());
-            oldHealth.put(b.getId(), b.getHealth());
-        }
+    afficherEvenementsBallons(tick, oldSpeed, oldHealth);
 
-        gameTick();
-
-        afficherEvenementsBallons(tick, oldSpeed, oldHealth);
-
-        
-
-        tick++;
-    }
+    tick++;
+}
      System.out.println("=== FIN DE MANCHE ===");
 }
      /**
@@ -436,30 +429,23 @@ public class Game {
             }
         }
 
-        int tick = 0;
-        Map<Integer, Double> oldSpeed = new HashMap<>();
+       int tick = 0;
+Map<Integer, Double> oldSpeed;
+Map<Integer, Integer> oldHealth;
 
-        render();
+render();
 
-        while (!(balloons.isEmpty() && activeProjectils.isEmpty())) {
+while (!(balloons.isEmpty() && activeProjectils.isEmpty())) {
 
-            oldSpeed.clear();
-            Map<Integer, Integer> oldHealth = new HashMap<>();
+    oldSpeed = saveOldSpeeds();
+    oldHealth = saveOldHealth();
 
-            for (Balloon b : balloons) {
-                oldSpeed.put(b.getId(), b.getEffectiveSpeed());
-                oldHealth.put(b.getId(), b.getHealth());
-            }
+    gameTick();
 
-            gameTick();
+    afficherEvenementsBallons(tick, oldSpeed, oldHealth);
 
-            afficherEvenementsBallons(tick, oldSpeed, oldHealth);
-
-            // (pas modifié même si redondant volontairement)
-
-            tick++;
-        }
-
+    tick++;
+}
         System.out.println("=== FIN DE MANCHE ===");
     }
 /** 
@@ -540,5 +526,21 @@ private void cleanupEntities() {
     // Retirer les projectiles et ballons inactifs
     activeProjectils.removeIf(p -> !p.isActive());
     balloons.removeIf(b -> !b.isActive());
+}
+
+private Map<Integer, Double> saveOldSpeeds() {
+    Map<Integer, Double> oldSpeed = new HashMap<>();
+    for (Balloon b : balloons) {
+        oldSpeed.put(b.getId(), b.getEffectiveSpeed());
+    }
+    return oldSpeed;
+}
+
+private Map<Integer, Integer> saveOldHealth() {
+    Map<Integer, Integer> oldHealth = new HashMap<>();
+    for (Balloon b : balloons) {
+        oldHealth.put(b.getId(), b.getHealth());
+    }
+    return oldHealth;
 }
 }

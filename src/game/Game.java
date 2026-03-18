@@ -396,17 +396,7 @@ public class Game {
                         rand.nextInt(nonPathPositions.size())
                 );
 
-                Tower tower = null;
-
-                switch (t) {
-                    case 1: tower = new BombTower(pos); break;
-                    case 2: tower = new DartMonkey(pos); break;
-                    case 3: tower = new EliteSniper(pos); break;
-                    case 4: tower = new Gorilla(pos); break;
-                    case 5: tower = new IceTower(pos); break;
-                    case 6: tower = new SlowTower(pos); break;
-                    case 7: tower = new TackShooter(pos); break;
-                }
+            Tower tower = createTower(t, pos);
 
                 if (tower != null) {
                     addTower(tower);
@@ -484,17 +474,8 @@ public class Game {
             for (int t = 1; t <= 7; t++) {           
                 for (int k = 0; k < 2; k++) {              
                     if (nonPathPositions.isEmpty()) { break; }
-                    Position pos = nonPathPositions.remove(rand.nextInt(nonPathPositions.size()) );
-                    Tower tower = null;        
-                    switch (t) {              
-                        case 1: tower = new BombTower(pos); break;               
-                        case 2: tower = new DartMonkey(pos); break;                
-                        case 3: tower = new EliteSniper(pos); break;                 
-                        case 4: tower = new Gorilla(pos); break;                   
-                        case 5: tower = new IceTower(pos); break;                  
-                        case 6: tower = new SlowTower(pos); break;                  
-                        case 7: tower = new TackShooter(pos); break;             
-                    }             
+                    Position pos = nonPathPositions.remove(rand.nextInt(nonPathPositions.size()) );    
+                   Tower tower = createTower(t, pos);           
                     if (tower != null) {                
                         addTower(tower);
                     }          
@@ -551,4 +532,36 @@ private Tower createTower(int typeId, Position pos) {
         default: return null;
     }
 }
+
+private void placerToursAleatoires() {
+    ArrayList<Position> nonPathPositions = new ArrayList<>();
+    Cell[][] grid = board.getGrid();
+    Random rand = new Random();
+
+    for (int i = 0; i < grid.length; i++) {
+        for (int j = 0; j < grid[0].length; j++) {
+            if (!grid[i][j].isPath()) {
+                nonPathPositions.add(new Position(i, j));
+            }
+        }
+    }
+
+    for (int t = 1; t <= 7; t++) {
+        for (int k = 0; k < 2; k++) {
+
+            if (nonPathPositions.isEmpty()) return;
+
+            Position pos = nonPathPositions.remove(
+                rand.nextInt(nonPathPositions.size())
+            );
+
+            Tower tower = createTower(t, pos);
+            if (tower != null) {
+                addTower(tower);
+            }
+        }
+    }
+}
+
+
 }

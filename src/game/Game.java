@@ -529,7 +529,7 @@ private void updateEntities() throws NotMatchException {
         if (p.isActive()) p.update();
     }
 }
-private void cleanupsEntitie() {
+private void cleanupEntities() {
     // Crédits pour ballons détruits
     for (Balloon b : balloons) {
         if (!b.isActive() && b.getHealth() <= 0) {

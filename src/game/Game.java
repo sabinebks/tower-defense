@@ -533,4 +533,22 @@ public class Game {
         }
         System.out.println("=== FIN DE MANCHE ===");
     }
+    /**
+ * Cree une tour en fonction d'un id
+ * @param typeId l'identifiant du type de tour (1 à 7)
+ * @param pos la position de la tour
+ * @return la tour correspondante ou null si invalide
+ */
+private Tower createTower(int typeId, Position pos) {
+    switch (typeId) {
+        case 1: return new BombTower(pos);
+        case 2: return new DartMonkey(pos);
+        case 3: return new EliteSniper(pos);
+        case 4: return new Gorilla(pos);
+        case 5: return new IceTower(pos);
+        case 6: return new SlowTower(pos);
+        case 7: return new TackShooter(pos);
+        default: return null;
+    }
+}
 }

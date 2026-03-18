@@ -317,43 +317,44 @@ public class Game {
      * @param oldSpeed les vitesses des ballons avant le tick
      * @param oldHealth les santes des ballons avant le tick
      */
-    public void afficherEvenementsBallons(
+   public void afficherEvenementsBallons(
         int tick,
         Map<Integer, Double> oldSpeed,
         Map<Integer, Integer> oldHealth) {
-        Set<Integer> dejaTouche = new HashSet<>();
-        for (Balloon b : balloons) {
-            double old = oldSpeed.getOrDefault(b.getId(), b.getEffectiveSpeed());
-            int oldH = oldHealth.getOrDefault(b.getId(), b.getHealth());
+    
+    Set<Integer> dejaTouche = new HashSet<>();
+    
+    for (Balloon b : balloons) {
+        double old = oldSpeed.getOrDefault(b.getId(), b.getEffectiveSpeed());
+        int oldH = oldHealth.getOrDefault(b.getId(), b.getHealth());
 
-            if (b.getHealth() < oldH && !dejaTouche.contains(b.getId())) {
-                System.out.println("Tick " + tick + " : Ballon " + b.getId() + " TOUCHE");
-                dejaTouche.add(b.getId());
-            }
+        if (b.getHealth() < oldH && !dejaTouche.contains(b.getId())) {
+            System.out.println("Tick " + tick + " : Ballon " + b.getId() + " TOUCHE");
+            dejaTouche.add(b.getId());
+        }
 
-            if (!b.isActive()) {
-                if (b.getHealth() <= 0) {
-                    System.out.println("Tick " + tick + " : Ballon " + b.getId() + " DETRUIT");
-                } else {
-                    System.out.println("Tick " + tick + " : Ballon " + b.getId() + " SORTI");
-                }
-                continue;
+        if (!b.isActive()) {
+            if (b.getHealth() <= 0) {
+                System.out.println("Tick " + tick + " : Ballon " + b.getId() + " DETRUIT");
+            } else {
+                System.out.println("Tick " + tick + " : Ballon " + b.getId() + " SORTI");
             }
+            continue;
+        }
 
-            if (b.getEffectiveSpeed() < b.getSpeed() && b.getEffectiveSpeed() > 0) {
-                System.out.println("Tick " + tick + " : Ballon " + b.getId() + " RALENTI");
-            }
+        if (b.getEffectiveSpeed() < b.getSpeed() && b.getEffectiveSpeed() > 0) {
+            System.out.println("Tick " + tick + " : Ballon " + b.getId() + " RALENTI");
+        }
 
-            if (b.getEffectiveSpeed() == 0) {
-                System.out.println("Tick " + tick + " : Ballon " + b.getId() + " ARRETE");
-            }
+        if (b.getEffectiveSpeed() == 0) {
+            System.out.println("Tick " + tick + " : Ballon " + b.getId() + " ARRETE");
+        }
 
         if (old == 0 && b.getEffectiveSpeed() > 0) {
             System.out.println("Tick " + tick + " : Ballon " + b.getId() + " REDEMARRE");
         }
-    }
-}
-
+    } 
+  } 
 
 
     /**
@@ -366,43 +367,16 @@ public class Game {
      * @param width largeur du plateau
      * @param nbBallons nombre de ballons à générer
      */
+
+
+
     public void autoPlayA(int height, int width, int nbBallons) {
 
-    if (this.board == null) {
-        this.board = new DefinedBoard(height, width);
-    }
+    //  recréer le board à chaque manche pour éviter les incohérences
+    this.board = new DefinedBoard(height, width);
 
     if (towers.isEmpty()) {
-        ArrayList<Position> nonPathPositions = new ArrayList<>();
-        Cell[][] grid = board.getGrid();
-        Random rand = new Random();
-
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[0].length; j++) {
-                if (!grid[i][j].isPath()) {
-                    nonPathPositions.add(new Position(i, j));
-                }
-            }
-        }
-
-        for (int t = 1; t <= 7; t++) {
-            for (int k = 0; k < 2; k++) {
-
-                if (nonPathPositions.isEmpty()) {
-                    break;
-                }
-
-                Position pos = nonPathPositions.remove(
-                        rand.nextInt(nonPathPositions.size())
-                );
-
-            Tower tower = createTower(t, pos);
-
-                if (tower != null) {
-                    addTower(tower);
-                }
-            }
-        }
+       placerToursAleatoires();
     }
 
     Random rand = new Random();
@@ -433,14 +407,13 @@ public class Game {
 
         afficherEvenementsBallons(tick, oldSpeed, oldHealth);
 
-        balloons.removeIf(b -> !b.isActive());
+        
 
         tick++;
     }
      System.out.println("=== FIN DE MANCHE ===");
 }
-    
-    /**
+     /**
      * Lance une simulation automatique du jeu sur un plateau libre.
      * Génère des chemins, crée des ballons suivant ces chemins,
      * place des tours aléatoires et exécute la simulation jusqu'à
@@ -451,55 +424,47 @@ public class Game {
      * @param nbChemins nombre de ballons à générer
      */
     public void autoPlayB(int height, int width, int nbChemins) {
-        if (this.board == null) {       
-            this.board = new FreeBoard(height, width);        
-            FreeBoard fb = (FreeBoard) this.board;       
-            fb.init();       
-            fb.setNbCheminsVoulus(nbChemins);       
-            fb.calculerPath();  
-        }
 
-        FreeBoard fb = (FreeBoard) this.board;   
+        // FIX : recréer le board à chaque manche
+        this.board = new FreeBoard(height, width);        
+        FreeBoard fb = (FreeBoard) this.board;       
+        fb.init();       
+        fb.setNbCheminsVoulus(nbChemins);       
+        fb.calculerPath();  
+
         Random rand = new Random();   
+
         if (towers.isEmpty()) {     
-            ArrayList<Position> nonPathPositions = new ArrayList<>();    
-            Cell[][] grid = board.getGrid();
-            for (int i = 0; i < grid.length; i++) {          
-                for (int j = 0; j < grid[0].length; j++) {                
-                    if (!grid[i][j].isPath()) {                
-                        nonPathPositions.add(new Position(i, j));              
-                    }           
-                }      
-            }      
-            for (int t = 1; t <= 7; t++) {           
-                for (int k = 0; k < 2; k++) {              
-                    if (nonPathPositions.isEmpty()) { break; }
-                    Position pos = nonPathPositions.remove(rand.nextInt(nonPathPositions.size()) );    
-                   Tower tower = createTower(t, pos);           
-                    if (tower != null) {                
-                        addTower(tower);
-                    }          
-                }       
-            }   
+           placerToursAleatoires();
         }   
+
         int nbCheminsReels = fb.retourneNbrChemins();    
+
         for (int i = 0; i < nbCheminsReels; i++) {   
             Position[] chemin = fb.retourneLesChemins(i);   
+
             if (chemin != null && chemin.length >= 2) {
                 Position start = chemin[0];
                 Position end = chemin[1];           
+
                 BalloonStraight b = new BalloonStraight(
                     ++idCounter,
                     start,    
                     end,
-                    BalloonType.values()[rand.nextInt(BalloonType.values().length)]);
+                    BalloonType.values()[rand.nextInt(BalloonType.values().length)]
+                );
+
                 balloons.add(b);
             }
         }
+
         int tick = 0;
         Map<Integer, Double> oldSpeed = new HashMap<>();
+
         render();
+
         while (!(balloons.isEmpty() && activeProjectils.isEmpty())) {
+
             oldSpeed.clear();
             Map<Integer, Integer> oldHealth = new HashMap<>();
 
@@ -507,14 +472,19 @@ public class Game {
                 oldSpeed.put(b.getId(), b.getEffectiveSpeed());
                 oldHealth.put(b.getId(), b.getHealth());
             }
+
             gameTick();
+
             afficherEvenementsBallons(tick, oldSpeed, oldHealth);
-            balloons.removeIf(b -> !b.isActive());
+
+            // (pas modifié même si redondant volontairement)
+
             tick++;
         }
+
         System.out.println("=== FIN DE MANCHE ===");
     }
-    /**
+/** 
  * Cree une tour en fonction d'un id
  * @param typeId l'identifiant du type de tour (1 à 7)
  * @param pos la position de la tour
@@ -532,8 +502,11 @@ private Tower createTower(int typeId, Position pos) {
         default: return null;
     }
 }
-
 private void placerToursAleatoires() {
+
+    // FIX : éviter crash si board null
+    if (board == null) return;
+
     ArrayList<Position> nonPathPositions = new ArrayList<>();
     Cell[][] grid = board.getGrid();
     Random rand = new Random();
@@ -549,13 +522,15 @@ private void placerToursAleatoires() {
     for (int t = 1; t <= 7; t++) {
         for (int k = 0; k < 2; k++) {
 
-            if (nonPathPositions.isEmpty()) return;
+            // FIX : ne pas quitter toute la méthode, juste la boucle
+            if (nonPathPositions.isEmpty()) break;
 
             Position pos = nonPathPositions.remove(
                 rand.nextInt(nonPathPositions.size())
             );
 
             Tower tower = createTower(t, pos);
+
             if (tower != null) {
                 addTower(tower);
             }

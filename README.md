@@ -170,8 +170,48 @@ Ces méthodes permettent de simuler une partie complète sans intervention manue
 ## Livrable 4
 
 ### Atteinte des objectifs
+Le jeu se déroule en 10 manches successives. Pour les manches 1 à 5, une évolution est appliquée à chaque type de tour si cela est possible. Pour les manches 6 à 10, une évolution est supprimée de chaque type de tour si elles en possèdent. Les évolutions sont choisies aléatoirement parmi celles disponibles. L'affichage indique le numéro de manche ainsi que les évolutions appliquées ou supprimées.
+
+**`run10Manches(int height, int width, int param, boolean modeA)`**
+Orchestre les 10 manches du jeu. Pour les manches 1 à 5, appelle `gererEvolutionAleatoire(true)` pour appliquer une évolution à chaque type de tour. Pour les manches 6 à 10, appelle `gererEvolutionAleatoire(false)` pour en supprimer une. À chaque manche, appelle `autoPlayA` ou `autoPlayB` selon le mode choisi, puis vide la liste des ballons et projectiles actifs.
+
+**`gererEvolutionAleatoire(boolean ajouter)`**
+Parcourt toutes les tours du plateau en évitant les doublons grâce à un ensemble de symboles déjà traités. Si `ajouter` est vrai, choisit aléatoirement une évolution disponible parmi celles non encore appliquées et l'applique à la tour. Si `ajouter` est faux, choisit aléatoirement une évolution possédée par la tour et la supprime. Affiche l'évolution ajoutée ou retirée pour chaque tour.
+
+**`afficherEvenementsBallons(int tick, Map oldSpeed, Map oldHealth)`**
+Compare l'état des ballons avant et après chaque tick pour détecter et afficher les événements : TOUCHE, DETRUIT, SORTI, RALENTI, ARRETE et REDEMARRE. N'affiche que les événements qui se produisent réellement, sans afficher la position de tous les ballons.
+
+**`createTower(int typeId, Position pos)`**
+Crée et retourne une tour en fonction d'un identifiant de type (1 à 7) et d'une position. Permet de centraliser la création des tours et d'éviter la duplication de code dans `placerToursAleatoires`.
+
+
+### Difficultés rencontrées
+
+La principale difficulté a été de gérer les évolutions sans doublons, puisque deux tours de chaque type sont présentes sur le plateau. Il a fallu utiliser un ensemble de symboles déjà traités pour éviter d'appliquer deux fois la même évolution sur le même type de tour. Il a également fallu s'assurer que les évolutions choisies aléatoirement ne soient pas déjà appliquées sur la tour concernée.
+
+La gestion de la boucle de jeu a également posé des problèmes. En effet, il a fallu sauvegarder l'état des ballons avant chaque tick pour pouvoir détecter les changements de vitesse et de santé après le tick. Sans cette sauvegarde, il était impossible de savoir si un ballon avait été touché, ralenti ou arrêté durant le tick en cours. Nous avons donc introduit les méthodes `saveOldSpeeds` et `saveOldHealth` pour capturer l'état avant chaque tick et `afficherEvenementsBallons` pour comparer et afficher uniquement les événements pertinents.
+
+**Compilation :** make 
+
+**Compilation des tests :** make tests
+
+**Lancer les tests :** make runtests
+
+**Création des Livrables :** make jar
+
+**Exécution avec arguments :**
+
+- Exécuter le Livrable 4a : java -jar livrable4a.jar (précisez la hauteur et la largeur et le nombre de ballons)
+
+- Exécuter le Livrable 4b : java -jar livrable4b.jar (précisez la hauteur et la largeur et le nombre de chemins)
+
 
 ### Difficultés restant à résoudre
+
+Notre code présente beaucoup de duplication, notamment dans la gestion de la boucle principale du jeu, ce qui le rend difficile à maintenir. De plus, certaines parties ne respectent pas pleinement les principes de la programmation orientée objet. Il sera nécessaire de réorganiser et repenser notre architecture, notamment en déplaçant certaines responsabilités vers les bonnes classes, en optimisant le code existant. Ces améliorations permettront également une meilleure extensibilité du projet pour les livrables suivants.
+
+![Diagramme UML](diagramme.png)
+
 
 ## Livrable 5
 

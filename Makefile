@@ -22,8 +22,8 @@ runtests: tests
 	java -jar junit-console.jar -classpath classes --scan-class-path
 
 jar: classes
-	jar cvfe livrable3a.jar Livrables.Livrable3a -C classes .
-	jar cvfe livrable3b.jar Livrables.Livrable3b -C classes .
+	jar cvfe livrable4a.jar Livrables.Livrable4a -C classes .
+	jar cvfe livrable4b.jar Livrables.Livrable4b -C classes .
 
 docs:
 	javadoc -d doc \

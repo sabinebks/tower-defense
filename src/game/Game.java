@@ -83,13 +83,7 @@ public class Game {
         updateEntities();  
 
         // nettoyage
-        for (Balloon b : balloons) {
-            if (!b.isActive() && b.getHealth() <= 0) {
-                this.credits += 10;
-            }
-        }
-        activeProjectils.removeIf(p -> !p.isActive());
-        balloons.removeIf(b -> !b.isActive());
+       cleanupEntities(); 
 
     } catch (NotMatchException e) {
         System.err.println("Erreur : " + e.getMessage());
@@ -535,5 +529,16 @@ private void updateEntities() throws NotMatchException {
         if (p.isActive()) p.update();
     }
 }
+private void cleanupsEntitie() {
+    // Crédits pour ballons détruits
+    for (Balloon b : balloons) {
+        if (!b.isActive() && b.getHealth() <= 0) {
+            this.credits += 10;
+        }
+    }
 
+    // Retirer les projectiles et ballons inactifs
+    activeProjectils.removeIf(p -> !p.isActive());
+    balloons.removeIf(b -> !b.isActive());
+}
 }

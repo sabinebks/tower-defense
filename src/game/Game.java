@@ -565,6 +565,50 @@ public class Game {
         }
     }
 
+    /**
+     * methode pour afficher les evenements des ballons a un tick donne
+     * affiche : TOUCHE, DETRUIT, SORTI, RALENTI, ARRETE, REDEMARRE
+     * @param tick le numero du tick actuel
+     * @param oldSpeed les vitesses des ballons avant le tick
+     * @param oldHealth les santes des ballons avant le tick
+     */
+    public void afficherEvenementsBallons(
+        int tick,
+        Map<Integer, Double> oldSpeed,
+        Map<Integer, Integer> oldHealth) {
+        Set<Integer> dejaTouche = new HashSet<>();
+        for (Balloon b : balloons) {
+            double old = oldSpeed.getOrDefault(b.getId(), b.getEffectiveSpeed());
+            int oldH = oldHealth.getOrDefault(b.getId(), b.getHealth());
+
+            if (b.getHealth() < oldH && !dejaTouche.contains(b.getId())) {
+                System.out.println("Tick " + tick + " : Ballon " + b.getId() + " TOUCHE");
+                dejaTouche.add(b.getId());
+            }
+
+            if (!b.isActive()) {
+                if (b.getHealth() <= 0) {
+                    System.out.println("Tick " + tick + " : Ballon " + b.getId() + " DETRUIT");
+                } else {
+                    System.out.println("Tick " + tick + " : Ballon " + b.getId() + " SORTI");
+                }
+                continue;
+            }
+
+            if (b.getEffectiveSpeed() < b.getSpeed() && b.getEffectiveSpeed() > 0) {
+                System.out.println("Tick " + tick + " : Ballon " + b.getId() + " RALENTI");
+            }
+
+            if (b.getEffectiveSpeed() == 0) {
+                System.out.println("Tick " + tick + " : Ballon " + b.getId() + " ARRETE");
+            }
+
+        if (old == 0 && b.getEffectiveSpeed() > 0) {
+            System.out.println("Tick " + tick + " : Ballon " + b.getId() + " REDEMARRE");
+        }
+    }
+}
+
 
 
     /**

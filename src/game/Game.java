@@ -538,6 +538,33 @@ public class Game {
         }
     }
 
+    /**
+     * methode pour jouer 10 manches
+     * manches 1 a 5 : applique une evolution a chaque tour si possible
+     * manches 6 a 10 : supprime une evolution a chaque tour si possible
+     * @param height hauteur du plateau
+     * @param width largeur du plateau
+     * @param param nombre de ballons (modeA) ou nombre de chemins (modeB)
+     * @param modeA true pour DefinedBoard, false pour FreeBoard
+     */
+    public void run10Manches(int height, int width, int param, boolean modeA) {
+        for (int manche = 1; manche <= 10; manche++) {
+            System.out.println("===== MANCHE " + manche + " =====");
+            if (manche <= 5) { 
+                gererEvolutionAleatoire(true);
+            } else {
+                gererEvolutionAleatoire(false);
+            }
+            if (modeA) {
+                autoPlayA(height, width, param);   // param = nbBallons
+            } else {
+                autoPlayB(height, width, param);   // param = nbChemins
+            }
+            balloons.clear();
+            activeProjectils.clear();
+        }
+    }
+
 
 
     /**

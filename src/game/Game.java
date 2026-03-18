@@ -79,38 +79,22 @@ public class Game {
      */
 
     public void gameTick() {
-        try {
-            // mise à jour des ballons en utilisant move de ballons
-            for (Balloon b : balloons) {
-                if (b.isActive()) {
-                    b.updateState();
-                    b.move(this.board.getHeight(), this.board.getWidth());
-                }
-            }
+    try {
+        updateEntities();  
 
-            // attaque des tours
-            for (Tower t : towers) {
-                t.update(balloons, activeProjectils);
+        // nettoyage
+        for (Balloon b : balloons) {
+            if (!b.isActive() && b.getHealth() <= 0) {
+                this.credits += 10;
             }
-            // Vol des projectiles
-            for (Projectil p : activeProjectils) {
-                if (p.isActive()) {
-                    p.update();
-                }
-            }
-            // nettoyage
-            for (Balloon b : balloons) {
-                if (!b.isActive() && b.getHealth() <= 0) {
-                    this.credits += 10;
-                }
-            }
-            activeProjectils.removeIf(p -> !p.isActive());
-            balloons.removeIf(b -> !b.isActive());
-
-        } catch (NotMatchException e) {
-            System.err.println("Erreur : " + e.getMessage());
         }
+        activeProjectils.removeIf(p -> !p.isActive());
+        balloons.removeIf(b -> !b.isActive());
+
+    } catch (NotMatchException e) {
+        System.err.println("Erreur : " + e.getMessage());
     }
+}
 
     /**
      * Methode principale pour l'affichage
@@ -537,6 +521,19 @@ private void placerToursAleatoires() {
         }
     }
 }
-
+private void updateEntities() throws NotMatchException {
+    for (Balloon b : balloons) {
+        if (b.isActive()) {
+            b.updateState();
+            b.move(board.getHeight(), board.getWidth());
+        }
+    }
+    for (Tower t : towers) {
+        t.update(balloons, activeProjectils); // lance NotMatchException
+    }
+    for (Projectil p : activeProjectils) {
+        if (p.isActive()) p.update();
+    }
+}
 
 }

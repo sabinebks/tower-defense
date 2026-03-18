@@ -497,6 +497,50 @@ public class Game {
     }
 
     /**
+     * methode pour gerer les evolutions des tours de maniere aleatoire
+     * parcourt toutes les tours et applique ou supprime une evolution par type de tour
+     * @param ajouter true pour ajouter une evolution, false pour en supprimer une
+     */
+    private void gererEvolutionAleatoire(boolean ajouter) {
+        if (towers.isEmpty()) return;
+        Random rand = new Random();
+        Set<String> dejTraite = new HashSet<>();
+        for (Tower t : towers) {
+            if (t.getEvolutions() == null) continue;
+            if (dejTraite.contains(t.getSymbol())) continue;
+            if (ajouter) {
+                ArrayList<TypeEvolution> evols = t.getEvolutions().getEvolutions();
+                if (evols == null || evols.isEmpty()) continue;
+                
+                HashMap<TypeEvolution, Integer> possedees = t.getEvolutions().getEvolutionsPossedees();
+                List<TypeEvolution> possibles = new ArrayList<>();
+                
+                for (TypeEvolution e : evols) {
+                    if (!possedees.containsKey(e)) possibles.add(e);
+                }
+                
+                if (possibles.isEmpty()) continue;
+                TypeEvolution evo = possibles.get(rand.nextInt(possibles.size()));
+                int cout = t.appliquerEvolution(evo);
+                if (cout > 0) {
+                    System.out.println("Evolution ajoutée : " + evo + " sur " + t.getSymbol());
+                    dejTraite.add(t.getSymbol());
+                }
+            } else {
+                HashMap<TypeEvolution, Integer> possedees = t.getEvolutions().getEvolutionsPossedees();
+                if (possedees == null || possedees.isEmpty()) continue;
+                List<TypeEvolution> list = new ArrayList<>(possedees.keySet());
+                TypeEvolution evo = list.get(rand.nextInt(list.size()));
+                t.getEvolutions().vendreEvolution(evo);
+                System.out.println("Evolution retirée : " + evo + " sur " + t.getSymbol());
+                dejTraite.add(t.getSymbol());
+            }
+        }
+    }
+
+
+
+    /**
      * Lance une simulation automatique du jeu sur un plateau défini.
      * Crée le plateau avec les dimensions données, place des tours aléatoires,
      * génère des ballons puis exécute la boucle du jeu jusqu'à leur destruction

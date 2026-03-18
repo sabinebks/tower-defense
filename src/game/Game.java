@@ -458,7 +458,7 @@ public class Game {
      *
      * @param height hauteur du plateau
      * @param width largeur du plateau
-     * @param nbBallons nombre de ballons à générer
+     * @param nbChemins nombre de ballons à générer
      */
     public void autoPlayB(int height, int width, int nbChemins) {
         if (this.board == null) {       

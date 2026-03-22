@@ -1,15 +1,15 @@
 package Livrables;
 import game.Game;
 
-public class MainTest {
+public class Livrable4b {
+
     public static void main(String[] args) {
-        if (args.length < 2) {
-            System.out.println("Usage: java Livrables.Livrable3b <largeur> <hauteur>");
-            return;
-        }
+
         int width = Integer.parseInt(args[0]);
         int height = Integer.parseInt(args[1]);
+        int nbChemins = Integer.parseInt(args[2]);
+
         Game g = new Game();
-        g.play(height, width);
+        g.run10Manches(height, width, nbChemins, false);
     }
 }

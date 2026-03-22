@@ -80,7 +80,6 @@ public class Balloon {
      * @return true si le ballon est détruit, false sinon
      */
     public boolean hit(int damage) {
-        System.out.println("HIT " + type + " HP =" + health);
         health -= damage;
         if (health <= 0) {
             active = false;

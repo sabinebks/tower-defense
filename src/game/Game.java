@@ -581,4 +581,39 @@ public class Game {
             }
         }
     }
+    /**
+     * Methode pour verifier la position est valide pour un tower
+     * @param pos la position a verifier
+     * @return true si valide, false sinon
+     */
+    public boolean posValide(Position pos) {
+        if ((board == null) || (!board.isInside(pos.getRow(), pos.getCol())) || (board.getCell(pos).isPath())) {
+            return false;
+        }
+        return true;
+    }
+    /**
+     * Une methode pour acheter et placer le tour dans le board selon le choix du joueur
+     * @param t le tour voulu de id t
+     * @param p la position voulu
+     */
+    public void acheterEtPlacerTour(int t, Position p) {
+        Tower tow = createTower(t, new Position(0, 0));
+        if (tow == null) {
+            System.out.println("Type de tour invalide");
+            return;
+        }
+        if (credits < tow.getCout()) {
+            System.out.println("Credit insuffisant");
+            return;
+        }
+
+        if (p == null || !posValide(p)) {
+            System.out.println("Position invalide");
+            return;
+        }
+        Tower tower = createTower(t, p);
+        addTower(tower);
+        credits -= tower.getCout();
+    }
 }

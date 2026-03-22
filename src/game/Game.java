@@ -18,15 +18,17 @@ public class Game {
      * cerdits : cerdit du joueur
      * board : la grille de jeux
      * idCounter : pour les Id des ballons
-     *
+     * vie : nombre de vie du joueur, commencer avec 20
      */
-    public static final int CREDIT_INITIAL = 1000;
+    public static final int CREDIT_INITIAL = 2500;
+    public static final int VIE_INIT = 20;
     private List<Balloon> balloons;
     private List<Tower> towers;
     private List<Projectil> activeProjectils;
     private Board board;
     private int credits;
     private int idCounter = 0;
+    private int vie;
 
     /**
      * Le constructeur de la classe Game
@@ -37,6 +39,7 @@ public class Game {
         this.activeProjectils = new ArrayList<>();
         this.board = null;
         this.credits = CREDIT_INITIAL;
+        this.vie = VIE_INIT;
     }
 
     /**
@@ -345,11 +348,7 @@ public class Game {
      * @param width largeur du plateau
      * @param nbBallons nombre de ballons à générer
      */
-
-
-
     public void autoPlayA(int height, int width, int nbBallons) {
-
     //  recréer le board à chaque manche pour éviter les incohérences
     this.board = new DefinedBoard(height, width);
 
@@ -360,29 +359,25 @@ public class Game {
     Random rand = new Random();
 
     for (int i = 0; i < nbBallons; i++) {
-        BalloonType type = BalloonType.values()[
-                rand.nextInt(BalloonType.values().length)
-        ];
+        BalloonType type = BalloonType.values()[rand.nextInt(BalloonType.values().length)];
         spawnBalloon(type);
     }
 
     int tick = 0;
-int max = 10000;
-Map<Integer, Double> oldSpeed;
-Map<Integer, Integer> oldHealth;
+    int max = 10000;
+    Map<Integer, Double> oldSpeed;
+    Map<Integer, Integer> oldHealth;
 
-render();
-while (!(balloons.isEmpty() && activeProjectils.isEmpty()) && tick < max) {
-     oldSpeed = saveOldSpeeds();
-     oldHealth = saveOldHealth();
+    render();
+    while (!(balloons.isEmpty() && activeProjectils.isEmpty()) && tick < max) {
+        oldSpeed = saveOldSpeeds();
+        oldHealth = saveOldHealth();
+        gameTick();
+        afficherEvenementsBallons(tick, oldSpeed, oldHealth);
 
-    gameTick();
-
-    afficherEvenementsBallons(tick, oldSpeed, oldHealth);
-
-    tick++;
-}
-     System.out.println("=== FIN DE MANCHE ===");
+        tick++;
+    }
+    System.out.println("=== FIN DE MANCHE ===");
 }
      /**
      * Lance une simulation automatique du jeu sur un plateau libre.
@@ -429,118 +424,133 @@ while (!(balloons.isEmpty() && activeProjectils.isEmpty()) && tick < max) {
             }
         }
 
-       int tick = 0;
-Map<Integer, Double> oldSpeed;
-Map<Integer, Integer> oldHealth;
+        int tick = 0;
+        Map<Integer, Double> oldSpeed;
+        Map<Integer, Integer> oldHealth;
 
-render();
+        render();
 
-while (!(balloons.isEmpty() && activeProjectils.isEmpty())) {
+        while (!(balloons.isEmpty() && activeProjectils.isEmpty())) {
 
-    oldSpeed = saveOldSpeeds();
-    oldHealth = saveOldHealth();
-
-    gameTick();
-
-    afficherEvenementsBallons(tick, oldSpeed, oldHealth);
-
-    tick++;
-}
+            oldSpeed = saveOldSpeeds();
+            oldHealth = saveOldHealth();
+            gameTick();
+            afficherEvenementsBallons(tick, oldSpeed, oldHealth);
+            tick++;
+        }
         System.out.println("=== FIN DE MANCHE ===");
     }
-/** 
- * Cree une tour en fonction d'un id
- * @param typeId l'identifiant du type de tour (1 à 7)
- * @param pos la position de la tour
- * @return la tour correspondante ou null si invalide
- */
-private Tower createTower(int typeId, Position pos) {
-    switch (typeId) {
-        case 1: return new BombTower(pos);
-        case 2: return new DartMonkey(pos);
-        case 3: return new EliteSniper(pos);
-        case 4: return new Gorilla(pos);
-        case 5: return new IceTower(pos);
-        case 6: return new SlowTower(pos);
-        case 7: return new TackShooter(pos);
-        default: return null;
+    /** 
+     * Cree une tour en fonction d'un id
+     * @param typeId l'identifiant du type de tour (1 à 7)
+     * @param pos la position de la tour
+     * @return la tour correspondante ou null si invalide
+     */
+    private Tower createTower(int typeId, Position pos) {
+        switch (typeId) {
+            case 1: return new BombTower(pos);
+            case 2: return new DartMonkey(pos);
+            case 3: return new EliteSniper(pos);
+            case 4: return new Gorilla(pos);
+            case 5: return new IceTower(pos);
+            case 6: return new SlowTower(pos);
+            case 7: return new TackShooter(pos);
+            default: return null;
+        }
     }
-}
-private void placerToursAleatoires() {
+    /**
+     * Fonction placer les tours aleatoirement dans le board
+     */
+    private void placerToursAleatoires() {
 
-    // FIX : éviter crash si board null
-    if (board == null) return;
+        // FIX : éviter crash si board null
+        if (board == null) return;
 
-    ArrayList<Position> nonPathPositions = new ArrayList<>();
-    Cell[][] grid = board.getGrid();
-    Random rand = new Random();
+        ArrayList<Position> nonPathPositions = new ArrayList<>();
+        Cell[][] grid = board.getGrid();
+        Random rand = new Random();
 
-    for (int i = 0; i < grid.length; i++) {
-        for (int j = 0; j < grid[0].length; j++) {
-            if (!grid[i][j].isPath()) {
-                nonPathPositions.add(new Position(i, j));
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (!grid[i][j].isPath()) {
+                    nonPathPositions.add(new Position(i, j));
+                }
+            }
+        }
+
+        for (int t = 1; t <= 7; t++) {
+            for (int k = 0; k < 2; k++) {
+
+                // FIX : ne pas quitter toute la méthode, juste la boucle
+                if (nonPathPositions.isEmpty()) break;
+
+                Position pos = nonPathPositions.remove(
+                    rand.nextInt(nonPathPositions.size())
+                );
+
+                Tower tower = createTower(t, pos);
+
+                if (tower != null) {
+                    addTower(tower);
+                }
             }
         }
     }
-
-    for (int t = 1; t <= 7; t++) {
-        for (int k = 0; k < 2; k++) {
-
-            // FIX : ne pas quitter toute la méthode, juste la boucle
-            if (nonPathPositions.isEmpty()) break;
-
-            Position pos = nonPathPositions.remove(
-                rand.nextInt(nonPathPositions.size())
-            );
-
-            Tower tower = createTower(t, pos);
-
-            if (tower != null) {
-                addTower(tower);
+    /**
+     * La fonction va mettre a jours lors qu'un tower lancer un projectile vers le ballon
+     * @throws NotMatchException
+     */
+    private void updateEntities() throws NotMatchException {
+        for (Balloon b : balloons) {
+            if (b.isActive()) {
+                b.updateState();
+                b.move(board.getHeight(), board.getWidth());
             }
         }
-    }
-}
-private void updateEntities() throws NotMatchException {
-    for (Balloon b : balloons) {
-        if (b.isActive()) {
-            b.updateState();
-            b.move(board.getHeight(), board.getWidth());
+        for (Tower t : towers) {
+            t.update(balloons, activeProjectils); // lance NotMatchException
+        }
+        for (Projectil p : activeProjectils) {
+            if (p.isActive()) p.update();
         }
     }
-    for (Tower t : towers) {
-        t.update(balloons, activeProjectils); // lance NotMatchException
-    }
-    for (Projectil p : activeProjectils) {
-        if (p.isActive()) p.update();
-    }
-}
-private void cleanupEntities() {
-    // Crédits pour ballons détruits
-    for (Balloon b : balloons) {
-        if (!b.isActive() && b.getHealth() <= 0) {
-            this.credits += 10;
+    /**
+     * Quand un projectile touche un ballon et le ballon mort, ca va supprimer le ballon
+     * et ajouter un nombre de credit 
+     */
+    private void cleanupEntities() {
+        // Crédits pour ballons détruits
+        for (Balloon b : balloons) {
+            if (!b.isActive() && b.getHealth() <= 0) {
+                this.credits += 10;
+            }
         }
+
+        // Retirer les projectiles et ballons inactifs
+        activeProjectils.removeIf(p -> !p.isActive());
+        balloons.removeIf(b -> !b.isActive());
     }
 
-    // Retirer les projectiles et ballons inactifs
-    activeProjectils.removeIf(p -> !p.isActive());
-    balloons.removeIf(b -> !b.isActive());
-}
-
-private Map<Integer, Double> saveOldSpeeds() {
-    Map<Integer, Double> oldSpeed = new HashMap<>();
-    for (Balloon b : balloons) {
-        oldSpeed.put(b.getId(), b.getEffectiveSpeed());
+    /**
+     * Fonction pour recuperrer la vitesse ancienne des ballons
+     * @return un map des vitesses anciennes des ballons
+     */
+    private Map<Integer, Double> saveOldSpeeds() {
+        Map<Integer, Double> oldSpeed = new HashMap<>();
+        for (Balloon b : balloons) {
+            oldSpeed.put(b.getId(), b.getEffectiveSpeed());
+        }
+        return oldSpeed;
     }
-    return oldSpeed;
-}
-
-private Map<Integer, Integer> saveOldHealth() {
-    Map<Integer, Integer> oldHealth = new HashMap<>();
-    for (Balloon b : balloons) {
-        oldHealth.put(b.getId(), b.getHealth());
+    /**
+     * Fonctions des sangs anciens des ballons
+     * @return des sangs anciens des ballons
+     */
+    private Map<Integer, Integer> saveOldHealth() {
+        Map<Integer, Integer> oldHealth = new HashMap<>();
+        for (Balloon b : balloons) {
+            oldHealth.put(b.getId(), b.getHealth());
+        }
+        return oldHealth;
     }
-    return oldHealth;
-}
 }

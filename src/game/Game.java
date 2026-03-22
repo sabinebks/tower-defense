@@ -553,4 +553,32 @@ public class Game {
         }
         return oldHealth;
     }
+    /**
+     * Methode gerer les actions du joueurs
+     * 1 : Acheter et placer une tour
+     * 2 : Evolution d'une tour
+     * 3 : Vendre une tour
+     * 4 : Terminer
+     * Autre : une message d'erreur affiche
+     * @param choix le choix du joueur
+     */
+    public void phaseActionsJoueur(int choix) {
+        boolean fin = false;
+        while (!fin) {
+            render();
+            switch (choix) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    fin = true;
+                    break;
+                default:
+                    System.out.println("Choix invalide");
+            }
+        }
+    }
 }

@@ -22,6 +22,7 @@ public class Game {
      */
     public static final int CREDIT_INITIAL = 2500;
     public static final int VIE_INIT = 20;
+    public static final double REVENDRE = 0.25;
     private List<Balloon> balloons;
     private List<Tower> towers;
     private List<Projectil> activeProjectils;
@@ -587,7 +588,7 @@ public class Game {
      * @return true si valide, false sinon
      */
     public boolean posValide(Position pos) {
-        if ((board == null) || (!board.isInside(pos.getRow(), pos.getCol())) || (board.getCell(pos).isPath())) {
+        if ((this.board == null) || (!this.board.isInside(pos.getRow(), pos.getCol())) || (this.board.getCell(pos).isPath())) {
             return false;
         }
         return true;
@@ -615,5 +616,40 @@ public class Game {
         Tower tower = createTower(t, p);
         addTower(tower);
         credits -= tower.getCout();
+    }
+    
+    /**
+     * Une methode pour calculer le nombre total du cout d'un tower, meme si avec les evolution,
+     * ca va aider a calculer l'argent gagne apres vendre un tower
+     * @param t le tower a calculer
+     * @return le prix total
+     */
+    public int calculInvestissementTotal(Tower t) {
+        int total = t.getCout();
+        if (t.getEvolutions() != null) {
+            for (int c : t.getEvolutions().getEvolutionsPossedees().values()) {
+                total += c;
+            }
+        }
+        return total;
+    }
+
+    /**
+     * Methode pour vendre le tower a l'index choisi dans la liste des towers du joueurs
+     * @param i du tower a vendre dans la liste
+     */
+    public void vendreTour(int i) {
+        if (this.towers.isEmpty()) {
+            System.out.println("Aucun tour a vendre");
+            return;
+        }
+        else if (i < 1 || i > this.towers.size()) {
+            System.out.println("Indice invalide");
+            return;
+        }
+        Tower tower = this.towers.remove(i - 1);
+        //Math round nous aide a convertir un type double vers un type int, ce qui nous aide a evite les erreurs
+        int n = (int)Math.round(calculInvestissementTotal(tower) * REVENDRE);
+        this.credits += n;
     }
 }

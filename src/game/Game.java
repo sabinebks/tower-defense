@@ -617,27 +617,11 @@ public class Game {
         addTower(tower);
         credits -= tower.getCout();
     }
-    
-    /**
-     * Une methode pour calculer le nombre total du cout d'un tower, meme si avec les evolution,
-     * ca va aider a calculer l'argent gagne apres vendre un tower
-     * @param t le tower a calculer
-     * @return le prix total
-     */
-    public int calculInvestissementTotal(Tower t) {
-        int total = t.getCout();
-        if (t.getEvolutions() != null) {
-            for (int c : t.getEvolutions().getEvolutionsPossedees().values()) {
-                total += c;
-            }
-        }
-        return total;
-    }
 
     /**
      * Methode pour vendre le tower a l'index choisi dans la liste des towers du joueurs
      * @param i du tower a vendre dans la liste
-     */
+     
     public void vendreTour(int i) {
         if (this.towers.isEmpty()) {
             System.out.println("Aucun tour a vendre");
@@ -651,5 +635,5 @@ public class Game {
         //Math round nous aide a convertir un type double vers un type int, ce qui nous aide a evite les erreurs
         int n = (int)Math.round(calculInvestissementTotal(tower) * REVENDRE);
         this.credits += n;
-    }
+    }*/
 }

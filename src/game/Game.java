@@ -122,7 +122,7 @@ public class Game {
     }
 
     return null;
-}
+    }
 
     /**
      * methode pour affciher exactement la grille DefinedBoard

@@ -194,4 +194,12 @@ public class FreeBoard extends Board {
     public Map<Position, Position> getCheminsMap() {
         return chemins;
     }
+
+    public List<Cell> getChemins() {
+        List<Cell> chemins = new ArrayList<>();
+        for (int i = 0; i < cmp; i++) {
+            chemins.add(chemins.get(i));
+        }
+        return chemins;
+    }
 }

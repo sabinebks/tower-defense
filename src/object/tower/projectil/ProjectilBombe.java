@@ -30,6 +30,7 @@ public class ProjectilBombe extends Projectil {
             throw new NotMatchException("Pas possible avec ce type de projectil dans cette classe");
         }
     }
+
     /**
      *La methode active l'impact du projectil
      */

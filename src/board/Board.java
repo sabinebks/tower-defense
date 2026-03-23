@@ -26,6 +26,7 @@ public abstract class Board {
     /**
      * Abstract method: each board initializes the grid in its own way.
      */
+    protected abstract List<Cell> getChemins();
     protected abstract void init();
 
     /**

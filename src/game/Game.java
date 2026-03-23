@@ -18,15 +18,18 @@ public class Game {
      * cerdits : cerdit du joueur
      * board : la grille de jeux
      * idCounter : pour les Id des ballons
-     *
+     * vie : nombre de vie du joueur, commencer avec 20
      */
-    public static final int CREDIT_INITIAL = 1000;
+    public static final int CREDIT_INITIAL = 2500;
+    public static final int VIE_INIT = 20;
+    public static final double REVENDRE = 0.25;
     private List<Balloon> balloons;
     private List<Tower> towers;
     private List<Projectil> activeProjectils;
     private Board board;
     private int credits;
     private int idCounter = 0;
+    private int vie;
 
     /**
      * Le constructeur de la classe Game
@@ -37,6 +40,7 @@ public class Game {
         this.activeProjectils = new ArrayList<>();
         this.board = null;
         this.credits = CREDIT_INITIAL;
+        this.vie = VIE_INIT;
     }
 
     /**
@@ -345,11 +349,7 @@ public class Game {
      * @param width largeur du plateau
      * @param nbBallons nombre de ballons à générer
      */
-
-
-
     public void autoPlayA(int height, int width, int nbBallons) {
-
     //  recréer le board à chaque manche pour éviter les incohérences
     this.board = new DefinedBoard(height, width);
 
@@ -360,29 +360,25 @@ public class Game {
     Random rand = new Random();
 
     for (int i = 0; i < nbBallons; i++) {
-        BalloonType type = BalloonType.values()[
-                rand.nextInt(BalloonType.values().length)
-        ];
+        BalloonType type = BalloonType.values()[rand.nextInt(BalloonType.values().length)];
         spawnBalloon(type);
     }
 
     int tick = 0;
-int max = 10000;
-Map<Integer, Double> oldSpeed;
-Map<Integer, Integer> oldHealth;
+    int max = 10000;
+    Map<Integer, Double> oldSpeed;
+    Map<Integer, Integer> oldHealth;
 
-render();
-while (!(balloons.isEmpty() && activeProjectils.isEmpty()) && tick < max) {
-     oldSpeed = saveOldSpeeds();
-     oldHealth = saveOldHealth();
+    render();
+    while (!(balloons.isEmpty() && activeProjectils.isEmpty()) && tick < max) {
+        oldSpeed = saveOldSpeeds();
+        oldHealth = saveOldHealth();
+        gameTick();
+        afficherEvenementsBallons(tick, oldSpeed, oldHealth);
 
-    gameTick();
-
-    afficherEvenementsBallons(tick, oldSpeed, oldHealth);
-
-    tick++;
-}
-     System.out.println("=== FIN DE MANCHE ===");
+        tick++;
+    }
+    System.out.println("=== FIN DE MANCHE ===");
 }
      /**
      * Lance une simulation automatique du jeu sur un plateau libre.
@@ -429,118 +425,231 @@ while (!(balloons.isEmpty() && activeProjectils.isEmpty()) && tick < max) {
             }
         }
 
-       int tick = 0;
-Map<Integer, Double> oldSpeed;
-Map<Integer, Integer> oldHealth;
+        int tick = 0;
+        Map<Integer, Double> oldSpeed;
+        Map<Integer, Integer> oldHealth;
 
-render();
+        render();
 
-while (!(balloons.isEmpty() && activeProjectils.isEmpty())) {
+        while (!(balloons.isEmpty() && activeProjectils.isEmpty())) {
 
-    oldSpeed = saveOldSpeeds();
-    oldHealth = saveOldHealth();
-
-    gameTick();
-
-    afficherEvenementsBallons(tick, oldSpeed, oldHealth);
-
-    tick++;
-}
+            oldSpeed = saveOldSpeeds();
+            oldHealth = saveOldHealth();
+            gameTick();
+            afficherEvenementsBallons(tick, oldSpeed, oldHealth);
+            tick++;
+        }
         System.out.println("=== FIN DE MANCHE ===");
     }
-/** 
- * Cree une tour en fonction d'un id
- * @param typeId l'identifiant du type de tour (1 à 7)
- * @param pos la position de la tour
- * @return la tour correspondante ou null si invalide
- */
-private Tower createTower(int typeId, Position pos) {
-    switch (typeId) {
-        case 1: return new BombTower(pos);
-        case 2: return new DartMonkey(pos);
-        case 3: return new EliteSniper(pos);
-        case 4: return new Gorilla(pos);
-        case 5: return new IceTower(pos);
-        case 6: return new SlowTower(pos);
-        case 7: return new TackShooter(pos);
-        default: return null;
+    /** 
+     * Cree une tour en fonction d'un id
+     * @param typeId l'identifiant du type de tour (1 à 7)
+     * @param pos la position de la tour
+     * @return la tour correspondante ou null si invalide
+     */
+    private Tower createTower(int typeId, Position pos) {
+        switch (typeId) {
+            case 1: return new BombTower(pos);
+            case 2: return new DartMonkey(pos);
+            case 3: return new EliteSniper(pos);
+            case 4: return new Gorilla(pos);
+            case 5: return new IceTower(pos);
+            case 6: return new SlowTower(pos);
+            case 7: return new TackShooter(pos);
+            default: return null;
+        }
     }
-}
-private void placerToursAleatoires() {
+    /**
+     * Fonction placer les tours aleatoirement dans le board
+     */
+    private void placerToursAleatoires() {
 
-    // FIX : éviter crash si board null
-    if (board == null) return;
+        // FIX : éviter crash si board null
+        if (board == null) return;
 
-    ArrayList<Position> nonPathPositions = new ArrayList<>();
-    Cell[][] grid = board.getGrid();
-    Random rand = new Random();
+        ArrayList<Position> nonPathPositions = new ArrayList<>();
+        Cell[][] grid = board.getGrid();
+        Random rand = new Random();
 
-    for (int i = 0; i < grid.length; i++) {
-        for (int j = 0; j < grid[0].length; j++) {
-            if (!grid[i][j].isPath()) {
-                nonPathPositions.add(new Position(i, j));
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (!grid[i][j].isPath()) {
+                    nonPathPositions.add(new Position(i, j));
+                }
+            }
+        }
+
+        for (int t = 1; t <= 7; t++) {
+            for (int k = 0; k < 2; k++) {
+
+                // FIX : ne pas quitter toute la méthode, juste la boucle
+                if (nonPathPositions.isEmpty()) break;
+
+                Position pos = nonPathPositions.remove(
+                    rand.nextInt(nonPathPositions.size())
+                );
+
+                Tower tower = createTower(t, pos);
+
+                if (tower != null) {
+                    addTower(tower);
+                }
             }
         }
     }
+    /**
+     * La fonction va mettre a jours lors qu'un tower lancer un projectile vers le ballon
+     * @throws NotMatchException
+     */
+    private void updateEntities() throws NotMatchException {
+        for (Balloon b : balloons) {
+            if (b.isActive()) {
+                b.updateState();
+                b.move(board.getHeight(), board.getWidth());
+            }
+        }
+        for (Tower t : towers) {
+            t.update(balloons, activeProjectils); // lance NotMatchException
+        }
+        for (Projectil p : activeProjectils) {
+            if (p.isActive()) p.update();
+        }
+    }
+    /**
+     * Quand un projectile touche un ballon et le ballon mort, ca va supprimer le ballon
+     * et ajouter un nombre de credit 
+     */
+    private void cleanupEntities() {
+        // Crédits pour ballons détruits
+        for (Balloon b : balloons) {
+            if (!b.isActive() && b.getHealth() <= 0) {
+                this.credits += 10;
+            }
+        }
 
-    for (int t = 1; t <= 7; t++) {
-        for (int k = 0; k < 2; k++) {
+        // Retirer les projectiles et ballons inactifs
+        activeProjectils.removeIf(p -> !p.isActive());
+        balloons.removeIf(b -> !b.isActive());
+    }
 
-            // FIX : ne pas quitter toute la méthode, juste la boucle
-            if (nonPathPositions.isEmpty()) break;
-
-            Position pos = nonPathPositions.remove(
-                rand.nextInt(nonPathPositions.size())
-            );
-
-            Tower tower = createTower(t, pos);
-
-            if (tower != null) {
-                addTower(tower);
+    /**
+     * Fonction pour recuperrer la vitesse ancienne des ballons
+     * @return un map des vitesses anciennes des ballons
+     */
+    private Map<Integer, Double> saveOldSpeeds() {
+        Map<Integer, Double> oldSpeed = new HashMap<>();
+        for (Balloon b : balloons) {
+            oldSpeed.put(b.getId(), b.getEffectiveSpeed());
+        }
+        return oldSpeed;
+    }
+    /**
+     * Fonctions des sangs anciens des ballons
+     * @return des sangs anciens des ballons
+     */
+    private Map<Integer, Integer> saveOldHealth() {
+        Map<Integer, Integer> oldHealth = new HashMap<>();
+        for (Balloon b : balloons) {
+            oldHealth.put(b.getId(), b.getHealth());
+        }
+        return oldHealth;
+    }
+    /**
+     * Methode gerer les actions du joueurs
+     * 1 : Acheter et placer une tour
+     * 2 : Evolution d'une tour
+     * 3 : Vendre une tour
+     * 4 : Terminer
+     * Autre : une message d'erreur affiche
+     * @param choix le choix du joueur
+     */
+    public void phaseActionsJoueur(int choix) {
+        boolean fin = false;
+        while (!fin) {
+            render();
+            switch (choix) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    fin = true;
+                    break;
+                default:
+                    System.out.println("Choix invalide");
             }
         }
     }
-}
-private void updateEntities() throws NotMatchException {
-    for (Balloon b : balloons) {
-        if (b.isActive()) {
-            b.updateState();
-            b.move(board.getHeight(), board.getWidth());
+    /**
+     * Methode pour verifier la position est valide pour un tower
+     * @param pos la position a verifier
+     * @return true si valide, false sinon
+     */
+    public boolean posValide(Position pos) {
+        if ((this.board == null) || (!this.board.isInside(pos.getRow(), pos.getCol())) || (this.board.getCell(pos).isPath())) {
+            return false;
         }
+        return true;
     }
-    for (Tower t : towers) {
-        t.update(balloons, activeProjectils); // lance NotMatchException
-    }
-    for (Projectil p : activeProjectils) {
-        if (p.isActive()) p.update();
-    }
-}
-private void cleanupEntities() {
-    // Crédits pour ballons détruits
-    for (Balloon b : balloons) {
-        if (!b.isActive() && b.getHealth() <= 0) {
-            this.credits += 10;
+    /**
+     * Une methode pour acheter et placer le tour dans le board selon le choix du joueur
+     * @param t le tour voulu de id t
+     * @param p la position voulu
+     */
+    public void acheterEtPlacerTour(int t, Position p) {
+        Tower tow = createTower(t, new Position(0, 0));
+        if (tow == null) {
+            System.out.println("Type de tour invalide");
+            return;
         }
+        if (credits < tow.getCout()) {
+            System.out.println("Credit insuffisant");
+            return;
+        }
+
+        if (p == null || !posValide(p)) {
+            System.out.println("Position invalide");
+            return;
+        }
+        Tower tower = createTower(t, p);
+        addTower(tower);
+        credits -= tower.getCout();
+    }
+    
+    /**
+     * Une methode pour calculer le nombre total du cout d'un tower, meme si avec les evolution,
+     * ca va aider a calculer l'argent gagne apres vendre un tower
+     * @param t le tower a calculer
+     * @return le prix total
+     */
+    public int calculInvestissementTotal(Tower t) {
+        int total = t.getCout();
+        if (t.getEvolutions() != null) {
+            for (int c : t.getEvolutions().getEvolutionsPossedees().values()) {
+                total += c;
+            }
+        }
+        return total;
     }
 
-    // Retirer les projectiles et ballons inactifs
-    activeProjectils.removeIf(p -> !p.isActive());
-    balloons.removeIf(b -> !b.isActive());
-}
-
-private Map<Integer, Double> saveOldSpeeds() {
-    Map<Integer, Double> oldSpeed = new HashMap<>();
-    for (Balloon b : balloons) {
-        oldSpeed.put(b.getId(), b.getEffectiveSpeed());
+    /**
+     * Methode pour vendre le tower a l'index choisi dans la liste des towers du joueurs
+     * @param i du tower a vendre dans la liste
+     */
+    public void vendreTour(int i) {
+        if (this.towers.isEmpty()) {
+            System.out.println("Aucun tour a vendre");
+            return;
+        }
+        else if (i < 1 || i > this.towers.size()) {
+            System.out.println("Indice invalide");
+            return;
+        }
+        Tower tower = this.towers.remove(i - 1);
+        //Math round nous aide a convertir un type double vers un type int, ce qui nous aide a evite les erreurs
+        int n = (int)Math.round(calculInvestissementTotal(tower) * REVENDRE);
+        this.credits += n;
     }
-    return oldSpeed;
-}
-
-private Map<Integer, Integer> saveOldHealth() {
-    Map<Integer, Integer> oldHealth = new HashMap<>();
-    for (Balloon b : balloons) {
-        oldHealth.put(b.getId(), b.getHealth());
-    }
-    return oldHealth;
-}
 }

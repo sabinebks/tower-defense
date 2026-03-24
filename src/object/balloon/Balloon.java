@@ -143,4 +143,134 @@ public boolean move(int height, int width) {
         if(slowTimer > 0){return this.speed * slowFactor;}
         return this.speed;
     }
+       /**
+     * Touche le ballon (diminue sa santé).
+     * 
+     * @param damage dégâts infligés
+     * @return true si le ballon est détruit, false sinon
+     */
+    public boolean hit(int damage) {
+        health -= damage;
+        if (health <= 0) {
+            active = false;
+            return true;  // Ballon détruit
+        }
+        return false;  // Ballon encore vivant
+    }
+
+    /**
+     * Vérifie si le ballon est actif.
+     * 
+     * @return true si actif, false sinon
+     */
+    public boolean isActive() {
+        return active;
+    }
+
+    /**
+     * Retourne la position actuelle (case) du ballon.
+     * 
+     * @return la position de la case où se trouve le ballon
+     */
+    public Position getCurrentPosition() {
+       return new Position((int)posLigne, (int)posColonne);
+    }
+
+    /**
+     * Définit le temps de sortie du ballon.
+     * 
+     * @param time le temps en tics
+     */
+    public void setExitTime(int time) {
+        this.exitTime = time;
+    }
+
+    // ===== GETTERS =====
+    
+    /**
+     * Retourne l'identifiant du ballon.
+     * @return l'id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Retourne la vitesse du ballon.
+     * @return la vitesse
+     */
+    public double getSpeed() {
+        return speed;
+    }
+
+    /**
+     * Retourne les points de vie restants.
+     * @return la santé
+     */
+    public int getHealth() {
+        return health;
+    }
+
+    /**
+     * Retourne le type du ballon.
+     * @return le type
+     */
+    public BalloonType getType() {
+        return type;
+    }
+
+    /**
+     * Retourne le temps de sortie.
+     * @return le temps de sortie (-1 si pas encore sorti)
+     */
+    public int getExitTime() {
+        return exitTime;
+    }
+
+    /**
+     * Retourne la position X précise.
+     * @return posX
+     */
+    public double getColonne() {
+        return posColonne;
+    }
+
+    /**
+     * Retourne la position Y précise.
+     * @return posY
+     */
+    public double getLigne() {
+        return posLigne;
+    }
+
+   
+
+    /**
+     * pour stopper le ballon
+     */
+    public void freeze(int duration) {
+        if (this.freezeTimer<=0) {
+            this.freezeTimer = duration;
+        }
+    }
+
+    /**
+     * Ralentit le ballon (réduit sa vitesse)
+     * @param factor facteur de ralentissement (ex: 0.5 = 50% plus lent)
+     */
+    public void slow(double factor, int duration) {
+        this.slowFactor = factor;
+        this.slowTimer = duration;
+    }
+
+   
+
+    /**
+     *
+     */
+    public void remove(){
+        this.active = false;
+    }
+
+
 }

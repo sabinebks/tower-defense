@@ -195,13 +195,44 @@ public class FreeBoard extends Board {
         return chemins;
     }
 
-    public List<Cell> getChemins() {
-        List<Cell> chemins = new ArrayList<>();
-        for (int i = 0; i < cmp; i++) {
-            chemins.add(chemins.get(i));
+     public List<Cell> getChemins() {
+    List<Cell> result = new ArrayList<>();
+
+    for (Map.Entry<Position, Position> entry : chemins.entrySet()) {
+        Position start = entry.getKey();
+        Position end = entry.getValue();
+
+        Direction dir = getDirection(start, end);
+
+        switch (dir) {
+            case RIGHT:
+                for (int c = start.getCol(); c <= end.getCol(); c++) {
+                    result.add(getCell(start.getRow(), c));
+                }
+                break;
+
+            case LEFT:
+                for (int c = start.getCol(); c >= end.getCol(); c--) {
+                    result.add(getCell(start.getRow(), c));
+                }
+                break;
+
+            case DOWN:
+                for (int r = start.getRow(); r <= end.getRow(); r++) {
+                    result.add(getCell(r, start.getCol()));
+                }
+                break;
+
+            case UP:
+                for (int r = start.getRow(); r >= end.getRow(); r--) {
+                    result.add(getCell(r, start.getCol()));
+                }
+                break;
         }
-        return chemins;
     }
+
+    return result;
+}
     public List<Position> getPathPositions() {
     List<Position> positions = new ArrayList<>();
 

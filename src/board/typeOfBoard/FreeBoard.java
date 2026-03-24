@@ -202,4 +202,42 @@ public class FreeBoard extends Board {
         }
         return chemins;
     }
+    public List<Position> getPathPositions() {
+    List<Position> positions = new ArrayList<>();
+
+    for (Map.Entry<Position, Position> entry : chemins.entrySet()) {
+        Position start = entry.getKey();
+        Position end = entry.getValue();
+
+        Direction dir = getDirection(start, end);
+
+        switch (dir) {
+            case RIGHT:
+                for (int c = start.getCol(); c <= end.getCol(); c++) {
+                    positions.add(new Position(start.getRow(), c));
+                }
+                break;
+
+            case LEFT:
+                for (int c = start.getCol(); c >= end.getCol(); c--) {
+                    positions.add(new Position(start.getRow(), c));
+                }
+                break;
+
+            case DOWN:
+                for (int r = start.getRow(); r <= end.getRow(); r++) {
+                    positions.add(new Position(r, start.getCol()));
+                }
+                break;
+
+            case UP:
+                for (int r = start.getRow(); r >= end.getRow(); r--) {
+                    positions.add(new Position(r, start.getCol()));
+                }
+                break;
+        }
+    }
+
+    return positions;
+}
 }

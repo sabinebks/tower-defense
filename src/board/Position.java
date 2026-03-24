@@ -55,4 +55,8 @@ public class Position {
     public String toString() {
         return "(" + row + "," + col + ")";
     }
+    @Override
+public int hashCode() {
+    return 31 * row + col;
+}
 }

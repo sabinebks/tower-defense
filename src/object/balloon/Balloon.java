@@ -52,7 +52,7 @@ protected int pathIndex;
      * @param type type du ballon
      */
 
-   public BalloonAmeliore(int id, double startLigne, double startColonne, BalloonType type) {
+   public Balloon(int id, double startLigne, double startColonne, BalloonType type) {
     this.id = id;
     this.posColonne = startColonne;
     this.posLigne = startLigne;
@@ -86,5 +86,61 @@ protected int pathIndex;
      * 
      * @return true si le ballon continue, false s'il est arrivé
      */
+   
+public boolean move(int height, int width) {
+     
+    updateState();
+    if (!active || freezeTimer > 0) return active;
 
+    if (path == null || path.isEmpty()) return active;
+
+    if (pathIndex >= path.size()) {
+        active = false;
+        return false;
+    }
+
+    Position target = path.get(pathIndex);
+
+    double targetRow = target.getRow() + 0.5;
+    double targetCol = target.getCol() + 0.5;
+
+    double dx = targetCol - posColonne;
+    double dy = targetRow - posLigne;
+
+    double distance = Math.sqrt(dx * dx + dy * dy);
+
+    double currentSpeed = getEffectiveSpeed();
+    if (currentSpeed <= 0) return active;
+
+    if (distance <= currentSpeed) {
+        posColonne = targetCol;
+        posLigne = targetRow;
+        pathIndex++;
+
+        if (pathIndex >= path.size()) {
+            active = false;
+        }
+    } else {
+        posColonne += (dx / distance) * currentSpeed;
+        posLigne += (dy / distance) * currentSpeed;
+    }
+
+    return active;
+}
+ public void updateState(){
+        if(freezeTimer > 0){
+            freezeTimer--;
+        }
+        if(slowTimer > 0){
+            slowTimer--;
+        }
+        if (slowTimer <= 0) {
+            slowFactor = 1.0;
+        }
+    }
+     public double getEffectiveSpeed() {
+        if (freezeTimer > 0) {return 0;}
+        if(slowTimer > 0){return this.speed * slowFactor;}
+        return this.speed;
+    }
 }

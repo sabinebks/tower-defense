@@ -92,10 +92,14 @@ public abstract class Tower {
             return null;
         }
 
-        if (effectType == EffectType.SLOW || effectType == EffectType.FREEZE) {
-            return new ProjectilEffet(this.type, startX, startY, target, effectType);
+        if (effectType == EffectType.SLOW ) {
+            return new ProjectilSlow(this.type, startX, startY, target);
         }
 
+        if(effectType == EffectType.FREEZE){
+            return new ProjectilFreeze(this.type, startX, startY, target);
+        }
+        
         if (this.effectType == EffectType.AREA) {
             return new ProjectilBombe(
                     this.type,

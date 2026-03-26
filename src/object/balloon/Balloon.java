@@ -39,10 +39,10 @@ public class Balloon {
     protected int slowTimer = 0;
     protected double slowFactor = 1.0;
     //Attributs spécifiques pour les ballons améliorés
-  /** Chemin que le ballon doit suivre */
-protected List<Position> path;
-/** Index de la position actuelle dans le chemin */
-protected int pathIndex;
+    /** Chemin que le ballon doit suivre */
+    protected List<Position> path;
+    /** Index de la position actuelle dans le chemin */
+    protected int pathIndex;
     /**
      * Crée un ballon de base.
      * 
@@ -76,16 +76,12 @@ protected int pathIndex;
 }
 // Attributs spécifiques pour les ballons améliorés
 
-  public void setPath(List<Position> path) {
-    this.path = path;
-    this.pathIndex = 0;
-}
-    /**
-     * Déplace le ballon d'un tic.
-     * Cette méthode sera override dans les sous-classes.
-     * 
-     * @return true si le ballon continue, false s'il est arrivé
-     */
+/**
+* Déplace le ballon d'un tic.
+* Cette méthode sera override dans les sous-classes.
+* 
+* @return true si le ballon continue, false s'il est arrivé
+*/
    
 public boolean move(int height, int width) {
      
@@ -120,14 +116,21 @@ public boolean move(int height, int width) {
         if (pathIndex >= path.size()) {
             active = false;
         }
-    } else {
-        posColonne += (dx / distance) * currentSpeed;
-        posLigne += (dy / distance) * currentSpeed;
+        } else {
+            posColonne += (dx / distance) * currentSpeed;
+            posLigne += (dy / distance) * currentSpeed;
+        }
+
+        return active;
     }
 
-    return active;
-}
- public void updateState(){
+
+
+    /**
+     * methode pour savoir si le ballon a ete gelé ou ralenti 
+     * et gerer ça dans move et actualiser le ballon a chaque fois
+     */
+    public void updateState(){
         if(freezeTimer > 0){
             freezeTimer--;
         }
@@ -138,12 +141,16 @@ public boolean move(int height, int width) {
             slowFactor = 1.0;
         }
     }
+
      public double getEffectiveSpeed() {
         if (freezeTimer > 0) {return 0;}
         if(slowTimer > 0){return this.speed * slowFactor;}
         return this.speed;
     }
-       /**
+
+
+    
+    /**
      * Touche le ballon (diminue sa santé).
      * 
      * @param damage dégâts infligés
@@ -263,7 +270,6 @@ public boolean move(int height, int width) {
         this.slowTimer = duration;
     }
 
-   
 
     /**
      *
@@ -272,5 +278,11 @@ public boolean move(int height, int width) {
         this.active = false;
     }
 
+    // ===== SETTTERS =====
+    
+    public void setPath(List<Position> path) {
+        this.path = path;
+        this.pathIndex = 0;
+    }
 
 }

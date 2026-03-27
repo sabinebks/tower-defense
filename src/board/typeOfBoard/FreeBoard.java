@@ -9,12 +9,13 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * This class represents a FreeBoard where paths are straight lines 
+ * This class represents a FreeBoard where paths are straight lines
  * going from one side of the board to the opposite side.
  */
 public class FreeBoard extends Board {
 
-    // Crée une map qui enregistre la position de départ pour chaque numéro de chemin
+    // Crée une map qui enregistre la position de départ pour chaque numéro de
+    // chemin
     private Map<Integer, Position> numChemins = new HashMap<>();
     private int cmp = 0; // Compteur pour le nombre de chemins
 
@@ -27,6 +28,7 @@ public class FreeBoard extends Board {
 
     /**
      * Constructor for FreeBoard.
+     * 
      * @param height The height of the board
      * @param width  The width of the board
      */
@@ -36,6 +38,7 @@ public class FreeBoard extends Board {
 
     /**
      * Définit le nombre de chemins rectilignes à créer.
+     * 
      * @param nb nombre de chemins
      */
     public void setNbCheminsVoulus(int nb) {
@@ -69,10 +72,10 @@ public class FreeBoard extends Board {
         Random rand = new Random();
 
         // Crée toutes les cellules de départ possibles (tous les bords)
-        // Pris en compte les cellules qui peuvent être rajoutées deux fois 
+        // Pris en compte les cellules qui peuvent être rajoutées deux fois
         // pour que le rand ne soit pas biaisé
         List<Position> listPositions = new ArrayList<>();
-        
+
         // Sauvegarder la liste de la première ligne et la dernière
         for (int j = 0; j < width; j++) {
             listPositions.add(new Position(0, j));
@@ -93,13 +96,14 @@ public class FreeBoard extends Board {
 
             // Si la destination est aussi libre
             if (listPositions.contains(pFin)) {
-                // Marquer toutes les cellules entre le départ et la fin comme faisant partie du chemin
+                // Marquer toutes les cellules entre le départ et la fin comme faisant partie du
+                // chemin
                 marquerCheminDroit(pRandom, pFin);
 
                 // Enlever seulement le début et la fin choisis
                 listPositions.remove(pRandom);
                 listPositions.remove(pFin);
-                
+
                 // Enregistrer les données du chemin
                 chemins.put(pRandom, pFin);
                 numChemins.put(cmp, pRandom);
@@ -113,6 +117,7 @@ public class FreeBoard extends Board {
 
     /**
      * Helper method to mark all cells in a straight line as path cells.
+     * 
      * @param start Starting position
      * @param end   Ending position
      */
@@ -149,20 +154,21 @@ public class FreeBoard extends Board {
      * Calcule la cellule de fin à l'opposé du départ.
      */
     public Position getFinChemin(Position start) {
-        if (start.getRow() == 0) 
+        if (start.getRow() == 0)
             return new Position(height - 1, start.getCol());
-            
-        if (start.getRow() == height - 1) 
+
+        if (start.getRow() == height - 1)
             return new Position(0, start.getCol());
-            
-        if (start.getCol() == 0) 
+
+        if (start.getCol() == 0)
             return new Position(start.getRow(), width - 1);
-            
+
         return new Position(start.getRow(), 0);
     }
 
     /**
      * Returns the start and end positions of a specific path using its ID.
+     * 
      * @param num The path index
      * @return An array containing [startPosition, endPosition]
      * @throws IllegalArgumentException if the index is invalid
@@ -172,8 +178,8 @@ public class FreeBoard extends Board {
         if (num >= 0 && num < cmp) {
             Position debut = numChemins.get(num);
             Position fin = chemins.get(debut);
-            // On retourne le couple début, fin de positions 
-            return new Position[]{debut, fin};
+            // On retourne le couple début, fin de positions
+            return new Position[] { debut, fin };
         } else {
             throw new IllegalArgumentException("Numéro de chemin invalide");
         }
@@ -181,6 +187,7 @@ public class FreeBoard extends Board {
 
     /**
      * Returns the total number of paths generated on the board.
+     * 
      * @return Number of paths
      */
     public int retourneNbrChemins() {
@@ -189,87 +196,129 @@ public class FreeBoard extends Board {
 
     /**
      * Returns the map that links starting positions to ending positions.
+     * 
      * @return The map of paths
      */
     public Map<Position, Position> getCheminsMap() {
         return chemins;
     }
 
-     public List<Cell> getChemins() {
-    List<Cell> result = new ArrayList<>();
+    public List<Cell> getChemins() {
+        List<Cell> result = new ArrayList<>();
 
-    for (int i = 0; i < cmp; i++) {
-    Position start = numChemins.get(i);
-    Position end = chemins.get(start);
-     if (start == null || end == null) continue;
+        for (int i = 0; i < cmp; i++) {
+            Position start = numChemins.get(i);
+            Position end = chemins.get(start);
+            if (start == null || end == null)
+                continue;
 
-        Direction dir = getDirection(start, end);
+            Direction dir = getDirection(start, end);
 
-        switch (dir) {
-            case RIGHT:
-                for (int c = start.getCol(); c <= end.getCol(); c++) {
-                    result.add(getCell(start.getRow(), c));
-                }
-                break;
+            switch (dir) {
+                case RIGHT:
+                    for (int c = start.getCol(); c <= end.getCol(); c++) {
+                        result.add(getCell(start.getRow(), c));
+                    }
+                    break;
 
-            case LEFT:
-                for (int c = start.getCol(); c >= end.getCol(); c--) {
-                    result.add(getCell(start.getRow(), c));
-                }
-                break;
+                case LEFT:
+                    for (int c = start.getCol(); c >= end.getCol(); c--) {
+                        result.add(getCell(start.getRow(), c));
+                    }
+                    break;
 
-            case DOWN:
-                for (int r = start.getRow(); r <= end.getRow(); r++) {
-                    result.add(getCell(r, start.getCol()));
-                }
-                break;
+                case DOWN:
+                    for (int r = start.getRow(); r <= end.getRow(); r++) {
+                        result.add(getCell(r, start.getCol()));
+                    }
+                    break;
 
-            case UP:
-                for (int r = start.getRow(); r >= end.getRow(); r--) {
-                    result.add(getCell(r, start.getCol()));
-                }
-                break;
+                case UP:
+                    for (int r = start.getRow(); r >= end.getRow(); r--) {
+                        result.add(getCell(r, start.getCol()));
+                    }
+                    break;
+            }
         }
+
+        return result;
     }
 
-    return result;
-}
     public List<Position> getPathPositions() {
-    List<Position> positions = new ArrayList<>();
+        List<Position> positions = new ArrayList<>();
 
-    for (Map.Entry<Position, Position> entry : chemins.entrySet()) {
-        Position start = entry.getKey();
-        Position end = entry.getValue();
+        for (Map.Entry<Position, Position> entry : chemins.entrySet()) {
+            Position start = entry.getKey();
+            Position end = entry.getValue();
+
+            Direction dir = getDirection(start, end);
+
+            switch (dir) {
+                case RIGHT:
+                    for (int c = start.getCol(); c <= end.getCol(); c++) {
+                        positions.add(new Position(start.getRow(), c));
+                    }
+                    break;
+
+                case LEFT:
+                    for (int c = start.getCol(); c >= end.getCol(); c--) {
+                        positions.add(new Position(start.getRow(), c));
+                    }
+                    break;
+
+                case DOWN:
+                    for (int r = start.getRow(); r <= end.getRow(); r++) {
+                        positions.add(new Position(r, start.getCol()));
+                    }
+                    break;
+
+                case UP:
+                    for (int r = start.getRow(); r >= end.getRow(); r--) {
+                        positions.add(new Position(r, start.getCol()));
+                    }
+                    break;
+            }
+        }
+
+        return positions;
+    }
+
+    /**
+     * Convertit un chemin généré par FreeBoard (basé sur Position / Cell)
+     * en une représentation utilisable par les ballons (Path / List de cases ou
+     * positions).
+     *
+     * @param chemin liste ou structure représentant un chemin FreeBoard
+     * @return chemin converti dans un format compatible avec Balloon.setPath(...)
+     */
+    public List<Position> getPathFrom(Position start) {
+        Position end = chemins.get(start);
+        List<Position> positions = new ArrayList<>();
 
         Direction dir = getDirection(start, end);
 
         switch (dir) {
             case RIGHT:
-                for (int c = start.getCol(); c <= end.getCol(); c++) {
+                for (int c = start.getCol(); c <= end.getCol(); c++)
                     positions.add(new Position(start.getRow(), c));
-                }
                 break;
 
             case LEFT:
-                for (int c = start.getCol(); c >= end.getCol(); c--) {
+                for (int c = start.getCol(); c >= end.getCol(); c--)
                     positions.add(new Position(start.getRow(), c));
-                }
                 break;
 
             case DOWN:
-                for (int r = start.getRow(); r <= end.getRow(); r++) {
+                for (int r = start.getRow(); r <= end.getRow(); r++)
                     positions.add(new Position(r, start.getCol()));
-                }
                 break;
 
             case UP:
-                for (int r = start.getRow(); r >= end.getRow(); r--) {
+                for (int r = start.getRow(); r >= end.getRow(); r--)
                     positions.add(new Position(r, start.getCol()));
-                }
                 break;
         }
-    }
 
-    return positions;
-}
+        return positions;
+    }
 }

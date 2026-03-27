@@ -480,11 +480,11 @@ public class Game {
     }
 
     /**
-     * Cree une tour en fonction d'un id
-     * 
+     * Factory method pour créer une tour en fonction de son typeId
+     *
      * @param typeId l'identifiant du type de tour (1 à 7)
-     * @param pos    la position de la tour
-     * @return la tour correspondante ou null si invalide
+     * @param pos    la position où placer la tour
+     * @return une instance de Tower correspondante au typeId, ou null si typeId invalide
      */
     private Tower createTower(int typeId, Position pos) {
         switch (typeId) {
@@ -508,7 +508,8 @@ public class Game {
     }
 
     /**
-     * Fonction placer les tours aleatoirement dans le board
+     * Place des tours aléatoirement sur le plateau, en évitant les chemins.
+     * Place jusqu'à 2 tours de chaque type (1 à 7) si possible.
      */
     private void placerToursAleatoires() {
 
@@ -548,10 +549,10 @@ public class Game {
     }
 
     /**
-     * La fonction va mettre a jours lors qu'un tower lancer un projectile vers le
-     * ballon
-     * 
-     * @throws NotMatchException
+     * Met à jour les positions des ballons, les actions des tours et les
+     * projectiles actifs.
+     * Lance une NotMatchException si une tour tente d'attaquer un ballon hors de
+     * portée.
      */
     private void updateEntities() throws NotMatchException {
         for (Balloon b : balloons) {
@@ -569,9 +570,8 @@ public class Game {
     }
 
     /**
-     * Quand un projectile touche un ballon et le ballon mort, ca va supprimer le
-     * ballon
-     * et ajouter un nombre de credit
+     * Nettoie les entités inactives et met à jour les crédits du joueur pour les
+     * ballons détruits.
      */
     private void cleanupEntities() {
         // Crédits pour ballons détruits
@@ -600,9 +600,9 @@ public class Game {
     }
 
     /**
-     * Fonctions des sangs anciens des ballons
+     * Fonction pour recuperrer la sante ancienne des ballons
      * 
-     * @return des sangs anciens des ballons
+     * @return un map des santes anciennes des ballons
      */
     private Map<Integer, Integer> saveOldHealth() {
         Map<Integer, Integer> oldHealth = new HashMap<>();
@@ -613,14 +613,9 @@ public class Game {
     }
 
     /**
-     * Methode gerer les actions du joueurs
-     * 1 : Acheter et placer une tour
-     * 2 : Evolution d'une tour
-     * 3 : Vendre une tour
-     * 4 : Terminer
-     * Autre : une message d'erreur affiche
+     * Methode pour gerer les actions du joueur
      * 
-     * @param choix le choix du joueur
+     * @param choix le choix de l'action du joueur (1 à 4)
      */
     public void phaseActionsJoueur(int choix) {
         boolean fin = false;
@@ -643,11 +638,13 @@ public class Game {
     }
 
     /**
-     * Methode pour verifier la position est valide pour un tower
-     * 
-     * @param pos la position a verifier
+     * Vérifie si une position est valide pour placer une tour.
+     * Une position est valide si elle est à l'intérieur du plateau et n'est pas un chemin.
+     *
+     * @param pos la position à vérifier
      * @return true si valide, false sinon
      */
+
     public boolean posValide(Position pos) {
         if ((this.board == null) || (!this.board.isInside(pos.getRow(), pos.getCol()))
                 || (this.board.getCell(pos).isPath())) {
@@ -657,11 +654,12 @@ public class Game {
     }
 
     /**
-     * Une methode pour acheter et placer le tour dans le board selon le choix du
-     * joueur
+     * Methode pour acheter et placer une tour
+     * Verifie le type de tour, les credits du joueur et la position avant de
+     * placer la tour
      * 
-     * @param t le tour voulu de id t
-     * @param p la position voulu
+     * @param t le type de tour a acheter (1 à 7)
+     * @param p la position ou placer la tour
      */
     public void acheterEtPlacerTour(int t, Position p) {
         Tower tow = createTower(t, new Position(0, 0));

@@ -203,6 +203,11 @@ public class FreeBoard extends Board {
         return chemins;
     }
 
+    /**
+     * Returns the list of all cells that form paths on the board.
+     * 
+     * @return List of path cells
+     */
     public List<Cell> getChemins() {
         List<Cell> result = new ArrayList<>();
 
@@ -243,7 +248,10 @@ public class FreeBoard extends Board {
 
         return result;
     }
-
+ /* Returns the list of all positions that form paths on the board.
+ * This method iterates through all the paths defined in the 'chemins' map,
+ * determines the direction of each path, and collects all the positions along
+ */
     public List<Position> getPathPositions() {
         List<Position> positions = new ArrayList<>();
 
@@ -284,12 +292,9 @@ public class FreeBoard extends Board {
     }
 
     /**
-     * Convertit un chemin généré par FreeBoard (basé sur Position / Cell)
-     * en une représentation utilisable par les ballons (Path / List de cases ou
-     * positions).
-     *
-     * @param chemin liste ou structure représentant un chemin FreeBoard
-     * @return chemin converti dans un format compatible avec Balloon.setPath(...)
+     * Returns the list of positions that form the path starting from a given position.
+     * @param start The starting position of the path
+     * @return List of positions along the path, or empty list if start is not a path start
      */
     public List<Position> getPathFrom(Position start) {
         Position end = chemins.get(start);

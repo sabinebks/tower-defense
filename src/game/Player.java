@@ -15,10 +15,7 @@ public class Player {
     public static final double REVENDRE = 0.25;
     private int credit;
     private int vie;
-    /**
-     * Constructeur de la classe
-     * Il ne prend aucun parametre puisqu'il sont tous fixes
-     */
+    /** Le constructeur du joueur, init le credit et la vie */
     public Player () {
         this.credit = CREDIT_INITIAL;
         this.vie = VIE_INIT;
@@ -41,10 +38,11 @@ public class Player {
     }
     
     /**
-     * Une methode pour calculer le nombre total du cout d'un tower, meme si avec les evolution,
-     * ca va aider a calculer l'argent gagne apres vendre un tower
-     * @param t le tower a calculer
-     * @return le prix total
+     * Methode pour acheter une tour
+     * Verifie si le joueur a assez de credit pour acheter la tour
+     * Si oui, le credit du joueur va diminuer du cout de la tour
+     * @param t la tour a acheter
+     * @return true si l'achat est reussi, false sinon
      */
     public int calculInvestissementTotal(Tower t) {
         int total = t.getCout();

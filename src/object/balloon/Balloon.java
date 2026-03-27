@@ -43,12 +43,13 @@ public class Balloon {
     protected int pathIndex;
 
     /**
-     * Crée un ballon de base.
-     * 
-     * @param id           identifiant unique
-     * @param startColonne position X de départ
-     * @param startLigne   position Y de départ
-     * @param type         type du ballon
+     * Constructeur de base pour les ballons.
+     * Initialise les attributs en fonction du type de ballon.
+     *
+     * @param id identifiant unique du ballon
+     * @param startLigne position de départ en ligne (Y)
+     * @param startColonne position de départ en colonne (X)
+     * @param type type du ballon (BASIC, MEDIUM, STRONG)
      */
 
     public Balloon(int id, double startLigne, double startColonne, BalloonType type) {
@@ -75,11 +76,11 @@ public class Balloon {
     }
     // Attributs spécifiques pour les ballons améliorés
 
-    /**
-     * Déplace le ballon d'un tic.
-     * Cette méthode sera override dans les sous-classes.
-     * 
-     * @return true si le ballon continue, false s'il est arrivé
+    /** Déplace le ballon le long de son chemin.
+     *
+     * @param height hauteur du plateau (pour les limites)
+     * @param width largeur du plateau (pour les limites)
+     * @return true si le ballon est toujours actif après le déplacement, false s'il a atteint la fin du chemin ou est détruit
      */
 
     public boolean move(int height, int width) {
@@ -131,9 +132,9 @@ public class Balloon {
     }
 
     /**
-     * Calcule la vitesse effective du ballon en tenant compte des ralentissements.
-     * 
-     * @return la vitesse effective
+     * Calcule la vitesse effective du ballon en tenant compte des effets de gel et de ralentissement.
+     *
+     * @return la vitesse effective actuelle du ballon
      */
     public double getEffectiveSpeed() {
         if (freezeTimer > 0)
@@ -141,10 +142,9 @@ public class Balloon {
         return speed * slowFactor;
     }
 
-    /**
-     * Définit le temps de sortie du ballon.
-     * 
-     * @param time le temps en tics
+    /** Définit le temps de sortie du ballon.
+     *
+     * @param time le temps de sortie à définir
      */
     public void setExitTime(int time) {
         this.exitTime = time;
@@ -152,17 +152,15 @@ public class Balloon {
 
     // ===== GETTERS =====
 
-    /**
-     * Retourne l'identifiant du ballon.
+    /** Retourne l'identifiant du ballon.
      * 
-     * @return l'id
+     * @return l'identifiant
      */
     public int getId() {
         return id;
     }
 
-    /**
-     * Retourne la vitesse du ballon.
+    /** Retourne la vitesse de base du ballon (sans effets).
      * 
      * @return la vitesse
      */
@@ -170,10 +168,9 @@ public class Balloon {
         return speed;
     }
 
-    /**
-     * Retourne les points de vie restants.
+    /** Retourne les points de vie actuels du ballon.
      * 
-     * @return la santé
+     * @return les points de vie
      */
     public int getHealth() {
         return health;
@@ -215,8 +212,9 @@ public class Balloon {
         return posLigne;
     }
 
-    /**
-     * pour stopper le ballon
+    /** Applique un effet de gel au ballon, le rendant immobile pendant une durée donnée.
+     *
+     * @param duration la durée du gel en tics
      */
     public void freeze(int duration) {
         if (this.freezeTimer <= 0) {
@@ -224,10 +222,10 @@ public class Balloon {
         }
     }
 
-    /**
-     * Ralentit le ballon (réduit sa vitesse)
-     * 
-     * @param factor facteur de ralentissement (ex: 0.5 = 50% plus lent)
+    /** Applique un effet de ralentissement au ballon, réduisant sa vitesse pendant une durée donnée.
+     *
+     * @param factor le facteur de ralentissement (ex: 0.5 pour moitié de la vitesse)
+     * @param duration la durée du ralentissement en tics
      */
     public void slow(double factor, int duration) {
         if (slowTimer > 0) {
@@ -240,8 +238,7 @@ public class Balloon {
         this.slowTimer = duration;
     }
 
-    /**
-     *
+    /** Marque le ballon comme détruit et inactif.
      */
     public void remove() {
         this.active = false;
@@ -258,9 +255,8 @@ public class Balloon {
         return active;
     }
 
-    /**
-     * Applique des dégâts au ballon.
-     * 
+    /** Applique des dégâts au ballon et vérifie s'il est détruit.
+     *
      * @param damage les points de dégâts à infliger
      * @return true si le ballon est détruit, false sinon
      */

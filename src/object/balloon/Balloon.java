@@ -84,11 +84,23 @@ public class Balloon {
 */
    
 public boolean move(int height, int width) {
-     
-    updateState();
-    if (!active || freezeTimer > 0) return active;
 
-    if (path == null || path.isEmpty()) return active;
+    // --- gestion état freeze / slow directement ici ---
+    if (!active) return false;
+
+    if (freezeTimer > 0) {
+        freezeTimer--;
+        return false;
+    }
+
+    if (slowTimer > 0) {
+        slowTimer--;
+        if (slowTimer == 0) {
+            slowFactor = 1.0;
+        }
+    }
+
+    if (path == null || path.isEmpty()) return false;
 
     if (pathIndex >= path.size()) {
         active = false;
@@ -105,10 +117,20 @@ public boolean move(int height, int width) {
 
     double distance = Math.sqrt(dx * dx + dy * dy);
 
-    double currentSpeed = getEffectiveSpeed();
-    if (currentSpeed <= 0) return active;
+    // --- calcul vitesse direct ---
+    double speed;
 
-    if (distance <= currentSpeed) {
+    if (freezeTimer > 0) {
+        speed = 0;
+    } else if (slowTimer > 0) {
+        speed = this.speed * slowFactor;
+    } else {
+        speed = this.speed;
+    }
+
+    if (speed <= 0) return false;
+
+    if (distance <= speed) {
         posColonne = targetCol;
         posLigne = targetRow;
         pathIndex++;
@@ -116,72 +138,15 @@ public boolean move(int height, int width) {
         if (pathIndex >= path.size()) {
             active = false;
         }
-        } else {
-            posColonne += (dx / distance) * currentSpeed;
-            posLigne += (dy / distance) * currentSpeed;
-        }
 
-        return active;
+    } else {
+        posColonne += (dx / distance) * speed;
+        posLigne += (dy / distance) * speed;
     }
 
+    return true;
+}
 
-
-    /**
-     * methode pour savoir si le ballon a ete gelé ou ralenti 
-     * et gerer ça dans move et actualiser le ballon a chaque fois
-     */
-    public void updateState(){
-        if(freezeTimer > 0){
-            freezeTimer--;
-        }
-        if(slowTimer > 0){
-            slowTimer--;
-        }
-        if (slowTimer <= 0) {
-            slowFactor = 1.0;
-        }
-    }
-
-     public double getEffectiveSpeed() {
-        if (freezeTimer > 0) {return 0;}
-        if(slowTimer > 0){return this.speed * slowFactor;}
-        return this.speed;
-    }
-
-
-    
-    /**
-     * Touche le ballon (diminue sa santé).
-     * 
-     * @param damage dégâts infligés
-     * @return true si le ballon est détruit, false sinon
-     */
-    public boolean hit(int damage) {
-        health -= damage;
-        if (health <= 0) {
-            active = false;
-            return true;  // Ballon détruit
-        }
-        return false;  // Ballon encore vivant
-    }
-
-    /**
-     * Vérifie si le ballon est actif.
-     * 
-     * @return true si actif, false sinon
-     */
-    public boolean isActive() {
-        return active;
-    }
-
-    /**
-     * Retourne la position actuelle (case) du ballon.
-     * 
-     * @return la position de la case où se trouve le ballon
-     */
-    public Position getCurrentPosition() {
-       return new Position((int)posLigne, (int)posColonne);
-    }
 
     /**
      * Définit le temps de sortie du ballon.

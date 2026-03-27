@@ -198,9 +198,10 @@ public class FreeBoard extends Board {
      public List<Cell> getChemins() {
     List<Cell> result = new ArrayList<>();
 
-    for (Map.Entry<Position, Position> entry : chemins.entrySet()) {
-        Position start = entry.getKey();
-        Position end = entry.getValue();
+    for (int i = 0; i < cmp; i++) {
+    Position start = numChemins.get(i);
+    Position end = chemins.get(start);
+     if (start == null || end == null) continue;
 
         Direction dir = getDirection(start, end);
 

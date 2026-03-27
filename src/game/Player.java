@@ -1,5 +1,4 @@
 package game;
-import java.util.*;
 import object.tower.*;
 /**
  * Une class player pour gerer les actions du joueurs

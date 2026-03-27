@@ -1,7 +1,6 @@
 package object.tower.projectil;
 
 import object.balloon.Balloon;
-import object.tower.EffectType;
 
 public class ProjectilSlow extends Projectil {
     /**

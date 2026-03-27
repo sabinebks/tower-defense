@@ -1,7 +1,7 @@
 package object.tower.projectil;
 
 import object.balloon.Balloon;
-import object.tower.EffectType;
+
 
 public class ProjectilFreeze extends Projectil{
 

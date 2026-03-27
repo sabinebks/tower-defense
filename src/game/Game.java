@@ -48,6 +48,7 @@ public class Game {
      * 
      * @param type le type de ballon
      */
+
     public void spawnBalloon(BalloonType type) {
         if (board == null)
             return;
@@ -55,23 +56,30 @@ public class Game {
         idCounter++;
 
         if (board instanceof DefinedBoard df) {
-            List<Cell> path = df.getChemins();
-            if (path == null || path.size() < 2)
+
+            List<Cell> pathCells = df.getChemins();
+            if (pathCells == null || pathCells.size() < 2)
                 return;
 
-            Position start = path.get(0).getPosition(); // ou adaptation selon Cell
+            Position start = pathCells.get(0).getPosition();
 
             Balloon b = new Balloon(
                     idCounter,
                     start.getRow(),
                     start.getCol(),
                     type);
-b.setPath(df.getPathPositions());
-             
+
+            List<Position> path = new ArrayList<>();
+            for (Cell c : pathCells) {
+                path.add(c.getPosition());
+            }
+
+            b.setPath(path);
             balloons.add(b);
         }
 
         else if (board instanceof FreeBoard fb) {
+
             int nb = fb.retourneNbrChemins();
             if (nb <= 0)
                 return;
@@ -79,18 +87,24 @@ b.setPath(df.getPathPositions());
             int id = new Random().nextInt(nb);
             Position[] chemin = fb.retourneLesChemins(id);
 
-            if (chemin != null && chemin.length >= 2) {
-                Position start = chemin[0];
+            if (chemin == null || chemin.length < 2)
+                return;
 
-                Balloon b = new Balloon(
-                        idCounter,
-                        start.getRow(),
-                        start.getCol(),
-                        type);
+            Position start = chemin[0];
 
-                b.setPath(convertPathFromFreeBoard(chemin));
-                balloons.add(b);
+            Balloon b = new Balloon(
+                    idCounter,
+                    start.getRow(),
+                    start.getCol(),
+                    type);
+
+            List<Position> path = new ArrayList<>();
+            for (Position p : chemin) {
+                path.add(p);
             }
+
+            b.setPath(path);
+            balloons.add(b);
         }
     }
 
@@ -434,14 +448,17 @@ b.setPath(df.getPathPositions());
 
             if (chemin != null && chemin.length >= 2) {
                 Position start = chemin[0];
-                Position end = chemin[1];
 
                 Balloon b = new Balloon(
                         ++idCounter,
                         start.getRow(),
                         start.getCol(),
                         BalloonType.values()[rand.nextInt(BalloonType.values().length)]);
-                b.setPath(convertPathFromFreeBoard(chemin)); // si nécessaire
+                List<Position> path = new ArrayList<>();
+                for (Position p : chemin) {
+                    path.add(p);
+                }
+                b.setPath(path);
                 balloons.add(b);
             }
         }

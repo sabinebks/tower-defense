@@ -85,27 +85,16 @@ public class Balloon {
    
 public boolean move(int height, int width) {
 
-    // --- gestion état freeze / slow directement ici ---
+    updateState();
+
     if (!active) return false;
-
-    if (freezeTimer > 0) {
-        freezeTimer--;
-        return false;
-    }
-
-    if (slowTimer > 0) {
-        slowTimer--;
-        if (slowTimer == 0) {
-            slowFactor = 1.0;
-        }
-    }
-
     if (path == null || path.isEmpty()) return false;
-
     if (pathIndex >= path.size()) {
         active = false;
         return false;
     }
+
+    if (freezeTimer > 0) return true; // IMPORTANT: reste actif mais ne bouge pas
 
     Position target = path.get(pathIndex);
 
@@ -117,18 +106,8 @@ public boolean move(int height, int width) {
 
     double distance = Math.sqrt(dx * dx + dy * dy);
 
-    // --- calcul vitesse direct ---
-    double speed;
-
-    if (freezeTimer > 0) {
-        speed = 0;
-    } else if (slowTimer > 0) {
-        speed = this.speed * slowFactor;
-    } else {
-        speed = this.speed;
-    }
-
-    if (speed <= 0) return false;
+    double speed = getEffectiveSpeed();
+    if (speed <= 0) return true;
 
     if (distance <= speed) {
         posColonne = targetCol;
@@ -137,6 +116,7 @@ public boolean move(int height, int width) {
 
         if (pathIndex >= path.size()) {
             active = false;
+            return false;
         }
 
     } else {
@@ -147,7 +127,30 @@ public boolean move(int height, int width) {
     return true;
 }
 
+    /**
+     * Calcule la vitesse effective du ballon en tenant compte des ralentissements.
+     * @return la vitesse effective
+     */
+    public double getEffectiveSpeed() {
+        if (freezeTimer > 0) return 0.0;
+        return speed * slowFactor;
+    }
+    /**
+     * Met à jour les timers de gel et de ralentissement.
+     * Doit être appelé à chaque tic pour que les effets se terminent correctement.
+     */
+public void updateState() {
+    if (freezeTimer > 0) {
+        freezeTimer--;
+    }
 
+    if (slowTimer > 0) {
+        slowTimer--;
+        if (slowTimer == 0) {
+            slowFactor = 1.0;
+        }
+    }
+}
     /**
      * Définit le temps de sortie du ballon.
      * 

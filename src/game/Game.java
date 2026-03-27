@@ -557,7 +557,6 @@ public class Game {
     private void updateEntities() throws NotMatchException {
         for (Balloon b : balloons) {
             if (b.isActive()) {
-                b.updateState();
                 b.move(board.getHeight(), board.getWidth());
             }
         }
@@ -596,7 +595,7 @@ public class Game {
     private Map<Integer, Double> saveOldSpeeds() {
         Map<Integer, Double> oldSpeed = new HashMap<>();
         for (Balloon b : balloons) {
-            oldSpeed.put(b.getId(), b.getEffectiveSpeed());
+            oldSpeed.put(b.getId(), b.getSpeed());
         }
         return oldSpeed;
     }

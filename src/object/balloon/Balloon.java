@@ -85,7 +85,7 @@ public class Balloon {
    
 public boolean move(int height, int width) {
 
-    updateState();
+   
 
     if (!active) return false;
     if (path == null || path.isEmpty()) return false;
@@ -135,22 +135,7 @@ public boolean move(int height, int width) {
         if (freezeTimer > 0) return 0.0;
         return speed * slowFactor;
     }
-    /**
-     * Met à jour les timers de gel et de ralentissement.
-     * Doit être appelé à chaque tic pour que les effets se terminent correctement.
-     */
-public void updateState() {
-    if (freezeTimer > 0) {
-        freezeTimer--;
-    }
-
-    if (slowTimer > 0) {
-        slowTimer--;
-        if (slowTimer == 0) {
-            slowFactor = 1.0;
-        }
-    }
-}
+ 
     /**
      * Définit le temps de sortie du ballon.
      * 
@@ -252,5 +237,8 @@ public void updateState() {
         this.path = path;
         this.pathIndex = 0;
     }
+    public boolean isActive() {
+    return active;
+}
 
 }

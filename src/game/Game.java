@@ -29,7 +29,7 @@ public class Game {
     private Board board;
     private int credits;
     private int idCounter = 0;
-    private int vie;
+    
 
     /**
      * Le constructeur de la classe Game
@@ -40,7 +40,7 @@ public class Game {
         this.activeProjectils = new ArrayList<>();
         this.board = null;
         this.credits = CREDIT_INITIAL;
-        this.vie = VIE_INIT;
+        
     }
 
     /**

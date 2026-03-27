@@ -29,7 +29,6 @@ public class Game {
     private Board board;
     private int credits;
     private int idCounter = 0;
-    
 
     /**
      * Le constructeur de la classe Game
@@ -40,7 +39,7 @@ public class Game {
         this.activeProjectils = new ArrayList<>();
         this.board = null;
         this.credits = CREDIT_INITIAL;
-        
+
     }
 
     /**
@@ -584,7 +583,7 @@ public class Game {
 
         // Retirer les projectiles et ballons inactifs
         activeProjectils.removeIf(p -> !p.isActive());
-        balloons.removeIf(b -> !b.isActive());
+        balloons.removeIf(b -> !b.isActive() && b.getHealth() <= 0);
     }
 
     /**

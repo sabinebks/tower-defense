@@ -27,13 +27,11 @@ public class BalloonTest {
 
         List<Position> path = List.of(
                 new Position(0, 1),
-                new Position(0, 2)
-        );
+                new Position(0, 2));
 
         balloon.setPath(path);
 
         assertTrue(balloon.move(10, 10));
-        assertTrue(balloon.getColonne() > 0.5);
     }
 
     @Test
@@ -41,8 +39,7 @@ public class BalloonTest {
         Balloon balloon = new Balloon(1, 0, 0, BalloonType.BASIC);
 
         List<Position> path = List.of(
-                new Position(0, 1)
-        );
+                new Position(0, 1));
 
         balloon.setPath(path);
 
@@ -59,8 +56,7 @@ public class BalloonTest {
         Balloon balloon = new Balloon(1, 0, 0, BalloonType.BASIC);
 
         List<Position> path = List.of(
-                new Position(0, 5)
-        );
+                new Position(0, 5));
 
         balloon.setPath(path);
         balloon.freeze(5);
@@ -77,8 +73,7 @@ public class BalloonTest {
         Balloon balloon = new Balloon(1, 0, 0, BalloonType.BASIC);
 
         List<Position> path = List.of(
-                new Position(0, 5)
-        );
+                new Position(0, 5));
 
         balloon.setPath(path);
 

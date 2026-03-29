@@ -10,6 +10,9 @@ import object.tower.projectil.*;
 import java.util.*;
 
 public class Game {
+    private static int NBBALLOONS = 5;
+    private static short MAXTIC = 10000;
+    private static int NBROUNDS = 10;
     /**
      * les attributs :
      * ballons : les ballons qui existent dans la grille
@@ -20,50 +23,64 @@ public class Game {
      * idCounter : pour les Id des ballons
      * vie : nombre de vie du joueur, commencer avec 20
      */
-    private Player player;
-    private List<Balloon> balloons;
-    private List<Tower> towers;
-    private List<Projectil> activeProjectils;
-    private Board board;
-    private int credits;
-    private int idCounter = 0;
+    private Player player;;
+    private List<Round> rounds;
+    private Round currentRound;
 
     /**
      * Le constructeur de la classe Game
      */
     public Game() {
-        this.balloons = new ArrayList<>();
-        this.towers = new ArrayList<>();
-        this.activeProjectils = new ArrayList<>();
-        this.board = null;
         this.player = new Player();
-
+        this.rounds = new ArrayList<>();
+        for(int i = 0 ; i < NBROUNDS; i++){
+            this.rounds.add(new Round(i));
+        }
+        this.currentRound = this.rounds.get(0);
     }
 
     /**
-     * Cree et ajoute un ballon au jeu en fonction du type de plateau
-     * 
-     * @param type le type de ballon
+     * Met à jour les positions des ballons, les actions des tours et les
+     * projectiles actifs.
+     * Lance une NotMatchException si une tour tente d'attaquer un ballon hors de
+     * portée.
      */
-
-    public void spawnBalloon(BalloonType type) {
-        idCounter++;
-
-        List<Position> cheminASuivre = this.board.getPathPositions();
-
-        if (cheminASuivre != null && !cheminASuivre.isEmpty()) {
-            Position depart = cheminASuivre.get(0);
-            Balloon b = new Balloon(idCounter, depart.getRow(), depart.getCol(), type);
-            b.setPath(cheminASuivre);
-
-            balloons.add(b);
+    private void updateEntities() throws NotMatchException {
+        for (Balloon b : currentRound.getBalloons()) {
+            if (b.isActive()) {
+                b.move(currentRound.getBoard().getHeight(),currentRound.getBoard().getWidth());
+            }
         }
+        for (Tower t : player.getTowers()) {
+            t.update(currentRound.getBalloons(), currentRound.getActiveProjectils()); // lance NotMatchException
+        }
+        for (Projectil p : currentRound.getActiveProjectils()) {
+            if (p.isActive())
+                p.update();
+        }
+    }
+
+
+    /**
+     * Nettoie les entités inactives et met à jour les crédits du joueur pour les
+     * ballons détruits.
+     */
+    private void cleanupEntities() {
+        // Crédits pour ballons détruits
+        for (Balloon b : currentRound.getBalloons()) {
+            if (!b.isActive() && b.getHealth() <= 0) {
+                this.player.setCredit(this.player.getCredit() + 10);
+            }
+        }
+
+        // Retirer les projectiles et ballons inactifs
+        currentRound.getActiveProjectils().removeIf(p -> !p.isActive());
+        currentRound.getBalloons().removeIf(b -> !b.isActive() && b.getHealth() <= 0);
     }
 
     /**
      * Methode pour gerer tout le jeu en fontion des tick d'horloge
      */
-
     public void gameTick() {
         try {
             updateEntities();
@@ -80,14 +97,9 @@ public class Game {
      * Methode principale pour l'affichage
      */
     private void render() {
-        if (this.board instanceof DefinedBoard) {
-            afficherDefinedPlateau((DefinedBoard) this.board);
-        } else if (this.board instanceof FreeBoard) {
-            afficherFreePlateau((FreeBoard) this.board);
-        }
-
+        printBoard(this.currentRound.getBoard());
         System.out.println("--- STATS ---");
-        System.out.println("Credits : " + this.credits + " | Ballons : " + balloons.size());
+        System.out.println("Credits : " + this.player.getCredit() + " | Ballons : " + balloons.size());
     }
 
     /**
@@ -97,12 +109,12 @@ public class Game {
      * @param c la colonne
      */
     public String checkEntityAt(int r, int c) {
-        for (Tower t : towers) {
+        for (Tower t : player.getTowers()) {
             if (t.getPosition().getRow() == r && t.getPosition().getCol() == c) {
                 return t.getSymbol();
             }
         }
-        for (Balloon b : balloons) {
+        for (Balloon b : currentRound.getBalloons()) {
             if ((int) b.getLigne() == r && (int) b.getColonne() == c) {
                 return "?";
             }
@@ -116,88 +128,107 @@ public class Game {
      * 
      * @param board le board de type Defined
      */
-    public void afficherDefinedPlateau(DefinedBoard board) {
-        List<Cell> path = board.getChemins();
-
+    public void printBoard(Board board) {
         for (int r = 0; r < board.getHeight(); r++) {
             for (int c = 0; c < board.getWidth(); c++) {
+
                 String entity = checkEntityAt(r, c);
                 if (entity != null) {
                     System.out.print(entity + " ");
-                } else {
-                    Cell cell = board.getCell(r, c);
-                    if (cell.isPath()) {
-                        if (!path.isEmpty() && cell == path.get(0)) {
-                            System.out.print("D ");
-                        } else if (!path.isEmpty() && cell == path.get(path.size() - 1)) {
-                            System.out.print("F ");
-                        } else {
-                            System.out.print("c ");
-                        }
-                    } else {
-                        System.out.print(". ");
+                    continue;
+                }
+
+                char symbol = ' ';
+                boolean special = false;
+
+                for (List<Cell> path : board.getAllPath().values()) {
+                    if (path == null || path.isEmpty()) continue;
+
+                    Position start = path.get(0).getPosition();
+                    Position end = path.get(path.size() - 1).getPosition();
+
+                    if (r == start.getRow() && c == start.getCol()) {
+                        symbol = 'D';
+                        special = true;
+                        break;
+                    }
+                    if (r == end.getRow() && c == end.getCol()) {
+                        symbol = 'F';
+                        special = true;
+                        break;
                     }
                 }
+
+                if (!special) {
+                    if (board.getGrid()[r][c].isPath()) {
+                        symbol = 'c';
+                    } else {
+                        symbol = '.';
+                    }
+                }
+
+                System.out.print(symbol + " ");
             }
             System.out.println();
         }
     }
 
-    /**
-     * pour afficher FreeBoard
-     * 
-     * @param board
-     */
-    public void afficherFreePlateau(FreeBoard board) {
-        Cell[][] grid = board.getGrid();
-        int nbDeChemins = board.retourneNbrChemins();
-
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[0].length; j++) {
-                String entity = checkEntityAt(i, j);
-                if (entity != null) {
-                    System.out.print(entity + " ");
-                } else {
-                    boolean isStart = false;
-                    boolean isEnd = false;
-
-                    for (int k = 0; k < nbDeChemins; k++) {
-                        Position[] chemin = board.retourneLesChemins(k);
-                        Position start = chemin[0];
-                        Position end = chemin[1];
-
-                        if (i == start.getRow() && j == start.getCol()) {
-                            isStart = true;
-                            break;
-                        }
-                        if (i == end.getRow() && j == end.getCol()) {
-                            isEnd = true;
-                            break;
-                        }
-                    }
-
-                    if (isStart) {
-                        System.out.print("D ");
-                    } else if (isEnd) {
-                        System.out.print("F ");
-                    } else if (grid[i][j].isPath()) {
-                        System.out.print("c ");
-                    } else {
-                        System.out.print(". ");
-                    }
-                }
+    public void play(Board board, Round round, int Mode){
+        Scanner scan = new Scanner(System.in);
+        Random rand = new Random();
+        System.out.println("=== TOWER DEFENSE ===");
+        board.init();
+        board.calculerPath();
+        System.out.println("Plateau de hauteur " + this.currentRound.getBoard().getHeight()+ " et largeur " + this.currentRound.getBoard().getWidth());
+        while(true){
+            System.out.println("--- MENU ---");
+            System.out.println("1 : Commencer le round ");
+            System.out.println("2 : Placer une tour");
+            System.out.println("3 : Améliorer / Vendre évolution d'une tour");
+            System.out.println("4 : Quitter");
+            int n = Integer.parseInt(scan.nextLine().trim());
+            if(n == 4){
+                System.out.println("Merci de jouer!");
+                scan.close();
+                return;
             }
-            System.out.println();
-        }
-    }
+            if(n == 1){
+                System.out.println("=== NEW ROUND ===");
+                for(int i = 0; i < NBBALLOONS; i++){
+                    BalloonType type = BalloonType.values()[rand.nextInt(BalloonType.values().length)];
+                    this.currentRound.spawnBalloon(type);
+                    System.out.println("Balloon " + (i + 1) + " | type = " + String.valueOf(((Balloon)this.currentRound.getBalloons().get(i)).getType()) + " | speed = " + ((Balloon)this.currentRound.getBalloons().get(i)).getSpeed() + " | health = " + ((Balloon)this.balloons.get(i)).getHealth());
+                }
+                int i = 0;
 
-    /**
-     * ajouter une tower t
-     * 
-     * @param t
-     */
-    public void addTower(Tower t) {
-        towers.add(t);
+                for(short max = MAXTIC; (!this.currentRound.getBalloons().isEmpty() || !this.currentRound.getActiveProjectils().isEmpty()) && i < max; ++i) {
+                    System.out.println(" Le tick numero " + i);
+                    this.gameTick();
+                }
+
+                System.out.println("=== ROUND FINISHED ===");
+                System.out.println("Ticks joues = " + i);
+            }
+            if(n == 2){
+                System.out.println("Veuillez choisir la tour :");
+                System.out.println("1 : Bomb Tower");
+                System.out.println("2 : Dart Monkey");
+                System.out.println("3 : Elite Sniper");
+                System.out.println("4 : Gorilla");
+                System.out.println("5 : Ice Tower");
+                System.out.println("6 : Slow Tower");
+                System.out.println("7 : Tack Shooter");
+                int n = Integer.parseInt(scan.nextLine().trim());
+                System.out.println("--Veuillez entrer la position--");
+                System.out.print("Colonne : ");
+                int c = Integer.parseInt(scan.nextLine().trim());
+                System.out.print("Ligne : ");
+                int l = Integer.parseInt(scan.nextLine().trim());
+
+                player.buyTower(n,);
+            }
+        }
+
     }
 
     /**
@@ -327,193 +358,6 @@ public class Game {
     }
 
     /**
-     * Lance une simulation automatique du jeu sur un plateau défini.
-     * Crée le plateau avec les dimensions données, place des tours aléatoires,
-     * génère des ballons puis exécute la boucle du jeu jusqu'à leur destruction
-     * ou sortie du plateau.
-     *
-     * @param height    hauteur du plateau
-     * @param width     largeur du plateau
-     * @param nbBallons nombre de ballons à générer
-     */
-    public void autoPlayA(int height, int width, int nbBallons) {
-        // recréer le board à chaque manche pour éviter les incohérences
-        this.board = new DefinedBoard(height, width);
-
-        if (towers.isEmpty()) {
-            placerToursAleatoires();
-        }
-
-        Random rand = new Random();
-
-        for (int i = 0; i < nbBallons; i++) {
-            BalloonType type = BalloonType.values()[rand.nextInt(BalloonType.values().length)];
-            spawnBalloon(type);
-        }
-
-        int tick = 0;
-        int max = 10000;
-        Map<Integer, Double> oldSpeed;
-        Map<Integer, Integer> oldHealth;
-
-        render();
-        while (!(balloons.isEmpty() && activeProjectils.isEmpty()) && tick < max) {
-            oldSpeed = saveOldSpeeds();
-            oldHealth = saveOldHealth();
-            gameTick();
-            afficherEvenementsBallons(tick, oldSpeed, oldHealth);
-
-            tick++;
-        }
-        System.out.println("=== FIN DE MANCHE ===");
-    }
-
-    /**
-     * Lance une simulation automatique du jeu sur un plateau libre.
-     * Génère des chemins, crée des ballons suivant ces chemins,
-     * place des tours aléatoires et exécute la simulation jusqu'à
-     * destruction de tous les ballons.
-     *
-     * @param height    hauteur du plateau
-     * @param width     largeur du plateau
-     * @param nbChemins nombre de ballons à générer
-     */
-    public void autoPlayB(int height, int width, int nbChemins) {
-
-        // FIX : recréer le board à chaque manche
-        this.board = new FreeBoard(height, width);
-        FreeBoard fb = (FreeBoard) this.board;
-        fb.init();
-        fb.setNbCheminsVoulus(nbChemins);
-        fb.calculerPath();
-
-        Random rand = new Random();
-
-        if (towers.isEmpty()) {
-            placerToursAleatoires();
-        }
-
-        int nbCheminsReels = fb.retourneNbrChemins();
-
-        for (int i = 0; i < nbCheminsReels; i++) {
-            Position[] chemin = fb.retourneLesChemins(i);
-
-            if (chemin != null && chemin.length >= 2) {
-                Position start = chemin[0];
-
-                Balloon b = new Balloon(
-                        ++idCounter,
-                        start.getRow(),
-                        start.getCol(),
-                        BalloonType.values()[rand.nextInt(BalloonType.values().length)]);
-                List<Position> path = new ArrayList<>();
-                for (Position p : chemin) {
-                    path.add(p);
-                }
-                b.setPath(path);
-                balloons.add(b);
-            }
-        }
-
-        int tick = 0;
-        Map<Integer, Double> oldSpeed;
-        Map<Integer, Integer> oldHealth;
-
-        render();
-
-        while (!(balloons.isEmpty() && activeProjectils.isEmpty())) {
-
-            oldSpeed = saveOldSpeeds();
-            oldHealth = saveOldHealth();
-            gameTick();
-            afficherEvenementsBallons(tick, oldSpeed, oldHealth);
-            tick++;
-        }
-        System.out.println("=== FIN DE MANCHE ===");
-    }
-
-
-
-    /**
-     * Place des tours aléatoirement sur le plateau, en évitant les chemins.
-     * Place jusqu'à 2 tours de chaque type (1 à 7) si possible.
-     */
-    private void placerToursAleatoires() {
-
-        // FIX : éviter crash si board null
-        if (board == null)
-            return;
-
-        ArrayList<Position> nonPathPositions = new ArrayList<>();
-        Cell[][] grid = board.getGrid();
-        Random rand = new Random();
-
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[0].length; j++) {
-                if (!grid[i][j].isPath()) {
-                    nonPathPositions.add(new Position(i, j));
-                }
-            }
-        }
-
-        for (int t = 1; t <= 7; t++) {
-            for (int k = 0; k < 2; k++) {
-
-                // FIX : ne pas quitter toute la méthode, juste la boucle
-                if (nonPathPositions.isEmpty())
-                    break;
-
-                Position pos = nonPathPositions.remove(
-                        rand.nextInt(nonPathPositions.size()));
-
-                Tower tower = createTower(t, pos);
-
-                if (tower != null) {
-                    addTower(tower);
-                }
-            }
-        }
-    }
-
-    /**
-     * Met à jour les positions des ballons, les actions des tours et les
-     * projectiles actifs.
-     * Lance une NotMatchException si une tour tente d'attaquer un ballon hors de
-     * portée.
-     */
-    private void updateEntities() throws NotMatchException {
-        for (Balloon b : balloons) {
-            if (b.isActive()) {
-                b.move(board.getHeight(), board.getWidth());
-            }
-        }
-        for (Tower t : towers) {
-            t.update(balloons, activeProjectils); // lance NotMatchException
-        }
-        for (Projectil p : activeProjectils) {
-            if (p.isActive())
-                p.update();
-        }
-    }
-
-    /**
-     * Nettoie les entités inactives et met à jour les crédits du joueur pour les
-     * ballons détruits.
-     */
-    private void cleanupEntities() {
-        // Crédits pour ballons détruits
-        for (Balloon b : balloons) {
-            if (!b.isActive() && b.getHealth() <= 0) {
-                this.credits += 10;
-            }
-        }
-
-        // Retirer les projectiles et ballons inactifs
-        activeProjectils.removeIf(p -> !p.isActive());
-        balloons.removeIf(b -> !b.isActive() && b.getHealth() <= 0);
-    }
-
-    /**
      * Fonction pour recuperrer la vitesse ancienne des ballons
      * 
      * @return un map des vitesses anciennes des ballons
@@ -539,96 +383,8 @@ public class Game {
         return oldHealth;
     }
 
-    /**
-     * Methode pour gerer les actions du joueur
-     * 
-     * @param choix le choix de l'action du joueur (1 à 4)
-     */
-    public void phaseActionsJoueur(int choix) {
-        boolean fin = false;
-        while (!fin) {
-            render();
-            switch (choix) {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    fin = true;
-                    break;
-                default:
-                    System.out.println("Choix invalide");
-            }
-        }
+    //===== GETTERS =====
+    public Board getBoard(){
+        return this.board;
     }
-
-    /**
-     * Vérifie si une position est valide pour placer une tour.
-     * Une position est valide si elle est à l'intérieur du plateau et n'est pas un chemin.
-     *
-     * @param pos la position à vérifier
-     * @return true si valide, false sinon
-     */
-
-    public boolean posValide(Position pos) {
-        if ((this.board == null) || (!this.board.isInside(pos.getRow(), pos.getCol()))
-                || (this.board.getCell(pos).isPath())) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Methode pour acheter et placer une tour
-     * Verifie le type de tour, les credits du joueur et la position avant de
-     * placer la tour
-     * 
-     * @param t le type de tour a acheter (1 à 7)
-     * @param p la position ou placer la tour
-     */
-    public void acheterEtPlacerTour(int t, Position p) {
-        Tower tow = createTower(t, new Position(0, 0));
-        if (tow == null) {
-            System.out.println("Type de tour invalide");
-            return;
-        }
-        if (credits < tow.getCout()) {
-            System.out.println("Credit insuffisant");
-            return;
-        }
-
-        if (p == null || !posValide(p)) {
-            System.out.println("Position invalide");
-            return;
-        }
-        Tower tower = createTower(t, p);
-        addTower(tower);
-        credits -= tower.getCout();
-    }
-
-    /**
-     * Methode pour vendre le tower a l'index choisi dans la liste des towers du
-     * joueurs
-     * 
-     * @param i du tower a vendre dans la liste
-     * 
-     *          public void vendreTour(int i) {
-     *          if (this.towers.isEmpty()) {
-     *          System.out.println("Aucun tour a vendre");
-     *          return;
-     *          }
-     *          else if (i < 1 || i > this.towers.size()) {
-     *          System.out.println("Indice invalide");
-     *          return;
-     *          }
-     *          Tower tower = this.towers.remove(i - 1);
-     *          //Math round nous aide a convertir un type double vers un type int,
-     *          ce qui nous aide a evite les erreurs
-     *          int n = (int)Math.round(calculInvestissementTotal(tower) *
-     *          REVENDRE);
-     *          this.credits += n;
-     *          }
-     */
 }

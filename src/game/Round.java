@@ -1,20 +1,47 @@
 package game;
 
+import board.Board;
+import board.Position;
 import object.balloon.Balloon;
+import object.balloon.BalloonType;
 import object.tower.Tower;
+import object.tower.projectil.Projectil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Round {
 
-    private int numRound;
+    public int numRound;
     private ArrayList<Balloon> balloons;
-    private ArrayList<Tower> towers;
-
+    private int idBalloons = 0;
+    private List<Projectil> activeProjectils;
+    private Board board;
     public Round(int numRound) {
         this.numRound = numRound;
+        this.board = null;
         this.balloons = new ArrayList<>();
-        this.towers = new ArrayList<>();
+        this.activeProjectils = new ArrayList<>();
+    }
+
+    /**
+     * Cree et ajoute un ballon au jeu en fonction du type de plateau
+     *
+     * @param type le type de ballon
+     */
+
+    public void spawnBalloon(BalloonType type) {
+        idBalloons++;
+
+        List<Position> cheminASuivre = this.board.getPathPositions();
+
+        if (cheminASuivre != null && !cheminASuivre.isEmpty()) {
+            Position depart = cheminASuivre.get(0);
+            Balloon b = new Balloon(idBalloons, depart.getRow(), depart.getCol(), type);
+            b.setPath(cheminASuivre);
+
+            balloons.add(b);
+        }
     }
 
     //getters
@@ -27,8 +54,12 @@ public class Round {
         return balloons;
     }
 
-    public ArrayList<Tower> getTowers() {
-        return towers;
+    public List<Projectil> getActiveProjectils(){
+        return activeProjectils;
+    }
+
+    public Board getBoard(){
+        return this.board;
     }
 
     //methodes
@@ -37,20 +68,13 @@ public class Round {
         this.balloons.add(balloon);
     }
 
-    public void addTower(Tower tower) {
-        this.towers.add(tower);
-    }
-
     public void removeBalloon(Balloon balloon) {
         this.balloons.remove(balloon);
     }
 
-    public void removeTower(Tower tower) {
-        this.towers.remove(tower);
-    }
 
     public boolean estFinie(){
-        if(balloons.isEmpty() && towers.isEmpty()){
+        if(balloons.isEmpty()){
             return true;
         }
         return false;

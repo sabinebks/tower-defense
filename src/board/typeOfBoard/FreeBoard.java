@@ -14,17 +14,17 @@ import java.util.Random;
  */
 public class FreeBoard extends Board {
 
+    private static int NBCHEMIN = 5;
     // Crée une map qui enregistre la position de départ pour chaque numéro de
     // chemin
     private Map<Integer, Position> numChemins = new HashMap<>();
     private int cmp = 0; // Compteur pour le nombre de chemins
-    private Map<Integer, List<Cell>> allPath;
     // Crée une map où on enregistre les premières et les dernières
     // cellules du chemin créées par calculerPath
     private Map<Position, Position> chemins = new HashMap<>();
 
     // Nombre de chemins à générer (défini via le Main)
-    private int nbCheminsVoulus = 1;
+    private int nbCheminsVoulus;
 
     /**
      * Constructor for FreeBoard.
@@ -34,6 +34,7 @@ public class FreeBoard extends Board {
      */
     public FreeBoard(int height, int width) {
         super(height, width);
+        this.nbCheminsVoulus = NBCHEMIN;
     }
 
     /**

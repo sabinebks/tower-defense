@@ -55,6 +55,7 @@ public class DefinedBoard extends Board {
      * @return the list of path cells
      */
     public List<Cell> getChemins() {
+
         return chemins;
     }
 
@@ -196,6 +197,7 @@ public class DefinedBoard extends Board {
                 fin = true;
             }
         }
+        this.allPath.put(0, chemins);
     }
 
     @Override

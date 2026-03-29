@@ -1,6 +1,8 @@
 package board;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Abstract class representing a game board.
@@ -11,7 +13,7 @@ public abstract class Board {
     protected int width; // largeur du plateau
     protected int height; // hauteur du plateau
     protected Cell[][] grid; // grille de cellules
-
+    protected Map<Integer, List<Cell>> allPath;
     /**
      * Board constructor.
      * @param height the height of the board
@@ -20,14 +22,18 @@ public abstract class Board {
     public Board(int height, int width) {
         this.width = width;
         this.height = height;
+        this.allPath = new HashMap<>();
         init(); // chaque sous-classe définit comment initialiser le plateau
     }
 
-    /**
-     * Abstract method: each board initializes the grid in its own way.
+    // Abstract method: //
+     /**
+     * Abstract method to generate the board path.
+     * Each subclass must implement its own path logic.
      */
-    protected abstract List<Cell> getChemins();
-    protected abstract void init();
+    public abstract void calculerPath();
+    public abstract List<Cell> getChemins();
+    public abstract void init();
     public abstract  List<Position> getPathPositions();
 
     /**
@@ -89,10 +95,12 @@ public abstract class Board {
     }
 
     /**
-     * Abstract method to generate the board path.
-     * Each subclass must implement its own path logic.
+     * return all path
+     * @return
      */
-    public abstract void calculerPath();
+    public Map<Integer, List<Cell>> getAllPath() {
+        return this.allPath;
+    }
 
     /**
      * Returns the end position of a straight path starting from a border cell.
@@ -186,6 +194,22 @@ public abstract class Board {
         throw new IllegalArgumentException("Les positions doivent être aligne");
     }
 
+    }
+
+    /**
+     * Vérifie si une position est valide pour placer une tour.
+     * Une position est valide si elle est à l'intérieur du plateau et n'est pas un chemin.
+     *
+     * @param pos la position à vérifier
+     * @return true si valide, false sinon
+     */
+
+    public boolean posValide(Position pos) {
+        if ((this == null) || (!this.isInside(pos.getRow(), pos.getCol()))
+                || (this.getCell(pos).isPath())) {
+            return false;
+        }
+        return true;
     }
    
 }

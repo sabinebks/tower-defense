@@ -1,9 +1,12 @@
 package game;
+import board.Board;
+import board.Cell;
 import board.Position;
 import object.tower.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Une class player pour gerer les actions du joueurs
@@ -30,22 +33,6 @@ public class Player {
     }
 
     /**
-     * Retourner le nombre de credit du joueur
-     * @return nombre de credit
-     */
-    public int getCredit() {
-        return this.credit;
-    }
-
-    /**
-     * Retourner le nombre de vie du joueur
-     * @return nombre de vie
-     */
-    public int getVie() {
-        return this.vie;
-    }
-    
-    /**
      * Methode pour acheter une tour
      * Verifie si le joueur a assez de credit pour acheter la tour
      * Si oui, le credit du joueur va diminuer du cout de la tour
@@ -62,26 +49,66 @@ public class Player {
         return total;
     }
 
-    public void acheterEtPlacerTour(Tower t, Position p) {
+    public void buyTower(int t, Position p) {
         Tower tow = createTower(t, new Position(0, 0));
         if (tow == null) {
             System.out.println("Type de tour invalide");
             return;
         }
-        if (credits < tow.getCout()) {
+        if (this.credit < tow.getCout()) {
             System.out.println("Credit insuffisant");
             return;
         }
 
-        if (p == null || !posValide(p)) {
+        if (p == null ) {
             System.out.println("Position invalide");
             return;
         }
         Tower tower = createTower(t, p);
         addTower(tower);
-        credits -= tower.getCout();
+        credit -= tower.getCout();
     }
 
+    /**
+     * Place des tours aléatoirement sur le plateau, en évitant les chemins.
+     * Place jusqu'à 2 tours de chaque type (1 à 7) si possible.
+     */
+    private void randomTower(Board board) {
+
+        // FIX : éviter crash si board null
+        if ( board == null)
+            return;
+
+        ArrayList<Position> nonPathPositions = new ArrayList<>();
+        Cell[][] grid = board.getGrid();
+        Random rand = new Random();
+
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (!grid[i][j].isPath()) {
+                    nonPathPositions.add(new Position(i, j));
+                }
+            }
+        }
+
+        for (int t = 1; t <= 7; t++) {
+            for (int k = 0; k < 2; k++) {
+
+                // FIX : ne pas quitter toute la méthode, juste la boucle
+                if (nonPathPositions.isEmpty())
+                    break;
+
+                Position pos = nonPathPositions.remove(
+                        rand.nextInt(nonPathPositions.size()));
+
+                Tower tower = createTower(t, pos);
+
+                if (tower != null) {
+                    addTower(tower);
+                }
+            }
+        }
+    }
     /**
      * Factory method pour créer une tour en fonction de son typeId
      *
@@ -109,4 +136,43 @@ public class Player {
                 return null;
         }
     }
+
+    //===== GETTERS =====
+    public List<Tower> getTowers(){
+        return towers;
+    }
+
+
+    /**
+     * ajouter une tower t
+     * @param t
+     */
+    public void addTower(Tower t) {
+        towers.add(t);
+    }
+
+
+    /**
+     * Retourner le nombre de credit du joueur
+     * @return nombre de credit
+     */
+    public int getCredit() {
+        return this.credit;
+    }
+
+    /**
+     * Retourner le nombre de vie du joueur
+     * @return nombre de vie
+     */
+    public int getVie() {
+        return this.vie;
+    }
+
+
+
+    //===== SETTERS =====
+    public void setCredit(int n){
+        this.credit = n;
+    }
+
 }

@@ -211,4 +211,14 @@ public class DefinedBoard extends Board {
 
     return path;
 }
+
+@Override
+public String getSymbolAt(int r, int c) {
+    List<Cell> path = getChemins();
+    Cell cell = getCell(r, c);
+    if (!cell.isPath()) return ".";
+    if (!path.isEmpty() && cell == path.get(0)) return "D";
+    if (!path.isEmpty() && cell == path.get(path.size() - 1)) return "F";
+    return "c";
+}
 }

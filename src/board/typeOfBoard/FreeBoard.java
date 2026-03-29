@@ -326,4 +326,16 @@ public class FreeBoard extends Board {
 
         return positions;
     }
+    
+    @Override
+    public String getSymbolAt(int r, int c) {
+    int nb = retourneNbrChemins();
+    for (int k = 0; k < nb; k++) {
+        Position[] chemin = retourneLesChemins(k);
+        if (c == chemin[0].getCol() && r == chemin[0].getRow()) return "D";
+        if (c == chemin[chemin.length-1].getCol() && r == chemin[chemin.length-1].getRow()) return "F";
+    }
+    Cell[][] grid = getGrid();
+    return grid[r][c].isPath() ? "c" : ".";
+}
 }

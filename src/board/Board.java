@@ -186,5 +186,8 @@ public abstract class Board {
     }
 
     }
+
+    public abstract String getSymbolAt(int r, int c);
+
    
 }

@@ -361,11 +361,14 @@ Gérer les actions du joueur.
 ## Semaine 10
 
 ### Ce qui a été réalisé
+nous avons principalement retravaillé la classe Balloon afin de simplifier sa conception. Dans les versions précédentes, la gestion des ballons était séparée selon les deux types de plateaux, aussi nous avons revu certaines methodes en version plus POO
 
 ### Difficultés rencontrées
 
 ### Objectifs pour la semaine et répartition du travail par membre
-
+revision de certaines methodes
+finir le livrable 5 
+faire plus de tests 
 ## Semaine 11
 
 ### Ce qui a été réalisé

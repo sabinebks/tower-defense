@@ -1,5 +1,10 @@
 package game;
+import board.Position;
 import object.tower.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Une class player pour gerer les actions du joueurs
  */
@@ -13,12 +18,15 @@ public class Player {
     public static final int CREDIT_INITIAL = 2500;
     public static final int VIE_INIT = 20;
     public static final double REVENDRE = 0.25;
+
     private int credit;
     private int vie;
+    private List<Tower> towers;
     /** Le constructeur du joueur, init le credit et la vie */
     public Player () {
         this.credit = CREDIT_INITIAL;
         this.vie = VIE_INIT;
+        this.towers = new ArrayList<>();
     }
 
     /**
@@ -52,5 +60,53 @@ public class Player {
             }
         }
         return total;
+    }
+
+    public void acheterEtPlacerTour(Tower t, Position p) {
+        Tower tow = createTower(t, new Position(0, 0));
+        if (tow == null) {
+            System.out.println("Type de tour invalide");
+            return;
+        }
+        if (credits < tow.getCout()) {
+            System.out.println("Credit insuffisant");
+            return;
+        }
+
+        if (p == null || !posValide(p)) {
+            System.out.println("Position invalide");
+            return;
+        }
+        Tower tower = createTower(t, p);
+        addTower(tower);
+        credits -= tower.getCout();
+    }
+
+    /**
+     * Factory method pour créer une tour en fonction de son typeId
+     *
+     * @param typeId l'identifiant du type de tour (1 à 7)
+     * @param pos    la position où placer la tour
+     * @return une instance de Tower correspondante au typeId, ou null si typeId invalide
+     */
+    private Tower createTower(int typeId, Position pos) {
+        switch (typeId) {
+            case 1:
+                return new BombTower(pos);
+            case 2:
+                return new DartMonkey(pos);
+            case 3:
+                return new EliteSniper(pos);
+            case 4:
+                return new Gorilla(pos);
+            case 5:
+                return new IceTower(pos);
+            case 6:
+                return new SlowTower(pos);
+            case 7:
+                return new TackShooter(pos);
+            default:
+                return null;
+        }
     }
 }

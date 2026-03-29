@@ -197,18 +197,20 @@ public class DefinedBoard extends Board {
             }
         }
     }
-@Override
+
+    @Override
     public Cell getCell(Position p) {
     return grid[p.getRow()][p.getCol()];
 }
+
     //pour gerer les ballons qui suivent le chemin
     public List<Position> getPathPositions() {
-    List<Position> path = new ArrayList<>();
+        List<Position> path = new ArrayList<>();
 
-    for (Cell cell : chemins) {
-        path.add(cell.getPosition());
+        for (Cell cell : chemins) {
+            path.add(cell.getPosition());
+        }
+
+        return path;
     }
-
-    return path;
-}
 }

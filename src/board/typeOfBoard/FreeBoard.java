@@ -18,7 +18,7 @@ public class FreeBoard extends Board {
     // chemin
     private Map<Integer, Position> numChemins = new HashMap<>();
     private int cmp = 0; // Compteur pour le nombre de chemins
-
+    private Map<Integer, List<Cell>> allPath;
     // Crée une map où on enregistre les premières et les dernières
     // cellules du chemin créées par calculerPath
     private Map<Position, Position> chemins = new HashMap<>();
@@ -209,121 +209,66 @@ public class FreeBoard extends Board {
      * @return List of path cells
      */
     public List<Cell> getChemins() {
-        List<Cell> result = new ArrayList<>();
+        Random rand = new Random();
 
         for (int i = 0; i < cmp; i++) {
             Position start = numChemins.get(i);
             Position end = chemins.get(start);
+
             if (start == null || end == null)
                 continue;
 
             Direction dir = getDirection(start, end);
 
+            List<Cell> list = allPath.get(i);
+            if (list == null) {
+                list = new ArrayList<>();
+                allPath.put(i, list);
+            }
+
             switch (dir) {
                 case RIGHT:
                     for (int c = start.getCol(); c <= end.getCol(); c++) {
-                        result.add(getCell(start.getRow(), c));
+                        Cell cell = getCell(start.getRow(), c);
+                        list.add(cell);
                     }
                     break;
 
                 case LEFT:
                     for (int c = start.getCol(); c >= end.getCol(); c--) {
-                        result.add(getCell(start.getRow(), c));
+                        Cell cell = getCell(start.getRow(), c);
+                        list.add(cell);
                     }
                     break;
 
                 case DOWN:
                     for (int r = start.getRow(); r <= end.getRow(); r++) {
-                        result.add(getCell(r, start.getCol()));
+                        Cell cell = getCell(r, start.getCol());
+                        list.add(cell);
                     }
                     break;
 
                 case UP:
                     for (int r = start.getRow(); r >= end.getRow(); r--) {
-                        result.add(getCell(r, start.getCol()));
+                        Cell cell = getCell(r, start.getCol());
+                        list.add(cell);
                     }
                     break;
             }
         }
-
-        return result;
+        int i = rand.nextInt(allPath.size());
+        return allPath.get(i);
     }
+
  /* Returns the list of all positions that form paths on the board.
  * This method iterates through all the paths defined in the 'chemins' map,
  * determines the direction of each path, and collects all the positions along
  */
     public List<Position> getPathPositions() {
         List<Position> positions = new ArrayList<>();
-
-        for (Map.Entry<Position, Position> entry : chemins.entrySet()) {
-            Position start = entry.getKey();
-            Position end = entry.getValue();
-
-            Direction dir = getDirection(start, end);
-
-            switch (dir) {
-                case RIGHT:
-                    for (int c = start.getCol(); c <= end.getCol(); c++) {
-                        positions.add(new Position(start.getRow(), c));
-                    }
-                    break;
-
-                case LEFT:
-                    for (int c = start.getCol(); c >= end.getCol(); c--) {
-                        positions.add(new Position(start.getRow(), c));
-                    }
-                    break;
-
-                case DOWN:
-                    for (int r = start.getRow(); r <= end.getRow(); r++) {
-                        positions.add(new Position(r, start.getCol()));
-                    }
-                    break;
-
-                case UP:
-                    for (int r = start.getRow(); r >= end.getRow(); r--) {
-                        positions.add(new Position(r, start.getCol()));
-                    }
-                    break;
-            }
+        for(Cell cell : getChemins()){
+            positions.add(cell.getPosition());
         }
-
-        return positions;
-    }
-
-    /**
-     * Returns the list of positions that form the path starting from a given position.
-     * @param start The starting position of the path
-     * @return List of positions along the path, or empty list if start is not a path start
-     */
-    public List<Position> getPathFrom(Position start) {
-        Position end = chemins.get(start);
-        List<Position> positions = new ArrayList<>();
-
-        Direction dir = getDirection(start, end);
-
-        switch (dir) {
-            case RIGHT:
-                for (int c = start.getCol(); c <= end.getCol(); c++)
-                    positions.add(new Position(start.getRow(), c));
-                break;
-
-            case LEFT:
-                for (int c = start.getCol(); c >= end.getCol(); c--)
-                    positions.add(new Position(start.getRow(), c));
-                break;
-
-            case DOWN:
-                for (int r = start.getRow(); r <= end.getRow(); r++)
-                    positions.add(new Position(r, start.getCol()));
-                break;
-
-            case UP:
-                for (int r = start.getRow(); r >= end.getRow(); r--)
-                    positions.add(new Position(r, start.getCol()));
-                break;
-        }
-
         return positions;
     }
 }

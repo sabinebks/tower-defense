@@ -20,9 +20,7 @@ public class Game {
      * idCounter : pour les Id des ballons
      * vie : nombre de vie du joueur, commencer avec 20
      */
-    public static final int CREDIT_INITIAL = 2500;
-    public static final int VIE_INIT = 20;
-    public static final double REVENDRE = 0.25;
+    private Player player;
     private List<Balloon> balloons;
     private List<Tower> towers;
     private List<Projectil> activeProjectils;
@@ -38,7 +36,7 @@ public class Game {
         this.towers = new ArrayList<>();
         this.activeProjectils = new ArrayList<>();
         this.board = null;
-        this.credits = CREDIT_INITIAL;
+        this.player = new Player();
 
     }
 
@@ -49,60 +47,15 @@ public class Game {
      */
 
     public void spawnBalloon(BalloonType type) {
-        if (board == null)
-            return;
-
         idCounter++;
 
-        if (board instanceof DefinedBoard df) {
+        List<Position> cheminASuivre = this.board.getPathPositions();
 
-            List<Cell> pathCells = df.getChemins();
-            if (pathCells == null || pathCells.size() < 2)
-                return;
+        if (cheminASuivre != null && !cheminASuivre.isEmpty()) {
+            Position depart = cheminASuivre.get(0);
+            Balloon b = new Balloon(idCounter, depart.getRow(), depart.getCol(), type);
+            b.setPath(cheminASuivre);
 
-            Position start = pathCells.get(0).getPosition();
-
-            Balloon b = new Balloon(
-                    idCounter,
-                    start.getRow(),
-                    start.getCol(),
-                    type);
-
-            List<Position> path = new ArrayList<>();
-            for (Cell c : pathCells) {
-                path.add(c.getPosition());
-            }
-
-            b.setPath(path);
-            balloons.add(b);
-        }
-
-        else if (board instanceof FreeBoard fb) {
-
-            int nb = fb.retourneNbrChemins();
-            if (nb <= 0)
-                return;
-
-            int id = new Random().nextInt(nb);
-            Position[] chemin = fb.retourneLesChemins(id);
-
-            if (chemin == null || chemin.length < 2)
-                return;
-
-            Position start = chemin[0];
-
-            Balloon b = new Balloon(
-                    idCounter,
-                    start.getRow(),
-                    start.getCol(),
-                    type);
-
-            List<Position> path = new ArrayList<>();
-            for (Position p : chemin) {
-                path.add(p);
-            }
-
-            b.setPath(path);
             balloons.add(b);
         }
     }
@@ -479,33 +432,7 @@ public class Game {
         System.out.println("=== FIN DE MANCHE ===");
     }
 
-    /**
-     * Factory method pour créer une tour en fonction de son typeId
-     *
-     * @param typeId l'identifiant du type de tour (1 à 7)
-     * @param pos    la position où placer la tour
-     * @return une instance de Tower correspondante au typeId, ou null si typeId invalide
-     */
-    private Tower createTower(int typeId, Position pos) {
-        switch (typeId) {
-            case 1:
-                return new BombTower(pos);
-            case 2:
-                return new DartMonkey(pos);
-            case 3:
-                return new EliteSniper(pos);
-            case 4:
-                return new Gorilla(pos);
-            case 5:
-                return new IceTower(pos);
-            case 6:
-                return new SlowTower(pos);
-            case 7:
-                return new TackShooter(pos);
-            default:
-                return null;
-        }
-    }
+
 
     /**
      * Place des tours aléatoirement sur le plateau, en évitant les chemins.

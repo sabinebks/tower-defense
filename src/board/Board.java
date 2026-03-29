@@ -28,6 +28,7 @@ public abstract class Board {
      */
     protected abstract List<Cell> getChemins();
     protected abstract void init();
+    public abstract  List<Position> getPathPositions();
 
     /**
      * Returns the cell at the specified coordinates (row, col).

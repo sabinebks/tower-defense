@@ -11,11 +11,13 @@ public abstract class Action {
      * un int pour gerer le cout total d'une action
      */
     private int c;
+    private Tower t;
     /**
      * Constructeur de la classes
      */
-    public Action() {
+    public Action(Tower t) {
         this.c = 0;
+        this.t = t;
     }
 
     /**

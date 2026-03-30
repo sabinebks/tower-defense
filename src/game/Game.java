@@ -123,7 +123,7 @@ public class Game {
         }
     }
 
-    private void render() {
+    public void render() {
     for (int r = 0; r < board.getHeight(); r++) {
         for (int c = 0; c < board.getWidth(); c++) {
             String entity = checkEntityAt(r, c);
@@ -530,30 +530,6 @@ public class Game {
         return oldHealth;
     }
 
-    /**
-     * Methode pour gerer les actions du joueur
-     * 
-     * @param choix le choix de l'action du joueur (1 à 4)
-     */
-    public void phaseActionsJoueur(int choix) {
-        boolean fin = false;
-        while (!fin) {
-            render();
-            switch (choix) {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    fin = true;
-                    break;
-                default:
-                    System.out.println("Choix invalide");
-            }
-        }
-    }
 
     /**
      * Vérifie si une position est valide pour placer une tour.

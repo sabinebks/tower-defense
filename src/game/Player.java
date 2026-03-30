@@ -53,4 +53,31 @@ public class Player {
         }
         return total;
     }
+
+    /**
+     * Methode pour gerer les actions du joueur
+     * 1 pour acheter un tower + placer le
+     * 2 pour faire des upgrades d'un tower choisi
+     * 3 pour vendre un tower
+     * 4 pour commencer le jeu
+     * @param choix le choix de l'action du joueur (1 à 4)
+     */
+    public void phaseActionsJoueur(int choix) {
+        boolean fin = false;
+        while (!fin) {
+            switch (choix) {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    fin = true;
+                    break;
+                default:
+                    System.out.println("Choix invalide");
+            }
+        }
+    }
 }

@@ -13,7 +13,7 @@ public class GameTest {
     private Game game;
 
     @BeforeEach
-    void setUp() {
+    void init() {
         game = new Game();
     }
 

@@ -23,17 +23,17 @@ public class PlayerTest {
         assertEquals(20, player.getVie());
     }
 
-    @Test
+    /*@Test
     void testSommeDunTower() {
         Tower t = new DartMonkey(new Position(5, 5)); 
         assertEquals(200, player.calculInvestissementTotal(t));
-    }
+    }*/
 
-    @Test
+    /*@Test
     void testSommeDunTowerAvecUpgrade() {
         Tower t = new DartMonkey(new Position(5, 5)); 
         t.appliquerEvolution(TypeEvolution.PORTEE);
         t.appliquerEvolution(TypeEvolution.CANDENCE);
         assertEquals(450, player.calculInvestissementTotal(t));
-    }
+    }*/
 }

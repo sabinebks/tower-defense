@@ -37,22 +37,6 @@ public class Player {
         return this.vie;
     }
     
-    /**
-     * Methode pour acheter une tour
-     * Verifie si le joueur a assez de credit pour acheter la tour
-     * Si oui, le credit du joueur va diminuer du cout de la tour
-     * @param t la tour a acheter
-     * @return true si l'achat est reussi, false sinon
-     */
-    public int calculInvestissementTotal(Tower t) {
-        int total = t.getCout();
-        if (t.getEvolutions() != null) {
-            for (int c : t.getEvolutions().getEvolutionsPossedees().values()) {
-                total += c;
-            }
-        }
-        return total;
-    }
 
     /**
      * Methode pour gerer les actions du joueur
@@ -62,7 +46,7 @@ public class Player {
      * 4 pour commencer le jeu
      * @param choix le choix de l'action du joueur (1 à 4)
      */
-    public void phaseActionsJoueur(int choix) {
+    public void actionJoueur(int choix) {
         boolean fin = false;
         while (!fin) {
             switch (choix) {

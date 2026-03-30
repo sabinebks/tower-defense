@@ -4,8 +4,27 @@ import java.util.*;
 import object.tower.*;
 
 
-public abstract class Actions {
+public abstract class Action {
     
+    /**
+     * Attributs
+     * un int pour gerer le cout total d'une action
+     */
+    private int c;
+    /**
+     * Constructeur de la classes
+     */
+    public Action() {
+        this.c = 0;
+    }
+
+    /**
+     * Methode rendre le nombre de credit de l'action
+     * @return le nombre de credit
+     */
+    public int getCout() {
+        return this.c;
+    }
 
     /**
      * Methode pour acheter une tour
@@ -23,4 +42,7 @@ public abstract class Actions {
         }
         return total;
     }
+
+    /**Methode abstract gerer l'action */
+    public abstract void doAction();
 }

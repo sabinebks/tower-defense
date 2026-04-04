@@ -19,12 +19,16 @@ public class Player {
     private List<Tower> towers;
   
     
-    public Player(int credit, ListChooser actionChooser) {
-        this.credit = credit;
-        this.towers = new ArrayList<>();
-        this.actionChooser = actionChooser;
-    }
-    
+        /**
+        * Constructeur de la classe
+        * @param actionChooser le type de list chooser pour choisir les actions du joueur
+        */
+    public Player(ListChooser actionChooser) {
+    this.credit = CREDIT_INITIAL;
+    this.vie = VIE_INIT;
+    this.actionChooser = actionChooser;
+    this.towers = new ArrayList<>();
+}
   
 
     /**
@@ -80,6 +84,29 @@ public class Player {
     return false;
 }
 
+    /**
+     * Methode pour ajouter une tour a la liste de tour du joueur
+     * @param tower la tour a ajouter
+     */
+    public void addTower(Tower tower) {
+        this.towers.add(tower);
+    }
 
+    /**
+     * Methode pour retourner la liste de tour du joueur
+     * @return la liste de tour du joueur
+     */
+    public List<Tower> getTowers() {
+        return this.towers;
+    }
+
+    /**
+     * Methode pour choisir les actions du joueur
+     * @param game le game qu'on jouait
+     * @return les actions que le joueur a fait
+     */
+    public List<Action> choisirActions(Game game) {
+        return actionChooser.choisirActions(game, this);
+    }
 }
     

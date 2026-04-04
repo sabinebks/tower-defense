@@ -1,24 +1,31 @@
 package game;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import object.tower.Tower;
+
+
 /**
  * Une class player pour gerer les actions du joueurs
  */
 public class Player {
-    /**
-     * Les attributs du joueurs
-     * Le nombre de cerdit, init en 2500
-     * Le nombre de vie, init en 20
-     * Le joueurs va gerer avec les towers dans game, donc il a pas besoin d'un liste de towers
-     */
     public static final int CREDIT_INITIAL = 2500;
     public static final int VIE_INIT = 20;
     public static final double REVENDRE = 0.25;
-    private int credit;
+    private ListChooser actionChooser;
     private int vie;
-    /** Le constructeur du joueur, init le credit et la vie */
-    public Player () {
-        this.credit = CREDIT_INITIAL;
-        this.vie = VIE_INIT;
+    private int credit;
+    private List<Tower> towers;
+  
+    
+    public Player(int credit, ListChooser actionChooser) {
+        this.credit = credit;
+        this.towers = new ArrayList<>();
+        this.actionChooser = actionChooser;
     }
+    
+  
 
     /**
      * Retourner le nombre de credit du joueur
@@ -72,5 +79,7 @@ public class Player {
     }
     return false;
 }
+
+
 }
     

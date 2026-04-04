@@ -30,6 +30,13 @@ public class Player {
     }
 
     /**
+     * Methode gerer le nombre de credit du joueur
+     * @param n le nombre de credit a ajouter
+     */
+    public void setCredit(int n) {
+        this.credit += n;
+    }
+    /**
      * Retourner le nombre de vie du joueur
      * @return nombre de vie
      */
@@ -37,6 +44,23 @@ public class Player {
         return this.vie;
     }
     
+    /**
+     * Methode pour gerer la perdu de vie du joueur
+     */
+    public void perdreVie() {
+        this.vie -= 1;
+        if (this.vie < 0) {
+            this.vie = 0;
+        }
+    }
+
+    /**
+     * Methode pour verifier que le joueur n'a pas perdu
+     * @return true si joueur est vivant, false sinon
+     */
+    public boolean estVivant() {
+        return this.vie > 0;
+    }
 
     /**
      * Methode pour gerer les actions du joueur

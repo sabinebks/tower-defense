@@ -15,20 +15,16 @@ public class Game {
      * ballons : les ballons qui existent dans la grille
      * towers : les towers qui existe dans la grille
      * activeProjectils : les projectil qui seront lancer par les towers
-     * cerdits : cerdit du joueur
      * board : la grille de jeux
      * idCounter : pour les Id des ballons
-     * vie : nombre de vie du joueur, commencer avec 20
+     * player : le joueur
      */
-    public static final int CREDIT_INITIAL = 2500;
-    public static final int VIE_INIT = 20;
-    public static final double REVENDRE = 0.25;
     private List<Balloon> balloons;
     private List<Tower> towers;
     private List<Projectil> activeProjectils;
     private Board board;
-    private int credits;
     private int idCounter = 0;
+    private Player player;
 
     /**
      * Le constructeur de la classe Game
@@ -38,8 +34,7 @@ public class Game {
         this.towers = new ArrayList<>();
         this.activeProjectils = new ArrayList<>();
         this.board = null;
-        this.credits = CREDIT_INITIAL;
-
+        this.player = new Player();
     }
 
     /**
@@ -132,7 +127,7 @@ public class Game {
         System.out.println();
     }
     System.out.println("--- STATS ---");
-    System.out.println("Credits : " + this.credits + " | Ballons : " + balloons.size());
+    System.out.println("Credits : " + this.player.getCredit() + " | Ballons : " + balloons.size());
 }
 
     /**
@@ -495,7 +490,7 @@ public class Game {
         // Crédits pour ballons détruits
         for (Balloon b : balloons) {
             if (!b.isActive() && b.getHealth() <= 0) {
-                this.credits += 10;
+                this.player.setCredit(10);
             }
         }
 
@@ -561,7 +556,7 @@ public class Game {
             System.out.println("Type de tour invalide");
             return;
         }
-        if (credits < tow.getCout()) {
+        if (this.player.getCredit() < tow.getCout()) {
             System.out.println("Credit insuffisant");
             return;
         }
@@ -572,7 +567,7 @@ public class Game {
         }
         Tower tower = createTower(t, p);
         addTower(tower);
-        credits -= tower.getCout();
+        this.player.setCredit(0 - tower.getCout());
     }
 
     /**

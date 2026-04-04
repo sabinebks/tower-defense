@@ -1,0 +1,391 @@
+@startuml
+' Configuration du style
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+scale 0.75
+left to right direction
+
+' ==========================
+' PACKAGE GAME
+' ==========================
+package game {
+    class Game {
+    - balloons : List<Balloon>
+    - towers : List<Tower>
+    - activeProjectils : List<Projectil>
+    - board : Board
+    - idCounter : int
+    - player : Player
+
+    + CREDIT_INITIAL : int {static, final}
+
+    + Game()
+    + spawnBalloon(type : BalloonType)
+    + gameTick()
+    - render()
+    - checkEntityAt(r : int, c : int) : String
+    + afficherDefinedPlateau(board : DefinedBoard)
+    + afficherFreePlateau(board : FreeBoard)
+    + addTower(t : Tower)
+
+    + autoPlayA(height : int, width : int, nbBallons : int)
+    + autoPlayB(height : int, width : int, nbChemins : int)
+
+    + run10Manches(height : int, width : int, param : int, modeA : boolean)
+    + afficherEvenementsBallons(tick : int, oldSpeed : Map<Integer, Double>, oldHealth : Map<Integer, Integer>)
+
+    - gererEvolutionAleatoire(ajouter : boolean)
+    - createTower(typeId : int, pos : Position) : Tower
+    - placerToursAleatoires()
+    - updateEntities()
+    - cleanupEntities()
+    - saveOldSpeeds() : Map<Integer, Double>
+    - saveOldHealth() : Map<Integer, Integer>
+
+     }
+    class Clock {
+        - timer : Timer
+        + Clock(game : Game)
+        + start()
+    }
+    class Player {
+    - credit : int
+    - vie : int
+
+    + CREDIT_INITIAL : int {static, final}
+    + VIE_INIT : int {static, final}
+    + REVENDRE : double {static, final}
+
+    + Player()
+    + getCredit() : int
+    + getVie() : int
+    + calculInvestissementTotal(t : Tower) : int
+  }
+
+    ' Relations
+    Game --> Board
+    Game --> "0..*" Balloon
+    Game --> "0..*" Tower
+    Game --> "0..*" Projectil
+    Clock --> Game
+    Game --> Player
+    Player --> Action
+}
+' ==========================
+' PACKAGE CHOOSER
+' ==========================
+package chooser {
+
+    interface ListChooser<T> {
+        + choose(prompt : String, options : List<T>) : T
+    }
+
+    class AutoListChooser<T> {
+        - index : int
+    }
+
+    class HumanListChooser<T> {
+        - scanner : Scanner
+    }
+
+    ListChooser <|.. AutoListChooser
+    ListChooser <|.. HumanListChooser
+}
+' ==========================
+' PACKAGE ACTION
+' ==========================
+package action {
+
+    abstract class Action {
+        + execute(game : Game)
+        + getDescription() : String
+    }
+
+    class BuyTowerAction {
+        - tower : Tower
+        - x : int
+        - y : int
+    }
+
+    class UpgradeTowerAction {
+        - tower : Tower
+    }
+
+    class SellTowerAction {
+        - tower : Tower
+    }
+
+    Action <|-- BuyTowerAction
+    Action <|-- UpgradeTowerAction
+    Action <|-- SellTowerAction
+}
+' ==========================
+' PACKAGE BOARD
+' ==========================
+package board {
+    class Position {
+        - row : int
+        - col : int
+        + Position(row : int, col : int)
+        + getRow() : int
+        + getCol() : int
+    }
+
+    class Cell {
+        - position : Position
+        + Cell(pos : Position)
+        + getPosition() : Position
+        + isPath() : boolean
+        + assignChemin()
+    }
+
+    enum Direction {
+        UP
+        DOWN
+        LEFT
+        RIGHT
+    }
+
+    
+
+    abstract class Board {
+    # height : int
+    # width : int
+    # grid : Cell[][]
+
+    + Board(height : int, width : int)
+    + init()
+    + calculerPath()
+    + getCell(r : int, c : int) : Cell
+    + isInside(r : int, c : int) : boolean
+    + getHeight() : int
+    + getWidth() : int
+    + getGrid() : Cell[][]
+    }
+
+package typeOfBoard {
+
+    class FreeBoard {
+        - numChemins : Map<Integer, Position>
+        - cmp : int
+        - chemins : Map<Position, Position>
+        - nbCheminsVoulus : int
+
+        + FreeBoard(height : int, width : int)
+        + setNbCheminsVoulus(nb : int)
+        + init()
+        + calculerPath()
+        + marquerCheminDroit(start : Position, end : Position)
+        + getFinChemin(start : Position) : Position
+        + retourneLesChemins(num : int) : Position[]
+        + retourneNbrChemins() : int
+        + getCheminsMap() : Map<Position, Position>
+        + getChemins() : List<Cell>
+        + getPathPositions() : List<Position>
+        - getDirection(start : Position, end : Position) : Direction
+    }
+
+    class DefinedBoard {
+        - chemins : List<Cell>
+        - cheminAv : Position
+        - pointDeDepart : Position
+
+        + DefinedBoard(height : int, width : int)
+        + init()
+        + calculerPath()
+        + getChemins() : List<Cell>
+        + getCheminLong() : int
+        + isBord(p : Position) : boolean
+        + getCell(p : Position) : Cell
+        + getPathPositions() : List<Position>
+    }
+}
+
+' Héritages
+Board <|-- FreeBoard
+Board <|-- DefinedBoard
+}
+' ==========================
+' PACKAGE OBJECT
+' ==========================
+package object {
+    package balloon {
+        enum BalloonType {
+            BASIC
+            MEDIUM
+            STRONG
+        }
+
+        class Balloon {
+            # id : int
+            # posColonne : double
+            # posLigne : double
+            # speed : double
+            # health : int
+            # type : BalloonType
+            # active : boolean
+            # exitTime : int
+            # freezeTimer : int
+            # slowTimer : int
+            # slowFactor : double
+            # path : List<Position>
+            # pathIndex : int
+            + Balloon(id : int, startLigne : double, startColonne : double, type : BalloonType)
+            + move(height : int, width : int) : boolean
+            + hit(damage : int) : boolean
+            + isActive() : boolean
+            + getCurrentPosition() : Position
+            + setExitTime(time : int)
+            + getId() : int
+            + getSpeed() : double
+            + getHealth() : int
+            + getType() : BalloonType
+            + getExitTime() : int
+            + getColonne() : double
+            + getLigne() : double
+            + updateState()
+            + freeze(duration : int)
+            + slow(factor : double, duration : int)
+            + getEffectiveSpeed() : double
+            + remove()
+            + setPath(path : List<Position>)
+        }
+
+    
+        
+    }
+
+    package tower {
+        enum EffectType {
+            IMMEDIATE
+            AREA
+            FREEZE
+            SLOW
+        }
+
+        abstract class Tower {
+            # position : Position
+            # type : ProjectilType
+            # cout : int
+            # porte : int
+            # cadence : int
+            # evolution : Evolution
+            # effectType : EffectType
+            # ticksSinceLastShot : int
+            + Tower(position : Position, cout : int, porte : int, cadence : int, evolution : Evolution, effectType : EffectType, type : ProjectilType)
+            + update(balloons : List<Balloon>, activeProjectiles : List<Projectil>)
+            # attack(balloons : List<Balloon>) : Projectil
+            + distanceTo(b : Balloon) : double
+            + findTarget(balloons : List<Balloon>) : Balloon
+            + getPosition() : Position
+            + getPorte() : int
+        }
+
+        ' Tours concrètes
+        class Gorilla {
+            + Gorilla(pos : Position)
+        }
+
+        class TackShooter {
+            + TackShooter(pos : Position)
+        }
+
+        class BombTower {
+            + BombTower(pos : Position)
+        }
+
+        class DartMonkey {
+            + DartMonkey(pos : Position)
+        }
+
+        class EliteSniper {
+            + EliteSniper(pos : Position)
+        }
+
+        class IceTower {
+            + IceTower(pos : Position)
+        }
+
+        class SlowTower {
+            + SlowTower(pos : Position)
+        }
+
+        ' Héritages
+        Tower <|-- Gorilla
+        Tower <|-- TackShooter
+        Tower <|-- BombTower
+        Tower <|-- DartMonkey
+        Tower <|-- EliteSniper
+        Tower <|-- IceTower
+        Tower <|-- SlowTower
+
+        package evolution {
+            class Evolution {
+                + Evolution(type : TypeEvolution)
+            }
+            class TypeEvolution {
+                + TypeEvolution()
+            }
+            
+        }
+
+        package projectil {
+            enum ProjectilType {
+                FLECHETTE
+                BOMBE
+                GLACE
+                AIGUILLE
+                FLECHETTE_POINTUE
+                EXTRA_BOMBE
+            }
+
+            class NotMatchException {
+                + NotMatchException(msg : String)
+            }
+
+            abstract class Projectil {
+                # x : double
+                # y : double
+                # target : Balloon
+                # type : ProjectilType
+                + Projectil(type : ProjectilType, startX : double, startY : double, target : Balloon)
+                + update()
+                + isActive() : boolean
+                # triggerImpact()
+            }
+
+            class ProjectilSimple {
+                + ProjectilSimple(type : ProjectilType, startX : double, startY : double, target : Balloon)
+                # triggerImpact()
+            }
+
+            class ProjectilBombe {
+                - balloons : List<Balloon>
+                - explosionRadius : double
+                + ProjectilBombe(type : ProjectilType, startX : double, startY : double, target : Balloon, radius : double, currentBalloons : List<Balloon>)
+                # triggerImpact()
+            }
+
+            class ProjectilEffet {
+                - effet : EffectType
+                + ProjectilEffet(type : ProjectilType, startX : double, startY : double, target : Balloon, effet : EffectType)
+                # triggerImpact()
+            }
+
+            ' Héritages
+            Projectil <|-- ProjectilSimple
+            Projectil <|-- ProjectilBombe
+            Projectil <|-- ProjectilEffet
+        }
+    }
+}
+' ==========================
+' RELATIONS ACTION / GAME
+' ==========================
+Action --> Game
+BuyTowerAction --> Tower
+UpgradeTowerAction --> Tower
+SellTowerAction --> Tower
+
+Player --> ListChooser
+@enduml

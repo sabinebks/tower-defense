@@ -161,6 +161,14 @@ public class Game {
     }
 
     /**
+     * Retourner la liste des towers
+     * @return tower la liste des towers
+     */
+    public List<Tower> getTowers() {
+        return this.towers;
+    }
+
+    /**
      * methode pour gerer les evolutions des tours de maniere aleatoire
      * parcourt toutes les tours et applique ou supprime une evolution par type de
      * tour

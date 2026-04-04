@@ -156,19 +156,23 @@ public abstract class Tower {
 
     /**
      * getter pour la position
-     * @return
+     * @return position
      */
     public Position getPosition() {
         return position;
     }
 
+    /**
+     * getter pour la porte
+     * @return porte
+     */
     public int getPorte() {
-    return porte;
-}
+        return porte;
+    }
 
     /**
      * getter pour l'attribut evolution
-     * @return
+     * @return evolution du tower
      */
     public boolean getEvolution() {
         return evolution;

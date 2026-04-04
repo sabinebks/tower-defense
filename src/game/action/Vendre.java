@@ -12,4 +12,17 @@ public class Vendre extends Action{
     public Vendre(Tower t ) {
         super(t);
     }
+
+    /**
+     * Methode gerer la vente d'un tower
+     * On utilise la methode calcul pour faciliter la somme total
+     * des credits qui va etre rembouser au joueur
+     */
+    public void doAction() {
+        if (this.t == null) {
+            return;
+        }
+        int n = 0 - calculInvestissementTotal(this.t) / 2;
+        setCout(n);
+    }
 }

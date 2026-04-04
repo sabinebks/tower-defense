@@ -18,11 +18,12 @@ public class Vendre extends Action{
      * On utilise la methode calcul pour faciliter la somme total
      * des credits qui va etre rembouser au joueur
      */
+    @Override
     public void doAction() {
         if (this.t == null) {
             return;
         }
-        int n = 0 - calculInvestissementTotal(this.t) / 2;
-        setCout(n);
+        int n = 0 - (calculInvestissementTotal(this.t) / 2);
+        this.setCout(n);
     }
 }

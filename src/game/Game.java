@@ -169,6 +169,14 @@ public class Game {
     }
 
     /**
+     * Retourner le board du jeu
+     * @return le board du jeu
+     */
+    public Board getBoard() {
+        return this.board;
+    }
+
+    /**
      * methode pour gerer les evolutions des tours de maniere aleatoire
      * parcourt toutes les tours et applique ou supprime une evolution par type de
      * tour

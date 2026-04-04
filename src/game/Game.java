@@ -399,7 +399,7 @@ public class Game {
      * @param pos    la position où placer la tour
      * @return une instance de Tower correspondante au typeId, ou null si typeId invalide
      */
-    private Tower createTower(int typeId, Position pos) {
+    public Tower createTower(int typeId, Position pos) {
         switch (typeId) {
             case 1:
                 return new BombTower(pos);
@@ -424,7 +424,7 @@ public class Game {
      * Place des tours aléatoirement sur le plateau, en évitant les chemins.
      * Place jusqu'à 2 tours de chaque type (1 à 7) si possible.
      */
-    private void placerToursAleatoires() {
+    public void placerToursAleatoires() {
 
         // FIX : éviter crash si board null
         if (board == null)
@@ -467,7 +467,7 @@ public class Game {
      * Lance une NotMatchException si une tour tente d'attaquer un ballon hors de
      * portée.
      */
-    private void updateEntities() throws NotMatchException {
+    public void updateEntities() throws NotMatchException {
         for (Balloon b : balloons) {
             if (b.isActive()) {
                 b.move(board.getHeight(), board.getWidth());
@@ -486,7 +486,7 @@ public class Game {
      * Nettoie les entités inactives et met à jour les crédits du joueur pour les
      * ballons détruits.
      */
-    private void cleanupEntities() {
+    public void cleanupEntities() {
         // Crédits pour ballons détruits
         for (Balloon b : balloons) {
             if (!b.isActive() && b.getHealth() <= 0) {

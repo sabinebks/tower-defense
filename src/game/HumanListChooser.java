@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import game.action.Acheter;
+import object.tower.Tower;
+import object.tower.*;
+import board.*;
+
 /**
  * La classe gere les actions avec le joueur les gerent manuellement
  */
@@ -41,6 +46,10 @@ public class HumanListChooser implements ListChooser {
 
             switch (choix) {
                 case 1:
+                    Action achat = choisirAcheter(game);
+                    if (achat != null) {
+                        actions.add(achat);
+                    }
                     break;
                 case 2:
                     break;
@@ -54,6 +63,38 @@ public class HumanListChooser implements ListChooser {
             }
         }
         return actions;
+    }
+    /**
+     * Methode pour acheter un tower
+     * @param game le game qu'on jouait
+     * @return l'action d'achat 
+     */
+    private Action choisirAcheter(Game game) {
+        System.out.println("Choisir le type de tour :");
+        System.out.println("1 : BombTower");
+        System.out.println("2 : DartMonkey");
+        System.out.println("3 : EliteSniper");
+        System.out.println("4 : Gorilla");
+        System.out.println("5 : IceTower");
+        System.out.println("6 : SlowTower");
+        System.out.println("7 : TackShooter");
+        System.out.print("Type : ");
+        int type = Integer.parseInt(scanner.nextLine().trim());
+        System.out.print("Ligne : ");
+        int row = Integer.parseInt(scanner.nextLine().trim());
+        System.out.print("Colonne : ");
+        int col = Integer.parseInt(scanner.nextLine().trim());
+        Position p = new Position(row, col);
+        if (!game.posValide(p)) {
+            System.out.println("Position invalide");
+            return null;
+        }
+        Tower t = game.createTower(type, p);
+        if (t == null) {
+            System.out.println("Type de tour invalide");
+            return null;
+        }
+        return new Acheter(t, p);
     }
 }   
 

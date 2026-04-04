@@ -492,6 +492,9 @@ public class Game {
             if (!b.isActive() && b.getHealth() <= 0) {
                 this.player.setCredit(10);
             }
+            else {
+                this.player.perdreVie();
+            }
         }
 
         // Retirer les projectiles et ballons inactifs

@@ -29,6 +29,14 @@ public abstract class Action {
     }
 
     /**
+     * Methode retourner le tower de l'action
+     * @return le tower de l'action
+     */
+    public Tower getTower() {
+        return this.t;
+    }
+
+    /**
      * Methode pour acheter une tour
      * Verifie si le joueur a assez de credit pour acheter la tour
      * Si oui, le credit du joueur va diminuer du cout de la tour

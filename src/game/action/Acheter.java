@@ -21,7 +21,22 @@ public class Acheter extends Action {
         this.p = p;
     }
 
-    public void doAction() {
+    /**
+     * Methode pour prendre la position ou on va acheter + placer le tour
+     * @return position du tour
+     */
+    public Position getPosition() {
+        return this.p;
+    }
 
+    /**
+     * Action de cette classe, ici c'est acheter un tower et le placer dans la position
+     * Puisque lors qu'on cree un nouveau tower, on lui a deja donne
+     * la position, donc on a pas besoin de faire qqc ici
+     */
+    public void doAction() {
+        if ( this.getTower() == null || this.p == null) {
+            return;
+        }
     }
 }

@@ -10,8 +10,8 @@ public abstract class Action {
      * Attributs
      * un int pour gerer le cout total d'une action
      */
-    private int c;
-    private Tower t;
+    protected int c;
+    protected Tower t;
     /**
      * Constructeur de la classes
      */
@@ -28,6 +28,13 @@ public abstract class Action {
         return this.c;
     }
 
+    /**
+     * Methode pour modifier le credit total d'un tower, les upgrades
+     * @param c un nouveau prix
+    */
+    public void setCout(int c) {
+        this.c = c;
+    }
     /**
      * Methode retourner le tower de l'action
      * @return le tower de l'action

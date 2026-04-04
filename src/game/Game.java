@@ -34,7 +34,7 @@ public class Game {
         this.towers = new ArrayList<>();
         this.activeProjectils = new ArrayList<>();
         this.board = null;
-        this.player = new Player();
+        this.player = new Player(new HumanListChooser());
     }
 
     /**
@@ -117,6 +117,30 @@ public class Game {
             System.err.println("Erreur : " + e.getMessage());
         }
     }
+
+   private void cleanupEntities() {
+
+    // gérer les ballons
+    for (Balloon b : balloons) {
+
+        if (!b.isActive() && b.getHealth() <= 0) {
+            // ballon détruit
+            player.addCredit(10);
+        }
+
+        else if (!b.isActive()) {
+            // ballon sorti du plateau
+            player.perdreVie();
+        }
+    }
+
+    // supprimer les entités mortes
+    activeProjectils.removeIf(p -> !p.isActive());
+
+    balloons.removeIf(b ->
+        !b.isActive() && b.getHealth() <= 0
+    );
+}
 
     public void render() {
     for (int r = 0; r < board.getHeight(); r++) {
@@ -496,26 +520,21 @@ public class Game {
             if (p.isActive())
                 p.update();
         }
-    }
-
     /**
      * Nettoie les entités inactives et met à jour les crédits du joueur pour les
      * ballons détruits.
      */
-    public void cleanupEntities() {
-        // Crédits pour ballons détruits
-        for (Balloon b : balloons) {
-            if (!b.isActive() && b.getHealth() <= 0) {
-                this.player.setCredit(10);
-            }
-            else {
-                this.player.perdreVie();
-            }
+    for (Balloon b : balloons) {
+        if (!b.isActive() && b.getHealth() <= 0) {
+            this.player.addCredit(10);
+        } else if (!b.isActive()) {
+            this.player.perdreVie();
         }
+    }
 
-        // Retirer les projectiles et ballons inactifs
-        activeProjectils.removeIf(p -> !p.isActive());
-        balloons.removeIf(b -> !b.isActive() && b.getHealth() <= 0);
+    // Retirer les projectiles et ballons inactifs
+    activeProjectils.removeIf(p -> !p.isActive());
+    balloons.removeIf(b -> !b.isActive() && b.getHealth() <= 0);
     }
 
     /**
@@ -560,4 +579,5 @@ public class Game {
         }
         return true;
     }
+
 }

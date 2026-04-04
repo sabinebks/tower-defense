@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import game.*;
+
 import game.action.*;
 import object.tower.Tower;
 import object.tower.evolution.TypeEvolution;

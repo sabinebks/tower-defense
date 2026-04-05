@@ -1,25 +1,16 @@
 package clock;
 
-import javax.swing.Timer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Clock {
-    /**
-     * Les attributs de la classe Clock
-     * timer le temps 
-     */
-    private Timer timer;
-    /**
-     * Constructeur de Clock
-     * @param game
-     */
-    public Clock(Game game) {
-        timer = new Timer(50, e -> game.gameTick());
-    }
+    private final List<Clock> listeners = new ArrayList<>();
+    private final int fps;
+    private int tickCount = 0;
+    private boolean running = false;
+    private Thread thread;
 
-    /**
-     * Methode pour commencer le timer
-     */
-    public void start() {
-        timer.start();
+    public Clock(int fps) {
+        this.fps = fps;
     }
 }

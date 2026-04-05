@@ -6,40 +6,19 @@ import board.Position;
 
 public class Balloon {
 
-    /**
-     * Classe de base pour tous les ballons.
-     * Contient les attributs et méthodes communs.
-     */
-
-    /** Identifiant unique */
     protected int id;
-
-    /** Position précise (avec décimales pour mouvement fluide) */
-    protected double posColonne; // X
-    protected double posLigne; // Y
-
-    /** Vitesse (unités par tic) */
+    protected double posColonne;
+    protected double posLigne;
     protected double speed;
-
-    /** Points de vie */
     protected int health;
-
-    /** Type du ballon */
     protected BalloonType type;
-
-    /** État du ballon */
     protected boolean active;
-
-    /** Temps de sortie (-1 si pas encore sorti) */
+    protected boolean escaped = false;
     protected int exitTime;
-
     protected int freezeTimer = 0;
     protected int slowTimer = 0;
     protected double slowFactor = 1.0;
-    // Attributs spécifiques pour les ballons améliorés
-    /** Chemin que le ballon doit suivre */
     protected List<Position> path;
-    /** Index de la position actuelle dans le chemin */
     protected int pathIndex;
 
     /**

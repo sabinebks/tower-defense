@@ -205,6 +205,9 @@ public class Balloon {
         return type;
     }
 
+    public int getExitTime() { return exitTime; }
+    public double getColonne() { return posColonne; }
+    public double getLigne() { return posLigne; }
     public List<Position> getPath() { return this.path; }
 
     // ===== SETTTERS =====

@@ -53,4 +53,32 @@ public class Game implements ClockListener, GameContext {
     @Override
     public Board getBoard()   { return board; }
 
+    public void runOneRound() {
+        clock.reset();
+        isRunning = true;
+        clock.start();
+
+        // Attendre que le premier tick soit passé avant de vérifier la fin
+        // pour éviter la race condition (roundStarted encore false)
+        try { Thread.sleep(1000L / clock.getFps() + 50); }
+        catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+
+        // Maintenant attendre la vraie fin du round
+        while (!roundManager.isCurrentRoundFinished()) {
+            try { Thread.sleep(50); }
+            catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+        }
+
+        isRunning = false;
+        clock.stop();
+    }
+
+    public int getRoundCount() {
+        return roundManager.getRounds().size(); // ou stocker la liste dans Game
+    }
+
+    public boolean hasPlayerLost() {
+        return roundManager.hasPlayerLost();
+    }
+
 }

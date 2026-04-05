@@ -1,4 +1,4 @@
-package game.action;
+package choose.action;
 
 import game.Action;
 import object.tower.Tower;

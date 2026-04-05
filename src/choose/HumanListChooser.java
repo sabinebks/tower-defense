@@ -1,14 +1,12 @@
-package game;
+package choose;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 
-import game.action.*;
 import object.tower.Tower;
 import object.tower.evolution.TypeEvolution;
-import board.*;
 
 /**
  * La classe gere les actions avec le joueur les gerent manuellement

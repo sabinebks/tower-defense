@@ -1,4 +1,4 @@
-package game.action;
+package choose.action;
 
 import java.util.ArrayList;
 import java.util.HashMap;

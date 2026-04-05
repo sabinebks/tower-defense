@@ -1,13 +1,10 @@
-package game;
+package choose;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import board.Position;
-import game.*;
-import game.action.*;
-import object.tower.*;
 import object.tower.evolution.TypeEvolution;
 
 /**

@@ -1,4 +1,4 @@
-package game;
+package clock;
 
 import javax.swing.Timer;
 

@@ -1,7 +1,4 @@
-package game;
-import java.util.*;
-
-import object.tower.*;
+package choose.action;
 
 /**
  * Classe abstract des actions 

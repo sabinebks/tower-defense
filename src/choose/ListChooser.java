@@ -1,4 +1,4 @@
-package game;
+package choose;
 
 import java.util.List;
 /*

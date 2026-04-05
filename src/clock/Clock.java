@@ -42,4 +42,15 @@ public class Clock {
         thread.setDaemon(false);
         thread.start();
     }
+
+    public void stop() {
+        running = false;
+        if (thread != null) {
+            try { thread.join(500); }
+            catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+        }
+    }
+
+    public int getTickCount() { return tickCount; }
+    public int getFps() { return fps; }
 }

@@ -1,6 +1,13 @@
 package board;
 
+import object.balloon.Balloon;
+import object.tower.Tower;
+import object.tower.projectil.Projectil;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Abstract class representing a game board.
@@ -8,19 +15,22 @@ import java.util.List;
  */
 public abstract class Board {
 
-    protected int width; // largeur du plateau
-    protected int height; // hauteur du plateau
-    protected Cell[][] grid; // grille de cellules
+    protected int width;
+    protected int height;
+    protected Map<Integer, List<Cell>> allPath;
+    protected List<Tower> towers;
+    protected List<Balloon> balloons;
+    protected List<Projectil> activeProjectiles;
+    protected List<Balloon> escapedBalloons = new ArrayList<>();
 
-    /**
-     * Board constructor.
-     * @param height the height of the board
-     * @param width  the width of the board
-     */
     public Board(int height, int width) {
         this.width = width;
         this.height = height;
-        init(); // chaque sous-classe définit comment initialiser le plateau
+        this.allPath = new HashMap<>();
+        this.towers = new ArrayList<>();
+        this.balloons = new ArrayList<>();
+        this.activeProjectiles = new ArrayList<>();
+        init();
     }
 
     /**

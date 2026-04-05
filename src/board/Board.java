@@ -2,6 +2,7 @@ package board;
 
 import object.balloon.Balloon;
 import object.tower.Tower;
+import object.tower.projectil.NotMatchException;
 import object.tower.projectil.Projectil;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public abstract class Board {
 
     protected int width;
     protected int height;
+    protected Cell[][] grid;
     protected Map<Integer, List<Cell>> allPath;
     protected List<Tower> towers;
     protected List<Balloon> balloons;
@@ -33,11 +35,10 @@ public abstract class Board {
         init();
     }
 
-    /**
-     * Abstract method: each board initializes the grid in its own way.
-     */
-    protected abstract List<Cell> getChemins();
-    protected abstract void init();
+    public abstract void calculerPath();
+    public abstract List<Cell> getChemins();
+    public abstract void init();
+    public abstract List<Position> getPathPositions();
 
     /**
      * Returns the cell at the specified coordinates (row, col).
@@ -51,16 +52,6 @@ public abstract class Board {
             throw new IllegalArgumentException("Coordonnées hors du plateau");
         }
         return this.grid[row][col];
-    }
-
-    /**
-     * Returns the cell at a given Position.
-     * @param p Position object
-     * @return The corresponding Cell
-     * @throws IllegalArgumentException if position is outside the board
-     */
-    public Cell getCell(Position p) {
-        return getCell(p.getRow(), p.getCol());
     }
 
     /**
@@ -97,11 +88,67 @@ public abstract class Board {
         return this.grid;
     }
 
-    /**
-     * Abstract method to generate the board path.
-     * Each subclass must implement its own path logic.
-     */
-    public abstract void calculerPath();
+
+    public void placeTower(Tower tower, Position position) {
+        tower.setPosition(position);
+        towers.add(tower);
+    }
+
+    public void removeTower(Tower tower) {
+        towers.remove(tower);
+    }
+
+    public void spawnBalloon(Balloon balloon) {
+        // Ne PAS écraser le path si le ballon en a déjà un (assigné par Main)
+        List<Position> path = balloon.getPath();
+        if (path == null || path.isEmpty()) {
+            balloon.setPath(getPathPositions());
+            path = balloon.getPath();
+        }
+        // Positionner le ballon au début de son chemin
+        if (path != null && !path.isEmpty()) {
+            Position start = path.get(0);
+            balloon.setStartPosition(start.getRow() + 0.5, start.getCol() + 0.5);
+        }
+        balloons.add(balloon);
+    }
+
+    public List<Balloon> update() {
+        for (Balloon balloon : new ArrayList<>(balloons)) {
+            balloon.update();
+            balloon.move();
+        }
+
+        for (Tower tower : towers) {
+            try {
+                tower.update(this.balloons, this.activeProjectiles);
+            } catch (NotMatchException e) {
+                e.getMessage();
+            }
+        }
+
+        for (Projectil projectil : new ArrayList<>(this.activeProjectiles)) {
+            projectil.update();
+        }
+
+        // Collecter AVANT de supprimer
+        List<Balloon> toRemove = new ArrayList<>();
+        for (Balloon balloon : this.balloons) {
+            if (balloon.getHealth() <= 0 || !balloon.isActive()) {
+                if (balloon.hasEscaped()) {
+                    escapedBalloons.add(balloon);
+                }
+                toRemove.add(balloon);
+            }
+        }
+        this.balloons.removeAll(toRemove);
+        this.activeProjectiles.removeIf(p -> !p.isActive());
+
+        return toRemove;
+    }
+
+    public List<Tower> getTowers() { return towers; }
+    public List<Balloon> getBalloons() { return balloons; }
 
     /**
      * Returns the end position of a straight path starting from a border cell.
@@ -197,7 +244,9 @@ public abstract class Board {
 
     }
 
-    public abstract String getSymbolAt(int r, int c);
+    public abstract boolean isCellAvailable(int row, int col);
 
+    public List<Balloon> getEscapedBalloons() { return new ArrayList<>(escapedBalloons); }
+    public void clearEscapedBalloons() { escapedBalloons.clear(); }
    
 }

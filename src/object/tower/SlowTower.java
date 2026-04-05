@@ -1,7 +1,13 @@
 package object.tower;
 import board.Position;
+import object.balloon.Balloon;
 import object.tower.evolution.TypeEvolution;
+import object.tower.projectil.NotMatchException;
+import object.tower.projectil.Projectil;
+import object.tower.projectil.ProjectilSlow;
 import object.tower.projectil.ProjectilType;
+
+import java.util.List;
 
 public class SlowTower extends Tower {
 /**
@@ -25,10 +31,27 @@ public class SlowTower extends Tower {
         return 0;
     }
 
+    public Projectil attack(List<Balloon> balloons) throws NotMatchException {
+        Balloon target = findTarget(balloons);
+        if (target == null) return null;
+        double startX = position.getCol() + 0.5;
+        double startY = position.getRow() + 0.5;
+        return new ProjectilSlow(this.type, startX, startY, target);
+    }
+
+    @Override
+    public int getCoutEvolution(TypeEvolution typeEvo) {
+        return 0;
+    }
     /**
      * retourne le symbole de la SlowTower
      * @return "S"
      */
     @Override
     public String getSymbol() { return "S"; }
+
+    @Override
+    public String getName() {
+        return "SlowTower";
+    }
 }

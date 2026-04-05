@@ -2,8 +2,14 @@ package object.tower;
 
 import board.Position;
 
+import object.balloon.Balloon;
 import object.tower.evolution.TypeEvolution;
+import object.tower.projectil.NotMatchException;
+import object.tower.projectil.Projectil;
+import object.tower.projectil.ProjectilSimple;
 import object.tower.projectil.ProjectilType;
+
+import java.util.List;
 
 
 public class Gorilla extends Tower {
@@ -51,11 +57,42 @@ public class Gorilla extends Tower {
         return cout;
     }
 
+    @Override
+    public int getCoutEvolution(TypeEvolution typeEvo) {
+        return switch (typeEvo) {
+            case PUISSANCE -> 600;
+            case PORTEE    -> 400;
+            default        -> 0;
+        };
+    }
+
+    public Projectil attack(List<Balloon> balloons) throws NotMatchException {
+        Balloon target = findTarget(balloons);
+        if (target == null) return null;
+        double startX = position.getCol() + 0.5;
+        double startY = position.getRow() + 0.5;
+        if (this.porte == -1) {
+            target.hit(this.type.getDegats());
+            return null;
+        }
+        return new ProjectilSimple(
+                this.type,
+                startX,
+                startY,
+                target
+        );
+    }
+
     /**
      * retourne le symbole de la Gorilla
      * @return "G"
      */    
     @Override
     public String getSymbol() { return "G"; }
+
+    @Override
+    public String getName() {
+        return "Gorilla";
+    }
 
 }

@@ -1,8 +1,14 @@
 package object.tower;
 
 import board.Position;
+import object.balloon.Balloon;
 import object.tower.evolution.TypeEvolution;
+import object.tower.projectil.NotMatchException;
+import object.tower.projectil.Projectil;
+import object.tower.projectil.ProjectilBombe;
 import object.tower.projectil.ProjectilType;
+
+import java.util.List;
 
 public class BombTower extends Tower {
     /**
@@ -60,9 +66,35 @@ public class BombTower extends Tower {
         return cout;
     }
 
+    public Projectil attack(List<Balloon> balloons) throws NotMatchException {
+        Balloon target = findTarget(balloons);
+        if (target == null) return null;
+        double startX = position.getCol() + 0.5;
+        double startY = position.getRow() + 0.5;
+        return new ProjectilBombe(this.type, startX, startY, target, 3, balloons);
+    }
+
+    @Override
+    public int getCoutEvolution(TypeEvolution typeEvo) {
+        return switch (typeEvo) {
+            case PUISSANCE -> 200;
+            case PORTEE    -> 250;
+            case CANDENCE  -> 300;
+            case PROJECTILES -> 400;
+            default        -> 0;
+        };
+    }
+
+
+
     /**
      * retourne le symbole de la BombTower
      * @return "B"
      */
     public String getSymbol() { return "B"; }
+
+    @Override
+    public String getName() {
+        return "BombTower";
+    }
 }

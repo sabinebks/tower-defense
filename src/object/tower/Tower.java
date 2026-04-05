@@ -66,10 +66,14 @@ public abstract class Tower {
         ticksSinceLastShot++;
         // On vérifie si la tour peut tirer selon sa cadence
         if (ticksSinceLastShot >= cadence) { // Conversion simplifiée ms -> tics
-            System.out.println("Tower a " + position + " tirer");
-            Projectil p = this.attack(balloons);
-            if (p != null) {
-                activeProjectiles.add(p);
+            System.out.println("Tower a " + position + " tire");
+            try {
+                Projectil p = this.attack(balloons);
+                if (p != null) {
+                    activeProjectiles.add(p);
+                }
+            }catch(NotMatchException e){
+                e.getMessage();
             }
             ticksSinceLastShot = 0;
         }
@@ -82,42 +86,7 @@ public abstract class Tower {
      * @param balloons les ballon qui se retrouve a la grille
      * @return bein eu ou pas
      */
-    protected Projectil attack(List<Balloon> balloons) throws NotMatchException {
-        Balloon target = findTarget(balloons);
-        if (target == null) return null;
-        double startX = position.getCol() + 0.5;
-        double startY = position.getRow() + 0.5;
-        if (this.effectType == EffectType.IMMEDIATE && this.porte == -1) {
-            target.hit(this.type.getDegats());
-            return null;
-        }
-
-        if (effectType == EffectType.SLOW ) {
-            return new ProjectilSlow(this.type, startX, startY, target);
-        }
-
-        if(effectType == EffectType.FREEZE){
-            return new ProjectilFreeze(this.type, startX, startY, target);
-        }
-        
-        if (this.effectType == EffectType.AREA) {
-            return new ProjectilBombe(
-                    this.type,
-                    startX,
-                    startY,
-                    target,
-                    3,
-                    balloons
-            );
-        }
-
-        return new ProjectilSimple(
-                this.type,
-                startX,
-                startY,
-                target
-        );
-    }
+    protected abstract Projectil attack(List<Balloon> balloons) throws NotMatchException;
 
     
     /**
@@ -142,13 +111,13 @@ public abstract class Tower {
      */
     public Balloon findTarget(List<Balloon> balloons) {
         for (Balloon b : balloons) {
-            // On vérifie si le ballon est actif et à portée
-            if (b != null && b.isActive() && (porte == -1 || distanceTo(b) <= porte)) {
-
-                if(this.effectType == EffectType.FREEZE && b.getEffectiveSpeed() == 0){
-                    continue;
+            if (b != null && b.isActive()) {
+                double dist = distanceTo(b);
+                System.out.println("Distance tour->ballon: " + dist + " portée: " + porte);
+                if (porte == -1 || dist <= porte) {
+                    if (effectType == EffectType.FREEZE && b.getEffectiveSpeed() == 0) continue;
+                    return b;
                 }
-                return b;
             }
         }
         return null;
@@ -156,23 +125,19 @@ public abstract class Tower {
 
     /**
      * getter pour la position
-     * @return position
+     * @return
      */
     public Position getPosition() {
         return position;
     }
 
-    /**
-     * getter pour la porte
-     * @return porte
-     */
     public int getPorte() {
         return porte;
     }
 
     /**
      * getter pour l'attribut evolution
-     * @return evolution du tower
+     * @return
      */
     public boolean getEvolution() {
         return evolution;
@@ -190,7 +155,7 @@ public abstract class Tower {
      * getter pour l'attribut count
      * @return
      */
-    public int getCout(){
+    public int getCost(){
         return cout;
     }
 
@@ -202,10 +167,28 @@ public abstract class Tower {
      */
     public abstract int appliquerEvolution(TypeEvolution typeEvo);
 
+
+    public int SellEvolution(TypeEvolution evo){
+        int cost = this.evolutions.getEvolutionsPossedees().get(evo);
+        this.evolutions.getEvolutionsPossedees().remove(evo);
+        return cost / 2;
+    }
+
     /**
      * retourne le symbole de la tour pour l'affichage 
      * @return le symbole de la tour
      */
     public abstract String getSymbol();
+    public abstract String getName();
+
+    public void setPosition(Position position){
+        this.position = position;
+    }
+
+    public int getSellPrice(){
+        return this.cout / 2;
+    }
+
+    public abstract int  getCoutEvolution(TypeEvolution evolution);
 
 }

@@ -2,10 +2,14 @@ package object.tower;
 
 import board.Position;
 
+import object.balloon.Balloon;
 import object.tower.evolution.TypeEvolution;
+import object.tower.projectil.NotMatchException;
+import object.tower.projectil.Projectil;
+import object.tower.projectil.ProjectilSimple;
 import object.tower.projectil.ProjectilType;
 
-
+import java.util.List;
 
 
 // classe tireur d'elite
@@ -53,11 +57,42 @@ public class EliteSniper extends Tower {
         return cout;
     }
 
+    public Projectil attack(List<Balloon> balloons) throws NotMatchException {
+        Balloon target = findTarget(balloons);
+        if (target == null) return null;
+        double startX = position.getCol() + 0.5;
+        double startY = position.getRow() + 0.5;
+        if (this.porte == -1) {
+            target.hit(this.type.getDegats());
+            return null;
+        }
+        return new ProjectilSimple(
+                this.type,
+                startX,
+                startY,
+                target
+        );
+    }
+
+    @Override
+    public int getCoutEvolution(TypeEvolution typeEvo) {
+        return switch (typeEvo) {
+            case PUISSANCE -> 300;
+            case CANDENCE  -> 200;
+            default        -> 0;
+        };
+    }
     /**
      * retourne le symbole de la EliteSniper
      * @return "E"
      */
     @Override    
     public String getSymbol() { return "E"; }
+
+
+    @Override
+    public String getName() {
+        return "EliteSniper";
+    }
 
 }

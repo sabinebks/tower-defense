@@ -16,4 +16,30 @@ public class Clock {
 
     public void addListener(ClockListener listener) { listeners.add(listener); }
     public void removeListener(ClockListener listener) { listeners.remove(listener); }
+
+    public void reset() {
+        tickCount = 0;
+    }
+
+    public void start() {
+        running = true;
+        thread = new Thread(() -> {
+            long delay = 1000L / fps;
+            while (running) {
+                long start = System.currentTimeMillis();
+                tickCount++;
+                for (ClockListener l : new ArrayList<>(listeners)) {
+                    l.onTick(tickCount);
+                }
+                long elapsed = System.currentTimeMillis() - start;
+                long sleep = delay - elapsed;
+                if (sleep > 0) {
+                    try { Thread.sleep(sleep); }
+                    catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+                }
+            }
+        });
+        thread.setDaemon(false);
+        thread.start();
+    }
 }

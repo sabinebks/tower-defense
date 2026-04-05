@@ -1,58 +1,23 @@
 package round;
 
 import object.balloon.Balloon;
-import object.tower.Tower;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Round {
+    private int number;
+    private List<Balloon> balloons;
 
-    private int numRound;
-    private ArrayList<Balloon> balloons;
-    private ArrayList<Tower> towers;
-
-    public Round(int numRound) {
-        this.numRound = numRound;
-        this.balloons = new ArrayList<>();
-        this.towers = new ArrayList<>();
+    public Round(int number, List<Balloon> balloons) {
+        this.number = number;
+        this.balloons = balloons;
     }
 
-    //getters
-
-    public int getNumRound() {
-        return numRound;
+    public int getNumber() {
+        return number;
     }
 
-    public ArrayList<Balloon> getBalloons() {
+    public List<Balloon> getBalloons() {
         return balloons;
-    }
-
-    public ArrayList<Tower> getTowers() {
-        return towers;
-    }
-
-    //methodes
-
-    public void addBalloon(Balloon balloon) {
-        this.balloons.add(balloon);
-    }
-
-    public void addTower(Tower tower) {
-        this.towers.add(tower);
-    }
-
-    public void removeBalloon(Balloon balloon) {
-        this.balloons.remove(balloon);
-    }
-
-    public void removeTower(Tower tower) {
-        this.towers.remove(tower);
-    }
-
-    public boolean estFinie(){
-        if(balloons.isEmpty() && towers.isEmpty()){
-            return true;
-        }
-        return false;
     }
 }

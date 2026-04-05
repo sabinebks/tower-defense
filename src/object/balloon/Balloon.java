@@ -43,8 +43,6 @@ public class Balloon {
         this.health = type.health;
         this.speed = type.speed;
     }
-    // Attributs spécifiques pour les ballons améliorés
-
     /** Déplace le ballon le long de son chemin.
      * @return true si le ballon est toujours actif après le déplacement, false s'il a atteint la fin du chemin ou est détruit
      */
@@ -62,26 +60,21 @@ public class Balloon {
         double Speed = getEffectiveSpeed();
         if (Speed <= 0) return true;
 
-        // Avancer dans le chemin par pas de speed
         double remaining = Speed;
 
         while (remaining > 0 && pathIndex < path.size()) {
             Position current = path.get(pathIndex);
 
-            // Distance restante jusqu'à la fin de cette cellule
             double distToNext = 1.0 - progression;
 
             if (remaining >= distToNext) {
-                // On passe à la cellule suivante
                 remaining -= distToNext;
                 progression = 0.0;
                 pathIndex++;
 
                 if (pathIndex >= path.size()) {
-                    // Sorti du board
                     active = false;
                     escaped = true;
-                    // Position à la dernière cellule
                     Position last = path.get(path.size() - 1);
                     posLigne = last.getRow() + 0.5;
                     posColonne = last.getCol() + 0.5;
@@ -93,13 +86,11 @@ public class Balloon {
             }
         }
 
-        // Calculer la position visuelle interpolée entre cellule courante et suivante
         if (pathIndex < path.size()) {
             Position cur = path.get(pathIndex);
             posLigne = cur.getRow() + 0.5;
             posColonne = cur.getCol() + 0.5;
 
-            // Interpolation vers la cellule suivante si elle existe
             if (pathIndex + 1 < path.size() && progression > 0) {
                 int nextIndex = Math.min(pathIndex + 1, path.size() - 1);
                 Position next = path.get(nextIndex);

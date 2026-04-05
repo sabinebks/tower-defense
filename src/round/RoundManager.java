@@ -50,5 +50,19 @@ public class RoundManager {
         }
     }
     public boolean isFinished() { return currentIndex >= rounds.size(); }
+    public boolean hasPlayerLost() { return playerLost; }
+    public int getCurrentIndex() { return currentIndex; }
+
+    public boolean isCurrentRoundFinished() {
+        if (isFinished()) return true;
+        Round round = rounds.get(currentIndex);
+        return roundStarted
+                && spawnTick >= round.getBalloons().size()
+                && board.getBalloons().isEmpty();
+    }
+
+    public List<Round> getRounds(){
+        return this.rounds;
+    }
 
 }

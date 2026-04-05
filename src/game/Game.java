@@ -2,39 +2,55 @@ package game;
 
 import board.*;
 import board.typeOfBoard.*;
+import clock.Clock;
+import clock.ClockListener;
 import object.balloon.*;
 import object.tower.*;
 import object.tower.evolution.TypeEvolution;
 import object.tower.projectil.*;
+import player.Player;
+import round.Round;
+import round.RoundManager;
+import ui.BoardRenderer;
 
 import java.util.*;
 
-public class Game {
-    /**
-     * les attributs :
-     * ballons : les ballons qui existent dans la grille
-     * towers : les towers qui existe dans la grille
-     * activeProjectils : les projectil qui seront lancer par les towers
-     * board : la grille de jeux
-     * idCounter : pour les Id des ballons
-     * player : le joueur
-     */
-    private List<Balloon> balloons;
-    private List<Tower> towers;
-    private List<Projectil> activeProjectils;
-    private Board board;
-    private int idCounter = 0;
-    private Player player;
+public class Game implements ClockListener, GameContext {
+    private final Board board;
+    private final Player player;
+    private final RoundManager roundManager;
+    private final Clock clock;
+    private volatile boolean isRunning;
+    private final BoardRenderer renderer;
 
-    /**
-     * Le constructeur de la classe Game
-     */
-    public Game() {
-        this.balloons = new ArrayList<>();
-        this.towers = new ArrayList<>();
-        this.activeProjectils = new ArrayList<>();
-        this.board = null;
-        this.player = new Player(new HumanListChooser());
+    public Game(Player player, Board board, List<Round> rounds, int fps) {
+        this.player = player;
+        this.board = board;
+        this.renderer = new BoardRenderer();
+        this.roundManager = new RoundManager(rounds, board);
+        this.clock = new Clock(fps);
+        this.clock.addListener(this);
     }
+
+    @Override
+    public void onTick(int tickCount) {
+        if (!isRunning) return;
+
+        System.out.println("TICK " + tickCount);
+        roundManager.update(tickCount);
+        List<Balloon> killed = board.update();
+        for (Balloon b : killed) {
+            int reward = b.getType().reward;
+            player.addCredit(reward);
+            System.out.println(">>> +" + reward + " crédits ! Total: " + player.getCredit());
+        }
+
+        this.renderer.render(board);
+    }
+
+    @Override
+    public Player getPlayer() { return player; }
+    @Override
+    public Board getBoard()   { return board; }
 
 }

@@ -5,7 +5,7 @@ import board.Position;
 import object.balloon.Balloon;
 import object.tower.Tower;
 
-public class BoardRender {
+public class BoardRenderer {
 
     public void render(Board board) {
         System.out.println("----TICK----");

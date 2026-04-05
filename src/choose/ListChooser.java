@@ -1,4 +1,4 @@
-package chooser;
+package choose;
 
 import java.util.List;
 

@@ -1,4 +1,6 @@
-package chooser;
+package choose;
+
+import choose.ListChooser;
 
 import java.util.List;
 

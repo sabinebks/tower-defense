@@ -13,8 +13,17 @@ package object.balloon;
  * lors de sa création ou pendant son utilisation dans le programme.
  */
 public enum BalloonType {
-    BASIC,
-    MEDIUM,
-    STRONG;
+    BASIC(1, 0.5, 10),
+    MEDIUM(2, 0.25, 25),
+    STRONG(4, 0.125, 50);
 
+    public final int health;
+    public final double speed;
+    public final int reward; // crédits gagnés quand ce ballon est détruit
+
+    BalloonType(int health, double speed, int reward) {
+        this.health = health;
+        this.speed = speed;
+        this.reward = reward;
+    }
 }

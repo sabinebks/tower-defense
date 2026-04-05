@@ -20,6 +20,7 @@ public class Balloon {
     protected double slowFactor = 1.0;
     protected List<Position> path;
     protected int pathIndex;
+    private double progression = 0.0;
 
     /**
      * Constructeur de base pour les ballons.
@@ -38,98 +39,138 @@ public class Balloon {
         this.type = type;
         this.active = true;
         this.exitTime = -1;
-
-        this.path = null;
         this.pathIndex = 0;
-
-        if (type == BalloonType.BASIC) {
-            this.health = 1;
-            this.speed = 0.5;
-        } else if (type == BalloonType.MEDIUM) {
-            this.health = 2;
-            this.speed = 0.25;
-        } else if (type == BalloonType.STRONG) {
-            this.health = 4;
-            this.speed = 0.125;
-        }
+        this.health = type.health;
+        this.speed = type.speed;
     }
     // Attributs spécifiques pour les ballons améliorés
 
     /** Déplace le ballon le long de son chemin.
-     *
-     * @param height hauteur du plateau (pour les limites)
-     * @param width largeur du plateau (pour les limites)
      * @return true si le ballon est toujours actif après le déplacement, false s'il a atteint la fin du chemin ou est détruit
      */
 
-    public boolean move(int height, int width) {
-        if (freezeTimer > 0) {
-            freezeTimer--;
-        }
-        if (!active)
-            return false;
-        if (path == null || path.isEmpty())
-            return false;
+    public boolean move() {
+        if (!active) return false;
+        if (path == null || path.isEmpty()) return false;
         if (pathIndex >= path.size()) {
             active = false;
+            escaped = true;
             return false;
         }
+        if (freezeTimer > 0) return true;
 
-        if (freezeTimer > 0)
-            return true; // IMPORTANT: reste actif mais ne bouge pas
+        double Speed = getEffectiveSpeed();
+        if (Speed <= 0) return true;
 
-        Position target = path.get(pathIndex);
+        // Avancer dans le chemin par pas de speed
+        double remaining = Speed;
 
-        double targetRow = target.getRow() + 0.5;
-        double targetCol = target.getCol() + 0.5;
+        while (remaining > 0 && pathIndex < path.size()) {
+            Position current = path.get(pathIndex);
 
-        double dx = targetCol - posColonne;
-        double dy = targetRow - posLigne;
+            // Distance restante jusqu'à la fin de cette cellule
+            double distToNext = 1.0 - progression;
 
-        double distance = Math.sqrt(dx * dx + dy * dy);
+            if (remaining >= distToNext) {
+                // On passe à la cellule suivante
+                remaining -= distToNext;
+                progression = 0.0;
+                pathIndex++;
 
-        double speed = getEffectiveSpeed();
-        if (speed <= 0)
-            return true;
-
-        if (distance <= speed) {
-            posColonne = targetCol;
-            posLigne = targetRow;
-            pathIndex++;
-
-            if (pathIndex >= path.size()) {
-                active = false;
-                return false;
+                if (pathIndex >= path.size()) {
+                    // Sorti du board
+                    active = false;
+                    escaped = true;
+                    // Position à la dernière cellule
+                    Position last = path.get(path.size() - 1);
+                    posLigne = last.getRow() + 0.5;
+                    posColonne = last.getCol() + 0.5;
+                    return false;
+                }
+            } else {
+                progression += remaining;
+                remaining = 0;
             }
+        }
 
-        } else {
-            posColonne += (dx / distance) * speed;
-            posLigne += (dy / distance) * speed;
+        // Calculer la position visuelle interpolée entre cellule courante et suivante
+        if (pathIndex < path.size()) {
+            Position cur = path.get(pathIndex);
+            posLigne = cur.getRow() + 0.5;
+            posColonne = cur.getCol() + 0.5;
+
+            // Interpolation vers la cellule suivante si elle existe
+            if (pathIndex + 1 < path.size() && progression > 0) {
+                int nextIndex = Math.min(pathIndex + 1, path.size() - 1);
+                Position next = path.get(nextIndex);
+                posLigne = cur.getRow() + 0.5 + (next.getRow() - cur.getRow()) * progression;
+                posColonne = cur.getCol() + 0.5 + (next.getCol() - cur.getCol()) * progression;
+            }
         }
 
         return true;
     }
 
-    /**
-     * Calcule la vitesse effective du ballon en tenant compte des effets de gel et de ralentissement.
-     *
-     * @return la vitesse effective actuelle du ballon
-     */
+        /**
+         * Calcule la vitesse effective du ballon en tenant compte des effets de gel et de ralentissement.
+         *
+         * @return la vitesse effective actuelle du ballon
+         */
     public double getEffectiveSpeed() {
         if (freezeTimer > 0)
             return 0.0;
         return speed * slowFactor;
     }
 
-    /** Définit le temps de sortie du ballon.
+    /** Applique des dégâts au ballon et vérifie s'il est détruit.
      *
-     * @param time le temps de sortie à définir
+     * @param damage les points de dégâts à infliger
+     * @return true si le ballon est détruit, false sinon
      */
-    public void setExitTime(int time) {
-        this.exitTime = time;
+    public boolean hit(int damage) {
+        this.health -= damage;
+
+        if (this.health <= 0) {
+            this.active = false;
+            return true;
+        }
+
+        return false;
     }
 
-    // ===== GETTERS =====
+    public void update() {
+        if (freezeTimer > 0) freezeTimer--;
+        if (slowTimer > 0) {
+            slowTimer--;
+            if (slowTimer == 0) slowFactor = 1.0;
+        }
+    }
+
+
+    /** Applique un effet de gel au ballon, le rendant immobile pendant une durée donnée.
+     *
+     * @param duration la durée du gel en tics
+     */
+    public void freeze(int duration) {
+        if (this.freezeTimer <= 0) {
+            this.freezeTimer = duration;
+        }
+    }
+
+    public void slow(double factor, int duration) {
+        this.slowFactor = factor;
+        this.slowTimer = duration;
+    }
+
+    public void remove() { this.active = false; }
+
+    public boolean hasEscaped() { return escaped; }
+    public boolean isActive() {
+        return active;
+    }
+
+
+        // ===== GETTERS =====
 
     /** Retourne l'identifiant du ballon.
      * 
@@ -164,89 +205,26 @@ public class Balloon {
         return type;
     }
 
-    /**
-     * Retourne le temps de sortie.
-     * 
-     * @return le temps de sortie (-1 si pas encore sorti)
-     */
-    public int getExitTime() {
-        return exitTime;
-    }
-
-    /**
-     * Retourne la position X précise.
-     * 
-     * @return posX
-     */
-    public double getColonne() {
-        return posColonne;
-    }
-
-    /**
-     * Retourne la position Y précise.
-     * 
-     * @return posY
-     */
-    public double getLigne() {
-        return posLigne;
-    }
-
-    /** Applique un effet de gel au ballon, le rendant immobile pendant une durée donnée.
-     *
-     * @param duration la durée du gel en tics
-     */
-    public void freeze(int duration) {
-        if (this.freezeTimer <= 0) {
-            this.freezeTimer = duration;
-        }
-    }
-
-    /** Applique un effet de ralentissement au ballon, réduisant sa vitesse pendant une durée donnée.
-     *
-     * @param factor le facteur de ralentissement (ex: 0.5 pour moitié de la vitesse)
-     * @param duration la durée du ralentissement en tics
-     */
-    public void slow(double factor, int duration) {
-        if (slowTimer > 0) {
-            slowTimer--;
-            if (slowTimer == 0) {
-                slowFactor = 1.0;
-            }
-        }
-        this.slowFactor = factor;
-        this.slowTimer = duration;
-    }
-
-    /** Marque le ballon comme détruit et inactif.
-     */
-    public void remove() {
-        this.active = false;
-    }
+    public List<Position> getPath() { return this.path; }
 
     // ===== SETTTERS =====
 
     public void setPath(List<Position> path) {
         this.path = path;
         this.pathIndex = 0;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    /** Applique des dégâts au ballon et vérifie s'il est détruit.
-     *
-     * @param damage les points de dégâts à infliger
-     * @return true si le ballon est détruit, false sinon
-     */
-    public boolean hit(int damage) {
-        this.health -= damage;
-
-        if (this.health <= 0) {
-            this.active = false;
-            return true;
+        this.progression = 0.0;
+        if (path != null && !path.isEmpty()) {
+            Position start = path.get(0);
+            this.posLigne = start.getRow() + 0.5;
+            this.posColonne = start.getCol() + 0.5;
         }
+    }
 
-        return false;
+
+     public void setStartPosition(double ligne, double colonne) {
+            this.posLigne = ligne;
+            this.posColonne = colonne;
+            this.pathIndex = 0;
+            this.progression = 0.0;
     }
 }

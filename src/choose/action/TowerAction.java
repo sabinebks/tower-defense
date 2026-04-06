@@ -2,7 +2,7 @@ package choose.action;
 
 import object.tower.Tower;
 
-public class TowerAction {
+public abstract class TowerAction extends Action {
     protected Tower tower;
 
     /**

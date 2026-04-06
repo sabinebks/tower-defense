@@ -37,7 +37,7 @@ public class DefinedBoard extends Board {
      * and starting the path generation.
      */
     @Override
-    protected void init() {
+    public void init() {
         chemins = new ArrayList<>();
         grid = new Cell[height][width]; // tableau 2D des cellules
         for (int r = 0; r < height; r++) {
@@ -197,7 +197,7 @@ public class DefinedBoard extends Board {
             }
         }
     }
-@Override
+
     public Cell getCell(Position p) {
     return grid[p.getRow()][p.getCol()];
 }
@@ -212,13 +212,13 @@ public class DefinedBoard extends Board {
     return path;
 }
 
-@Override
-public String getSymbolAt(int r, int c) {
-    List<Cell> path = getChemins();
-    Cell cell = getCell(r, c);
-    if (!cell.isPath()) return ".";
-    if (!path.isEmpty() && cell == path.get(0)) return "D";
-    if (!path.isEmpty() && cell == path.get(path.size() - 1)) return "F";
-    return "c";
+   @Override
+   public boolean isCellAvailable(int row, int col) {
+    if (!isInside(row, col)) {
+        return false;
+    }
+    return !getCell(row, col).isPath();
 }
+
+
 }

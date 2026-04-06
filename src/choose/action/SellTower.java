@@ -3,7 +3,7 @@ package choose.action;
 import game.GameContext;
 import object.tower.Tower;
 
-public class SellTower extends TowerAction {
+public class SellTower extends Action {
 
     public SellTower(Tower tower) {
         super(tower);

@@ -5,7 +5,7 @@ import object.tower.Tower;
 import object.tower.evolution.TypeEvolution;
 
 
-public class DownGrade extends TowerAction {
+public class DownGrade extends Action {
 
     private TypeEvolution evolution;
 

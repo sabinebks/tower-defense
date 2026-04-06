@@ -104,6 +104,10 @@ public class Player {
         return this.towers;
     }
 
+    public void removeTower(Tower tower) {
+        this.towers.remove(tower);
+    }
+
     /**
      * Methode pour choisir les actions du joueur
      * @param game le game qu'on jouait

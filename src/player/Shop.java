@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import object.tower.*;
-import board.Board;
+import board.*;
 
 public class Shop {
     private Board board;
@@ -35,4 +35,20 @@ public class Shop {
         return towers;
 
     }
+
+    /**
+     * retourne une position libre ou null sinon
+     * @return une pos libre ou null sinon
+     */
+    public Position findAvailablePosition() {
+        for (int i = 0; i < board.getHeight(); i++) {
+            for (int j = 0; j < board.getWidth(); j++) {
+                if (board.isCellAvailable(i, j)) {
+                    return new Position(i, j);
+                }
+            }
+        }
+        return null;
+    }
 }
+

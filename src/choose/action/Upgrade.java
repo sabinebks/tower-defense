@@ -1,46 +1,38 @@
 package choose.action;
 
-import java.util.ArrayList;
-
-import game.Action;
+import game.GameContext;
 import object.tower.Tower;
 import object.tower.evolution.TypeEvolution;
 
-public class Upgrade extends Action {
 
-    /**
-     * Les attributs de la classe
-     * Le type d'evolution que le joueur veut appliquer
-     */
-    private TypeEvolution typeEvo;
-    /**
-     * Constructeur de Upgrade
-     * @param t le tower a upgrade
-     * @param typeEvo le type d'evo voulu
-     */
-    public Upgrade(Tower t, TypeEvolution typeEvo)  {
-        super(t);
-        this.typeEvo = typeEvo;
+public class Upgrade extends TowerAction {
+
+    private TypeEvolution evolution;
+
+    public Upgrade(Tower tower, TypeEvolution evolution) {
+        super(tower);
+        this.evolution = evolution;
     }
 
-    /**
-     * Methode gerer l'action du joueur, ici faire un upgrade
-     * pour un tower
-     */
     @Override
-    public void doAction() {
-        if (this.t == null || !this.t.getEvolution() || this.t.getEvolutions() == null) {
+    public void execute(GameContext game) {
+        Tower tower = getTower();
+        if (tower == null) {
             return;
         }
-        if (this.typeEvo == null) {
-            ArrayList<TypeEvolution> evo = this.t.getEvolutions().getEvolutions();
-            if (evo == null || evo.isEmpty()) {
-                return;
-            }
-            this.typeEvo = evo.get(0);
+        int cost = tower.getCoutEvolution(evolution);
+        if (game.getPlayer().getCredit() < cost) {
+            System.out.println("Pas assez de crédits pour cette amélioration.");
+            return;
         }
-        int cout = this.t.appliquerEvolution(this.typeEvo);
-        this.setCout(cout);
+        game.getPlayer().removeCredit(cost);
+        tower.appliquerEvolution(evolution);
+    }
+
+    @Override
+    public String getDescription() {
+        Tower tower = getTower();
+        String name = (tower == null) ? "tour" : tower.getName();
+        return "Améliorer " + name + " (" + evolution + ")";
     }
 }
-

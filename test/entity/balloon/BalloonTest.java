@@ -1,4 +1,4 @@
-package test.object.balloon;
+package test.entity.balloon;
 
 import board.Position;
 import entity.balloon.Balloon;

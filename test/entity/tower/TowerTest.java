@@ -1,4 +1,4 @@
-package test.object.tower;
+package test.entity.tower;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;

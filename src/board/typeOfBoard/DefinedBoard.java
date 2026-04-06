@@ -197,7 +197,6 @@ public class DefinedBoard extends Board {
             }
         }
     }
-
     public Cell getCell(Position p) {
     return grid[p.getRow()][p.getCol()];
 }

@@ -327,6 +327,37 @@ public class FreeBoard extends Board {
         return positions;
     }
 
+    /**
+     * Returns the direction of a straight path between two aligned positions.
+     * @param depart Starting position
+     * @param fin   End position
+     * @return Direction (UP, DOWN, LEFT, RIGHT)
+     */
+    public static Direction getDirection (Position depart, Position fin) {
+        
+        // Même ligne gauche ou droite
+        if (depart.getRow() == fin.getRow()) {
+            if (depart.getCol() < fin.getCol()) {
+
+                return Direction.RIGHT;
+            } else {
+                return Direction.LEFT;
+            }
+        }
+        // Même colonne up or down
+        else if (depart.getCol() == fin.getCol()) {
+            if (depart.getRow() < fin.getRow()) {
+                return Direction.DOWN;
+            } else {
+                return Direction.UP;
+            }
+        }
+         // Cas impossible : positions non alignées
+    else {
+        throw new IllegalArgumentException("Les positions doivent être aligne");
+    }
+
+    }
     
     @Override
     public boolean isCellAvailable(int row, int col) {

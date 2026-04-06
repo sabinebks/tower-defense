@@ -1,29 +1,27 @@
-package object.tower;
-
+package entity.tower;
 import board.Position;
-
-
-import object.balloon.Balloon;
-import object.tower.evolution.TypeEvolution;
-import object.tower.projectil.NotMatchException;
-import object.tower.projectil.Projectil;
-import object.tower.projectil.ProjectilSimple;
-import object.tower.projectil.ProjectilType;
+import entity.balloon.Balloon;
+import entity.tower.evolution.TypeEvolution;
+import entity.tower.projectil.NotMatchException;
+import entity.tower.projectil.Projectil;
+import entity.tower.projectil.ProjectilSimple;
+import entity.tower.projectil.ProjectilType;
 
 import java.util.List;
 
-
-public class TackShooter extends Tower {
-  /**
-     * Crée une TackShooter à la position spécifiée.
+// DartMonkey qui tire des flechettes
+public class DartMonkey extends Tower {
+    
+    /**
+     * Cree une DartMonkey a la position specifiee.
      *
      * @param pos la position initiale de la tour sur le plateau
      */
-    public TackShooter(Position pos) {
-
-        super(pos, 350, 80, 2, true, EffectType.IMMEDIATE, ProjectilType.AIGUILLE);
+    public DartMonkey(Position pos) {
+        super(pos, 200, 100, 2, true, EffectType.IMMEDIATE, ProjectilType.FLECHETTE);
         this.evolutions.addEvolution(TypeEvolution.PORTEE);
         this.evolutions.addEvolution(TypeEvolution.CANDENCE);
+        this.evolutions.addEvolution(TypeEvolution.PUISSANCE);
     }
 
     /**
@@ -39,22 +37,26 @@ public class TackShooter extends Tower {
         int cout = 0;
 
         switch (typeEvo) {
+            case PUISSANCE:
+                this.degatsSup += 1;
+                cout = 250;
+                this.evolutions.deleteEvolutions(TypeEvolution.PUISSANCE);
+                break;
             case PORTEE:
-                this.porte = (int)(this.porte * 1.2);
-                cout = 150;
+                this.porte = (int)(this.porte * 1.25);
+                cout = 100;
                 this.evolutions.deleteEvolutions(TypeEvolution.PORTEE);
                 break;
             case CANDENCE:
                 this.cadence = (int)(this.cadence * 1.25);
-                cout = 200;
+                cout = 150;
                 this.evolutions.deleteEvolutions(TypeEvolution.CANDENCE);
                 break;
             default:
                 break;
-
         }
         if (cout > 0) {
-            this.evolutions.getEvolutionsPossedees().put(typeEvo,cout);
+            this.evolutions.getEvolutionsPossedees().put(typeEvo, cout);
         }
         return cout;
     }
@@ -75,24 +77,27 @@ public class TackShooter extends Tower {
                 target
         );
     }
-
     @Override
     public int getCoutEvolution(TypeEvolution typeEvo) {
         return switch (typeEvo) {
-            case PORTEE    -> 150;
-            case CANDENCE  -> 200;
+            case PUISSANCE -> 250;
+            case PORTEE    -> 100;
+            case CANDENCE  -> 150;
             default        -> 0;
         };
     }
+    
     /**
-     * retourne le symbole de la TackShooter
-     * @return "T"
-     */    
+     * retourne le symbole de la DartMonkey
+     * @return "A"
+     */
     @Override
-    public String getSymbol() { return "T"; }
+    public String getSymbol() { return "A"; }
 
     @Override
     public String getName() {
-        return "TackShooter";
+        return "DartMonkey";
     }
+
 }
+

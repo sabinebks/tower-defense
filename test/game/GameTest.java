@@ -5,8 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import game.Game;
 import board.Position;
-import object.balloon.BalloonType;
-import object.tower.*;
+import entity.balloon.BalloonType;
+import entity.tower.*;
 
 public class GameTest {
 

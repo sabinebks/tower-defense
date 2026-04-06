@@ -1,8 +1,8 @@
 package choose.action;
 
+import entity.tower.Tower;
+import entity.tower.evolution.TypeEvolution;
 import game.GameContext;
-import object.tower.Tower;
-import object.tower.evolution.TypeEvolution;
 
 
 public class Upgrade extends Action {

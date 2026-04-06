@@ -1,4 +1,4 @@
-package object.tower.projectil;
+package entity.tower.projectil;
 
 /**
  * enum pour les projectil

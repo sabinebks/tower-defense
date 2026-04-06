@@ -1,7 +1,5 @@
 package choose;
 
-import choose.ListChooser;
-
 import java.util.List;
 
 public class AutoListChooser<T extends choose.action.Action>  implements ListChooser<T> {

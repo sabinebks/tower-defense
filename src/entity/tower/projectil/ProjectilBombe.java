@@ -1,8 +1,8 @@
-package object.tower.projectil;
-
-import object.balloon.Balloon;
+package entity.tower.projectil;
 
 import java.util.List;
+
+import entity.balloon.Balloon;
 
 public class ProjectilBombe extends Projectil {
     /**

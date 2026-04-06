@@ -2,8 +2,8 @@ package ui;
 
 import board.Board;
 import board.Position;
-import object.balloon.Balloon;
-import object.tower.Tower;
+import entity.balloon.Balloon;
+import entity.tower.Tower;
 
 public class BoardRenderer {
 

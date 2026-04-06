@@ -1,27 +1,26 @@
-package object.tower;
+package entity.tower;
 
 import board.Position;
-
-import object.balloon.Balloon;
-import object.tower.evolution.TypeEvolution;
-import object.tower.projectil.NotMatchException;
-import object.tower.projectil.Projectil;
-import object.tower.projectil.ProjectilSimple;
-import object.tower.projectil.ProjectilType;
+import entity.balloon.Balloon;
+import entity.tower.evolution.TypeEvolution;
+import entity.tower.projectil.NotMatchException;
+import entity.tower.projectil.Projectil;
+import entity.tower.projectil.ProjectilSimple;
+import entity.tower.projectil.ProjectilType;
 
 import java.util.List;
 
 
-// classe tireur d'elite
-public class EliteSniper extends Tower {
- /**
-     * Crée une EliteSniper à la position spécifiée.
+public class TackShooter extends Tower {
+  /**
+     * Crée une TackShooter à la position spécifiée.
      *
      * @param pos la position initiale de la tour sur le plateau
      */
-    public EliteSniper(Position pos) {
-        super(pos, 500, -1, 7, true, EffectType.IMMEDIATE, ProjectilType.FLECHETTE_TRES_POINTUE);
-        this.evolutions.addEvolution(TypeEvolution.PUISSANCE);
+    public TackShooter(Position pos) {
+
+        super(pos, 350, 80, 2, true, EffectType.IMMEDIATE, ProjectilType.AIGUILLE);
+        this.evolutions.addEvolution(TypeEvolution.PORTEE);
         this.evolutions.addEvolution(TypeEvolution.CANDENCE);
     }
 
@@ -38,10 +37,10 @@ public class EliteSniper extends Tower {
         int cout = 0;
 
         switch (typeEvo) {
-            case PUISSANCE:
-                this.degatsSup += 2;
-                cout = 300;
-                this.evolutions.deleteEvolutions(TypeEvolution.PUISSANCE);
+            case PORTEE:
+                this.porte = (int)(this.porte * 1.2);
+                cout = 150;
+                this.evolutions.deleteEvolutions(TypeEvolution.PORTEE);
                 break;
             case CANDENCE:
                 this.cadence = (int)(this.cadence * 1.25);
@@ -50,6 +49,7 @@ public class EliteSniper extends Tower {
                 break;
             default:
                 break;
+
         }
         if (cout > 0) {
             this.evolutions.getEvolutionsPossedees().put(typeEvo,cout);
@@ -77,22 +77,20 @@ public class EliteSniper extends Tower {
     @Override
     public int getCoutEvolution(TypeEvolution typeEvo) {
         return switch (typeEvo) {
-            case PUISSANCE -> 300;
+            case PORTEE    -> 150;
             case CANDENCE  -> 200;
             default        -> 0;
         };
     }
     /**
-     * retourne le symbole de la EliteSniper
-     * @return "E"
-     */
-    @Override    
-    public String getSymbol() { return "E"; }
-
+     * retourne le symbole de la TackShooter
+     * @return "T"
+     */    
+    @Override
+    public String getSymbol() { return "T"; }
 
     @Override
     public String getName() {
-        return "EliteSniper";
+        return "TackShooter";
     }
-
 }

@@ -1,30 +1,32 @@
-package object.tower;
+package entity.tower;
+
 import board.Position;
-import object.balloon.Balloon;
-import object.tower.evolution.TypeEvolution;
-import object.tower.projectil.NotMatchException;
-import object.tower.projectil.Projectil;
-import object.tower.projectil.ProjectilSimple;
-import object.tower.projectil.ProjectilType;
+import entity.balloon.Balloon;
+import entity.tower.evolution.TypeEvolution;
+import entity.tower.projectil.NotMatchException;
+import entity.tower.projectil.Projectil;
+import entity.tower.projectil.ProjectilBombe;
+import entity.tower.projectil.ProjectilType;
 
 import java.util.List;
 
-// DartMonkey qui tire des flechettes
-public class DartMonkey extends Tower {
-    
+public class BombTower extends Tower {
     /**
-     * Cree une DartMonkey a la position specifiee.
+     * Crée une BombTower à la position spécifiée.
      *
      * @param pos la position initiale de la tour sur le plateau
      */
-    public DartMonkey(Position pos) {
-        super(pos, 200, 100, 2, true, EffectType.IMMEDIATE, ProjectilType.FLECHETTE);
+
+
+    public BombTower(Position pos) {
+        super(pos, 600, 150, 5, true, EffectType.AREA, ProjectilType.BOMBE);
         this.evolutions.addEvolution(TypeEvolution.PORTEE);
         this.evolutions.addEvolution(TypeEvolution.CANDENCE);
+        this.evolutions.addEvolution(TypeEvolution.PROJECTILES);
         this.evolutions.addEvolution(TypeEvolution.PUISSANCE);
     }
 
-    /**
+     /**
      * methode pour appliquer une evolution a la tour
      * @param typeEvo le type d'evolution a appliquer
      * @return le cout de l'evolution, ou 0 si invalide ou deja achetee
@@ -39,20 +41,23 @@ public class DartMonkey extends Tower {
         switch (typeEvo) {
             case PUISSANCE:
                 this.degatsSup += 1;
-                cout = 250;
+                cout = 200;
                 this.evolutions.deleteEvolutions(TypeEvolution.PUISSANCE);
                 break;
             case PORTEE:
-                this.porte = (int)(this.porte * 1.25);
-                cout = 100;
+                this.porte = (int)(this.porte * 1.5);
+                cout = 250;
                 this.evolutions.deleteEvolutions(TypeEvolution.PORTEE);
                 break;
             case CANDENCE:
-                this.cadence = (int)(this.cadence * 1.25);
-                cout = 150;
+                this.cadence = (int)(this.cadence * 0.75);
+                cout = 300;
                 this.evolutions.deleteEvolutions(TypeEvolution.CANDENCE);
                 break;
-            default:
+            case PROJECTILES:
+                this.type = ProjectilType.EXTRA_BOMBE;
+                cout = 400;
+                this.evolutions.deleteEvolutions(TypeEvolution.PROJECTILES);
                 break;
         }
         if (cout > 0) {
@@ -66,38 +71,30 @@ public class DartMonkey extends Tower {
         if (target == null) return null;
         double startX = position.getCol() + 0.5;
         double startY = position.getRow() + 0.5;
-        if (this.porte == -1) {
-            target.hit(this.type.getDegats());
-            return null;
-        }
-        return new ProjectilSimple(
-                this.type,
-                startX,
-                startY,
-                target
-        );
+        return new ProjectilBombe(this.type, startX, startY, target, 3, balloons);
     }
+
     @Override
     public int getCoutEvolution(TypeEvolution typeEvo) {
         return switch (typeEvo) {
-            case PUISSANCE -> 250;
-            case PORTEE    -> 100;
-            case CANDENCE  -> 150;
+            case PUISSANCE -> 200;
+            case PORTEE    -> 250;
+            case CANDENCE  -> 300;
+            case PROJECTILES -> 400;
             default        -> 0;
         };
     }
-    
+
+
+
     /**
-     * retourne le symbole de la DartMonkey
-     * @return "A"
+     * retourne le symbole de la BombTower
+     * @return "B"
      */
-    @Override
-    public String getSymbol() { return "A"; }
+    public String getSymbol() { return "B"; }
 
     @Override
     public String getName() {
-        return "DartMonkey";
+        return "BombTower";
     }
-
 }
-

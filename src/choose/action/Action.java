@@ -1,7 +1,7 @@
 package choose.action;
 
+import entity.tower.Tower;
 import game.GameContext;
-import object.tower.Tower;
 
 public abstract class Action {
 

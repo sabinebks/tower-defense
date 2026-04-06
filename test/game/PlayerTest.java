@@ -5,8 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import game.*;
 import board.*;
-import object.tower.*;
-import object.tower.evolution.TypeEvolution;
+import entity.tower.*;
+import entity.tower.evolution.TypeEvolution;
 
 
 public class PlayerTest {

@@ -5,9 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import board.Position;
-import object.balloon.*;
-import object.tower.*;
-import object.tower.projectil.Projectil;
+import entity.balloon.*;
+import entity.tower.*;
+import entity.tower.projectil.Projectil;
+
 import java.util.ArrayList;
 import java.util.List;
 

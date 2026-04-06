@@ -1,14 +1,14 @@
 package board;
 
-import object.balloon.Balloon;
-import object.tower.Tower;
-import object.tower.projectil.NotMatchException;
-import object.tower.projectil.Projectil;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import entity.balloon.Balloon;
+import entity.tower.Tower;
+import entity.tower.projectil.NotMatchException;
+import entity.tower.projectil.Projectil;
 
 /**
  * Abstract class representing a game board.

@@ -1,6 +1,6 @@
-package object.tower.projectil;
+package entity.tower.projectil;
 
-import object.balloon.Balloon;
+import entity.balloon.Balloon;
 
 public class ProjectilSimple extends Projectil {
 

@@ -1,8 +1,8 @@
 package choose.action;
 
 import board.Position;
+import entity.tower.Tower;
 import game.GameContext;
-import object.tower.Tower;
 import player.Shop;
 
 public class BuyTower extends Action {

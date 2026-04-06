@@ -1,6 +1,7 @@
 package board;
 import java.util.*;
-import object.balloon.*;;
+
+import entity.balloon.*;;
 /**
  * Represents a cell on the game board.
  * Each cell has a position and can either be part of a path or empty.

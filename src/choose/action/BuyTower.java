@@ -7,13 +7,22 @@ import player.Shop;
 
 public class BuyTower extends Action {
 
-    private Shop shop;
+    private Shop shop; // pour trouver une position disponible
 
+    /**
+     * constructeur
+     * @param tower la tour à acheter
+     * @param shop le shop pour trouver une position disponible
+     */
     public BuyTower(Tower tower, Shop shop) {
         super(tower);
         this.shop = shop;
     }
 
+    /**
+     * methode pour acheter une tour
+     * @param game le contexte du jeu
+     */
     @Override
     public void execute(GameContext game) {
         Tower tower = getTower();
@@ -36,6 +45,10 @@ public class BuyTower extends Action {
         game.getPlayer().removeCredit(cost);
     }
 
+    /**
+     * methode pour obtenir la description de l'action
+     * @return description de l'action
+     */
     @Override
     public String getDescription() {
         Tower tower = getTower();

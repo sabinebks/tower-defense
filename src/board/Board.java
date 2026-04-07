@@ -24,6 +24,8 @@ public abstract class Board {
     protected List<Balloon> balloons;
     protected List<Projectil> activeProjectiles;
     protected List<Balloon> escapedBalloons = new ArrayList<>();
+    protected List<Cell> allCells;
+
 
     public Board(int height, int width) {
         this.width = width;
@@ -32,6 +34,7 @@ public abstract class Board {
         this.towers = new ArrayList<>();
         this.balloons = new ArrayList<>();
         this.activeProjectiles = new ArrayList<>();
+        this.allCells = new ArrayList();
         init();
     }
 
@@ -40,6 +43,9 @@ public abstract class Board {
     public abstract void init();
     public abstract List<Position> getPathPositions();
 
+
+
+    public abstract List<Cell> allCells();
     /**
      * Returns the cell at the specified coordinates (row, col).
      * @param row Row index

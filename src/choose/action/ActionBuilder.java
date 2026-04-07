@@ -1,7 +1,5 @@
 package choose.action;
 
-// action/ActionBuilder.java
-
 import player.Player;
 import player.Shop;
 import entity.tower.Tower;
@@ -83,7 +81,7 @@ public class ActionBuilder {
             if (possedees.isEmpty()) continue;
             List<Action> evoMenu = new ArrayList<>();
             for (TypeEvolution evo : possedees.keySet()) {
-                evoMenu.add(new SellTowerUpgradeAction(t, evo));
+                evoMenu.add(new Downgrade(t, evo));
             }
             evoMenu.add(new RetourAction());
             sousMenu.add(new MenuAction("Vendre évolution de " + t.getName(), evoMenu));

@@ -7,13 +7,22 @@ import game.GameContext;
 
 public class DownGrade extends Action {
 
-    private TypeEvolution evolution;
+    private TypeEvolution evolution; // l'évolution à retirer
 
+    /**
+     * constructeur
+     * @param tower la tour à downgrader
+     * @param evolution l'évolution à retirer
+     */
     public DownGrade(Tower tower, TypeEvolution evolution) {
         super(tower);
         this.evolution = evolution;
     }
 
+    /**
+     * methode pour retirer une evolution a la tour
+     * @param game le contexte du jeu
+     */
     @Override
     public void execute(GameContext game) {
         Tower tower = getTower();
@@ -26,6 +35,10 @@ public class DownGrade extends Action {
         game.getPlayer().addCredit(refund);
     }
 
+    /**
+     * methode pour obtenir la description de l'action
+     * @return description de l'action
+     */
     @Override
     public String getDescription() {
         Tower tower = getTower();

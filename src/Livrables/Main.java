@@ -2,15 +2,15 @@ package Livrables;
 
 import board.Board;
 import board.Position;
-import board.type.FreeBoard;
-import chooser.AutoListChooser;
-import chooser.HumanListChooser;
-import chooser.ListChooser;
-import chooser.action.Action;
+import board.typeOfBoard.FreeBoard;
+import choose.AutoListChooser;
+import choose.HumanListChooser;
+import choose.ListChooser;
+import choose.action.Action;
 import game.Game;
 import round.Round;
-import object.balloon.Balloon;
-import object.balloon.BalloonType;
+import entity.balloon.Balloon;
+import entity.balloon.BalloonType;
 import player.Player;
 import player.Shop;
 
@@ -104,9 +104,9 @@ public class Main {
                     + " (" + p.size() + " cases)");
         }
 
-        System.out.println("========================");
-        System.out.println("|  PHASE D'ACHAT       |");
-        System.out.println("========================");
+        System.out.println("╔══════════════════════╗");
+        System.out.println("║  PHASE D'ACHAT       ║");
+        System.out.println("╚══════════════════════╝");
         player.runActionPhase(game, shop);
 
         boolean gameOver = false;
@@ -117,9 +117,9 @@ public class Main {
             game.runOneRound();
 
             if (game.hasPlayerLost()) {
-                System.out.println("========================");
-                System.out.println("|      GAME OVER !     |");
-                System.out.println("========================");
+                System.out.println("╔══════════════════════╗");
+                System.out.println("║      GAME OVER !     ║");
+                System.out.println("╚══════════════════════╝");
                 gameOver = true;
                 break;
             }
@@ -135,9 +135,9 @@ public class Main {
         }
 
         if (!gameOver) {
-            System.out.println("========================");
-            System.out.println("|   VICTOIRE TOTALE !  |");
-            System.out.println("========================");
+            System.out.println("╔══════════════════════╗");
+            System.out.println("║  VICTOIRE TOTALE !   ║");
+            System.out.println("╚══════════════════════╝");
         }
     }
 }

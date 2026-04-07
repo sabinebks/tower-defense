@@ -4,19 +4,24 @@ classes:
 	javac -sourcepath src  \
 		src/board/*.java \
 		src/board/typeOfBoard/*.java \
-		src/object/balloon/*.java \
-		src/object/tower/*.java \
-		src/object/tower/projectil/*.java \
+		src/entity/balloon/*.java \
+		src/entity/tower/*.java \
+		src/entity/tower/projectil/*.java \
 		src/game/*.java \
 		src/Livrables/*.java \
-		src/object/tower/evolution/*.java -d classes
+		src/entity/tower/evolution/*.java \
+		src/ui/*.java \
+		src/choose/*.java \
+		src/choose/action/*.java \
+		src/clock/*.java \
+		src/round/*.java -d classes
 
 tests: classes
 	javac -classpath junit-console.jar:classes \
 		test/board/*.java \
 		test/game/*.java \
-		test/object/balloon/*.java \
-		test/object/tower/*.java -d classes
+		test/entity/balloon/*.java \
+		test/entity/tower/*.java -d classes
 
 runtests: tests
 	java -jar junit-console.jar -classpath classes --scan-class-path
@@ -29,12 +34,12 @@ docs:
 	javadoc -d doc \
 		src/board/*.java \
 		src/board/typeOfBoard/*.java \
-		src/object/balloon/*.java \
-		src/object/tower/*.java \
-		src/object/tower/projectil/*.java \
+		src/entity/balloon/*.java \
+		src/entity/tower/*.java \
+		src/entity/tower/projectil/*.java \
 		src/game/*.java \
 		src/Livrables/*.java \
-		src/object/tower/evolution/*.java
+		src/entity/tower/evolution/*.java
 
 clean:
 	rm -rf classes doc

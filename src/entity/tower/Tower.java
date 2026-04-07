@@ -88,7 +88,7 @@ public abstract class Tower {
      */
     protected abstract Projectil attack(List<Balloon> balloons) throws NotMatchException;
 
-    
+
     /**
      * méthode pour calculer la distance entre la tour et le ballon b
      * @param b le ballon b
@@ -175,7 +175,7 @@ public abstract class Tower {
     }
 
     /**
-     * retourne le symbole de la tour pour l'affichage 
+     * retourne le symbole de la tour pour l'affichage
      * @return le symbole de la tour
      */
     public abstract String getSymbol();

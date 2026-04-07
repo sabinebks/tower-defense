@@ -49,7 +49,7 @@ public class ActionBuilder {
                 if (t.getEvolutions().getEvolutionsPossedees().containsKey(evo)) continue;
                 int cost = t.getCoutEvolution(evo);
                 if (player.getCredit() >= cost) {
-                    evoMenu.add(new UpgradeTowerAction(t, evo));
+                    evoMenu.add(new Upgrade(t, evo));
                 }
             }
             evoMenu.add(new RetourAction());
@@ -81,7 +81,7 @@ public class ActionBuilder {
             if (possedees.isEmpty()) continue;
             List<Action> evoMenu = new ArrayList<>();
             for (TypeEvolution evo : possedees.keySet()) {
-                evoMenu.add(new Downgrade(t, evo));
+                evoMenu.add(new DownGrade(t, evo));
             }
             evoMenu.add(new RetourAction());
             sousMenu.add(new MenuAction("Vendre évolution de " + t.getName(), evoMenu));

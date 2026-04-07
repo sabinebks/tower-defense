@@ -1,6 +1,7 @@
 package ui;
 
 import board.Board;
+import board.Cell;
 import board.Position;
 import entity.balloon.Balloon;
 import entity.tower.Tower;
@@ -20,9 +21,12 @@ public class BoardRenderer {
             for (int c = 0; c < board.getWidth(); c++)
                 display[r][c] = ".";
 
-        for (Position p : board.getPathPositions())
+        for (Cell c : board.allCells()) {
+            if (c == null) continue;
+            Position p = c.getPosition();
+            if (p == null) continue;
             display[p.getRow()][p.getCol()] = "#";
-
+        }
         for (Balloon b : board.getBalloons()) {
             int row = (int) b.getLigne();
             int col = (int) b.getColonne();

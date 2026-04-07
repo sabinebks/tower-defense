@@ -5,10 +5,18 @@ import game.GameContext;
 
 public class SellTower extends Action {
 
+    /**
+     * constructeur
+     * @param tower la tour a vendre
+     */
     public SellTower(Tower tower) {
         super(tower);
     }
 
+    /**
+     * methode pour vendre une tour
+     * @param game le contexte du jeu
+     */
     @Override
     public void execute(GameContext game) {
         Tower tower = getTower();
@@ -21,6 +29,10 @@ public class SellTower extends Action {
         game.getPlayer().addCredit(refund);
     }
 
+    /**
+     * methode pour obtenir la description de l'action
+     * @return description de l'action
+     */
     @Override
     public String getDescription() {
         Tower tower = getTower();

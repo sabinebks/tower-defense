@@ -1,6 +1,7 @@
 package board.typeOfBoard;
 
 import board.*;
+import object.tower.Tower;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +13,6 @@ import java.util.Random;
  * Each cell is used only once to avoid loops.
  */
 public class DefinedBoard extends Board {
-
-    // List of cells that form the path
-    private List<Cell> chemins;
 
     // Last cell of the path (used to continue the generation)
     private Position cheminAv;
@@ -37,26 +35,17 @@ public class DefinedBoard extends Board {
      * and starting the path generation.
      */
     @Override
-    protected void init() {
-        chemins = new ArrayList<>();
+    public void init() {
         grid = new Cell[height][width]; // tableau 2D des cellules
         for (int r = 0; r < height; r++) {
             for (int c = 0; c < width; c++) {
                 grid[r][c] = new Cell(new Position(r, c));
             }
         }
-        // Génération du chemin après création de la grille
         calculerPath();
     }
 
-    /**
-     * Returns the list of cells that form the path.
-     *
-     * @return the list of path cells
-     */
-    public List<Cell> getChemins() {
-        return chemins;
-    }
+
 
     /**
      * Returns the length of the path.
@@ -64,7 +53,7 @@ public class DefinedBoard extends Board {
      * @return path length
      */
     public int getCheminLong() {
-        return chemins.size();
+        return this.allCells.size();
     }
 
     /**
@@ -74,8 +63,7 @@ public class DefinedBoard extends Board {
      * @return true if the position is on a border, false otherwise
      */
     public boolean isBord(Position p) {
-        return p.getRow() == 0 || p.getRow() == this.height - 1
-            || p.getCol() == 0 || p.getCol() == this.width - 1;
+        return p.getRow() == 0 || p.getRow() == this.height - 1 || p.getCol() == 0 || p.getCol() == this.width - 1;
     }
 
     /**
@@ -86,9 +74,6 @@ public class DefinedBoard extends Board {
     public void calculerPath() {
         Random rand = new Random();
 
-        /* Ici c'est la taille minimum pour le chemin.
-         * Cela nous aide à éviter les chemins trop courts.
-         */
         int minLen = (this.width + this.height) / 2;
 
         // Crée toutes les cellules de départ possibles (tous les bords)
@@ -109,12 +94,12 @@ public class DefinedBoard extends Board {
 
         // Choix aléatoire du point de départ
         Position pRandom = listPositions.get(rand.nextInt(listPositions.size()));
-        pointDeDepart = pRandom;
-        cheminAv = pRandom;
+        this.pointDeDepart = pRandom;
+        this.cheminAv = pRandom;
 
         // Marquer la cellule de départ comme faisant partie du chemin
-        getCell(pRandom).assignChemin();
-        chemins.add(getCell(pRandom));
+        getCell(pRandom.getRow(),pRandom.getCol()).assignChemin();
+        this.allCells.add(getCell(pRandom.getRow(),pRandom.getCol()));
 
         // Liste des positions bloquées (non utilisables)
         List<Position> bloque = new ArrayList<>();
@@ -127,7 +112,7 @@ public class DefinedBoard extends Board {
             // voisin gauche
             if (cheminAv.getCol() != 0) {
                 Position voisin = new Position(cheminAv.getRow(), cheminAv.getCol() - 1);
-                if (getCell(voisin).estVide() && !bloque.contains(voisin)) {
+                if (getCell(voisin.getRow(),voisin.getCol()).estVide() && !bloque.contains(voisin)) {
                     mesChoix.add(voisin);
                 }
             }
@@ -135,7 +120,7 @@ public class DefinedBoard extends Board {
             // voisin droit
             if (cheminAv.getCol() != width - 1) {
                 Position voisin = new Position(cheminAv.getRow(), cheminAv.getCol() + 1);
-                if (getCell(voisin).estVide() && !bloque.contains(voisin)) {
+                if (getCell(voisin.getRow(),voisin.getCol()).estVide() && !bloque.contains(voisin)) {
                     mesChoix.add(voisin);
                 }
             }
@@ -143,7 +128,7 @@ public class DefinedBoard extends Board {
             // voisin haut
             if (cheminAv.getRow() != 0) {
                 Position voisin = new Position(cheminAv.getRow() - 1, cheminAv.getCol());
-                if (getCell(voisin).estVide() && !bloque.contains(voisin)) {
+                if (getCell(voisin.getRow(),voisin.getCol()).estVide() && !bloque.contains(voisin)) {
                     mesChoix.add(voisin);
                 }
             }
@@ -151,7 +136,7 @@ public class DefinedBoard extends Board {
             // voisin bas
             if (cheminAv.getRow() != height - 1) {
                 Position voisin = new Position(cheminAv.getRow() + 1, cheminAv.getCol());
-                if (getCell(voisin).estVide() && !bloque.contains(voisin)) {
+                if (getCell(voisin.getRow(),voisin.getCol()).estVide() && !bloque.contains(voisin)) {
                     mesChoix.add(voisin);
                 }
             }
@@ -164,10 +149,10 @@ public class DefinedBoard extends Board {
             /* Empêche le chemin de se terminer trop tôt
              * juste après le point de départ
              */
-            if (chemins.size() < minLen) {
+            if (this.allCells.size() < minLen) {
                 List<Position> filtre = new ArrayList<>();
                 for (Position p : mesChoix) {
-                    if (!(isBord(p) && !p.equals(pointDeDepart))) {
+                    if (!(this.isBord(p) && !p.equals(pointDeDepart))) {
                         filtre.add(p);
                     }
                 }
@@ -178,8 +163,8 @@ public class DefinedBoard extends Board {
 
             // Choix aléatoire du prochain voisin
             Position randi = mesChoix.get(rand.nextInt(mesChoix.size()));
-            getCell(randi).assignChemin();
-            chemins.add(getCell(randi));
+            getCell(randi.getRow(),randi.getCol()).assignChemin();
+            this.allCells.add(getCell(randi.getRow(),randi.getCol()));
 
             // Bloque la colonne traversée pour éviter les croisements
             if (cheminAv.getCol() != randi.getCol()) {
@@ -192,33 +177,47 @@ public class DefinedBoard extends Board {
             cheminAv = randi;
 
             // Arrêt si on atteint un autre bord après la taille minimale
-            if (chemins.size() >= minLen && isBord(randi) && !randi.equals(pointDeDepart)) {
+            if (this.allCells.size() >= minLen && isBord(randi) && !randi.equals(pointDeDepart)) {
                 fin = true;
             }
         }
+        this.allPath.put(0,this.allCells);
     }
-@Override
-    public Cell getCell(Position p) {
-    return grid[p.getRow()][p.getCol()];
-}
-    //pour gerer les ballons qui suivent le chemin
+
     public List<Position> getPathPositions() {
-    List<Position> path = new ArrayList<>();
+        ArrayList list = new ArrayList();
 
-    for (Cell cell : chemins) {
-        path.add(cell.getPosition());
+        for(Cell var3 : this.allCells) {
+            list.add(var3.getPosition());
+        }
+
+        return list;
     }
 
-    return path;
-}
+    @Override
+    public boolean isCellAvailable(int row, int col) {
+        if (!this.isInside(row, col)) {
+            return false;
+        } else {
+            for(Position var4 : this.getPathPositions()) {
+                if (var4.getRow() == row && var4.getCol() == col) {
+                    return false;
+                }
+            }
 
-@Override
-public String getSymbolAt(int r, int c) {
-    List<Cell> path = getChemins();
-    Cell cell = getCell(r, c);
-    if (!cell.isPath()) return ".";
-    if (!path.isEmpty() && cell == path.get(0)) return "D";
-    if (!path.isEmpty() && cell == path.get(path.size() - 1)) return "F";
-    return "c";
-}
+            for(Tower var6 : this.towers) {
+                if (var6.getPosition().getRow() == row && var6.getPosition().getCol() == col) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+
+    @Override
+    public List<Cell> allCells() {
+        return this.allCells;
+    }
+
 }

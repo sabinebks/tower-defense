@@ -25,6 +25,7 @@ public class FreeBoard extends Board {
      */
     public FreeBoard(int height, int width) {
         super(height, width);
+        this.nbCheminsVoulus = NBCHEMIN;
     }
 
     /**
@@ -212,52 +213,6 @@ public class FreeBoard extends Board {
      */
     public Map<Position, Position> getCheminsMap() {
         return chemins;
-    }
-
-    /**
-     * Returns the list of all cells that form paths on the board.
-     *
-     * @return List of path cells
-     */
-    public List<Cell> getChemins() {
-        List<Cell> result = new ArrayList<>();
-
-        for (int i = 0; i < cmp; i++) {
-            Position start = numChemins.get(i);
-            Position end = chemins.get(start);
-            if (start == null || end == null)
-                continue;
-
-            Direction dir = getDirection(start, end);
-
-            switch (dir) {
-                case RIGHT:
-                    for (int c = start.getCol(); c <= end.getCol(); c++) {
-                        result.add(getCell(start.getRow(), c));
-                    }
-                    break;
-
-                case LEFT:
-                    for (int c = start.getCol(); c >= end.getCol(); c--) {
-                        result.add(getCell(start.getRow(), c));
-                    }
-                    break;
-
-                case DOWN:
-                    for (int r = start.getRow(); r <= end.getRow(); r++) {
-                        result.add(getCell(r, start.getCol()));
-                    }
-                    break;
-
-                case UP:
-                    for (int r = start.getRow(); r >= end.getRow(); r--) {
-                        result.add(getCell(r, start.getCol()));
-                    }
-                    break;
-            }
-        }
-
-        return result;
     }
 
 

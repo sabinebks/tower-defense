@@ -39,7 +39,6 @@ public abstract class Board {
     }
 
     public abstract void calculerPath();
-    public abstract List<Cell> getChemins();
     public abstract void init();
     public abstract List<Position> getPathPositions();
 

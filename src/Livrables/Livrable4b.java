@@ -9,7 +9,7 @@ public class Livrable4b {
         int height = Integer.parseInt(args[1]);
         int nbChemins = Integer.parseInt(args[2]);
 
-        Game g = new Game();
-        g.run10Manches(height, width, nbChemins, false);
+        //Game g = new Game();
+        //g.run10Manches(height, width, nbChemins, false);
     }
 }

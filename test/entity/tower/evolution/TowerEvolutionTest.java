@@ -1,4 +1,4 @@
-package test.object.tower.evolution;
+package test.entity.tower.evolution;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

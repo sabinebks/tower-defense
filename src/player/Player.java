@@ -2,8 +2,10 @@ package player;
 
 import java.util.ArrayList;
 import java.util.List;
+import choose.action.Action;
+import entity.tower.*;
+import choose.ListChooser;
 
-import entity.tower.Tower;
 
 
 /**
@@ -13,7 +15,7 @@ public class Player {
     public static final int CREDIT_INITIAL = 2500;
     public static final int VIE_INIT = 20;
     public static final double REVENDRE = 0.25;
-    private ListChooser actionChooser;
+    private ListChooser<Action> actionChooser;
     private int vie;
     private int credit;
     private List<Tower> towers;
@@ -23,7 +25,7 @@ public class Player {
         * Constructeur de la classe
         * @param actionChooser le type de list chooser pour choisir les actions du joueur
         */
-    public Player(ListChooser actionChooser) {
+    public Player(ListChooser<Action> actionChooser) {
     this.credit = CREDIT_INITIAL;
     this.vie = VIE_INIT;
     this.actionChooser = actionChooser;
@@ -101,12 +103,20 @@ public class Player {
     }
 
     /**
-     * Methode pour choisir les actions du joueur
-     * @param game le game qu'on jouait
-     * @return les actions que le joueur a fait
+     * retirer une tour de la liste des tours du joueur
+     * @param tower
      */
-    public List<Action> choisirActions(Game game) {
-        return actionChooser.choisirActions(game, this);
+    public void removeTower(Tower tower) {
+        this.towers.remove(tower);
+    }
+
+    /**
+     * choisir une action parmi une liste d'actions
+     * @param actions
+     * @return l'action choisie
+     */
+    public Action choisirAction(List<Action> actions) {
+        return actionChooser.choose("Choisissez une action :", actions);
     }
 }
     

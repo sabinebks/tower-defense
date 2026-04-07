@@ -1,7 +1,7 @@
 package round;
 
 import board.Board;
-import object.balloon.Balloon;
+import entity.balloon.Balloon;
 
 import java.util.List;
 

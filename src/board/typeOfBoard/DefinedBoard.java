@@ -1,7 +1,7 @@
 package board.typeOfBoard;
 
 import board.*;
-import object.tower.Tower;
+import entity.tower.Tower;
 
 import java.util.ArrayList;
 import java.util.List;

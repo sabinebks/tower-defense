@@ -1,10 +1,8 @@
-package object.tower.projectil;
+package entity.tower.projectil;
 
-import object.balloon.Balloon;
+import entity.balloon.Balloon;
 
-
-public class ProjectilFreeze extends Projectil{
-
+public class ProjectilSlow extends Projectil {
     /**
      * Constructeur de la classe
      * @param type
@@ -12,7 +10,7 @@ public class ProjectilFreeze extends Projectil{
      * @param startY
      * @param target
      */
-    public ProjectilFreeze(ProjectilType type, double startX, double startY, Balloon target) {
+    public ProjectilSlow(ProjectilType type, double startX, double startY, Balloon target) {
         super(type, startX, startY, target);
     }
     /**
@@ -24,7 +22,7 @@ public class ProjectilFreeze extends Projectil{
             return;
         }
         target.hit(type.getDegats());
-
-        target.freeze(3);
+        target.slow(0.5, 6);
     }
+
 }

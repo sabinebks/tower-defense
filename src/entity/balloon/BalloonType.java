@@ -1,4 +1,4 @@
-package object.balloon;
+package entity.balloon;
 
 /**
  * Représente les différents types de ballons disponibles dans le jeu.

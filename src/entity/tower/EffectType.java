@@ -1,4 +1,4 @@
-package object.tower;
+package entity.tower;
 
 /**
  * Représente les différents types d'effets que peut avoir une tour

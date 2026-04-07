@@ -1,8 +1,9 @@
 package test.object.balloon;
 
 import board.Position;
-import object.balloon.Balloon;
-import object.balloon.BalloonType;
+import entity.balloon.Balloon;
+import entity.balloon.BalloonType;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

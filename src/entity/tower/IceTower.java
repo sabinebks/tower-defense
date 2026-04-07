@@ -1,12 +1,12 @@
-package object.tower;
+package entity.tower;
 
 import board.Position;
-import object.balloon.Balloon;
-import object.tower.evolution.TypeEvolution;
-import object.tower.projectil.NotMatchException;
-import object.tower.projectil.Projectil;
-import object.tower.projectil.ProjectilFreeze;
-import object.tower.projectil.ProjectilType;
+import entity.balloon.Balloon;
+import entity.tower.evolution.TypeEvolution;
+import entity.tower.projectil.NotMatchException;
+import entity.tower.projectil.Projectil;
+import entity.tower.projectil.ProjectilFreeze;
+import entity.tower.projectil.ProjectilType;
 
 import java.util.List;
 

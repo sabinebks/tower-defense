@@ -1,7 +1,9 @@
 package test.object.tower.evolution;
 import org.junit.jupiter.api.Test;
+
+import entity.tower.evolution.*;
+
 import static org.junit.jupiter.api.Assertions.*;
-import object.tower.evolution.*;
 
 public class EvolutionTest {
     @Test

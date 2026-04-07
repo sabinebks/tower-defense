@@ -1,4 +1,4 @@
-package object.balloon;
+package entity.balloon;
 
 import java.util.List;
 

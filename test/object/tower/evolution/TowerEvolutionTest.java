@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 
-import object.tower.*;
-import object.tower.evolution.*;
 import board.*;
+import entity.tower.*;
+import entity.tower.evolution.*;
 
 public class TowerEvolutionTest {
     private BombTower bombTower;

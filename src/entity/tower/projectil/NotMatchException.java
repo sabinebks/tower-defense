@@ -1,4 +1,4 @@
-package object.tower.projectil;
+package entity.tower.projectil;
 
 public class NotMatchException extends Exception {
     public NotMatchException(String message) {

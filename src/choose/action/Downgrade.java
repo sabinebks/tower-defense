@@ -3,9 +3,9 @@ package choose.action;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import entity.tower.Tower;
+import entity.tower.evolution.TypeEvolution;
 import game.Action;
-import object.tower.Tower;
-import object.tower.evolution.TypeEvolution;
 
 public class Downgrade extends Action{
 

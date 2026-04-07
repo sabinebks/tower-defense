@@ -1,9 +1,9 @@
-package object.tower;
+package entity.tower;
 import board.Position;
-import object.balloon.*;
-import object.tower.evolution.Evolution;
-import object.tower.evolution.TypeEvolution;
-import object.tower.projectil.*;
+import entity.balloon.*;
+import entity.tower.evolution.Evolution;
+import entity.tower.evolution.TypeEvolution;
+import entity.tower.projectil.*;
 
 import java.util.List;
 

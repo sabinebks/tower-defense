@@ -2,9 +2,9 @@ package choose.action;
 
 import java.util.ArrayList;
 
+import entity.tower.Tower;
+import entity.tower.evolution.TypeEvolution;
 import game.Action;
-import object.tower.Tower;
-import object.tower.evolution.TypeEvolution;
 
 public class Upgrade extends Action {
 

@@ -1,7 +1,7 @@
 package choose.action;
 
+import entity.tower.Tower;
 import game.Action;
-import object.tower.Tower;
 
 public class Vendre extends Action{
 

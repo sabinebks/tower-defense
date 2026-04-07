@@ -1,8 +1,8 @@
 package choose.action;
 
 import game.*;
-import object.tower.*;
 import board.*;
+import entity.tower.*;
 
 public class Acheter extends Action {
 

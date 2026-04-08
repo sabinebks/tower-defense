@@ -59,7 +59,7 @@ public class Livrable5 {
         List<Position> path = board.getPathPositions();
         for (int i = 1; i <= NB_ROUNDS; i++) {
             BalloonType type = types[(i - 1) % types.length];
-            rounds.add(new Round(i, makeBalloons(nbBallons, type, path)));
+            rounds.add(new Round(i, makeBalloons(this.nbBallons, type, path)));
         }
 
         this.game = new Game(player, board, rounds, FPS);
@@ -83,7 +83,7 @@ public class Livrable5 {
     public void start() {
         System.out.println("====================================");
         System.out.println("|        BLOONS TOWER DEFENSE       |");
-        System.out.println("|  Vies : " + player.getLives() + " | Credits : " + player.getCredit() + "       ║");
+        System.out.println("|  Vies : " + player.getLives() + " | Credits : " + player.getCredit() + "       |");
         System.out.println("====================================");
 
         if (!isHuman) {
@@ -97,8 +97,8 @@ public class Livrable5 {
         for (int i = 0; i < roundCount; i++) {
             int roundNum = i + 1;
             System.out.println("\n===========================");
-            System.out.printf( "|   MANCHE %-2d               |%n", roundNum);
-            System.out.println("=============================");
+            System.out.printf( "|        MANCHE %-2d         |%n", roundNum);
+            System.out.println("===========================");
             System.out.println("Vies : " + player.getLives()
                     + " | Credits : " + player.getCredit());
 
@@ -106,7 +106,6 @@ public class Livrable5 {
                 applyRoundEvolution(roundNum);
             }
 
-            game.resetLastRoundEscaped();
 
             game.runOneRound();
 
@@ -118,14 +117,13 @@ public class Livrable5 {
                 return;
             }
 
-            int escaped = game.getLastRoundEscaped();
-            if (escaped == 0) {
+            if (game.getBoard().getEscapedBalloons().isEmpty()) {
                 player.addCredit(REWARD_PER_ROUND);
                 System.out.println(">>> Round parfait ! +" + REWARD_PER_ROUND
                         + " credits. Total : " + player.getCredit()
                         + " | Vies : " + player.getLives());
             } else {
-                System.out.println(">>> " + escaped + " ballon(s) echappe(s) ce round."
+                System.out.println(">>> " + game.getBoard().getEscapedBalloons().size() + " ballon(s) echappe(s) ce round."
                         + " Pas de recompense. Credits : " + player.getCredit()
                         + " | Vies : " + player.getLives());
             }

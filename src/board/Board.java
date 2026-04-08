@@ -64,10 +64,10 @@ public abstract class Board {
     }
 
     public void spawnBalloon(Balloon balloon) {
-        List<Position> path = balloon.getPath();
 
         balloon.setPath(getPathPositions());
-        path = balloon.getPath();
+        List<Position> path = balloon.getPath();
+
 
         if (path != null && !path.isEmpty()) {
             Position start = path.get(0);
@@ -82,7 +82,6 @@ public abstract class Board {
 
     public List<Balloon> update() {
 
-        // 1. Les tours evaluent et tirent sur les ballons a leur position actuelle
         for (Tower tower : towers) {
             try {
                 tower.update(this.balloons, this.activeProjectiles);
@@ -100,13 +99,14 @@ public abstract class Board {
             balloon.update();
             balloon.move();
         }
-
         List<Balloon> toRemove = new ArrayList<>();
         for (Balloon balloon : this.balloons) {
+            if (balloon.hasEscaped()) {
+                escapedBalloons.add(balloon);
+                toRemove.add(balloon);
+            }
+
             if (balloon.getHealth() <= 0 || !balloon.isActive()) {
-                if (balloon.hasEscaped()) {
-                    escapedBalloons.add(balloon);
-                }
                 toRemove.add(balloon);
             }
         }
@@ -117,7 +117,7 @@ public abstract class Board {
 
     public abstract boolean isCellAvailable(int row, int col);
 
-    public List<Balloon> getEscapedBalloons() { return new ArrayList<>(escapedBalloons); }
+    public List<Balloon> getEscapedBalloons() { return this.escapedBalloons; }
     public void clearEscapedBalloons() { escapedBalloons.clear(); }
 
 }

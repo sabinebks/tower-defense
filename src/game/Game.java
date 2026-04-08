@@ -66,6 +66,7 @@ public class Game implements ClockListener, GameContext {
 
         isRunning = false;
         clock.stop();
+        board.clearEscapedBalloons();
     }
 
     public void start() { isRunning = true; clock.start(); }
@@ -78,26 +79,10 @@ public class Game implements ClockListener, GameContext {
         return roundManager.getRounds().size();
     }
 
-    /** @return true if the player has run out of lives */
+
     public boolean hasPlayerLost() {
         return roundManager.hasPlayerLost();
     }
 
-    /**
-     * Returns the number of balloons that escaped during the last round.
-     * Used by Livrable5 to decide whether to award the round bonus.
-     *
-     * @return number of escaped balloons in the last completed round
-     */
-    public int getLastRoundEscaped() {
-        return roundManager.getLastRoundEscaped();
-    }
 
-    /**
-     * Resets the escaped-balloon counter before a new round starts.
-     * Must be called by Livrable5 before each call to runOneRound().
-     */
-    public void resetLastRoundEscaped() {
-        roundManager.resetLastRoundEscaped();
-    }
 }

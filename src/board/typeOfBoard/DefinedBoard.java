@@ -10,12 +10,15 @@ import java.util.Random;
 
 public class DefinedBoard extends Board {
 
+    /**
+     * Les attributs de DefinedBoard
+     * un point de depart
+     */
     private Position cheminAv;
-
     private Position pointDeDepart;
 
     /**
-     * Constructor for DefinedBoard.
+     * Constructeur de DefinedBoard.
      *
      * @param height Height of the board (top to bottom)
      * @param width  Width of the board (left to right)
@@ -25,8 +28,7 @@ public class DefinedBoard extends Board {
     }
 
     /**
-     * Initializes the board by creating the grid
-     * and starting the path generation.
+     * Initialiser le board
      */
     @Override
     public void init() {
@@ -41,19 +43,17 @@ public class DefinedBoard extends Board {
 
 
     /**
-     * Returns the length of the path.
-     *
-     * @return path length
+     * Retourner la longueur du chemin
+     * @return la longeur du chemin
      */
     public int getCheminLong() {
         return this.allCells.size();
     }
 
     /**
-     * Checks if a position is on the board border.
-     *
-     * @param p the position to check
-     * @return true if the position is on a border, false otherwise
+     * Verifier si une pos est le bord du board
+     * @param p la pos a verifier
+     * @return true si pos est le bord, false sinon
      */
     public boolean isBord(Position p) {
         return p.getRow() == 0 || p.getRow() == this.height - 1
@@ -61,8 +61,8 @@ public class DefinedBoard extends Board {
     }
 
     /**
-     * Generates a random path.
-     * The path starts on a border and ends on a different border cell.
+     * Creer un chemin aleatoire
+     * Le chemin commence du point de depart 
      */
     @Override
     public void calculerPath() {
@@ -169,22 +169,33 @@ public class DefinedBoard extends Board {
         return path;
     }
 
-
+    /**
+     * Verifier si un Cell est disponible, donc il n'y a pas de tower
+     * @return true si disponible, false sinon
+     */
     public boolean isCellAvailable(int row, int col) {
-        if (!isInside(row, col)) return false;
-
-        for (Position p : getPathPositions()) {
-            if (p.getRow() == row && p.getCol() == col) return false;
+        if (!isInside(row, col)) {
+            return false;
         }
-
+        for (Position p : getPathPositions()) {
+            if (p.getRow() == row && p.getCol() == col) {
+                return false;
+            }
+        }
         for (Tower t : towers) {
-            if (t.getPosition().getRow() == row && t.getPosition().getCol() == col) return false;
+            if (t.getPosition().getRow() == row && t.getPosition().getCol() == col) {
+                return false;
+            }
         }
 
         return true;
     }
 
     @Override
+    /**
+     * Retourner la liste des cells
+     * @return une liste des cells
+     */
     public List<Cell> allCells(){
         return this.allCells;
     }

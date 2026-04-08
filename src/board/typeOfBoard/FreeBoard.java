@@ -12,17 +12,35 @@ import java.util.Random;
 
 public class FreeBoard extends Board {
 
+    /**
+     * Les attributs de FreeBoard
+     * Le nombre static de chemin
+     * Un map des pos de chemin et ses id
+     * Un map des positions du chemins
+     * Le nombre de chemin voulu
+     */
     private static final int NBCHEMIN = 5;
     private Map<Integer, Position> numChemins;
     private int cmp = 0;
     private Map<Position, Position> chemins;
     private int nbCheminsVoulus;
 
+    /**
+     * Constructeur de FreeBoard    
+     * @param height hauteur du board
+     * @param width largeur du board
+     */
     public FreeBoard(int height, int width) {
         super(height, width);
         this.nbCheminsVoulus = NBCHEMIN;
     }
 
+    /**
+     * Retourner la direction du chemin
+     * @param depart la position depart
+     * @param fin la position fini
+     * @return la direction
+     */
     public Direction getDirection(Position depart, Position fin) {
         if (depart.getRow() == fin.getRow())
             return depart.getCol() < fin.getCol() ? Direction.RIGHT : Direction.LEFT;
@@ -32,9 +50,18 @@ public class FreeBoard extends Board {
             throw new IllegalArgumentException("Les positions doivent être alignées");
     }
 
-    public void setNbCheminsVoulus(int nb) { this.nbCheminsVoulus = nb; }
+    /**
+     * Un setter pour le nombre de chemins voulu
+     * @param nb
+     */
+    public void setNbCheminsVoulus(int nb) { 
+        this.nbCheminsVoulus = nb; 
+    }
 
     @Override
+    /**
+     * Initialiser le board
+     */
     public void init() {
         grid = new Cell[height][width];
         for (int i = 0; i < height; i++)
@@ -44,6 +71,9 @@ public class FreeBoard extends Board {
     }
 
     @Override
+    /**
+     * Une methode pour auto genere le chemin aleatoirement
+     */
     public void calculerPath() {
         this.cmp = 0;
         this.numChemins = new HashMap<>();
@@ -114,6 +144,11 @@ public class FreeBoard extends Board {
         }
     }
 
+    /**
+     * Fonction pour marquer le droit du chemin
+     * @param start le debut du chemin
+     * @param end la fin du chemin
+     */
     public void marquerCheminDroit(Position start, Position end) {
         Direction dir = getDirection(start, end);
         switch (dir) {
@@ -138,6 +173,11 @@ public class FreeBoard extends Board {
         }
     }
 
+    /**
+     * Retourner la fin du chemin
+     * @param start le depart du chemin
+     * @return la position fini
+     */
     public Position getFinChemin(Position start) {
         if (start.getRow() == 0) return new Position(height - 1, start.getCol());
         if (start.getRow() == height - 1) return new Position(0, start.getCol());
@@ -145,7 +185,13 @@ public class FreeBoard extends Board {
         return new Position(start.getRow(), 0);
     }
 
-    public Position[] retourneLesChemins(int num) {
+    /**
+     * Retourner une liste des positions des chemins
+     * @param num le nombre de chemin
+     * @return une liste des positions
+     * @throws IllegalArgumentException si le nombre voulu est plus grand qu'au nombre cmp
+     */
+    public Position[] retourneLesChemins(int num) throws IllegalArgumentException {
         if (num >= 0 && num < cmp) {
             Position debut = numChemins.get(num);
             return new Position[]{debut, chemins.get(debut)};
@@ -153,11 +199,24 @@ public class FreeBoard extends Board {
         throw new IllegalArgumentException("Numéro de chemin invalide");
     }
 
+    /**
+     * Retourner le nombre de chemin
+     * @return nombre de chemin
+     */
     public int retourneNbrChemins() { return cmp; }
+
+    /**
+     * Retourner le map de chemin
+     * @return le map de chemin
+     */
     public Map<Position, Position> getCheminsMap() { return chemins; }
 
 
     @Override
+    /**
+     * Retourner la liste des positions du chemin
+     * @return une liste des positions
+     */
     public List<Position> getPathPositions() {
         if (allPath.isEmpty()) return new ArrayList<>();
 
@@ -173,6 +232,12 @@ public class FreeBoard extends Board {
     }
 
     @Override
+    /**
+     * Retourner si la position est disponible
+     * @param row le row du cell
+     * @param col la colonne du cell
+     * @return true si disponible, false sinon
+     */
     public boolean isCellAvailable(int row, int col) {
         if (!isInside(row, col)) return false;
         for (Tower t : towers)
@@ -181,6 +246,10 @@ public class FreeBoard extends Board {
     }
 
 
+    /**
+     * Retourner la liste des cells dans le board
+     * @return liste des cells
+     */
     @Override
     public List<Cell> allCells(){
         return allCells;

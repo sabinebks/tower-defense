@@ -12,6 +12,17 @@ import java.util.Map;
 
 public abstract class Board {
 
+    /**
+     * Les attributs de Board
+     * La hauteur
+     * La largeur
+     * Liste des Cells
+     * Un map des chemins
+     * Liste des towers
+     * Liste des ballons
+     * Liste des projectiles actives
+     * Liste des ballons deja sorti sans mort
+     */
     protected int width;
     protected int height;
     protected Cell[][] grid;
@@ -22,6 +33,11 @@ public abstract class Board {
     protected List<Balloon> escapedBalloons = new ArrayList<>();
     protected List<Cell> allCells;
 
+    /**
+     * Constructeur
+     * @param height La hauteur 
+     * @param width la largeur
+     */
     public Board(int height, int width) {
         this.width = width;
         this.height = height;
@@ -38,31 +54,75 @@ public abstract class Board {
     public abstract List<Position> getPathPositions();
     public abstract List<Cell> allCells();
 
+    /**
+     * Retourner un cell dans le board
+     * @param row le row du cell
+     * @param col la colonne du cell
+     * @return le cell voulu
+     */
     public Cell getCell(int row, int col) {
         if (!isInside(row, col))
             throw new IllegalArgumentException("Coordonnees hors du plateau");
         return this.grid[row][col];
     }
 
+    /**
+     * Retourner la largeur du board
+     * @return largeur
+     */
     public int getWidth() { return width; }
+    /**
+     * Retourner la hauteur du board
+     * @return hauteur
+     */
     public int getHeight() { return height; }
+    /**
+     * Retourner le tableau de Cell, donc le display
+     * @return tableau de Cell
+     */
     public Cell[][] getGrid() { return this.grid; }
+    /**
+     * Retourner tous les chemins
+     * @return un map des chemins
+     */
     public Map<Integer, List<Cell>> getAllPath() { return this.allPath; }
+    /**
+     * Retourner les projectiles actives
+     * @return projectiles actives
+     */
     public List<Projectil> getActiveProjectiles() { return activeProjectiles; }
 
+    /**
+     * Verifier si la pos est dans le board
+     * @param row ligne du pos
+     * @param col colonne du pos
+     * @return true si dans board, false sinon
+     */
     public boolean isInside(int row, int col) {
         return row >= 0 && row < height && col >= 0 && col < width;
     }
-
+    /**
+     * Placer un tower 
+     * @param tower tower a place
+     * @param position la position voulu a placer
+     */
     public void placeTower(Tower tower, Position position) {
         tower.setPosition(position);
         towers.add(tower);
     }
 
+    /**
+     * Effacer un tower
+     * @param tower le tower a effacer
+     */
     public void removeTower(Tower tower) {
         towers.remove(tower);
     }
 
+    /**
+     * Methode a generer les ballons du jeu
+     * @param balloon un ballon voulu a generer
+     */
     public void spawnBalloon(Balloon balloon) {
 
         balloon.setPath(getPathPositions());
@@ -76,10 +136,22 @@ public abstract class Board {
         balloons.add(balloon);
     }
 
+    /**
+     * Retourner la liste des towers
+     * @return liste des towers
+     */
     public List<Tower> getTowers() { return towers; }
+    /**
+     * Retourner la liste des ballons
+     * @return liste des ballons
+     */
     public List<Balloon> getBalloons() { return balloons; }
 
-
+    /**
+     * Methode pour mettre a jour les ballons, si un ballon sort du board, ou
+     * est mort, il va etre effacer
+     * @return la liste des ballons efface
+     */
     public List<Balloon> update() {
 
         for (Tower tower : towers) {
@@ -117,7 +189,15 @@ public abstract class Board {
 
     public abstract boolean isCellAvailable(int row, int col);
 
+    /**
+     * Retourner la liste des ballons sortent dans mourir
+     * @return liste des ballons
+     */
     public List<Balloon> getEscapedBalloons() { return this.escapedBalloons; }
-    public void clearEscapedBalloons() { escapedBalloons.clear(); }
+
+    /**
+     * Effacer les ballons sortent
+     */
+    public void clearEscapedBalloons() { this.escapedBalloons.clear(); }
 
 }

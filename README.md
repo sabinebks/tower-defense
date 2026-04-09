@@ -519,7 +519,7 @@ Game --> BoardConsoleRenderer
 #### Commandes
 
 ```bash
-make clean       #pour supprimer les fichier .class s'il en reste encore
+make clean       # pour supprimer les fichier .class s'il en reste encore
 make             # Compilation
 make jar         # Création des Livrables
 

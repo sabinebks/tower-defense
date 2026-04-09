@@ -27,19 +27,23 @@ runtests: tests
 	java -jar junit-console.jar -classpath classes --scan-class-path
 
 jar: classes
-	jar cvfe livrable4a.jar Livrables.Livrable4a -C classes .
-	jar cvfe livrable4b.jar Livrables.Livrable4b -C classes .
+	jar cvfe livrable5.jar Livrables.Livrable5 -C classes .
 
 docs:
 	javadoc -d doc \
-		src/board/*.java \
-		src/board/typeOfBoard/*.java \
-		src/entity/balloon/*.java \
-		src/entity/tower/*.java \
-		src/entity/tower/projectil/*.java \
-		src/game/*.java \
-		src/Livrables/*.java \
-		src/entity/tower/evolution/*.java
+        		src/board/*.java \
+        		src/board/typeOfBoard/*.java \
+        		src/entity/balloon/*.java \
+        		src/entity/tower/*.java \
+        		src/entity/tower/projectil/*.java \
+        		src/game/*.java \
+        		src/Livrables/*.java \
+        		src/entity/tower/evolution/*.java \
+        		src/ui/*.java \
+        		src/choose/*.java \
+        		src/choose/action/*.java \
+        		src/clock/*.java \
+        		src/round/*.java
 
 clean:
 	rm -rf classes doc

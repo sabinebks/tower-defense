@@ -8,26 +8,37 @@ import entity.tower.evolution.TypeEvolution;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionBuilder {
+import board.Position;
 
+public class ActionBuilder {
+    
+    /**
+     * Methode retourner une liste de action, donc dit menu
+     * @param player le joueur
+     * @param shop le shop
+     * @return une liste des actions a choisi
+     */
     public static List<Action> buildMenu(Player player, Shop shop) {
         List<Action> menu = new ArrayList<>();
-
         menu.add(buildAcheterTour(player, shop));
         menu.add(buildEvoluerTour(player));
         menu.add(buildVendreTour(player));
         menu.add(buildVendreEvolution(player));
         menu.add(new DoNothingAction());
         menu.add(new QuitAction());
-
         return menu;
     }
-
-    private static Action buildAcheterTour(Player player, Shop shop) {
+    /**
+     * Methode retourner l'action acheter un tour 
+     * @param player le joueur
+     * @param shop le shop
+     * @return une action de type BuyTowerAction
+     */
+    public static Action buildAcheterTour(Player player, Shop shop) {
         List<Action> sousMenu = new ArrayList<>();
 
         for (Tower t : shop.getAvailableTowers()) {
-            var pos = shop.findAvailablePosition();
+            Position pos = shop.findAvailablePosition();
             if (pos != null && player.getCredit() >= t.getCost()) {
                 sousMenu.add(new BuyTowerAction(t, pos));
             }
@@ -37,7 +48,12 @@ public class ActionBuilder {
         return new MenuAction("Acheter une tour", sousMenu);
     }
 
-    private static Action buildEvoluerTour(Player player) {
+    /**
+     * Methode retourner l'action d'evoluer un tour
+     * @param player
+     * @return une action de type evoluer tour
+     */
+    public static Action buildEvoluerTour(Player player) {
         List<Action> sousMenu = new ArrayList<>();
 
         for (Tower t : player.getTowers()) {
@@ -61,7 +77,12 @@ public class ActionBuilder {
         return new MenuAction("Évoluer une tour", sousMenu);
     }
 
-    private static Action buildVendreTour(Player player) {
+    /**
+     * Methode retourner l'action vendre un tour
+     * @param player le joueur
+     * @return l'action de type vendre tour
+     */
+    public static Action buildVendreTour(Player player) {
         List<Action> sousMenu = new ArrayList<>();
 
         for (Tower t : player.getTowers()) {
@@ -72,7 +93,12 @@ public class ActionBuilder {
         return new MenuAction("Vendre une tour", sousMenu);
     }
 
-    private static Action buildVendreEvolution(Player player) {
+    /**
+     * Methode retourner l'action vendre une evolution de tour
+     * @param player le joueur
+     * @return l'action de type vendre evolution
+     */
+    public static Action buildVendreEvolution(Player player) {
         List<Action> sousMenu = new ArrayList<>();
 
         for (Tower t : player.getTowers()) {

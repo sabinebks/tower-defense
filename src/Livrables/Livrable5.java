@@ -25,6 +25,19 @@ import java.util.Random;
 
 public class Livrable5 {
 
+    /**
+     * Les attribut du livrables
+     * Le nombre de round static
+     * Le nombre de credit en gagnant un round static
+     * Le nombre de fps static
+     * Un board
+     * Un joueur
+     * Un shop 
+     * Un game
+     * Le nombre de ballons
+     * Un boolean verifie si c'est le joueur ou auto
+     * Un type random
+     */
     private static final int NB_ROUNDS = 10;
     private static final int REWARD_PER_ROUND = 150;
     private static final int FPS = 3;
@@ -37,6 +50,14 @@ public class Livrable5 {
     private final boolean isHuman;
     private final Random rng = new Random();
 
+    /**
+     * Constructeur 
+     * @param hauteur hauteur du board
+     * @param largeur largeur du board
+     * @param nbBallons le nombre de ballon
+     * @param typePlateau le type de board
+     * @param typeJoueur le type de joueur ( auto / manuelle )
+     */
     public Livrable5(int hauteur, int largeur, int nbBallons,
                      String typePlateau, String typeJoueur) {
 
@@ -65,7 +86,13 @@ public class Livrable5 {
         this.game = new Game(player, board, rounds, FPS);
     }
 
-
+    /**
+     * Retourner un liste de ballons cree
+     * @param count le nombre de ballon a creer
+     * @param type le type du ballon
+     * @param path le chemin
+     * @return le liste de ballon cree
+     */
     public List<Balloon> makeBalloons(int count, BalloonType type, List<Position> path) {
         List<Balloon> list = new ArrayList<>();
         for (int i = 0; i < count; i++) {
@@ -79,7 +106,9 @@ public class Livrable5 {
         return list;
     }
 
-
+    /**
+     * Commencer le jeu, il va arreter si le joueur n'a plus de vie, donc mourir
+     */
     public void start() {
         System.out.println("====================================");
         System.out.println("|        BLOONS TOWER DEFENSE       |");
@@ -140,7 +169,9 @@ public class Livrable5 {
         System.out.println("========================");
     }
 
-
+    /**
+     * Methode placer les towers automatiquements
+     */
     public void placeInitialTowers() {
         System.out.println("[BOT] Placement initial de 2 tours de chaque type...");
         List<Action> actions = ActionBuilder.buildMenu(player, shop);
@@ -152,7 +183,10 @@ public class Livrable5 {
         }
     }
 
-
+    /**
+     * Methode appliquer les evolutions dans un round pre-choisi
+     * @param roundNum le nombre de round
+     */
     public void applyRoundEvolution(int roundNum) {
         if (roundNum <= 5) {
             List<Action> upgrades = new ArrayList<>();

@@ -13,6 +13,15 @@ import java.util.List;
 
 
 public class Game implements ClockListener, GameContext {
+    /**
+     * Les attributs de Game
+     * Un board
+     * Un joueur
+     * Un manageur de round
+     * Un clock
+     * Un type boolean
+     * Un type BoardRenderer pour render le board
+     */
     private final Board board;
     private final Player player;
     private final RoundManager roundManager;
@@ -21,6 +30,13 @@ public class Game implements ClockListener, GameContext {
     private final BoardRenderer renderer;
 
 
+    /**
+     * Constructeur
+     * @param player le joueur
+     * @param board le board
+     * @param rounds le round
+     * @param fps le fps
+     */
     public Game(Player player, Board board, List<Round> rounds, int fps) {
         this.player = player;
         this.board = board;
@@ -30,6 +46,10 @@ public class Game implements ClockListener, GameContext {
         this.clock.addListener(this);
     }
 
+    /**
+     * Afficher le board a chaque tick du jeu
+     * @param tickCount le tick
+     */
     @Override
     public void onTick(int tickCount) {
         if (!isRunning) return;
@@ -50,7 +70,9 @@ public class Game implements ClockListener, GameContext {
         this.renderer.render(board);
     }
 
-
+    /**
+     * Methode lancer 1 round du jeu
+     */
     public void runOneRound() {
         clock.reset();
         isRunning = true;
@@ -75,11 +97,18 @@ public class Game implements ClockListener, GameContext {
     @Override public Player getPlayer() { return player; }
     @Override public Board getBoard()   { return board; }
 
+    /**
+     * Retourner le nombre de round
+     * @return le nombre de round
+     */
     public int getRoundCount() {
         return roundManager.getRounds().size();
     }
 
-
+    /**
+     * Verifier si le joueur est mort ou pas
+     * @return true si joueur mort, false sinon
+     */
     public boolean hasPlayerLost() {
         return roundManager.hasPlayerLost();
     }

@@ -103,10 +103,7 @@ public class Main {
                     + p.get(0) + " → " + p.get(p.size()-1)
                     + " (" + p.size() + " cases)");
         }
-
-        System.out.println("╔══════════════════════╗");
-        System.out.println("║  PHASE D'ACHAT       ║");
-        System.out.println("╚══════════════════════╝");
+        System.out.println("PHASE D'ACHAT");
         player.runActionPhase(game, shop);
 
         boolean gameOver = false;
@@ -117,9 +114,7 @@ public class Main {
             game.runOneRound();
 
             if (game.hasPlayerLost()) {
-                System.out.println("╔══════════════════════╗");
-                System.out.println("║      GAME OVER !     ║");
-                System.out.println("╚══════════════════════╝");
+                System.out.println(" GAME OVER ");
                 gameOver = true;
                 break;
             }
@@ -135,9 +130,7 @@ public class Main {
         }
 
         if (!gameOver) {
-            System.out.println("╔══════════════════════╗");
-            System.out.println("║  VICTOIRE TOTALE !   ║");
-            System.out.println("╚══════════════════════╝");
+            System.out.println(" VICTOIRE TOTALE ");
         }
     }
 }*/

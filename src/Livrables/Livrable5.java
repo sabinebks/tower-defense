@@ -66,7 +66,7 @@ public class Livrable5 {
     }
 
 
-    private List<Balloon> makeBalloons(int count, BalloonType type, List<Position> path) {
+    public List<Balloon> makeBalloons(int count, BalloonType type, List<Position> path) {
         List<Balloon> list = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             Balloon b = new Balloon(i,
@@ -141,7 +141,7 @@ public class Livrable5 {
     }
 
 
-    private void placeInitialTowers() {
+    public void placeInitialTowers() {
         System.out.println("[BOT] Placement initial de 2 tours de chaque type...");
         List<Action> actions = ActionBuilder.buildMenu(player, shop);
         for (int i = 0; i < 4; i++) {
@@ -153,7 +153,7 @@ public class Livrable5 {
     }
 
 
-    private void applyRoundEvolution(int roundNum) {
+    public void applyRoundEvolution(int roundNum) {
         if (roundNum <= 5) {
             List<Action> upgrades = new ArrayList<>();
             for (var tower : player.getTowers()) {

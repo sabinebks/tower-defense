@@ -8,13 +8,21 @@ import entity.tower.Tower;
 
 public class BoardRenderer {
 
+    /**
+     * Methode afficher le board
+     * @param board le board a afficher
+     */
     public void render(Board board) {
         System.out.println("----TICK----");
         String[][] display = buildGrid(board);
         printGrid(display, board);
     }
-
-    private String[][] buildGrid(Board board) {
+    /**
+     * Methode a creer les grids du board
+     * @param board le board a creer
+     * @return un string de display
+     */
+    public String[][] buildGrid(Board board) {
         String[][] display = new String[board.getHeight()][board.getWidth()];
 
         for (int r = 0; r < board.getHeight(); r++)
@@ -41,7 +49,12 @@ public class BoardRenderer {
         return display;
     }
 
-    private void printGrid(String[][] display, Board board) {
+    /**
+     * Methode a afficher les grids
+     * @param display le grid a afficher
+     * @param board le board du jeu
+     */
+    public void printGrid(String[][] display, Board board) {
         System.out.println("=".repeat(board.getWidth() * 2 + 1));
         for (String[] row : display) {
             System.out.print("|");

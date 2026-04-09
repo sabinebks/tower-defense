@@ -7,6 +7,16 @@ import player.Player;
 import java.util.List;
 
 public class RoundManager {
+    /**
+     * Les attributs de RoundManager
+     * Un liste des rounds
+     * Le board du jeu
+     * Le joueur
+     * Le nombre du curr round
+     * Le tick a creer les ballons
+     * Le status du round ( commence ou pas)
+     * La frequence pour creer les ballons
+     */
     private final List<Round> rounds;
     private final Board board;
     private final Player player;
@@ -15,13 +25,22 @@ public class RoundManager {
     private boolean roundStarted = false;
     private static final int SPAWN_INTERVAL = 5;
 
-
+    /**
+     * Constructeur 
+     * @param rounds la liste des rounds
+     * @param board le board du jeu
+     * @param player le joueur
+     */
     public RoundManager(List<Round> rounds, Board board, Player player) {
         this.rounds = rounds;
         this.board = board;
         this.player = player;
     }
 
+    /**
+     * Mettre a jour le status du jeu apres un nombre de tick
+     * @param tickCount le nombre de tick
+     */
     public void update(int tickCount) {
         if (isFinished()) return;
 
@@ -54,14 +73,30 @@ public class RoundManager {
             roundStarted = false;
         }
     }
+    /**
+     * Retourner si il n'y a plus de round
+     * @return true si il n'y a plus, false sinon
+     */
+    public boolean isFinished() { 
+        return currentIndex >= rounds.size(); 
+    }
 
-    public boolean isFinished() { return currentIndex >= rounds.size(); }
+    /**
+     * Verifier si le joueur est mort ou pas
+     * @return true si joueur est mort, false sinon
+     */
+    public boolean hasPlayerLost() { 
+        return !player.isAlive(); 
+    }
+    
+    public int getCurrentIndex() { 
+        return currentIndex; 
+    }
 
-    public boolean hasPlayerLost() { return !player.isAlive(); }
-
-    public int getCurrentIndex() { return currentIndex; }
-
-
+    /**
+     * Verifier si le curr round est fini ou pas
+     * @return true si fini, false sinon
+     */
     public boolean isCurrentRoundFinished() {
         if (isFinished()) return true;
         Round round = rounds.get(currentIndex);
@@ -71,6 +106,10 @@ public class RoundManager {
     }
 
 
+    /**
+     * Retourner la liste de rounds
+     * @return liste de rounds
+     */
     public List<Round> getRounds() {
         return this.rounds;
     }

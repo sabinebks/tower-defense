@@ -188,8 +188,8 @@ La classe `Clock` a été enrichie avec l’intégration d’un thread, permetta
 
 Nous avons également ajouté un système de gestion des actions via la classe `ListChooser` et ses sous-classes :
 
-1- `HumanListChooser` (gestion des actions par un joueur humain)
-2- `AutoListChooser` (gestion automatique des actions)
+- `HumanListChooser` (gestion des actions par un joueur humain)
+- `AutoListChooser` (gestion automatique des actions)
 
 Ce système permet de séparer clairement les comportements selon le type de joueur.
 

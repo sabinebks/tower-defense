@@ -58,11 +58,14 @@ public class Gorilla extends Tower {
 
     @Override
     public int getCoutEvolution(TypeEvolution typeEvo) {
-        return switch (typeEvo) {
-            case PUISSANCE -> 600;
-            case PORTEE    -> 400;
-            default        -> 0;
-        };
+        switch (typeEvo) {
+            case PUISSANCE: 
+                return 600;
+            case PORTEE:
+                return 400;
+            default:
+                return 0;
+        }
     }
 
     public Projectil attack(List<Balloon> balloons) throws NotMatchException {

@@ -75,11 +75,14 @@ public class EliteSniper extends Tower {
 
     @Override
     public int getCoutEvolution(TypeEvolution typeEvo) {
-        return switch (typeEvo) {
-            case PUISSANCE -> 300;
-            case CANDENCE  -> 200;
-            default        -> 0;
-        };
+        switch (typeEvo) {
+            case PUISSANCE: 
+                return 300;
+            case CANDENCE:
+                return 200;
+            default:
+                return 0;
+        }
     }
     /**
      * retourne le symbole de la EliteSniper

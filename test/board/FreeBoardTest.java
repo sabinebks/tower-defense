@@ -62,7 +62,7 @@ public class FreeBoardTest {
         int nbrChemins = fb.retourneNbrChemins(); 
         Map<Position, Position> mapChemins = fb.getCheminsMap(); 
 
-        assertEquals(nbrChemins, mapChemins.size(), "Counter and map size must match");
+        assertEquals(nbrChemins, mapChemins.size());
 
         for (int i = 0; i < nbrChemins; i++) {
             Position[] extremites = fb.retourneLesChemins(i); 
@@ -73,16 +73,16 @@ public class FreeBoardTest {
             assertNotNull(fin);
 
             // Check if start and end are on the borders
-            assertTrue(isPointOnBorder(debut), "Start must be on a border");
-            assertTrue(isPointOnBorder(fin), "End must be on a border");
+            assertTrue(isPointOnBorder(debut));
+            assertTrue(isPointOnBorder(fin));
 
             // Check if path is a straight line (same row or same column)
-            assertTrue(debut.getRow() == fin.getRow() || debut.getCol() == fin.getCol(), 
-                "Path must be horizontal or vertical");
+            assertTrue(debut.getRow() == fin.getRow() || debut.getCol() == fin.getCol());
+   
             
             // Check if cells are correctly marked as path
-            assertTrue(fb.getCell(debut).isPath(), "Start cell should be marked as path");
-            assertTrue(fb.getCell(fin).isPath(), "End cell should be marked as path");
+            assertTrue(fb.getCell(debut.getRow(), debut.getCol()).isPath());
+            assertTrue(fb.getCell(fin.getRow(), fin.getCol()).isPath());
         }
     }
 

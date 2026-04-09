@@ -32,7 +32,7 @@ public class BalloonTest {
 
         balloon.setPath(path);
 
-        assertTrue(balloon.move(10, 10));
+        assertTrue(balloon.move());
     }
 
     @Test
@@ -45,7 +45,7 @@ public class BalloonTest {
         balloon.setPath(path);
 
         int steps = 0;
-        while (balloon.move(10, 10) && steps < 100) {
+        while (balloon.move() && steps < 100) {
             steps++;
         }
 
@@ -64,7 +64,7 @@ public class BalloonTest {
 
         double before = balloon.getColonne();
 
-        balloon.move(10, 10);
+        balloon.move();
 
         assertEquals(before, balloon.getColonne(), 0.001);
     }
@@ -81,7 +81,7 @@ public class BalloonTest {
         double before = balloon.getColonne();
 
         balloon.slow(0.5, 5);
-        balloon.move(10, 10);
+        balloon.move();
 
         assertTrue(balloon.getColonne() > before);
     }

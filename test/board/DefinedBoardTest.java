@@ -56,15 +56,15 @@ public class DefinedBoardTest {
      */
     @RepeatedTest(10)
     public void testValiditeDuChemin() {
-        List<Cell> chemin = b.getChemins();
+        List<Cell> chemin = b.allCells();
         
-        // Check minimum expected length
+     // Check minimum expected length
         int minLenExpected = (HEIGHT + WIDTH) / 2;
         assertTrue(chemin.size() >= minLenExpected, "The path is too short");
 
         // Ensure start and end cells are on the board boundaries
-        assertTrue(b.isBord(chemin.get(0).getPosition()), "The start must be a border cell");
-        assertTrue(b.isBord(chemin.get(chemin.size() - 1).getPosition()), "The end must be a border cell");
+        assertTrue(b.isBord(chemin.get(0).getPosition()));
+        assertTrue(b.isBord(chemin.get(chemin.size() - 1).getPosition()));
     }
 
     /**

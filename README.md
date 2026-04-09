@@ -178,6 +178,23 @@ Le code présente encore de la duplication dans la gestion de la boucle principa
 
 Refonte majeure de l'architecture. La classe `Balloon` a été unifiée (suppression de `BalloonPath` et `BalloonStraight`). Introduction des classes `Player`, `Shop`, `Game`, `RoundManager`, `Clock`, `ListChooser` (interface), `HumanListChooser` et `AutoListChooser` pour séparer les responsabilités. Le joueur peut désormais choisir ses actions via un menu (acheter/vendre/évoluer une tour) en mode humain ou automatique.
 
+##### amélioration de livrable
+
+Dans ce livrable, nous avons effectué plusieurs améliorations importantes sur l’architecture du projet.
+
+Tout d’abord, nous avons refactorisé la classe `Game` en la décomposant en plusieurs classes plus spécialisées, notamment `Round`, `RoundManager` ainsi que `Clock`. Cette décomposition permet une meilleure organisation du code et facilite sa maintenance.
+
+La classe `Clock` a été enrichie avec l’intégration d’un thread, permettant de gérer le temps en arrière-plan, en parallèle du programme principal. Cela améliore la gestion du temps sans bloquer l’exécution du jeu.
+
+Nous avons également ajouté un système de gestion des actions via la classe `ListChooser` et ses sous-classes :
+
+1- `HumanListChooser` (gestion des actions par un joueur humain)
+2- `AutoListChooser` (gestion automatique des actions)
+
+Ce système permet de séparer clairement les comportements selon le type de joueur.
+
+Enfin, nous avons poursuivi nos efforts de refactorisation en réduisant les duplications de code et en améliorant la modularité globale du projet.
+
 #### Diagramme UML
 
 ```mermaid
@@ -502,15 +519,37 @@ Game --> BoardConsoleRenderer
 #### Commandes
 
 ```bash
+make clean       #pour supprimer les fichier .class s'il en reste encore
 make             # Compilation
 make jar         # Création des Livrables
 
-java -jar livrable5a.jar   # Livrable 5a (DefinedBoard)
-java -jar livrable5b.jar   # Livrable 5b (FreeBoard)
+java -jar livrable5.jar   # Livrable5
 ```
+#### Problèmes rencontrés
+Malgré ces améliorations, plusieurs difficultés ont été rencontrées :
+
+- Intégration de `ListChooser` :
+  Nous avons hésité sur son emplacement dans l’architecture (dans `Player`, `Game` ou `Round`), ce qui a rendu son intégration complexe.
+- Gestion de la classe `Clock` :
+  Son intégration dans le jeu a été difficile, notamment à cause de la gestion du temps. Après des recherches, nous avons opté pour une solution basée sur les threads.
+- Attribution des responsabilités (`Balloon`, `Tower`, etc.) :
+  Il a été compliqué de déterminer dans quelles classes placer certains attributs et responsabilités, ce qui a posé des problèmes de conception.
+- Joueur automatique :
+  Le comportement du joueur automatique (introduit dans le livrable 5) reste problématique et nécessite encore des améliorations.
+- Gestion du `Board` :
+  L’ajout de nouveaux types de Balloon et la gestion des différentes actions et sous-actions ont complexifié la logique du plateau.
+- Découplage des classes :
+  Supprimer les dépendances directes entre :
+    - `Game` et `Player`
+    - `Clock` et `Game`
+      a été un défi important. Nous avons introduit des interfaces (`GameContext`, `ClockListener`) pour améliorer le découplage, mais cela a ajouté de la complexité.
 
 #### Difficultés restant à résoudre
-Aucune difficulté majeure restante pour ce livrable.
+Malgré les améliorations apportées, certaines difficultés restent à résoudre :
+- Joueur automatique :
+  Le comportement du joueur automatique n’est pas encore totalement fonctionnel ni optimal. Certaines décisions prises ne sont pas toujours cohérentes avec l’état du jeu, ce qui nécessite encore des ajustements au niveau de la logique et de la stratégie.
+- Gestion des vies :
+  Un bug persiste concernant la décrémentation des vies : dans certains cas, le dernier `Balloon` qui sort du `Board` ne provoque pas la diminution du nombre de vies restantes. Cela suggère un problème dans la détection de sortie ou dans le déclenchement de l’événement associé.
 
 ---
 

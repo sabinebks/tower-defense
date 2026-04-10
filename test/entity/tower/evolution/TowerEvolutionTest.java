@@ -30,7 +30,8 @@ public class TowerEvolutionTest {
         assertNotNull(bombTower);
         assertEquals(1, bombTower.getPosition().getRow());
         assertEquals(1, bombTower.getPosition().getCol());
-        assertEquals(600, bombTower.getCout());
+        assertEquals(600, bombTower.getCost());
+        assertTrue(bombTower.getEvolution());
         assertTrue(bombTower.getEvolution());
         assertNotNull(bombTower.getEvolutions());
     }
@@ -68,7 +69,7 @@ public class TowerEvolutionTest {
         assertNotNull(dartMonkey);
         assertEquals(2, dartMonkey.getPosition().getRow());
         assertEquals(2, dartMonkey.getPosition().getCol());
-        assertEquals(200, dartMonkey.getCout());
+        assertEquals(200, dartMonkey.getCost());
     }
 
     @Test
@@ -103,7 +104,7 @@ public class TowerEvolutionTest {
         assertNotNull(tackShooter);
         assertEquals(3, tackShooter.getPosition().getRow());
         assertEquals(3, tackShooter.getPosition().getCol());
-        assertEquals(350, tackShooter.getCout());
+        assertEquals(350, tackShooter.getCost());
     }
 
     @Test
@@ -131,7 +132,7 @@ public class TowerEvolutionTest {
         assertNotNull(gorilla);
         assertEquals(4, gorilla.getPosition().getRow());
         assertEquals(4, gorilla.getPosition().getCol());
-        assertEquals(1200, gorilla.getCout());
+        assertEquals(1200, gorilla.getCost());
     }
 
     @Test
@@ -159,7 +160,7 @@ public class TowerEvolutionTest {
         assertNotNull(eliteSniper);
         assertEquals(5, eliteSniper.getPosition().getRow());
         assertEquals(5, eliteSniper.getPosition().getCol());
-        assertEquals(500, eliteSniper.getCout());
+        assertEquals(500, eliteSniper.getCost());
     }
 
     @Test

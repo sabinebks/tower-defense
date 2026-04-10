@@ -60,7 +60,11 @@ public class DartMonkey extends Tower {
         }
         return cout;
     }
-
+  /*  
+    * methode d'attaque de la DartMonkey
+      * @param balloons la liste des ballons presents sur le plateau
+      * @return un projectil si une cible est trouvee, sinon null
+    */
     public Projectil attack(List<Balloon> balloons) throws NotMatchException {
         Balloon target = findTarget(balloons);
         if (target == null) return null;
@@ -79,12 +83,16 @@ public class DartMonkey extends Tower {
     }
     @Override
     public int getCoutEvolution(TypeEvolution typeEvo) {
-        return switch (typeEvo) {
-            case PUISSANCE -> 250;
-            case PORTEE    -> 100;
-            case CANDENCE  -> 150;
-            default        -> 0;
-        };
+         switch (typeEvo) {
+            case PUISSANCE:
+                return 250;
+            case PORTEE:
+                return 100;
+            case CANDENCE:
+                return 150;
+            default:
+                return 0;
+        }
     }
     
     /**

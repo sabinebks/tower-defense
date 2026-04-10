@@ -56,7 +56,11 @@ public class TackShooter extends Tower {
         }
         return cout;
     }
-
+   /*  
+    * methode d'attaque de la TackShooter
+      * @param balloons la liste des ballons presents sur le plateau
+      * @return un projectil si une cible est trouvee, sinon null
+    */
     public Projectil attack(List<Balloon> balloons) throws NotMatchException {
         Balloon target = findTarget(balloons);
         if (target == null) return null;
@@ -76,11 +80,14 @@ public class TackShooter extends Tower {
 
     @Override
     public int getCoutEvolution(TypeEvolution typeEvo) {
-        return switch (typeEvo) {
-            case PORTEE    -> 150;
-            case CANDENCE  -> 200;
-            default        -> 0;
-        };
+        switch (typeEvo) {
+            case PORTEE:
+                return 150;
+            case CANDENCE:
+                return 200;
+            default:
+                return  0;
+        }
     }
     /**
      * retourne le symbole de la TackShooter

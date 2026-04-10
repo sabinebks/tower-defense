@@ -58,13 +58,20 @@ public class Gorilla extends Tower {
 
     @Override
     public int getCoutEvolution(TypeEvolution typeEvo) {
-        return switch (typeEvo) {
-            case PUISSANCE -> 600;
-            case PORTEE    -> 400;
-            default        -> 0;
-        };
+        switch (typeEvo) {
+            case PUISSANCE: 
+                return 600;
+            case PORTEE:
+                return 400;
+            default:
+                return 0;
+        }
     }
-
+ /*  
+    * methode d'attaque de la Gorilla
+      * @param balloons la liste des ballons presents sur le plateau
+      * @return un projectil si une cible est trouvee, sinon null
+    ssss*/
     public Projectil attack(List<Balloon> balloons) throws NotMatchException {
         Balloon target = findTarget(balloons);
         if (target == null) return null;

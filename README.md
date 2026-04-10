@@ -178,6 +178,23 @@ Le code présente encore de la duplication dans la gestion de la boucle principa
 
 Refonte majeure de l'architecture. La classe `Balloon` a été unifiée (suppression de `BalloonPath` et `BalloonStraight`). Introduction des classes `Player`, `Shop`, `Game`, `RoundManager`, `Clock`, `ListChooser` (interface), `HumanListChooser` et `AutoListChooser` pour séparer les responsabilités. Le joueur peut désormais choisir ses actions via un menu (acheter/vendre/évoluer une tour) en mode humain ou automatique.
 
+##### amélioration de livrable
+
+Dans ce livrable, nous avons effectué plusieurs améliorations importantes sur l’architecture du projet.
+
+Tout d’abord, nous avons refactorisé la classe `Game` en la décomposant en plusieurs classes plus spécialisées, notamment `Round`, `RoundManager` ainsi que `Clock`. Cette décomposition permet une meilleure organisation du code et facilite sa maintenance.
+
+La classe `Clock` a été enrichie avec l’intégration d’un thread, permettant de gérer le temps en arrière-plan, en parallèle du programme principal. Cela améliore la gestion du temps sans bloquer l’exécution du jeu.
+
+Nous avons également ajouté un système de gestion des actions via la classe `ListChooser` et ses sous-classes :
+
+- `HumanListChooser` (gestion des actions par un joueur humain)
+- `AutoListChooser` (gestion automatique des actions)
+
+Ce système permet de séparer clairement les comportements selon le type de joueur.
+
+Enfin, nous avons poursuivi nos efforts de refactorisation en réduisant les duplications de code et en améliorant la modularité globale du projet.
+
 #### Diagramme UML
 
 ```mermaid
@@ -502,15 +519,37 @@ Game --> BoardConsoleRenderer
 #### Commandes
 
 ```bash
+make clean       # pour supprimer les fichier .class s'il en reste encore
 make             # Compilation
 make jar         # Création des Livrables
 
-java -jar livrable5a.jar   # Livrable 5a (DefinedBoard)
-java -jar livrable5b.jar   # Livrable 5b (FreeBoard)
+java -jar livrable5.jar   # Livrable5
 ```
+#### Problèmes rencontrés
+Malgré ces améliorations, plusieurs difficultés ont été rencontrées :
+
+- Intégration de `ListChooser` :
+  Nous avons hésité sur son emplacement dans l’architecture (dans `Player`, `Game` ou `Round`), ce qui a rendu son intégration complexe.
+- Gestion de la classe `Clock` :
+  Son intégration dans le jeu a été difficile, notamment à cause de la gestion du temps. Après des recherches, nous avons opté pour une solution basée sur les threads.
+- Attribution des responsabilités (`Balloon`, `Tower`, etc.) :
+  Il a été compliqué de déterminer dans quelles classes placer certains attributs et responsabilités, ce qui a posé des problèmes de conception.
+- Joueur automatique :
+  Le comportement du joueur automatique (introduit dans le livrable 5) reste problématique et nécessite encore des améliorations.
+- Gestion du `Board` :
+  L’ajout de nouveaux types de Balloon et la gestion des différentes actions et sous-actions ont complexifié la logique du plateau.
+- Découplage des classes :
+  Supprimer les dépendances directes entre :
+    - `Game` et `Player`
+    - `Clock` et `Game`
+      a été un défi important. Nous avons introduit des interfaces (`GameContext`, `ClockListener`) pour améliorer le découplage, mais cela a ajouté de la complexité.
 
 #### Difficultés restant à résoudre
-Aucune difficulté majeure restante pour ce livrable.
+Malgré les améliorations apportées, certaines difficultés restent à résoudre :
+- Joueur automatique :
+  Le comportement du joueur automatique n’est pas encore totalement fonctionnel ni optimal. Certaines décisions prises ne sont pas toujours cohérentes avec l’état du jeu, ce qui nécessite encore des ajustements au niveau de la logique et de la stratégie.
+- Gestion des vies :
+  Un bug persiste concernant la décrémentation des vies : dans certains cas, le dernier `Balloon` qui sort du `Board` ne provoque pas la diminution du nombre de vies restantes. Cela suggère un problème dans la détection de sortie ou dans le déclenchement de l’événement associé.
 
 ---
 
@@ -529,31 +568,56 @@ Aucune difficulté majeure restante pour ce livrable.
 ## Journal de bord
 
 ### Semaine 1
-**Ce qui a été réalisé :** Pour l'objet `Board` : une classe abstraite avec deux sous-classes, une avec un chemin précis défini pour la trajectoire des ballons (`DefinedBoard`), et une autre avec des chemins aléatoires (`FreeBoard`). Pour le `DefinedBoard`, l'algorithme choisit aléatoirement la case de départ sur un bord, puis choisit parmi les voisins disponibles à chaque étape. Pour le `FreeBoard`, le nombre de ballons est réparti en deux groupes (verticaux ou horizontaux), et les chemins sont choisis aléatoirement. Pour l'horloge, utilisation de `Thread.sleep` pour simuler les tics.
+Ce qui a été réalisé
 
-**Difficultés rencontrées :** Le chemin, le clock.
+pour l'object Board  peut etre une classe abstract , il ya deux sous classes  , une avec un chemin precis  ,
+défini pour la trajectoire des ballons, on va definir le debut et la fin du chemin nous meme  ,
+on commence par la case debut on a le droit de choisir entre  3 cases voisines (inspiration DSI  Chaque tuile
+du joueur a donc nécessairement 4 tuiles voisines (ou emplacements voisins)), sans la tuile ou le chemin est deja passe
+avec une fonction random , et a chaque fois que le tuile de chemin est cree ( on a choisi une case ), on oublie la colonne d'avant
+et donc peut importe le nombre de cases de notre board ca va nous cree un chemin.
+pour deuxieme mode on choisi dabord le nombre de ballons qu'on va repartir en deux groupes , des ballons verticale ou horizontale ,puis on va
+choisir les chemins de maniere random , qui va choirir la case de debut pour chauque ballon , et la on va choisir le cote aussi de la meme façon
+car le ballon il peut sortir des deux cote
+pour le horloge , on fait avec une fonction comme thrad.sleep, et a chaque toc d'orloge on definie la vitesse du ballon ,
+pour se deplacer d'une case a une autre on fait en sorte que chaque ballon prenne un temps x pour avancer a lautre case
+Difficultés rencontrées
 
-**Objectifs pour la semaine suivante :** Diagramme UML complet, algo des chemins. Répartition du travail à définir en groupe.
+le chemin, le clock
+Objectifs pour la semaine et répartition du travail par membre
 
----
-
+diagramme uml complet, algo des chemins
+pour la repartion du travail on a pas eu le temps de discuter on a creer un groupe pour justement en discuter
 ### Semaine 2
-**Ce qui a été réalisé :** Diagramme UML presque complet des Boards et d'autres classes. L'algo des chemins. Pour le `DefinedBoard`, le point de fin n'est pas choisi à l'avance. Pour le `FreeBoard`, les chemins vont dans toutes les directions.
+Ce qui a été réalisé
 
-**Difficultés rencontrées :** Le temps, synchronisation des ballons et des tours.
+Diagramme UML presque complet des Boards, et d'autres classes dont on aura besoin. L'algo des chemins. Pour le 1 er Board ,
+on choisi pas cas de la fin, et pour le deuxieme Board on va generer des chemins qui vont a toutes les directions , pas seulement de gauche a droite
+Difficultés rencontrées
 
-**Objectifs pour la semaine suivante :** Finir le diagramme UML, pseudo-code des chemins, finaliser le premier livrable.
+le temps, pour synchroniser les ballons et les tours
+Objectifs pour la semaine et répartition du travail par membre
 
----
+finir le diagramme UML, pseudo code des chemins , finaliser le premier livrable
 
 ### Semaine 3
-**Ce qui a été réalisé :** Finalisation du diagramme UML pour le Board (sous réserve de modifications). Même idée : classe abstraite `Board` avec `DefinedBoard` et `FreeBoard`. Pour `DefinedBoard`, l'algo choisit aléatoirement la case de départ depuis n'importe quel bord, puis construit le chemin en choisissant parmi les voisins disponibles — condition d'arrêt : toucher un bord. Pour `FreeBoard`, la case de départ détermine la trajectoire. Ajout des classes `Cell` et `Position`.
+Ce qui a été réalisé
 
-**Difficultés rencontrées :** Le code exact pour l'algo des deux chemins.
+on a finalisé le diagramme uml pour le board (sous reserve de modifications) on reste sur la meme idée d'une classe abstraite Board et deux sous classes DefinedBoard et FreeBoard
+ce qui nous permettra de créer des extensions de plateaux
+pour le DefinedBoard donc le plateau avec un chemin definie notre algo choisi lui meme aleatoirement la case du debut de n'importe quel bord
+ensuite pour la construction du chemin il choisit une de ses cases voisines, la condition d'arret est : si on touche le bord n'importe lequel
+le chemin est fini donc le chemin ne peut pas etre sur les bords apart pour le debut et la fin
+pour le FreeBoard donc le plateau avec un chemin non precis pour le moment on a commencer avec un pseudo code donc c'est la case du debut choisi aleatoirement
+qui decide de la trajectoire du chemin par exemple si elle est sur le bord d'en haut le chemin va tout droit vers le board du bas, si ça commence a gauche ça va vers la droite et inversement
+on a aussi implementé des classe Cell et position pour mieux gérer les cases
+Difficultés rencontrées
 
-**Objectifs pour la semaine suivante :** Finir le livrable 1 (création des deux types de plateaux et calcul des chemins).
+le code exact pour l'algo des deux chemins
+Objectifs pour la semaine et répartition du travail par membre
 
----
+finir le livrable 1 donc : la creation des deux types de plateaux et le calcul des chemins
+pour le repartion on mettra a jour le readme durant la semaine du travail de chaque membre
 
 ### Semaine 4
 **Ce qui a été réalisé :** Suite du diagramme UML avec une classe `Balloon`, `Round`, un enum `Level` pour les niveaux de résistance, et une classe horloge pour gérer les tics.
@@ -601,21 +665,28 @@ Aucune difficulté majeure restante pour ce livrable.
 ---
 
 ### Semaine 9
-**Ce qui a été réalisé :** Discussion générale. Problèmes conceptuels soulevés (approche trop fonctionnelle vs POO). Début du livrable 5 avec mise en place de la structure générale.
+Discussion générale
+Nous avons soulevé des problèmes conceptuels, notamment par rapport à l’approche adoptée lors des commits précédents, qui se rapproche plus du fonctionnel que de la conception orientée objet.
+Il est nécessaire de :
+¤  Détailer le README.
+¤  Gérer l’affichage des plateaux (tout ne doit pas être géré dans la classe   Game).
+¤  Pour les ballons, il faut avoir une seule classe Ballon et gérer leurs comportements ailleurs.
+¤  Découper les méthodes play(Board b) pour éviter la duplication de code.
+¤  Prévoir un exemple de chooseTower pour choisir les tours soit manuellement, soit aléatoirement.
+¤  Supprimer les méthodes séparées de play et centraliser leur gestion dans play(Board b).
+¤  Gérer également la duplication de code dans les classes Projectil.
+Ce qui a été réalisé
 
-Points identifiés à corriger :
-- Détailler le README
-- Gérer l'affichage des plateaux hors de la classe `Game`
-- Unifier la classe `Balloon`
-- Découper les méthodes `play(Board b)` pour éviter la duplication
-- Prévoir un `chooseTower` (manuel ou aléatoire)
-- Gérer la duplication de code dans les classes `Projectil`
+Nous avons travaillé sur le début du livrable 5, en mettant en place la structure générale. Nous essayons de gérer au mieux la duplication de code, sans toutefois impacter le fonctionnement du livrable 4.
+Difficultés rencontrées
 
-**Difficultés rencontrées :** Duplication de code, suivi d'une approche orientée objet.
+¤  Duplication de code dans plusieurs classes.
+¤  Suivi d’une approche orientée objet.
+Objectifs pour la semaine et répartition du travail par membre
 
-**Objectifs pour la semaine suivante :** Améliorer la duplication de code, finaliser le livrable 4, gérer les actions du joueur.
-
----
+Améliorer au mieux la duplication de code.
+Finaliser le livrable 4.
+Gérer les actions du joueur.
 
 ### Semaine 10
 **Ce qui a été réalisé :** Refonte de la classe `Balloon` pour simplifier sa conception (suppression de la séparation selon les deux types de plateaux, réécriture en version plus POO).

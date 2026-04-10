@@ -1,29 +1,24 @@
 package board.typeOfBoard;
 
 import board.*;
+import entity.tower.Tower;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * A board with a randomly generated path.
- * The path can go up, down, left, or right.
- * Each cell is used only once to avoid loops.
- */
+
 public class DefinedBoard extends Board {
 
-    // List of cells that form the path
-    private List<Cell> chemins;
-
-    // Last cell of the path (used to continue the generation)
+    /**
+     * Les attributs de DefinedBoard
+     * un point de depart
+     */
     private Position cheminAv;
-
-    // Starting position of the path
     private Position pointDeDepart;
 
     /**
-     * Constructor for DefinedBoard.
+     * Constructeur de DefinedBoard.
      *
      * @param height Height of the board (top to bottom)
      * @param width  Width of the board (left to right)
@@ -33,138 +28,112 @@ public class DefinedBoard extends Board {
     }
 
     /**
-     * Initializes the board by creating the grid
-     * and starting the path generation.
+     * Initialiser le board
      */
     @Override
     public void init() {
+<<<<<<< HEAD
         chemins = new ArrayList<>();
         grid = new Cell[height][width]; // tableau 2D des cellules
+=======
+        grid = new Cell[height][width];
+>>>>>>> origin/main
         for (int r = 0; r < height; r++) {
             for (int c = 0; c < width; c++) {
                 grid[r][c] = new Cell(new Position(r, c));
             }
         }
-        // Génération du chemin après création de la grille
         calculerPath();
     }
 
-    /**
-     * Returns the list of cells that form the path.
-     *
-     * @return the list of path cells
-     */
-    public List<Cell> getChemins() {
-        return chemins;
-    }
 
     /**
-     * Returns the length of the path.
-     *
-     * @return path length
+     * Retourner la longueur du chemin
+     * @return la longeur du chemin
      */
     public int getCheminLong() {
-        return chemins.size();
+        return this.allCells.size();
     }
 
     /**
-     * Checks if a position is on the board border.
-     *
-     * @param p the position to check
-     * @return true if the position is on a border, false otherwise
+     * Verifier si une pos est le bord du board
+     * @param p la pos a verifier
+     * @return true si pos est le bord, false sinon
      */
     public boolean isBord(Position p) {
         return p.getRow() == 0 || p.getRow() == this.height - 1
-            || p.getCol() == 0 || p.getCol() == this.width - 1;
+                || p.getCol() == 0 || p.getCol() == this.width - 1;
     }
 
     /**
-     * Generates a random path.
-     * The path starts on a border and ends on a different border cell.
+     * Creer un chemin aleatoire
+     * Le chemin commence du point de depart 
      */
     @Override
     public void calculerPath() {
         Random rand = new Random();
 
-        /* Ici c'est la taille minimum pour le chemin.
-         * Cela nous aide à éviter les chemins trop courts.
-         */
         int minLen = (this.width + this.height) / 2;
 
-        // Crée toutes les cellules de départ possibles (tous les bords)
-        // Certaines cellules peuvent apparaître deux fois pour éviter un biais du random
         List<Position> listPositions = new ArrayList<>();
 
-        // Première et dernière ligne
         for (int j = 0; j < width; j++) {
             listPositions.add(new Position(0, j));
             listPositions.add(new Position(height - 1, j));
         }
 
-        // Première et dernière colonne
         for (int i = 1; i < height - 1; i++) {
             listPositions.add(new Position(i, 0));
             listPositions.add(new Position(i, width - 1));
         }
 
-        // Choix aléatoire du point de départ
         Position pRandom = listPositions.get(rand.nextInt(listPositions.size()));
         pointDeDepart = pRandom;
         cheminAv = pRandom;
 
-        // Marquer la cellule de départ comme faisant partie du chemin
-        getCell(pRandom).assignChemin();
-        chemins.add(getCell(pRandom));
+        getCell(pRandom.getRow(),pRandom.getCol()).assignChemin();
+        this.allCells.add(getCell(pRandom.getRow(),pRandom.getCol()));
 
-        // Liste des positions bloquées (non utilisables)
         List<Position> bloque = new ArrayList<>();
         boolean fin = false;
 
         while (!fin) {
-            // Liste des voisins valides (haut, bas, gauche, droite)
             List<Position> mesChoix = new ArrayList<>();
 
-            // voisin gauche
             if (cheminAv.getCol() != 0) {
                 Position voisin = new Position(cheminAv.getRow(), cheminAv.getCol() - 1);
-                if (getCell(voisin).estVide() && !bloque.contains(voisin)) {
+                if (getCell(voisin.getRow(),voisin.getCol()).estVide() && !bloque.contains(voisin)) {
                     mesChoix.add(voisin);
                 }
             }
 
-            // voisin droit
             if (cheminAv.getCol() != width - 1) {
                 Position voisin = new Position(cheminAv.getRow(), cheminAv.getCol() + 1);
-                if (getCell(voisin).estVide() && !bloque.contains(voisin)) {
+                if (getCell(voisin.getRow(),voisin.getCol()).estVide() && !bloque.contains(voisin)) {
                     mesChoix.add(voisin);
                 }
             }
 
-            // voisin haut
             if (cheminAv.getRow() != 0) {
                 Position voisin = new Position(cheminAv.getRow() - 1, cheminAv.getCol());
-                if (getCell(voisin).estVide() && !bloque.contains(voisin)) {
+                if (getCell(voisin.getRow(),voisin.getCol()).estVide() && !bloque.contains(voisin)) {
                     mesChoix.add(voisin);
                 }
             }
 
-            // voisin bas
             if (cheminAv.getRow() != height - 1) {
                 Position voisin = new Position(cheminAv.getRow() + 1, cheminAv.getCol());
-                if (getCell(voisin).estVide() && !bloque.contains(voisin)) {
+                if (getCell(voisin.getRow(), voisin.getCol()).estVide() && !bloque.contains(voisin)) {
                     mesChoix.add(voisin);
                 }
             }
 
-            // Aucun voisin valide : fin du chemin
             if (mesChoix.isEmpty()) {
                 break;
             }
 
-            /* Empêche le chemin de se terminer trop tôt
-             * juste après le point de départ
-             */
-            if (chemins.size() < minLen) {
+
+            if (this.allCells.size() < minLen) {
                 List<Position> filtre = new ArrayList<>();
                 for (Position p : mesChoix) {
                     if (!(isBord(p) && !p.equals(pointDeDepart))) {
@@ -176,41 +145,62 @@ public class DefinedBoard extends Board {
                 }
             }
 
-            // Choix aléatoire du prochain voisin
             Position randi = mesChoix.get(rand.nextInt(mesChoix.size()));
-            getCell(randi).assignChemin();
-            chemins.add(getCell(randi));
+            getCell(randi.getRow(),randi.getCol()).assignChemin();
+            this.allCells.add(getCell(randi.getRow(), randi.getCol()));
 
-            // Bloque la colonne traversée pour éviter les croisements
             if (cheminAv.getCol() != randi.getCol()) {
                 for (int rr = 0; rr < height; rr++) {
                     bloque.add(new Position(rr, cheminAv.getCol()));
                 }
             }
 
-            // Mise à jour de la cellule précédente
             cheminAv = randi;
 
-            // Arrêt si on atteint un autre bord après la taille minimale
-            if (chemins.size() >= minLen && isBord(randi) && !randi.equals(pointDeDepart)) {
+            if (this.allCells.size() >= minLen && isBord(randi) && !randi.equals(pointDeDepart)) {
                 fin = true;
             }
         }
+        this.allPath.put(0, this.allCells);
     }
+<<<<<<< HEAD
     public Cell getCell(Position p) {
     return grid[p.getRow()][p.getCol()];
 }
     //pour gerer les ballons qui suivent le chemin
-    public List<Position> getPathPositions() {
-    List<Position> path = new ArrayList<>();
+=======
 
-    for (Cell cell : chemins) {
-        path.add(cell.getPosition());
+>>>>>>> origin/main
+    public List<Position> getPathPositions() {
+        List<Position> path = new ArrayList<>();
+
+        for (Cell cell : allCells) {
+            path.add(cell.getPosition());
+        }
+
+        return path;
     }
 
-    return path;
-}
+    /**
+     * Verifier si un Cell est disponible, donc il n'y a pas de tower
+     * @return true si disponible, false sinon
+     */
+    public boolean isCellAvailable(int row, int col) {
+        if (!isInside(row, col)) {
+            return false;
+        }
+        for (Position p : getPathPositions()) {
+            if (p.getRow() == row && p.getCol() == col) {
+                return false;
+            }
+        }
+        for (Tower t : towers) {
+            if (t.getPosition().getRow() == row && t.getPosition().getCol() == col) {
+                return false;
+            }
+        }
 
+<<<<<<< HEAD
    @Override
    public boolean isCellAvailable(int row, int col) {
     if (!isInside(row, col)) {
@@ -220,4 +210,17 @@ public class DefinedBoard extends Board {
 }
 
 
+=======
+        return true;
+    }
+
+    @Override
+    /**
+     * Retourner la liste des cells
+     * @return une liste des cells
+     */
+    public List<Cell> allCells(){
+        return this.allCells;
+    }
+>>>>>>> origin/main
 }

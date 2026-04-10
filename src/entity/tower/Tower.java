@@ -88,20 +88,24 @@ public abstract class Tower {
      */
     protected abstract Projectil attack(List<Balloon> balloons) throws NotMatchException;
 
-    
+
     /**
      * méthode pour calculer la distance entre la tour et le ballon b
      * @param b le ballon b
      * @return la distance
      */
     public double distanceTo(Balloon b) {
-        double towerRow = position.getRow() + 0.5;
-        double towerCol = position.getCol() + 0.5;
+    double towerRow = position.getRow() + 0.5;
+    double towerCol = position.getCol() + 0.5;
 
-        double dRow = towerRow - b.getLigne();
-        double dCol = towerCol - b.getColonne();
-        return Math.sqrt(dRow * dRow + dCol * dCol);
-    }
+    double balloonRow = b.getLigne() ;
+    double balloonCol = b.getColonne() ;
+
+    double dRow = towerRow - balloonRow;
+    double dCol = towerCol - balloonCol;
+
+    return Math.sqrt(dRow * dRow + dCol * dCol);
+}
 
     /**
      * méthode permettant de déterminer le ballon ciblé par le tir
@@ -175,12 +179,12 @@ public abstract class Tower {
     }
 
     /**
-     * retourne le symbole de la tour pour l'affichage 
+     * retourne le symbole de la tour pour l'affichage
      * @return le symbole de la tour
      */
     public abstract String getSymbol();
     public abstract String getName();
-
+      // setter pour la position
     public void setPosition(Position position){
         this.position = position;
     }
@@ -188,7 +192,13 @@ public abstract class Tower {
     public int getSellPrice(){
         return this.cout / 2;
     }
-
+   //getter 
     public abstract int  getCoutEvolution(TypeEvolution evolution);
+  public double getrow() {
+        return position.getRow();
+    }
 
+    public double getcol() {
+        return position.getCol();
+   }
 }

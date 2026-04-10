@@ -30,7 +30,11 @@ public class IceTower extends Tower {
     public int appliquerEvolution(TypeEvolution typeEvo) {
         return 0;
     }
-
+ /*  
+    * methode d'attaque de la IceTower
+      * @param balloons la liste des ballons presents sur le plateau
+      * @return un projectil si une cible est trouvee, sinon null
+    */
     public Projectil attack(List<Balloon> balloons) throws NotMatchException {
         Balloon target = findTarget(balloons);
         if (target == null) return null;

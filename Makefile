@@ -4,37 +4,46 @@ classes:
 	javac -sourcepath src  \
 		src/board/*.java \
 		src/board/typeOfBoard/*.java \
-		src/object/balloon/*.java \
-		src/object/tower/*.java \
-		src/object/tower/projectil/*.java \
+		src/entity/balloon/*.java \
+		src/entity/tower/*.java \
+		src/entity/tower/projectil/*.java \
 		src/game/*.java \
 		src/Livrables/*.java \
-		src/object/tower/evolution/*.java -d classes
+		src/entity/tower/evolution/*.java \
+		src/ui/*.java \
+		src/choose/*.java \
+		src/choose/action/*.java \
+		src/clock/*.java \
+		src/round/*.java -d classes
 
 tests: classes
 	javac -classpath junit-console.jar:classes \
 		test/board/*.java \
 		test/game/*.java \
-		test/object/balloon/*.java \
-		test/object/tower/*.java -d classes
+		test/entity/balloon/*.java \
+		test/entity/tower/*.java -d classes
 
 runtests: tests
 	java -jar junit-console.jar -classpath classes --scan-class-path
-
 jar: classes
-	jar cvfe livrable4a.jar Livrables.Livrable4a -C classes .
-	jar cvfe livrable4b.jar Livrables.Livrable4b -C classes .
+	jar cvfe LivrableA.jar Livrables.Livrable5 -C classes .
+	jar cvfe LivrableB.jar Livrables.Livrable5 -C classes .  # Copie identique
 
 docs:
 	javadoc -d doc \
-		src/board/*.java \
-		src/board/typeOfBoard/*.java \
-		src/object/balloon/*.java \
-		src/object/tower/*.java \
-		src/object/tower/projectil/*.java \
-		src/game/*.java \
-		src/Livrables/*.java \
-		src/object/tower/evolution/*.java
+        		src/board/*.java \
+        		src/board/typeOfBoard/*.java \
+        		src/entity/balloon/*.java \
+        		src/entity/tower/*.java \
+        		src/entity/tower/projectil/*.java \
+        		src/game/*.java \
+        		src/Livrables/*.java \
+        		src/entity/tower/evolution/*.java \
+        		src/ui/*.java \
+        		src/choose/*.java \
+        		src/choose/action/*.java \
+        		src/clock/*.java \
+        		src/round/*.java
 
 clean:
 	rm -rf classes doc

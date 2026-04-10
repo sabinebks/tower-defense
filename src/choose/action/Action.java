@@ -2,7 +2,9 @@ package choose.action;
 
 import entity.tower.Tower;
 import game.GameContext;
-
+/**
+ * Classe abstraite des actions
+ */
 public abstract class Action {
 
     private Tower tower;

@@ -148,9 +148,11 @@ public class Balloon {
         }
     }
 
-    public void slow(double factor, int duration) {
-        this.slowFactor = factor;
-        this.slowTimer = duration;
+ public void slow(double factor, int duration) {
+        if (this.slowTimer <= 0) {
+            this.slowFactor = factor;
+            this.slowTimer = duration;
+        }
     }
 
     public void remove() { this.active = false; }

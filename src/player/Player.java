@@ -109,7 +109,7 @@ public class Player {
     /**
      * Returns whether the player is still alive (has at least 1 life).
      *
-     * @return true if lives > 0, false otherwise
+     * @return true if lives is greater than 0, false otherwise
      */
     public boolean isAlive() {
         return lives > 0;

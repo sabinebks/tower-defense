@@ -53,19 +53,19 @@ class TowerTest {
         assertEquals(0, dartTower.getPosition().getCol());
     }
 
- @Test
+@Test
 void testTowerDistanceCalculation() {
     Balloon b = new Balloon(3, 3, 4, BalloonType.BASIC);
 
-    // distance depuis la tour
-    double dist = dartTower.distanceTo(b);
-
-    // position réelle du ballon = (3.5, 4.5)
     double expected = Math.sqrt(
-        Math.pow(dartTower.getPosition().getRow() - (3 + 0.5), 2) +
-        Math.pow(dartTower.getPosition().getCol() - (4 + 0.5), 2)
+        Math.pow(dartTower.getPosition().getRow() + 0.5 - b.getLigne(), 2) +
+        Math.pow(dartTower.getPosition().getCol() + 0.5 - b.getColonne(), 2)
     );
 
+    double dist = dartTower.distanceTo(b);
+
+    assertEquals(expected, dist, 0.01);
+}
     assertEquals(expected, dist, 0.01);
 }
 

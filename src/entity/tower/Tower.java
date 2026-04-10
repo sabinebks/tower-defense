@@ -98,8 +98,8 @@ public abstract class Tower {
     double towerRow = position.getRow() + 0.5;
     double towerCol = position.getCol() + 0.5;
 
-    double balloonRow = b.getLigne() + 0.5;
-    double balloonCol = b.getColonne() + 0.5;
+    double balloonRow = b.getLigne() ;
+    double balloonCol = b.getColonne() ;
 
     double dRow = towerRow - balloonRow;
     double dCol = towerCol - balloonCol;

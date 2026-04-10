@@ -32,17 +32,17 @@ public class Balloon {
      * @param type type du ballon (BASIC, MEDIUM, STRONG)
      */
 
-    public Balloon(int id, double startLigne, double startColonne, BalloonType type) {
-        this.id = id;
-        this.posColonne = startColonne;
-        this.posLigne = startLigne;
-        this.type = type;
-        this.active = true;
-        this.exitTime = -1;
-        this.pathIndex = 0;
-        this.health = type.health;
-        this.speed = type.speed;
-    }
+  public Balloon(int id, double startLigne, double startColonne, BalloonType type) {
+    this.id = id;
+    this.posColonne = startColonne + 0.5;
+    this.posLigne = startLigne + 0.5;
+    this.type = type;
+    this.active = true;
+    this.exitTime = -1;
+    this.pathIndex = 0;
+    this.health = type.health;
+    this.speed = type.speed;
+}
     /** Déplace le ballon le long de son chemin.
      * @return true si le ballon est toujours actif après le déplacement, false s'il a atteint la fin du chemin ou est détruit
      */
@@ -252,9 +252,9 @@ public class Balloon {
     }
 
     public void setStartPosition(double ligne, double colonne) {
-        this.posLigne = ligne;
-        this.posColonne = colonne;
-        this.pathIndex = 0;
-        this.progression = 0.0;
-    }
+    this.posLigne = ligne + 0.5;
+    this.posColonne = colonne + 0.5;
+    this.pathIndex = 0;
+    this.progression = 0.0;
+}
 }

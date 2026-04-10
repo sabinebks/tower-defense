@@ -16,8 +16,9 @@ public class BalloonTest {
     void testConstructorInitialisation() {
         Balloon balloon = new Balloon(1, 2, 3, BalloonType.BASIC);
 
-        assertEquals(2.0, balloon.getLigne(), 0.01);
-        assertEquals(3.0, balloon.getColonne(), 0.01);
+
+        assertEquals(2.5, balloon.getLigne(), 0.01);
+        assertEquals(3.5, balloon.getColonne(), 0.01);
         assertEquals(1, balloon.getHealth());
         assertTrue(balloon.isActive());
     }

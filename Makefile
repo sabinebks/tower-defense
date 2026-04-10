@@ -22,7 +22,8 @@ tests: classes
 		test/board/*.java \
 		test/game/*.java \
 		test/entity/balloon/*.java \
-		test/entity/tower/*.java -d classes
+		test/entity/tower/*.java \
+		test/choose/action/*.java -d classes
 
 runtests: tests
 	java -jar junit-console.jar -classpath classes --scan-class-path

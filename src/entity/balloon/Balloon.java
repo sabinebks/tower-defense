@@ -47,59 +47,38 @@ public class Balloon {
      * @return true si le ballon est toujours actif après le déplacement, false s'il a atteint la fin du chemin ou est détruit
      */
 
-    public boolean move() {
-        if (!active) return false;
-        if (path == null || path.isEmpty()) return false;
-        if (pathIndex >= path.size()) {
-            active = false;
-            escaped = true;
-            return false;
+    public boolean move(){
+        if (freezeTimer > 0 || path == null || pathIndex >= path.size()) {
+            return active;
         }
-        if (freezeTimer > 0) return true;
 
-        double Speed = getEffectiveSpeed();
-        if (Speed <= 0) return true;
+        Position target = path.get(pathIndex);
+        double targetLigne = target.getRow() + 0.5;
+        double targetColonne = target.getCol() + 0.5;
 
-        double remaining = Speed;
+        double effectiveSpeed = getEffectiveSpeed();
+        double deltaLigne = targetLigne - posLigne;
+        double deltaColonne = targetColonne - posColonne;
+        double distanceToTarget = Math.sqrt(deltaLigne * deltaLigne + deltaColonne * deltaColonne);
 
-        while (remaining > 0 && pathIndex < path.size()) {
-            Position current = path.get(pathIndex);
+        if (distanceToTarget <= effectiveSpeed) {
+            posLigne = targetLigne;
+            posColonne = targetColonne;
+            pathIndex++;
+            progression = 0.0;
 
-            double distToNext = 1.0 - progression;
-
-            if (remaining >= distToNext) {
-                remaining -= distToNext;
-                progression = 0.0;
-                pathIndex++;
-
-                if (pathIndex >= path.size()) {
-                    active = false;
-                    escaped = true;
-                    Position last = path.get(path.size() - 1);
-                    posLigne = last.getRow() + 0.5;
-                    posColonne = last.getCol() + 0.5;
-                    return false;
-                }
-            } else {
-                progression += remaining;
-                remaining = 0;
+            if (pathIndex >= path.size()) {
+                active = false;
+                escaped = true;
+                exitTime = 0; // Peut être mis à jour par le gestionnaire de jeu
             }
+        } else {
+            progression += effectiveSpeed / distanceToTarget;
+            posLigne += deltaLigne * (effectiveSpeed / distanceToTarget);
+            posColonne += deltaColonne * (effectiveSpeed / distanceToTarget);
         }
 
-        if (pathIndex < path.size()) {
-            Position cur = path.get(pathIndex);
-            posLigne = cur.getRow() + 0.5;
-            posColonne = cur.getCol() + 0.5;
-
-            if (pathIndex + 1 < path.size() && progression > 0) {
-                int nextIndex = Math.min(pathIndex + 1, path.size() - 1);
-                Position next = path.get(nextIndex);
-                posLigne = cur.getRow() + 0.5 + (next.getRow() - cur.getRow()) * progression;
-                posColonne = cur.getCol() + 0.5 + (next.getCol() - cur.getCol()) * progression;
-            }
-        }
-
-        return true;
+        return active;
     }
 
         /**
@@ -199,7 +178,7 @@ public class Balloon {
     }
 
     public int getExitTime() { return exitTime; }
-    public double getColonne() { return posColonne; }
+    public double getColonne() { return posColonne;     }
     public double getLigne() { return posLigne; }
     public List<Position> getPath() { return this.path; }
 

@@ -28,6 +28,7 @@ runtests: tests
 
 jar: classes
 	jar cvfe livrable5.jar Livrables.Livrable5 -C classes .
+
 docs:
 	javadoc -d doc \
         		src/board/*.java \

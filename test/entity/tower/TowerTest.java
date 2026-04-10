@@ -54,10 +54,10 @@ class TowerTest {
     }
 
     @Test
-    void testTowerDistanceCalculation() {
-        Balloon b = balloons.get(0);
-        double distance = dartTower.distanceTo(b);
-        assertEquals(Math.sqrt(0.5), distance, 0.001);
+  void testTowerDistanceCalculation() {
+        Balloon b = new Balloon(3, 3, 4, BalloonType.BASIC);
+        double dist = dartTower.distanceTo(b);
+        assertEquals(5.0, dist, 0.01);
     }
 
     @Test

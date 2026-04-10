@@ -70,7 +70,6 @@ public class BalloonTest {
     }
 
     @Test
- /*test Slow Reduces slow Speed */
   void testSlowReducesSpeed() {
         Balloon balloon = new Balloon(1, 0, 0, BalloonType.BASIC);
 

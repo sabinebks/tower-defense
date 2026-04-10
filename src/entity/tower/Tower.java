@@ -190,5 +190,11 @@ public abstract class Tower {
     }
 
     public abstract int  getCoutEvolution(TypeEvolution evolution);
+  public double getrow() {
+        return position.getRow();
+    }
 
+    public double getcol() {
+        return position.getCol();
+   }
 }

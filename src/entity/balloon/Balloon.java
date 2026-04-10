@@ -47,39 +47,69 @@ public class Balloon {
      * @return true si le ballon est toujours actif après le déplacement, false s'il a atteint la fin du chemin ou est détruit
      */
 
-    public boolean move(){
-        if (freezeTimer > 0 || path == null || pathIndex >= path.size()) {
-            return active;
-        }
+    public boolean move() {
+    if (!active) return false;
+    if (path == null || path.isEmpty()) return false;
 
-        Position target = path.get(pathIndex);
-        double targetLigne = target.getRow() + 0.5;
-        double targetColonne = target.getCol() + 0.5;
+    if (pathIndex >= path.size()) {
+        active = false;
+        escaped = true;
+        return false;
+    }
 
-        double effectiveSpeed = getEffectiveSpeed();
-        double deltaLigne = targetLigne - posLigne;
-        double deltaColonne = targetColonne - posColonne;
-        double distanceToTarget = Math.sqrt(deltaLigne * deltaLigne + deltaColonne * deltaColonne);
+    if (freezeTimer > 0) return true;
 
-        if (distanceToTarget <= effectiveSpeed) {
-            posLigne = targetLigne;
-            posColonne = targetColonne;
-            pathIndex++;
+    double speed = getEffectiveSpeed();
+    if (speed <= 0) return true;
+
+    double remaining = speed;
+
+    while (remaining > 0 && pathIndex < path.size()) {
+        double distToNext = 1.0 - progression;
+
+        if (remaining >= distToNext) {
+            remaining -= distToNext;
             progression = 0.0;
+            pathIndex++;
 
             if (pathIndex >= path.size()) {
                 active = false;
                 escaped = true;
-                exitTime = 0; // Peut être mis à jour par le gestionnaire de jeu
-            }
-        } else {
-            progression += effectiveSpeed / distanceToTarget;
-            posLigne += deltaLigne * (effectiveSpeed / distanceToTarget);
-            posColonne += deltaColonne * (effectiveSpeed / distanceToTarget);
-        }
 
-        return active;
+                Position last = path.get(path.size() - 1);
+                posLigne = last.getRow() + 0.5;
+                posColonne = last.getCol() + 0.5;
+
+                return false;
+            }
+
+        } else {
+            progression += remaining;
+            remaining = 0;
+        }
     }
+
+    //  Position mise à jour  avec progression
+    if (pathIndex < path.size()) {
+        Position cur = path.get(pathIndex);
+
+        if (pathIndex + 1 < path.size()) {
+            Position next = path.get(pathIndex + 1);
+
+            posLigne = cur.getRow() + 0.5 
+                     + (next.getRow() - cur.getRow()) * progression;
+
+            posColonne = cur.getCol() + 0.5 
+                       + (next.getCol() - cur.getCol()) * progression;
+
+        } else {
+            posLigne = cur.getRow() + 0.5;
+            posColonne = cur.getCol() + 0.5;
+        }
+    }
+
+    return true;
+}
 
         /**
          * Calcule la vitesse effective du ballon en tenant compte des effets de gel et de ralentissement.
@@ -193,11 +223,12 @@ public class Balloon {
             this.pathIndex = 0;
             this.progression = 0.0;
         }
+    }
 
-     public void setStartPosition(double ligne, double colonne) {
-            this.posLigne = ligne;
-            this.posColonne = colonne;
-            this.pathIndex = 0;
-            this.progression = 0.0;
+    public void setStartPosition(double ligne, double colonne) {
+        this.posLigne = ligne;
+        this.posColonne = colonne;
+        this.pathIndex = 0;
+        this.progression = 0.0;
     }
 }

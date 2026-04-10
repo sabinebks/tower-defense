@@ -25,9 +25,8 @@ tests: classes
 
 runtests: tests
 	java -jar junit-console.jar -classpath classes --scan-class-path
-
 jar: classes
-	jar cvfe livrable5.jar Livrables.Livrable5 -C classes .
+	jar cvfe LivrableA.jar Livrables.Livrable5 -C classes .
 
 docs:
 	javadoc -d doc \

@@ -14,7 +14,8 @@ classes:
 		src/choose/*.java \
 		src/choose/action/*.java \
 		src/clock/*.java \
-		src/round/*.java -d classes
+		src/round/*.java
+		src/player/*.java \ -d classes
 
 tests: classes
 	javac -classpath junit-console.jar:classes \
@@ -44,6 +45,7 @@ docs:
         		src/choose/action/*.java \
         		src/clock/*.java \
         		src/round/*.java
+				src/player/*.java
 
 clean:
 	rm -rf classes doc

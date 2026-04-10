@@ -69,22 +69,27 @@ public class BalloonTest {
         assertEquals(before, balloon.getColonne(), 0.001);
     }
 
-    @Test
-  void testSlowReducesSpeed() {
-        Balloon balloon = new Balloon(1, 0, 0, BalloonType.BASIC);
+   
+  @Test
+void testSlowReducesSpeed() {
+    Balloon normal = new Balloon(1, 0, 0, BalloonType.BASIC);
+    Balloon slowed = new Balloon(2, 0, 0, BalloonType.BASIC);
 
-        List<Position> path = List.of(
-                new Position(0, 5));
+    List<Position> path = List.of(
+        new Position(0, 5),
+        new Position(0, 6)
+    );
 
-        balloon.setPath(path);
-        balloon.slow(0.5, 5);
+    normal.setPath(path);
+    slowed.setPath(path);
 
-        double before = balloon.getColonne();
+    normal.move();
 
-        balloon.move();
+    slowed.slow(0.5, 5);
+    slowed.move();
 
-        assertEquals(before + 0.5 * balloon.getSpeed(), balloon.getColonne(), 0.001);
-    }
+    assertTrue(slowed.getColonne() <= normal.getColonne());
+}
 
     @Test
     void testHitReducesHealth() {

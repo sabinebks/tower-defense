@@ -137,7 +137,8 @@ public class Balloon {
 
         return false;
     }
-
+/** Met à jour les timers de gel et de ralentissement du ballon. Doit être appelé à chaque tic de jeu.
+     */
     public void update() {
         if (freezeTimer > 0) freezeTimer--;
         if (slowTimer > 0) {
@@ -156,17 +157,27 @@ public class Balloon {
             this.freezeTimer = duration;
         }
     }
-
+/* Applique un effet de ralentissement au ballon, réduisant sa vitesse pendant une durée donnée.
+     *
+     * @param factor le facteur de ralentissement
+     * @param duration la durée du ralentissement en tics
+     */
  public void slow(double factor, int duration) {
         if (this.slowTimer <= 0) {
             this.slowFactor = factor;
             this.slowTimer = duration;
         }
     }
-
+/* Force la destruction du ballon, le retirant du jeu.
+     */
     public void remove() { this.active = false; }
-
+/* Indique que le ballon a atteint la fin du chemin et a échappé.
+     */
     public boolean hasEscaped() { return escaped; }
+    /** Indique si le ballon est actif.
+     * 
+     * @return true si le ballon est actif, false sinon
+     */
     public boolean isActive() {
         return active;
     }
@@ -206,10 +217,25 @@ public class Balloon {
     public BalloonType getType() {
         return type;
     }
-
+/* Retourne le temps d'évasion du ballon, ou -1 s'il n'a pas encore échappé.
+     * 
+     * @return le temps d'évasion
+     */
     public int getExitTime() { return exitTime; }
+    /* Retourne la position actuelle en colonne du ballon.
+     * 
+     * @return la position en colonne
+     */
     public double getColonne() { return posColonne;     }
+    /* Retourne la position actuelle en ligne du ballon.
+     * 
+     * @return la position en ligne
+     */
     public double getLigne() { return posLigne; }
+    /* Retourne le chemin que suit le ballon.
+     * 
+     * @return la liste de positions du chemin
+     */
     public List<Position> getPath() { return this.path; }
 
     // ===== SETTTERS =====

@@ -95,13 +95,17 @@ public abstract class Tower {
      * @return la distance
      */
     public double distanceTo(Balloon b) {
-        double towerRow = position.getRow() + 0.5;
-        double towerCol = position.getCol() + 0.5;
+    double towerRow = position.getRow() + 0.5;
+    double towerCol = position.getCol() + 0.5;
 
-        double dRow = towerRow - b.getLigne();
-        double dCol = towerCol - b.getColonne();
-        return Math.sqrt(dRow * dRow + dCol * dCol);
-    }
+    double balloonRow = b.getLigne() + 0.5;
+    double balloonCol = b.getColonne() + 0.5;
+
+    double dRow = towerRow - balloonRow;
+    double dCol = towerCol - balloonCol;
+
+    return Math.sqrt(dRow * dRow + dCol * dCol);
+}
 
     /**
      * méthode permettant de déterminer le ballon ciblé par le tir

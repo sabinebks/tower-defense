@@ -70,20 +70,21 @@ public class BalloonTest {
     }
 
     @Test
-    void testSlowReducesSpeed() {
+ /*test Slow Reduces slow Speed */
+  void testSlowReducesSpeed() {
         Balloon balloon = new Balloon(1, 0, 0, BalloonType.BASIC);
 
         List<Position> path = List.of(
                 new Position(0, 5));
 
         balloon.setPath(path);
+        balloon.slow(0.5, 5);
 
         double before = balloon.getColonne();
 
-        balloon.slow(0.5, 5);
         balloon.move();
 
-        assertTrue(balloon.getColonne() > before);
+        assertEquals(before + 0.5 * balloon.getSpeed(), balloon.getColonne(), 0.001);
     }
 
     @Test

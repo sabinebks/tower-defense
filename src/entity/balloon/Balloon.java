@@ -203,17 +203,15 @@ public class Balloon {
 
     // ===== SETTTERS =====
 
-    public void setPath(List<Position> path) {
+   public void setPath(List<Position> path) {
         this.path = path;
-        this.pathIndex = 0;
-        this.progression = 0.0;
         if (path != null && !path.isEmpty()) {
             Position start = path.get(0);
             this.posLigne = start.getRow() + 0.5;
             this.posColonne = start.getCol() + 0.5;
+            this.pathIndex = 0;
+            this.progression = 0.0;
         }
-    }
-
 
      public void setStartPosition(double ligne, double colonne) {
             this.posLigne = ligne;

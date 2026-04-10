@@ -66,8 +66,7 @@ void testTowerDistanceCalculation() {
 
     assertEquals(expected, dist, 0.01);
 }
-    assertEquals(expected, dist, 0.01);
-}
+  
 
     @Test
     void testFindTarget() {

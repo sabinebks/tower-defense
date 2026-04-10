@@ -60,7 +60,11 @@ public class DartMonkey extends Tower {
         }
         return cout;
     }
-
+  /*  
+    * methode d'attaque de la DartMonkey
+      * @param balloons la liste des ballons presents sur le plateau
+      * @return un projectil si une cible est trouvee, sinon null
+    */
     public Projectil attack(List<Balloon> balloons) throws NotMatchException {
         Balloon target = findTarget(balloons);
         if (target == null) return null;

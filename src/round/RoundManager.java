@@ -88,7 +88,10 @@ public class RoundManager {
     public boolean hasPlayerLost() { 
         return !player.isAlive(); 
     }
-    
+    /**
+     * Retourner l'index du round courant
+     * @return index du round courant
+     */
     public int getCurrentIndex() { 
         return currentIndex; 
     }

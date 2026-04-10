@@ -90,8 +90,11 @@ public class Game implements ClockListener, GameContext {
         clock.stop();
         board.clearEscapedBalloons();
     }
-
+/* Methode pour lancer le jeu
+     */
     public void start() { isRunning = true; clock.start(); }
+    /* Methode pour arreter le jeu
+     */
     public void stop()  { isRunning = false; clock.stop(); }
 
     @Override public Player getPlayer() { return player; }

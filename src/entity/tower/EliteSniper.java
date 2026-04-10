@@ -55,7 +55,12 @@ public class EliteSniper extends Tower {
         }
         return cout;
     }
-
+ /*
+        * attaque la cible la plus proche dans la portée
+        * @param balloons la liste des ballons sur le plateau
+        * @return un projectil si une cible est touchée, sinon null
+ 
+ */
     public Projectil attack(List<Balloon> balloons) throws NotMatchException {
         Balloon target = findTarget(balloons);
         if (target == null) return null;

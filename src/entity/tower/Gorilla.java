@@ -67,7 +67,11 @@ public class Gorilla extends Tower {
                 return 0;
         }
     }
-
+ /*  
+    * methode d'attaque de la Gorilla
+      * @param balloons la liste des ballons presents sur le plateau
+      * @return un projectil si une cible est trouvee, sinon null
+    ssss*/
     public Projectil attack(List<Balloon> balloons) throws NotMatchException {
         Balloon target = findTarget(balloons);
         if (target == null) return null;

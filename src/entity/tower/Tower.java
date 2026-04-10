@@ -184,7 +184,7 @@ public abstract class Tower {
      */
     public abstract String getSymbol();
     public abstract String getName();
-
+      // setter pour la position
     public void setPosition(Position position){
         this.position = position;
     }
@@ -192,7 +192,7 @@ public abstract class Tower {
     public int getSellPrice(){
         return this.cout / 2;
     }
-
+   //getter 
     public abstract int  getCoutEvolution(TypeEvolution evolution);
   public double getrow() {
         return position.getRow();

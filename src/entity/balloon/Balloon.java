@@ -239,7 +239,10 @@ public class Balloon {
     public List<Position> getPath() { return this.path; }
 
     // ===== SETTTERS =====
-
+   /* Définit le chemin que doit suivre le ballon. Réinitialise la position du ballon au début du chemin.
+     * 
+     * @param path la liste de positions formant le chemin
+     */
    public void setPath(List<Position> path) {
         this.path = path;
         if (path != null && !path.isEmpty()) {
@@ -250,7 +253,11 @@ public class Balloon {
             this.progression = 0.0;
         }
     }
-
+ /* Définit la position de départ du ballon.
+     * 
+     * @param ligne la ligne de la position de départ
+     * @param colonne la colonne de la position de départ
+     */
     public void setStartPosition(double ligne, double colonne) {
     this.posLigne = ligne + 0.5;
     this.posColonne = colonne + 0.5;

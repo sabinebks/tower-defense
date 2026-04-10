@@ -27,6 +27,7 @@ runtests: tests
 	java -jar junit-console.jar -classpath classes --scan-class-path
 jar: classes
 	jar cvfe LivrableA.jar Livrables.Livrable5 -C classes .
+	jar cvfe LivrableB.jar Livrables.Livrable5 -C classes .  # Copie identique
 
 docs:
 	javadoc -d doc \

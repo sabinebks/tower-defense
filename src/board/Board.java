@@ -153,7 +153,6 @@ public abstract class Board {
      * @return la liste des ballons efface
      */
     public List<Balloon> update() {
-
         for (Tower tower : towers) {
             try {
                 tower.update(this.balloons, this.activeProjectiles);
@@ -171,13 +170,13 @@ public abstract class Board {
             balloon.update();
             balloon.move();
         }
+
         List<Balloon> toRemove = new ArrayList<>();
         for (Balloon balloon : this.balloons) {
             if (balloon.hasEscaped()) {
                 escapedBalloons.add(balloon);
                 toRemove.add(balloon);
             }
-
             if (balloon.getHealth() <= 0 || !balloon.isActive()) {
                 toRemove.add(balloon);
             }

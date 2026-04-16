@@ -32,7 +32,7 @@ public class Livrable5 {
      * Le nombre de fps static
      * Un board
      * Un joueur
-     * Un shop 
+     * Un shop
      * Un game
      * Le nombre de ballons
      * Un boolean verifie si c'est le joueur ou auto
@@ -51,7 +51,7 @@ public class Livrable5 {
     private final Random rng = new Random();
 
     /**
-     * Constructeur 
+     * Constructeur
      * @param hauteur hauteur du board
      * @param largeur largeur du board
      * @param nbBallons le nombre de ballon
@@ -135,7 +135,6 @@ public class Livrable5 {
                 applyRoundEvolution(roundNum);
             }
 
-
             game.runOneRound();
 
             if (game.hasPlayerLost()) {
@@ -146,13 +145,14 @@ public class Livrable5 {
                 return;
             }
 
-            if (game.getBoard().getEscapedBalloons().isEmpty()) {
+            int escaped = game.getEscapedCount();
+            if (escaped == 0) {
                 player.addCredit(REWARD_PER_ROUND);
                 System.out.println(">>> Round parfait ! +" + REWARD_PER_ROUND
                         + " credits. Total : " + player.getCredit()
                         + " | Vies : " + player.getLives());
             } else {
-                System.out.println(">>> " + game.getBoard().getEscapedBalloons().size() + " ballon(s) echappe(s) ce round."
+                System.out.println(">>> " + escaped + " ballon(s) echappe(s) ce round."
                         + " Pas de recompense. Credits : " + player.getCredit()
                         + " | Vies : " + player.getLives());
             }

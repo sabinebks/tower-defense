@@ -47,7 +47,7 @@ public class Game implements ClockListener, GameContext {
     }
 
     /**
-     * Afficher le board a chaque tick du jeu
+     * Afficher le board a chaque tick du jeu (utilise uniquement par start/stop)
      * @param tickCount le tick
      */
     @Override
@@ -55,8 +55,8 @@ public class Game implements ClockListener, GameContext {
         if (!isRunning) return;
 
         System.out.println("TICK " + tickCount);
-        roundManager.update(tickCount);
-        List<Balloon> removed = board.update();
+
+        List<Balloon> removed = roundManager.update(tickCount);
 
         for (Balloon b : removed) {
             if (!b.hasEscaped()) {
@@ -71,29 +71,44 @@ public class Game implements ClockListener, GameContext {
     }
 
     /**
-     * Methode lancer 1 round du jeu
+     * Methode lancer 1 round du jeu de facon synchrone (sans thread Clock)
      */
     public void runOneRound() {
-        clock.reset();
-        isRunning = true;
-        clock.start();
-
-        try { Thread.sleep(1000L / clock.getFps() + 50); }
-        catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+        int tickCount = 0;
+        long delay = 1000L / clock.getFps();
 
         while (!roundManager.isCurrentRoundFinished() && player.isAlive()) {
-            try { Thread.sleep(50); }
+            tickCount++;
+            System.out.println("TICK " + tickCount);
+
+            List<Balloon> removed = roundManager.update(tickCount);
+
+            for (Balloon b : removed) {
+                if (!b.hasEscaped()) {
+                    int reward = b.getType().reward;
+                    player.addCredit(reward);
+                    System.out.println(">>> Ballon detruit ! +" + reward
+                            + " credits. Total: " + player.getCredit());
+                }
+            }
+
+            this.renderer.render(board);
+
+            try { Thread.sleep(delay); }
             catch (InterruptedException e) { Thread.currentThread().interrupt(); }
         }
 
-        isRunning = false;
-        clock.stop();
+        roundManager.advanceRound();
         board.clearEscapedBalloons();
     }
-/* Methode pour lancer le jeu
+
+    /**
+     * Methode pour lancer le jeu (mode continu avec Clock)
      */
     public void start() { isRunning = true; clock.start(); }
-    /* Methode pour arreter le jeu
+
+    /**
+     * Methode pour arreter le jeu
      */
     public void stop()  { isRunning = false; clock.stop(); }
 
@@ -116,5 +131,11 @@ public class Game implements ClockListener, GameContext {
         return roundManager.hasPlayerLost();
     }
 
-
+    /**
+     * Retourner le nombre de ballons echappes lors du dernier round
+     * @return nombre de ballons echappes
+     */
+    public int getEscapedCount() {
+        return roundManager.getEscapedCount();
+    }
 }

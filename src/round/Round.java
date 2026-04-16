@@ -1,5 +1,6 @@
 package round;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import entity.balloon.Balloon;
@@ -48,5 +49,15 @@ public class Round {
      */
     public boolean getState(){
         return this.state;
+    }
+
+    private List<Balloon> escapedBalloons = new ArrayList<>();
+
+    public void addEscaped(Balloon b) {
+        escapedBalloons.add(b);
+    }
+
+    public List<Balloon> getEscapedBalloons() {
+        return escapedBalloons;
     }
 }

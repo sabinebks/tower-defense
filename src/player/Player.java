@@ -28,7 +28,6 @@ public class Player {
 
     /**
      * Creates a new Player with a given credit amount and action chooser.
-     * Lives are initialized to {@value #INITIAL_LIVES}.
      *
      * @param credit  Starting credits
      * @param chooser The action chooser (human or automatic)

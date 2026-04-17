@@ -7,4 +7,9 @@ import game.GameContext;
 public abstract class Action {
     public abstract void execute(GameContext game);
     public abstract String getDescription();
+
+    public boolean isAllowedForAuto() {
+          return true;
+      }
+
 }

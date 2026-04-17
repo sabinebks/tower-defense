@@ -18,4 +18,9 @@ public class QuitAction extends Action {
      * @return une description
      */
     public String getDescription() { return "Quitter le jeu"; }
+
+    @Override
+    public boolean isAllowedForAuto() {
+        return false;
+    }
 }

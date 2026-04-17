@@ -16,12 +16,19 @@ public class AutoListChooser<T extends choose.action.Action>  implements ListCho
      * Methode retourner le
      * @param options l'option 
      */
-    public T choose(String p, List<T> options){
-        if(options.isEmpty()){
-            return null;
-        }
-        T choice = options.get(index % options.size());
-        index++;
-        return choice;
-    }
+      public T choose(String p, List<T> options) {
+          if (options.isEmpty()) {
+              return null;
+          }
+          int size = options.size();
+          for (int i = 0; i < size; i++) {
+              T choice = options.get(index % size);
+              index++;
+              if (choice.isAllowedForAuto()) {
+                  return choice;
+              }
+          }
+          return options.get(0);
+      }
+
 }

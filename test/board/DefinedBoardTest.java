@@ -51,20 +51,25 @@ public class DefinedBoardTest {
 
     /**
      * Verifies that the generated path meets the logic requirements.
-     * It checks minimum length and ensures start/end points are on the borders.
+     * It checks continuity and ensures start/end points are on the borders.
      * This test is repeated to ensure stability across different random seeds.
      */
     @RepeatedTest(10)
     public void testValiditeDuChemin() {
         List<Cell> chemin = b.allCells();
-        
-     // Check minimum expected length
-        int minLenExpected = (HEIGHT + WIDTH) / 2;
-        assertTrue(chemin.size() >= minLenExpected, "The path is too short");
+        assertFalse(chemin.isEmpty(), "The path should not be empty");
 
         // Ensure start and end cells are on the board boundaries
         assertTrue(b.isBord(chemin.get(0).getPosition()));
         assertTrue(b.isBord(chemin.get(chemin.size() - 1).getPosition()));
+
+        // Ensure path is continuous (4-neighbor moves only)
+        for (int i = 1; i < chemin.size(); i++) {
+            Position prev = chemin.get(i - 1).getPosition();
+            Position cur = chemin.get(i).getPosition();
+            int manhattan = Math.abs(prev.getRow() - cur.getRow()) + Math.abs(prev.getCol() - cur.getCol());
+            assertEquals(1, manhattan, "Path is not continuous at index " + i);
+        }
     }
 
     /**

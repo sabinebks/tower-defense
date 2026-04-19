@@ -1,3 +1,5 @@
+.PHONY: all classes tests runtests jar docs clean
+
 all: classes
 
 classes:
@@ -21,6 +23,7 @@ tests: classes
 	javac -classpath junit-console.jar:classes \
 		test/board/*.java \
 		test/game/*.java \
+		test/round/*.java \
 		test/entity/balloon/*.java \
 		test/entity/tower/*.java \
 		test/choose/action/*.java -d classes

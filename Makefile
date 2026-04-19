@@ -22,7 +22,7 @@ classes:
 tests: classes
 	javac -classpath junit-console.jar:classes \
 		test/board/*.java \
-		test/game/*.java \
+		test/player/*.java \
 		test/round/*.java \
 		test/entity/balloon/*.java \
 		test/entity/tower/*.java \

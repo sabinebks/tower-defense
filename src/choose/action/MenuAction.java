@@ -1,24 +1,25 @@
-// action/MenuAction.java
 package choose.action;
-
 
 import game.GameContext;
 
 import java.util.List;
 
+/**
+ * menu action
+ */
 public class MenuAction extends Action {
+
     /**
-     * Les attributs 
-     * un description de la classe
-     * une liste des actions 
+     * description
+     * list of actions
      */
     private final String des;
     private final List<Action> actions;
 
     /**
-     * Le menu des actions du jeu
-     * @param des la description
-     * @param actions les actions
+     * constructor
+     * @param des the description
+     * @param actions the actions list
      */
     public MenuAction(String des, List<Action> actions) {
         this.des = des;
@@ -27,13 +28,15 @@ public class MenuAction extends Action {
 
     @Override
     /**
-     * Methode execute l'action de la classe
-     * @param ctx le context du jeu
+     * execute action
+     * @param ctx the game context
      */
     public void execute(GameContext ctx) {
         boolean done = false;
+
         while (!done) {
             Action a = ctx.getPlayer().chooseAction(actions, ctx);
+
             if (a instanceof RetourAction) {
                 done = true;
             } else {
@@ -45,8 +48,10 @@ public class MenuAction extends Action {
 
     @Override
     /**
-     * Description de la classe
-     * @return la description de la classe
+     * description
+     * @return description
      */
-    public String getDescription() { return des; }
+    public String getDescription() {
+        return des;
+    }
 }

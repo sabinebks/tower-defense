@@ -1,15 +1,24 @@
-
 package choose.action;
 
 import game.GameContext;
-
+/**
+ * retour action
+ */
 public class RetourAction extends Action {
     @Override
-    public void execute(GameContext ctx) {  }
+    /**
+     * return to menu
+     * @param ctx the game context
+     */
+    public void execute(GameContext ctx) {
+    }
+
     @Override
     /**
-     * Methode retourner au menu??
-     * @return une description de l'action
+     * description
+     * @return description
      */
-    public String getDescription() { return " Retour"; }
+    public String getDescription() {
+        return "retour";
+    }
 }

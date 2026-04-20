@@ -49,8 +49,14 @@ public abstract class Board {
     /** Returns the path as positions */
     public abstract List<Position> getPathPositions();
 
-    /** Returns all cells */
-    public abstract List<Cell> allCells();
+     /**
+     * Return all cells of the board.
+     *
+     * @return list of all cells
+     */
+    public List<Cell> allCells() {
+        return allCells;
+    }
 
     /**
      * Returns a cell at given row and column.

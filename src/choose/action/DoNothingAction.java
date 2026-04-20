@@ -2,21 +2,25 @@ package choose.action;
 
 import game.GameContext;
 
-public class DoNothingAction extends Action{
+/**
+ * do nothing action
+ */
+public class DoNothingAction extends Action {
 
     /**
-     * Methode de ne rien faire
+     * do nothing
+     * @param game the game context
      */
     @Override
-    public void execute(GameContext game){
+    public void execute(GameContext game) {
     }
 
     /**
-     * La description de l'action
-     * @return la description
+     * action description
+     * @return description
      */
     @Override
-    public String getDescription(){
-        return "Ne rien faire";
+    public String getDescription() {
+        return "ne rien faire";
     }
 }

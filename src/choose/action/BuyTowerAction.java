@@ -1,40 +1,42 @@
 package choose.action;
 
-import board.Board;
+
 import board.Position;
 import game.GameContext;
 import player.Player;
 import entity.tower.Tower;
-import player.Shop;
 
-public class BuyTowerAction extends Action{
+
+/**
+ * buy tower action
+ */
+public class BuyTowerAction extends Action {
     /**
-     * Les attributs de buy tower
-     * Un tower
-     * Une position a placer
+     * tower to buy
+     * position to place it
      */
     private Tower tower;
     private Position pos;
 
     /**
-     * Le constructeur
-     * @param t le tower voulu acheter
-     * @param p la pos voulu placer
+     * constructor
+     * @param t the tower to buy
+     * @param p the position to place it
      */
-    public BuyTowerAction(Tower t, Position p){
+    public BuyTowerAction(Tower t, Position p) {
         this.tower = t;
         this.pos = p;
     }
 
     @Override
     /**
-     * Executer l'action : acheter le tower et le place dans la pos voulu
-     * @param game le game context
+     * execute the action: buy and place the tower
+     * @param game the game context
      */
-    public void execute(GameContext game){
-
+    public void execute(GameContext game) {
         Player player = game.getPlayer();
-        if(player.getCredit() >= tower.getCost()){
+
+        if (player.getCredit() >= tower.getCost()) {
             player.buyTower(this.tower);
             game.getBoard().placeTower(this.tower, this.pos);
         }
@@ -42,11 +44,10 @@ public class BuyTowerAction extends Action{
 
     @Override
     /**
-     * La description de l'action
-     * @return un string de description
+     * description of the action
+     * @return text description
      */
-    public String getDescription(){
-        return "Acheter " + tower.getName() + " (" + tower.getCost() + "crédits)";
-
+    public String getDescription() {
+        return "buy " + tower.getName() + " (" + tower.getCost() + " credits)";
     }
 }

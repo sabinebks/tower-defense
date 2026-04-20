@@ -2,37 +2,42 @@ package board.typeOfBoard;
 
 import board.*;
 import entity.tower.Tower;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-
+/**
+ * This class represents a defined board.
+ * The path is generated randomly but must stay connected
+ * from a start position to a border exit.
+ */
 public class DefinedBoard extends Board {
-
     /**
-     * Les attributs de DefinedBoard
-     * un point de depart
+     * Current position of the path
      */
     private Position cheminAv;
+
+    /**
+     * Starting position of the path
+     */
     private Position pointDeDepart;
 
     /**
-     * Constructeur de DefinedBoard.
+     * Create a defined board.
      *
-     * @param height Height of the board (top to bottom)
-     * @param width  Width of the board (left to right)
+     * @param height board height
+     * @param width board width
      */
     public DefinedBoard(int height, int width) {
         super(height, width);
     }
 
     /**
-     * Initialiser le board
+     * Initialize the board with empty cells.
      */
     @Override
     public void init() {
         grid = new Cell[height][width];
+
         for (int r = 0; r < height; r++) {
             for (int c = 0; c < width; c++) {
                 grid[r][c] = new Cell(new Position(r, c));
@@ -41,19 +46,20 @@ public class DefinedBoard extends Board {
         calculerPath();
     }
 
-
     /**
-     * Retourner la longueur du chemin
-     * @return la longeur du chemin
+     * Return the length of the path.
+     *
+     * @return number of cells in the path
      */
     public int getCheminLong() {
         return this.allCells.size();
     }
 
     /**
-     * Verifier si une pos est le bord du board
-     * @param p la pos a verifier
-     * @return true si pos est le bord, false sinon
+     * Check if a position is on the border of the board.
+     *
+     * @param p position to check
+     * @return true if border, false otherwise
      */
     public boolean isBord(Position p) {
         return p.getRow() == 0 || p.getRow() == this.height - 1
@@ -61,8 +67,8 @@ public class DefinedBoard extends Board {
     }
 
     /**
-     * Creer un chemin aleatoire
-     * Le chemin commence du point de depart 
+     * Generate a random connected path on the board.
+     * The path starts from a border position and tries to reach another border.
      */
     @Override
     public void calculerPath() {
@@ -72,6 +78,7 @@ public class DefinedBoard extends Board {
 
         List<Position> listPositions = new ArrayList<>();
 
+        // add border positions
         for (int j = 0; j < width; j++) {
             listPositions.add(new Position(0, j));
             listPositions.add(new Position(height - 1, j));
@@ -82,83 +89,95 @@ public class DefinedBoard extends Board {
             listPositions.add(new Position(i, width - 1));
         }
 
-        Position pRandom = listPositions.get(rand.nextInt(listPositions.size()));
-        pointDeDepart = pRandom;
-        cheminAv = pRandom;
+        Position start = listPositions.get(rand.nextInt(listPositions.size()));
+        pointDeDepart = start;
+        cheminAv = start;
 
-        getCell(pRandom.getRow(),pRandom.getCol()).assignChemin();
-        this.allCells.add(getCell(pRandom.getRow(),pRandom.getCol()));
+        getCell(start.getRow(), start.getCol()).assignChemin();
+        this.allCells.add(getCell(start.getRow(), start.getCol()));
 
         List<Position> bloque = new ArrayList<>();
         boolean fin = false;
 
         while (!fin) {
-            List<Position> mesChoix = new ArrayList<>();
 
-            if (cheminAv.getCol() != 0) {
-                Position voisin = new Position(cheminAv.getRow(), cheminAv.getCol() - 1);
-                if (getCell(voisin.getRow(),voisin.getCol()).estVide() && !bloque.contains(voisin)) {
-                    mesChoix.add(voisin);
+            List<Position> choices = new ArrayList<>();
+
+            // check 4 directions
+            if (cheminAv.getCol() > 0) {
+                Position p = new Position(cheminAv.getRow(), cheminAv.getCol() - 1);
+                if (getCell(p.getRow(), p.getCol()).estVide() && !bloque.contains(p)) {
+                    choices.add(p);
                 }
             }
 
-            if (cheminAv.getCol() != width - 1) {
-                Position voisin = new Position(cheminAv.getRow(), cheminAv.getCol() + 1);
-                if (getCell(voisin.getRow(),voisin.getCol()).estVide() && !bloque.contains(voisin)) {
-                    mesChoix.add(voisin);
+            if (cheminAv.getCol() < width - 1) {
+                Position p = new Position(cheminAv.getRow(), cheminAv.getCol() + 1);
+                if (getCell(p.getRow(), p.getCol()).estVide() && !bloque.contains(p)) {
+                    choices.add(p);
                 }
             }
 
-            if (cheminAv.getRow() != 0) {
-                Position voisin = new Position(cheminAv.getRow() - 1, cheminAv.getCol());
-                if (getCell(voisin.getRow(),voisin.getCol()).estVide() && !bloque.contains(voisin)) {
-                    mesChoix.add(voisin);
+            if (cheminAv.getRow() > 0) {
+                Position p = new Position(cheminAv.getRow() - 1, cheminAv.getCol());
+                if (getCell(p.getRow(), p.getCol()).estVide() && !bloque.contains(p)) {
+                    choices.add(p);
                 }
             }
 
-            if (cheminAv.getRow() != height - 1) {
-                Position voisin = new Position(cheminAv.getRow() + 1, cheminAv.getCol());
-                if (getCell(voisin.getRow(), voisin.getCol()).estVide() && !bloque.contains(voisin)) {
-                    mesChoix.add(voisin);
+            if (cheminAv.getRow() < height - 1) {
+                Position p = new Position(cheminAv.getRow() + 1, cheminAv.getCol());
+                if (getCell(p.getRow(), p.getCol()).estVide() && !bloque.contains(p)) {
+                    choices.add(p);
                 }
             }
 
-            if (mesChoix.isEmpty()) {
+            if (choices.isEmpty()) {
                 break;
             }
 
-
+            // force minimum path length
             if (this.allCells.size() < minLen) {
-                List<Position> filtre = new ArrayList<>();
-                for (Position p : mesChoix) {
+                List<Position> filtered = new ArrayList<>();
+
+                for (Position p : choices) {
                     if (!(isBord(p) && !p.equals(pointDeDepart))) {
-                        filtre.add(p);
+                        filtered.add(p);
                     }
                 }
-                if (!filtre.isEmpty()) {
-                    mesChoix = filtre;
+
+                if (!filtered.isEmpty()) {
+                    choices = filtered;
                 }
             }
 
-            Position randi = mesChoix.get(rand.nextInt(mesChoix.size()));
-            getCell(randi.getRow(),randi.getCol()).assignChemin();
-            this.allCells.add(getCell(randi.getRow(), randi.getCol()));
+            Position next = choices.get(rand.nextInt(choices.size()));
 
-            if (cheminAv.getCol() != randi.getCol()) {
-                for (int rr = 0; rr < height; rr++) {
-                    bloque.add(new Position(rr, cheminAv.getCol()));
+            getCell(next.getRow(), next.getCol()).assignChemin();
+            this.allCells.add(getCell(next.getRow(), next.getCol()));
+
+            // block column if needed
+            if (cheminAv.getCol() != next.getCol()) {
+                for (int r = 0; r < height; r++) {
+                    bloque.add(new Position(r, cheminAv.getCol()));
                 }
             }
 
-            cheminAv = randi;
+            cheminAv = next;
 
-            if (this.allCells.size() >= minLen && isBord(randi) && !randi.equals(pointDeDepart)) {
+            if (this.allCells.size() >= minLen && isBord(next) && !next.equals(pointDeDepart)) {
                 fin = true;
             }
         }
+
         this.allPath.put(0, this.allCells);
     }
 
+    /**
+     * Return the path as a list of positions.
+     *
+     * @return list of positions in the path
+     */
     public List<Position> getPathPositions() {
         List<Position> path = new ArrayList<>();
 
@@ -168,35 +187,30 @@ public class DefinedBoard extends Board {
 
         return path;
     }
-
     /**
-     * Verifier si un Cell est disponible, donc il n'y a pas de tower
-     * @return true si disponible, false sinon
+     * Check if a cell is available (no path and no tower).
+     *
+     * @param row row index
+     * @param col column index
+     * @return true if available, false otherwise
      */
     public boolean isCellAvailable(int row, int col) {
         if (!isInside(row, col)) {
             return false;
         }
+
         for (Position p : getPathPositions()) {
             if (p.getRow() == row && p.getCol() == col) {
                 return false;
             }
         }
+
         for (Tower t : towers) {
-            if (t.getPosition().getRow() == row && t.getPosition().getCol() == col) {
+            if (t.getPosition().getRow() == row &&
+                t.getPosition().getCol() == col) {
                 return false;
             }
         }
-
         return true;
-    }
-
-    @Override
-    /**
-     * Retourner la liste des cells
-     * @return une liste des cells
-     */
-    public List<Cell> allCells(){
-        return this.allCells;
     }
 }

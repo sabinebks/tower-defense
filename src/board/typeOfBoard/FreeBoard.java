@@ -223,13 +223,5 @@ public class FreeBoard extends Board {
         return true;
     }
 
-    /**
-     * Return all cells of the board.
-     *
-     * @return list of all cells
-     */
-    @Override
-    public List<Cell> allCells() {
-        return allCells;
-    }
+   
 }

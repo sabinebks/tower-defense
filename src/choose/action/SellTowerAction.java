@@ -3,17 +3,19 @@ package choose.action;
 import game.GameContext;
 import player.Player;
 import entity.tower.Tower;
-
+/**
+ * sell tower action
+ */
 public class SellTowerAction extends Action {
+
     /**
-     * Les attributs 
-     * le tower a vendu
+     * tower to sell
      */
     private Tower tower;
 
     /**
-     * Constructeur 
-     * @param tower le tower voulu vendre
+     * constructor
+     * @param tower the tower to sell
      */
     public SellTowerAction(Tower tower) {
         this.tower = tower;
@@ -21,8 +23,8 @@ public class SellTowerAction extends Action {
 
     @Override
     /**
-     * Excecute l'action : vendre le tower
-     * @param game le context du jeu
+     * execute sell tower
+     * @param game the game context
      */
     public void execute(GameContext game) {
         Player player = game.getPlayer();
@@ -32,10 +34,10 @@ public class SellTowerAction extends Action {
 
     @Override
     /**
-     * La description du jeu
-     * @return la description
+     * description
+     * @return description
      */
     public String getDescription() {
-        return "Vendre " + tower.getName();
+        return "vendre " + tower.getName();
     }
 }

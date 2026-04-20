@@ -6,20 +6,23 @@ import entity.tower.Tower;
 import java.util.*;
 
 /**
- * This class represents a free board with random paths.
- * Paths are straight lines from one border to another.
+ * This class represents a free board.
+ * It generates random straight paths from one border to another.
  */
 public class FreeBoard extends Board {
 
     private static final int NBCHEMIN = 5;
 
-    private Map<Integer, Position> numChemins; // id -> start
-    private Map<Position, Position> chemins;   // start -> end
-    private int cmp = 0; // number of paths created
+    private Map<Integer, Position> numChemins;
+    private Map<Position, Position> chemins;
+    private int cmp = 0;
     private int nbCheminsVoulus;
 
     /**
-     * Constructor
+     * Create a free board with a given size.
+     *
+     * @param height board height
+     * @param width board width
      */
     public FreeBoard(int height, int width) {
         super(height, width);
@@ -27,7 +30,7 @@ public class FreeBoard extends Board {
     }
 
     /**
-     * Initialize the board
+     * Initialize the board and create all cells.
      */
     @Override
     public void init() {
@@ -43,7 +46,7 @@ public class FreeBoard extends Board {
     }
 
     /**
-     * Generate random paths
+     * Generate random paths on the board.
      */
     @Override
     public void calculerPath() {
@@ -64,6 +67,7 @@ public class FreeBoard extends Board {
 
             if (borders.contains(end)) {
                 List<Cell> path = buildPath(start, end);
+
                 for (Cell c : path) {
                     c.assignChemin();
                 }
@@ -84,7 +88,11 @@ public class FreeBoard extends Board {
     }
 
     /**
-     * Build a path between two positions
+     * Build a straight path between two positions.
+     *
+     * @param start start position
+     * @param end end position
+     * @return list of cells in the path
      */
     private List<Cell> buildPath(Position start, Position end) {
         List<Cell> list = new ArrayList<>();
@@ -109,7 +117,9 @@ public class FreeBoard extends Board {
     }
 
     /**
-     * Get all border positions
+     * Get all border positions of the board.
+     *
+     * @return list of border positions
      */
     private List<Position> getBorderPositions() {
         List<Position> list = new ArrayList<>();
@@ -128,7 +138,10 @@ public class FreeBoard extends Board {
     }
 
     /**
-     * Get the end of a path
+     * Get the end position of a path.
+     *
+     * @param start start position
+     * @return end position
      */
     public Position getFinChemin(Position start) {
         if (start.getRow() == 0) return new Position(height - 1, start.getCol());
@@ -138,7 +151,10 @@ public class FreeBoard extends Board {
     }
 
     /**
-     * Return start and end of a path
+     * Get a path by its index.
+     *
+     * @param num index of the path
+     * @return start and end positions
      */
     public Position[] retourneLesChemins(int num) {
         if (num >= 0 && num < cmp) {
@@ -148,18 +164,28 @@ public class FreeBoard extends Board {
         throw new IllegalArgumentException("Invalid path number");
     }
 
-    /** @return number of paths */
+    /**
+     * Return number of generated paths.
+     *
+     * @return number of paths
+     */
     public int retourneNbrChemins() {
         return cmp;
     }
 
-    /** @return map of paths */
+    /**
+     * Get all paths.
+     *
+     * @return map of paths
+     */
     public Map<Position, Position> getCheminsMap() {
         return chemins;
     }
 
     /**
-     * Return a random path (positions)
+     * Get a random path from the board.
+     *
+     * @return list of positions
      */
     @Override
     public List<Position> getPathPositions() {
@@ -177,7 +203,11 @@ public class FreeBoard extends Board {
     }
 
     /**
-     * Check if a cell is available
+     * Check if a cell is free for a tower.
+     *
+     * @param row row index
+     * @param col column index
+     * @return true if free, false otherwise
      */
     @Override
     public boolean isCellAvailable(int row, int col) {
@@ -194,7 +224,9 @@ public class FreeBoard extends Board {
     }
 
     /**
-     * Return all cells
+     * Return all cells of the board.
+     *
+     * @return list of all cells
      */
     @Override
     public List<Cell> allCells() {

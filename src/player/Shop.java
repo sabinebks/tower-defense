@@ -37,18 +37,12 @@ public class Shop {
     }
 
     /**
-     * retourne une position libre ou null sinon
-     * @return une pos libre ou null sinon
+     * getter pour le plateau
+     * @return
      */
-    public Position findAvailablePosition() {
-        for (int i = 0; i < board.getHeight(); i++) {
-            for (int j = 0; j < board.getWidth(); j++) {
-                if (board.isCellAvailable(i, j)) {
-                    return new Position(i, j);
-                }
-            }
-        }
-        return null;
+
+    public Board getBoard(){
+        return this.board;
     }
 }
 

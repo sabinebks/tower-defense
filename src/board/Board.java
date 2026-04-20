@@ -5,10 +5,7 @@ import entity.tower.Tower;
 import entity.tower.projectil.NotMatchException;
 import entity.tower.projectil.Projectil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class Board {
 
@@ -198,5 +195,26 @@ public abstract class Board {
      * Effacer les ballons sortent
      */
     public void clearEscapedBalloons() { this.escapedBalloons.clear(); }
+    /**
+     * retourne une position libre ou null sinon
+     * @return une pos libre ou null sinon
+     */
+    public Position findAvailablePosition(){
+        List<Position> availabeCells = new ArrayList<>();
+        Random rand = new Random();
 
+        for(int i = 0 ; i < this.height ; i++){
+            for(int j = 0; j < this.width; j++){
+                if(isCellAvailable(i,j)){
+                    availabeCells.add(new Position(i,j));
+                }
+            }
+        }
+        int n = rand.nextInt(availabeCells.size());
+        if(availabeCells.isEmpty()){
+            return null;
+        }
+
+        return availabeCells.get(n);
+    }
 }

@@ -38,7 +38,7 @@ public class ActionBuilder {
         List<Action> sousMenu = new ArrayList<>();
 
         for (Tower t : shop.getAvailableTowers()) {
-            Position pos = shop.findAvailablePosition();
+            Position pos = shop.getBoard().findAvailablePosition();
             if (pos != null && player.getCredit() >= t.getCost()) {
                 sousMenu.add(new BuyTowerAction(t, pos));
             }

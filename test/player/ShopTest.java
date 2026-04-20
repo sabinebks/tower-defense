@@ -22,7 +22,7 @@ package test.player;
       @Test
       void trouveUnePositionLibre() {
           Shop shop = new Shop(new FreeBoard(6, 6));
-          assertNotNull(shop.findAvailablePosition());
+          assertNotNull(shop.getBoard().findAvailablePosition());
       }
 
       @Test

@@ -1,17 +1,15 @@
 package test.player;
 
-  import board.Board;
-  import board.Cell;
-  import board.Position;
-  import board.typeOfBoard.FreeBoard;
-  import org.junit.jupiter.api.Test;
-  import player.Shop;
+import board.Board;
+import board.Cell;
+import board.Position;
+import board.typeOfBoard.FreeBoard;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import player.Shop;
+import java.util.List;
 
-  import java.util.List;
-
-  import static org.junit.jupiter.api.Assertions.*;
-
-  public class ShopTest {
+public class ShopTest {
 
       @Test
       void listeToursDisponiblesNonVide() {
@@ -28,7 +26,7 @@ package test.player;
       @Test
       void retourneNullSiAucuneCaseLibre() {
           Shop shop = new Shop(new NoCellAvailableBoard(3, 3));
-          assertNull(shop.getBoard().findAvailablePosition());
+          assertThrows(IllegalArgumentException.class, () -> shop.getBoard().findAvailablePosition());
       }
 
       static class NoCellAvailableBoard extends Board {

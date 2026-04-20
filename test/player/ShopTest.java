@@ -28,7 +28,7 @@ package test.player;
       @Test
       void retourneNullSiAucuneCaseLibre() {
           Shop shop = new Shop(new NoCellAvailableBoard(3, 3));
-          assertNull(shop.findAvailablePosition());
+          assertNull(shop.getBoard().findAvailablePosition());
       }
 
       static class NoCellAvailableBoard extends Board {

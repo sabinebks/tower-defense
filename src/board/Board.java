@@ -7,33 +7,27 @@ import entity.tower.projectil.Projectil;
 
 import java.util.*;
 
+/**
+ * This abstract class represents a game board.
+ * The board contains cells, paths, towers, balloons, and projectiles.
+ */
 public abstract class Board {
 
-    /**
-     * Les attributs de Board
-     * La hauteur
-     * La largeur
-     * Liste des Cells
-     * Un map des chemins
-     * Liste des towers
-     * Liste des ballons
-     * Liste des projectiles actives
-     * Liste des ballons deja sorti sans mort
-     */
-    protected int width;
-    protected int height;
-    protected Cell[][] grid;
-    protected Map<Integer, List<Cell>> allPath;
-    protected List<Tower> towers;
-    protected List<Balloon> balloons;
-    protected List<Projectil> activeProjectiles;
-    protected List<Balloon> escapedBalloons = new ArrayList<>();
-    protected List<Cell> allCells;
+    protected int width;   // width of the board
+    protected int height;  // height of the board
+    protected Cell[][] grid; // grid of cells
+    protected Map<Integer, List<Cell>> allPath; // all paths
+    protected List<Tower> towers; // list of towers
+    protected List<Balloon> balloons; // list of balloons
+    protected List<Projectil> activeProjectiles; // active projectiles
+    protected List<Balloon> escapedBalloons = new ArrayList<>(); // balloons that escaped
+    protected List<Cell> allCells; // list of all cells
 
     /**
-     * Constructeur
-     * @param height La hauteur 
-     * @param width la largeur
+     * Creates a new board with given height and width.
+     *
+     * @param height the height of the board
+     * @param width the width of the board
      */
     public Board(int height, int width) {
         this.width = width;
@@ -46,62 +40,62 @@ public abstract class Board {
         init();
     }
 
+    /** Calculates the paths of the board */
     public abstract void calculerPath();
+
+    /** Initializes the board */
     public abstract void init();
+
+    /** Returns the path as positions */
     public abstract List<Position> getPathPositions();
+
+    /** Returns all cells */
     public abstract List<Cell> allCells();
 
     /**
-     * Retourner un cell dans le board
-     * @param row le row du cell
-     * @param col la colonne du cell
-     * @return le cell voulu
+     * Returns a cell at given row and column.
+     *
+     * @param row row index
+     * @param col column index
+     * @return the cell
      */
     public Cell getCell(int row, int col) {
         if (!isInside(row, col))
-            throw new IllegalArgumentException("Coordonnees hors du plateau");
+            throw new IllegalArgumentException("Coordinates outside the board");
         return this.grid[row][col];
     }
 
-    /**
-     * Retourner la largeur du board
-     * @return largeur
-     */
+    /** @return board width */
     public int getWidth() { return width; }
-    /**
-     * Retourner la hauteur du board
-     * @return hauteur
-     */
+
+    /** @return board height */
     public int getHeight() { return height; }
-    /**
-     * Retourner le tableau de Cell, donc le display
-     * @return tableau de Cell
-     */
+
+    /** @return the grid of cells */
     public Cell[][] getGrid() { return this.grid; }
-    /**
-     * Retourner tous les chemins
-     * @return un map des chemins
-     */
+
+    /** @return all paths */
     public Map<Integer, List<Cell>> getAllPath() { return this.allPath; }
-    /**
-     * Retourner les projectiles actives
-     * @return projectiles actives
-     */
+
+    /** @return active projectiles */
     public List<Projectil> getActiveProjectiles() { return activeProjectiles; }
 
     /**
-     * Verifier si la pos est dans le board
-     * @param row ligne du pos
-     * @param col colonne du pos
-     * @return true si dans board, false sinon
+     * Checks if a position is inside the board.
+     *
+     * @param row row index
+     * @param col column index
+     * @return true if inside, false otherwise
      */
     public boolean isInside(int row, int col) {
         return row >= 0 && row < height && col >= 0 && col < width;
     }
+
     /**
-     * Placer un tower 
-     * @param tower tower a place
-     * @param position la position voulu a placer
+     * Places a tower on the board.
+     *
+     * @param tower the tower to place
+     * @param position position to place the tower
      */
     public void placeTower(Tower tower, Position position) {
         tower.setPosition(position);
@@ -109,22 +103,23 @@ public abstract class Board {
     }
 
     /**
-     * Effacer un tower
-     * @param tower le tower a effacer
+     * Removes a tower from the board.
+     *
+     * @param tower the tower to remove
      */
     public void removeTower(Tower tower) {
         towers.remove(tower);
     }
 
     /**
-     * Methode a generer les ballons du jeu
-     * @param balloon un ballon voulu a generer
+     * Spawns a new balloon on the board.
+     *
+     * @param balloon the balloon to add
      */
     public void spawnBalloon(Balloon balloon) {
 
         balloon.setPath(getPathPositions());
         List<Position> path = balloon.getPath();
-
 
         if (path != null && !path.isEmpty()) {
             Position start = path.get(0);
@@ -133,21 +128,20 @@ public abstract class Board {
         balloons.add(balloon);
     }
 
-    /**
-     * Retourner la liste des towers
-     * @return liste des towers
-     */
+    /** @return list of towers */
     public List<Tower> getTowers() { return towers; }
-    /**
-     * Retourner la liste des ballons
-     * @return liste des ballons
-     */
+
+    /** @return list of balloons */
     public List<Balloon> getBalloons() { return balloons; }
 
     /**
-     * Methode pour mettre a jour les ballons, si un ballon sort du board, ou
-     * est mort, il va etre effacer
-     * @return la liste des ballons efface
+     * Updates the game state:
+     * - towers shoot
+     * - projectiles move
+     * - balloons move
+     * - remove dead or escaped balloons
+     *
+     * @return list of removed balloons
      */
     public List<Balloon> update() {
         for (Tower tower : towers) {
@@ -183,21 +177,21 @@ public abstract class Board {
         return toRemove;
     }
 
+    /**
+     * Checks if a cell is available to place something.
+     */
     public abstract boolean isCellAvailable(int row, int col);
 
-    /**
-     * Retourner la liste des ballons sortent dans mourir
-     * @return liste des ballons
-     */
+    /** @return escaped balloons */
     public List<Balloon> getEscapedBalloons() { return this.escapedBalloons; }
 
-    /**
-     * Effacer les ballons sortent
-     */
+    /** Clears escaped balloons list */
     public void clearEscapedBalloons() { this.escapedBalloons.clear(); }
+
     /**
-     * retourne une position libre ou null sinon
-     * @return une pos libre ou null sinon
+     * Finds a random free position on the board.
+     *
+     * @return a free position or null if none
      */
     public Position findAvailablePosition(){
         List<Position> availabeCells = new ArrayList<>();
@@ -210,11 +204,12 @@ public abstract class Board {
                 }
             }
         }
-        int n = rand.nextInt(availabeCells.size());
+
         if(availabeCells.isEmpty()){
             return null;
         }
 
+        int n = rand.nextInt(availabeCells.size());
         return availabeCells.get(n);
     }
 }

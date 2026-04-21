@@ -70,6 +70,7 @@ public class BoardRenderer {
 
     /**
      * convert grid to string (pour comparer)
+     * @param grid the grid to convert
      */
     private String gridToString(String[][] grid) {
         StringBuilder sb = new StringBuilder();

@@ -13,6 +13,9 @@ public class GameStateRenderer {
 
     /**
      * Print global info at each tick
+     * @param tick the tick to print
+     * @param board the board of the game
+     * @param player the player
      */
     public static void printTick(int tick, Board board, Player player) {
 
@@ -40,6 +43,8 @@ public class GameStateRenderer {
 
     /**
      * Print start of a round
+     * @param round the round we run now
+     * @param player the player
      */
     public static void printRoundStart(int round, Player player) {
         System.out.println("\n========================");
@@ -51,6 +56,8 @@ public class GameStateRenderer {
 
     /**
      * Print end of a round
+     * @param escaped number of ballons that escaped
+     * @param player the player
      */
     public static void printRoundEnd(int escaped, Player player) {
         System.out.println("\n=== FIN DU ROUND ===");

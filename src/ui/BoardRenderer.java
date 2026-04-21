@@ -11,14 +11,22 @@ import entity.tower.Tower;
  */
 public class BoardRenderer {
 
+    private String lastRender = ""; // mémoire du dernier affichage
+
     /**
      * render board
      * @param board board
      */
     public void render(Board board) {
-        System.out.println("tick");
         String[][] display = buildGrid(board);
-        printGrid(display, board);
+
+        String currentRender = gridToString(display);
+
+        // affiche seulement si changement
+        if (!currentRender.equals(lastRender)) {
+            printGrid(display, board);
+            lastRender = currentRender;
+        }
     }
 
     /**
@@ -58,6 +66,22 @@ public class BoardRenderer {
         }
 
         return display;
+    }
+
+    /**
+     * convert grid to string (pour comparer)
+     */
+    private String gridToString(String[][] grid) {
+        StringBuilder sb = new StringBuilder();
+
+        for (String[] row : grid) {
+            for (String cell : row) {
+                sb.append(cell);
+            }
+            sb.append("\n");
+        }
+
+        return sb.toString();
     }
 
     /**

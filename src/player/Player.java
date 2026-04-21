@@ -4,7 +4,7 @@ import choose.action.Action;
 import choose.action.ActionBuilder;
 import choose.action.DoNothingAction;
 import game.GameContext;
-import choose.ListChooser;
+import choose.*;
 import entity.tower.Tower;
 
 import java.util.ArrayList;
@@ -155,5 +155,13 @@ public class Player {
      */
     public void setCredit(int i) {
         this.credit = i;
+    }
+
+    /**
+     * Function help verify if a player is playing or auto
+     * @return true if manual mode, false if not
+     */
+    public boolean isHuman() {
+        return this.actionChooser instanceof HumanListChooser;
     }
 }

@@ -22,10 +22,10 @@ public class GameFactory {
      * @param isPlateauB verify the type of board
      * @param isAuto verify the game mode
      */
-    public static Game build(int height, int width, boolean isPlateauB, boolean isAuto) {
+    public static Game build(int height, int width, int nbBalloon,boolean isPlateauB, boolean isAuto) {
 
         Board board = isPlateauB
-                ? new FreeBoard(height, width)
+                ? new FreeBoard(height, width, nbBalloon)
                 : new DefinedBoard(height, width);
 
         ListChooser<Action> chooser = isAuto

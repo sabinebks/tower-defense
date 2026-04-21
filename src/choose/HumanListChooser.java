@@ -17,27 +17,30 @@ public class HumanListChooser<T extends Action> implements ListChooser<T> {
     @Override
     /**
      * choose an option manually
-     * @param prompt message to display
+     * 
+     * @param prompt  message to display
      * @param options list of options
      * @return selected option
      */
     public T choose(String prompt, List<T> options) {
+        if (options == null || options.isEmpty()) {
+            System.out.println("Aucune action disponible.");
+            return null;
+        }
         System.out.println("\n" + prompt);
 
         for (int i = 0; i < options.size(); i++) {
             System.out.println("  " + i + ". " + options.get(i).getDescription());
         }
 
-        System.out.print("votre choix : ");
-
         int index = -1;
 
         while (index < 0 || index >= options.size()) {
             try {
-                index = scanner.nextInt();
+                System.out.print("votre choix : ");
+                index = Integer.parseInt(scanner.nextLine());
             } catch (Exception e) {
-                scanner.nextLine();
-                System.out.print("index invalide, reessaie : ");
+                System.out.println("Entrée invalide, reessaie.");
             }
         }
 

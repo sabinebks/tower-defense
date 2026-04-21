@@ -1,5 +1,6 @@
 package game;
 
+import ui.GameStateRenderer;
 import board.Board;
 import clock.Clock;
 import clock.ClockListener;
@@ -12,7 +13,7 @@ import ui.BoardRenderer;
 import java.util.List;
 
 public class Game implements ClockListener, GameContext {
-    
+
     private final Board board;
     private final Player player;
     private final RoundManager roundManager;
@@ -22,10 +23,11 @@ public class Game implements ClockListener, GameContext {
 
     /**
      * constructor
+     * 
      * @param player player
-     * @param board board
+     * @param board  board
      * @param rounds rounds
-     * @param fps fps
+     * @param fps    fps
      */
     public Game(Player player, Board board, List<Round> rounds, int fps) {
         this.player = player;
@@ -39,10 +41,12 @@ public class Game implements ClockListener, GameContext {
     @Override
     /**
      * tick update
+     * 
      * @param tickCount tick
      */
     public void onTick(int tickCount) {
-        if (!isRunning) return;
+        if (!isRunning)
+            return;
 
 
         List<Balloon> removed = roundManager.update(tickCount);
@@ -76,6 +80,9 @@ public class Game implements ClockListener, GameContext {
                 }
             }
 
+            GameStateRenderer.printTick(tickCount, board, player);
+
+            // affichage grille
             renderer.render(board);
 
             try {
@@ -108,6 +115,7 @@ public class Game implements ClockListener, GameContext {
     @Override
     /**
      * get player
+     * 
      * @return player
      */
     public Player getPlayer() {
@@ -117,6 +125,7 @@ public class Game implements ClockListener, GameContext {
     @Override
     /**
      * get board
+     * 
      * @return board
      */
     public Board getBoard() {
@@ -125,6 +134,7 @@ public class Game implements ClockListener, GameContext {
 
     /**
      * round count
+     * 
      * @return rounds number
      */
     public int getRoundCount() {
@@ -133,6 +143,7 @@ public class Game implements ClockListener, GameContext {
 
     /**
      * check lose
+     * 
      * @return true if player lost
      */
     public boolean hasPlayerLost() {
@@ -141,6 +152,7 @@ public class Game implements ClockListener, GameContext {
 
     /**
      * escaped balloons
+     * 
      * @return escaped count
      */
     public int getEscapedCount() {

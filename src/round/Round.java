@@ -5,21 +5,20 @@ import java.util.List;
 
 import entity.balloon.Balloon;
 
+/**
+ * round
+ */
 public class Round {
-    /**
-     * Les attributs de round
-     * Le nombre de ce round
-     * La liste des ballons
-     * Un state
-     */
+
     private int number;
     private List<Balloon> balloons;
     private boolean state;
+    private List<Balloon> escapedBalloons = new ArrayList<>();
 
     /**
-     * Constructeur
-     * @param number le nombre de ce round
-     * @param balloons liste de ballons
+     * constructor
+     * @param number number
+     * @param balloons balloons
      */
     public Round(int number, List<Balloon> balloons) {
         this.number = number;
@@ -28,35 +27,41 @@ public class Round {
     }
 
     /**
-     * Retourner le nombre de ce round
-     * @return nombre de ce round
+     * get number
+     * @return number
      */
     public int getNumber() {
         return number;
     }
 
     /**
-     * Retourner la liste des ballons
-     * @return liste des ballons
+     * get balloons
+     * @return balloons list
      */
     public List<Balloon> getBalloons() {
         return balloons;
     }
 
     /**
-     * retourner le state
-     * @return le state
+     * get state
+     * @return state
      */
-    public boolean getState(){
+    public boolean getState() {
         return this.state;
     }
 
-    private List<Balloon> escapedBalloons = new ArrayList<>();
-
+    /**
+     * add escaped balloon
+     * @param b balloon
+     */
     public void addEscaped(Balloon b) {
         escapedBalloons.add(b);
     }
 
+    /**
+     * get escaped balloons
+     * @return escaped list
+     */
     public List<Balloon> getEscapedBalloons() {
         return escapedBalloons;
     }

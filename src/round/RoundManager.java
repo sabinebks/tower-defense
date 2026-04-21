@@ -7,20 +7,12 @@ import player.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * round manager
+ */
 public class RoundManager {
-    /**
-     * Les attributs de RoundManager
-     * Un liste des rounds
-     * Le board du jeu
-     * Le joueur
-     * Le nombre du curr round
-     * Le tick a creer les ballons
-     * Le status du round ( commence ou pas)
-     * La frequence pour creer les ballons
-     * Un flag pour savoir si le round vient de se terminer
-     * Le nombre de ballons echappes ce round
-     * Un flag pour savoir si c'est le premier tick du round
-     */
+
+    private static final int SPAWN_INTERVAL = 5;
     private final List<Round> rounds;
     private final Board board;
     private final Player player;
@@ -30,13 +22,13 @@ public class RoundManager {
     private boolean roundJustFinished = false;
     private int escapedCount = 0;
     private boolean firstTick = true;
-    private static final int SPAWN_INTERVAL = 5;
+    
 
     /**
-     * Constructeur
-     * @param rounds la liste des rounds
-     * @param board le board du jeu
-     * @param player le joueur
+     * constructor
+     * @param rounds rounds
+     * @param board board
+     * @param player player
      */
     public RoundManager(List<Round> rounds, Board board, Player player) {
         this.rounds = rounds;
@@ -45,8 +37,9 @@ public class RoundManager {
     }
 
     /**
-     * Mettre a jour le status du jeu apres un nombre de tick
-     * @param tickCount le nombre de tick
+     * update round
+     * @param tickCount tick
+     * @return removed balloons
      */
     public List<Balloon> update(int tickCount) {
         if (isFinished()) return new ArrayList<>();
@@ -58,9 +51,9 @@ public class RoundManager {
 
         Round round = rounds.get(currentIndex);
 
-        if (tickCount % SPAWN_INTERVAL == 0 && spawnTick < round.getBalloons().size()) {
+        if (tickCount % SPAWN_INTERVAL == 0
+                && spawnTick < round.getBalloons().size()) {
             board.spawnBalloon(round.getBalloons().get(spawnTick));
-            System.out.println("SPAWN ballon " + spawnTick);
             spawnTick++;
             roundStarted = true;
         }
@@ -71,18 +64,13 @@ public class RoundManager {
             player.loseLife();
             round.addEscaped(b);
             escapedCount++;
-            if (!player.isAlive()) {
-                System.out.println("!!! Plus de vies ! DEFAITE !!!");
-            }
         }
+
         board.clearEscapedBalloons();
 
         if (roundStarted
                 && spawnTick >= round.getBalloons().size()
                 && board.getBalloons().isEmpty()) {
-            if (player.isAlive()) {
-                System.out.println("=== Round " + round.getNumber() + " termine ! ===");
-            }
             roundJustFinished = true;
         }
 
@@ -90,7 +78,7 @@ public class RoundManager {
     }
 
     /**
-     * Avancer au round suivant — a appeler apres la sortie de runOneRound()
+     * advance round
      */
     public void advanceRound() {
         if (roundJustFinished) {
@@ -103,48 +91,48 @@ public class RoundManager {
     }
 
     /**
-     * Retourner si il n'y a plus de round
-     * @return true si il n'y a plus, false sinon
+     * check finished
+     * @return true if finished
      */
     public boolean isFinished() {
         return currentIndex >= rounds.size();
     }
 
     /**
-     * Verifier si le joueur est mort ou pas
-     * @return true si joueur est mort, false sinon
+     * check lose
+     * @return true if player lost
      */
     public boolean hasPlayerLost() {
         return !player.isAlive();
     }
 
     /**
-     * Retourner l'index du round courant
-     * @return index du round courant
+     * current index
+     * @return index
      */
     public int getCurrentIndex() {
         return currentIndex;
     }
 
     /**
-     * Verifier si le curr round est fini ou pas
-     * @return true si fini, false sinon
+     * current round finished
+     * @return true if finished
      */
     public boolean isCurrentRoundFinished() {
         return isFinished() || roundJustFinished;
     }
 
     /**
-     * Retourner le nombre de ballons echappes ce round
-     * @return nombre de ballons echappes
+     * escaped count
+     * @return escaped
      */
     public int getEscapedCount() {
         return escapedCount;
     }
 
     /**
-     * Retourner la liste de rounds
-     * @return liste de rounds
+     * get rounds
+     * @return rounds list
      */
     public List<Round> getRounds() {
         return this.rounds;

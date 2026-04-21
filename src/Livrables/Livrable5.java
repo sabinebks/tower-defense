@@ -65,7 +65,7 @@ public class Livrable5 {
         this.isHuman   = typeJoueur.equalsIgnoreCase("humain");
 
         this.board = typePlateau.equalsIgnoreCase("libre")
-                ? new FreeBoard(hauteur, largeur)
+                ? new FreeBoard(hauteur, largeur,nbBallons)
                 : new DefinedBoard(hauteur, largeur);
 
         ListChooser<Action> chooser = isHuman

@@ -24,9 +24,10 @@ public class FreeBoard extends Board {
      * @param height board height
      * @param width board width
      */
-    public FreeBoard(int height, int width) {
+    public FreeBoard(int height, int width, int nbChemin) {
         super(height, width);
-        this.nbCheminsVoulus = NBCHEMIN;
+        this.nbCheminsVoulus = nbChemin;
+        init();
     }
 
     /**
@@ -223,5 +224,5 @@ public class FreeBoard extends Board {
         return true;
     }
 
-   
+
 }

@@ -37,7 +37,6 @@ public abstract class Board {
         this.balloons = new ArrayList<>();
         this.activeProjectiles = new ArrayList<>();
         this.allCells = new ArrayList<>();
-        init();
     }
 
     /** Calculates the paths of the board */

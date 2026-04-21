@@ -44,7 +44,6 @@ public class Game implements ClockListener, GameContext {
     public void onTick(int tickCount) {
         if (!isRunning) return;
 
-        System.out.println("tick " + tickCount);
 
         List<Balloon> removed = roundManager.update(tickCount);
 
@@ -67,7 +66,7 @@ public class Game implements ClockListener, GameContext {
 
         while (!roundManager.isCurrentRoundFinished() && player.isAlive()) {
             tickCount++;
-
+            System.out.println("TICK " + tickCount);
             List<Balloon> removed = roundManager.update(tickCount);
 
             for (Balloon b : removed) {

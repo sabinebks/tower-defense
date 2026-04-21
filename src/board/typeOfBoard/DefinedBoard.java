@@ -28,7 +28,9 @@ public class DefinedBoard extends Board {
      * @param width board width
      */
     public DefinedBoard(int height, int width) {
+
         super(height, width);
+        init();
     }
 
     /**

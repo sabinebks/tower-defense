@@ -10,66 +10,81 @@ import entity.tower.projectil.ProjectilType;
 
 import java.util.List;
 
-
+/**
+ * tack shooter tower
+ */
 public class TackShooter extends Tower {
-  /**
-     * Crée une TackShooter à la position spécifiée.
-     *
-     * @param pos la position initiale de la tour sur le plateau
+
+    /**
+     * constructor
+     * @param pos tower position
      */
     public TackShooter(Position pos) {
 
         super(pos, 350, 80, 2, true, EffectType.IMMEDIATE, ProjectilType.AIGUILLE);
+
         this.evolutions.addEvolution(TypeEvolution.PORTEE);
         this.evolutions.addEvolution(TypeEvolution.CANDENCE);
     }
 
-    /**
-     * methode pour appliquer une evolution a la tour
-     * @param typeEvo le type d'evolution a appliquer
-     * @return le cout de l'evolution, ou 0 si invalide ou deja achetee
-     */
     @Override
+    /**
+     * apply evolution
+     * @param typeEvo evolution type
+     * @return cost
+     */
     public int appliquerEvolution(TypeEvolution typeEvo) {
-        if (!this.evolutions.getEvolutions().contains(typeEvo)) return 0;
 
+        if (!this.evolutions.getEvolutions().contains(typeEvo)) return 0;
         if (this.evolutions.getEvolutionsPossedees().containsKey(typeEvo)) return 0;
+
         int cout = 0;
 
         switch (typeEvo) {
+
             case PORTEE:
                 this.porte = (int)(this.porte * 1.2);
                 cout = 150;
                 this.evolutions.deleteEvolutions(TypeEvolution.PORTEE);
                 break;
+
             case CANDENCE:
                 this.cadence = (int)(this.cadence * 1.25);
                 cout = 200;
                 this.evolutions.deleteEvolutions(TypeEvolution.CANDENCE);
                 break;
+
             default:
                 break;
+        }
 
-        }
         if (cout > 0) {
-            this.evolutions.getEvolutionsPossedees().put(typeEvo,cout);
+            this.evolutions.getEvolutionsPossedees().put(typeEvo, cout);
         }
+
         return cout;
     }
-   /*  
-    * methode d'attaque de la TackShooter
-      * @param balloons la liste des ballons presents sur le plateau
-      * @return un projectil si une cible est trouvee, sinon null
-    */
+
+    @Override
+    /**
+     * attack method
+     * @param balloons list of balloons
+     * @return projectile
+     * @throws NotMatchException wrong projectile
+     */
     public Projectil attack(List<Balloon> balloons) throws NotMatchException {
+
         Balloon target = findTarget(balloons);
         if (target == null) return null;
+
         double startX = position.getCol() + 0.5;
         double startY = position.getRow() + 0.5;
+
         if (this.porte == -1) {
             target.hit(this.type.getDegats());
             return null;
         }
+
         return new ProjectilSimple(
                 this.type,
                 startX,
@@ -79,6 +94,11 @@ public class TackShooter extends Tower {
     }
 
     @Override
+    /**
+     * get evolution cost
+     * @param typeEvo evolution type
+     * @return cost
+     */
     public int getCoutEvolution(TypeEvolution typeEvo) {
         switch (typeEvo) {
             case PORTEE:
@@ -86,17 +106,24 @@ public class TackShooter extends Tower {
             case CANDENCE:
                 return 200;
             default:
-                return  0;
+                return 0;
         }
     }
-    /**
-     * retourne le symbole de la TackShooter
-     * @return "T"
-     */    
-    @Override
-    public String getSymbol() { return "T"; }
 
     @Override
+    /**
+     * get symbol
+     * @return symbol
+     */
+    public String getSymbol() {
+        return "T";
+    }
+
+    @Override
+    /**
+     * get name
+     * @return name
+     */
     public String getName() {
         return "TackShooter";
     }

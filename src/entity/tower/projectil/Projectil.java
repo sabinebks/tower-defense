@@ -2,13 +2,16 @@ package entity.tower.projectil;
 
 import entity.balloon.Balloon;
 
+/**
+ * abstract projectile
+ */
 public abstract class Projectil {
     /**
-     * Les attributs de la classe abstract
-     * x, y la position
-     * le type du projectile
-     * sa vitesse
-     * son status
+     * position
+     * target
+     * type
+     * speed
+     * active state
      */
     protected double x, y;
     protected Balloon target;
@@ -17,11 +20,11 @@ public abstract class Projectil {
     protected boolean active = true;
 
     /**
-     * Constructeur
-     * @param type
-     * @param startX
-     * @param startY
-     * @param target
+     * constructor
+     * @param type projectile type
+     * @param startX start x
+     * @param startY start y
+     * @param target target balloon
      */
     public Projectil(ProjectilType type, double startX, double startY, Balloon target) {
         this.type = type;
@@ -31,19 +34,30 @@ public abstract class Projectil {
     }
 
     /**
-     * cette methode est appelé à chaque tic de l'horloge
+     * update each tick
      */
     public void update() {
         if (!active) return;
+
         if (target == null || !target.isActive()) {
             active = false;
             return;
-        }   
-            triggerImpact();
-            active = false;       
+        }
+
+        triggerImpact();
+        active = false;
     }
 
+    /**
+     * impact effect
+     */
     protected abstract void triggerImpact();
 
-    public boolean isActive() { return active; }
+    /**
+     * check active
+     * @return true if active
+     */
+    public boolean isActive() {
+        return active;
+    }
 }

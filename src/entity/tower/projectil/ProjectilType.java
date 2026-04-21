@@ -1,7 +1,7 @@
 package entity.tower.projectil;
 
 /**
- * enum pour les projectil
+ * projectile types
  */
 public enum ProjectilType {
 
@@ -15,12 +15,18 @@ public enum ProjectilType {
 
     private final int degats;
 
-    // constructeur
+    /**
+     * constructor
+     * @param degats damage value
+     */
     ProjectilType(int degats) {
         this.degats = degats;
     }
 
-    // getter
+    /**
+     * get damage
+     * @return damage
+     */
     public int getDegats() {
         return degats;
     }

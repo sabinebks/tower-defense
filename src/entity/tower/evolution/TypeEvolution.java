@@ -1,10 +1,10 @@
 package entity.tower.evolution;
 
 /**
- * les Type d'evolution comme enum
- *
+ * evolution types
  */
 public enum TypeEvolution {
+
     PORTEE,
     CANDENCE,
     PUISSANCE,

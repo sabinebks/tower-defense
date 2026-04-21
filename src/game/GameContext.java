@@ -2,11 +2,21 @@ package game;
 
 import board.Board;
 import player.Player;
+
 /**
- * Interface pour fournir le contexte du jeu aux différentes classes
- * comme les tours, les ballons, etc.
+ * game context
  */
 public interface GameContext {
+
+    /**
+     * get player
+     * @return player
+     */
     Player getPlayer();
+
+    /**
+     * get board
+     * @return board
+     */
     Board getBoard();
 }

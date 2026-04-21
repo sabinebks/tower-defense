@@ -32,8 +32,10 @@ runtests: tests
 	java -jar junit-console.jar -classpath classes --scan-class-path
 
 jar: classes
-	jar cvfe LivrableA.jar Livrables.Livrable5 -C classes .
-	jar cvfe LivrableB.jar Livrables.Livrable5 -C classes .
+	jar cvfe jar/towerdefense-a-interactive.jar Livrables.LauncherAInteractive -C classes .
+	jar cvfe jar/towerdefense-a-random.jar Livrables.LauncherARandom -C classes .
+	jar cvfe jar/towerdefense-b-interactive.jar Livrables.LauncherBInteractive -C classes .
+	jar cvfe jar/towerdefense-b-random.jar Livrables.LauncherBRandom -C classes .
 
 docs:
 	javadoc -d doc \
@@ -53,5 +55,4 @@ docs:
 		src/round/*.java
 
 clean:
-	rm -rf classes doc
-	ls *.jar | grep -v '^junit-console\.jar$$' | xargs rm -f
+	rm -rf classes doc jar/*.jar

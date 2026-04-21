@@ -15,7 +15,13 @@ import java.util.*;
 instances with different configurations.
  */
 public class GameFactory {
-
+    /**
+     * Function create a game, could be a FreeBoard or DefinedBoard with 2 differents mode
+     * @param height height of the board
+     * @param width width of the board
+     * @param isPlateauB verify the type of board
+     * @param isAuto verify the game mode
+     */
     public static Game build(int height, int width, boolean isPlateauB, boolean isAuto) {
 
         Board board = isPlateauB
@@ -33,11 +39,12 @@ public class GameFactory {
 
         return new Game(player, board, rounds, 3);
     }
- /*it creates a game instance 
- by initializing the board, player, shop,
-  and rounds based on the provided parameters.
-
-  */
+    /**
+     * it creates a game instance 
+     * by initializing the board, player, shop,
+     * and rounds based on the provided parameters
+     * @param board the board we are using
+     */
     private static List<Round> generateRounds(Board board) {
         List<Round> rounds = new ArrayList<>();
         List<Position> path = board.getPathPositions();
@@ -48,10 +55,12 @@ public class GameFactory {
 
         return rounds;
     }
-/* it generates balloons for each round, 
-assigning them a type in a round-robin fashion 
-and setting their path based on the board's path positions.
- */
+    /** it generates balloons for each round, 
+     * assigning them a type in a round-robin fashion 
+     * and setting their path based on the board's path positions.
+     * @param count number of ballon we willing to generate
+     * @param path path list 
+     */
     private static List<Balloon> generateBalloons(int count, List<Position> path) {
         List<Balloon> list = new ArrayList<>();
 

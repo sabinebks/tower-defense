@@ -102,9 +102,9 @@ public class ActionSimpleTest {
         RetourAction retour = new RetourAction();
         QuitAction quit = new QuitAction();
 
-        assertEquals("Ne rien faire", doNothing.getDescription());
-        assertEquals(" Retour", retour.getDescription());
-        assertEquals("Quitter le jeu", quit.getDescription());
+        assertEquals("ne rien faire", doNothing.getDescription());
+        assertEquals(" retour", retour.getDescription());
+        assertEquals("quitter le jeu", quit.getDescription());
         assertFalse(quit.isAllowedForAuto());
     }
 

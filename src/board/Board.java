@@ -13,15 +13,26 @@ import java.util.*;
  */
 public abstract class Board {
 
-    protected int width;   // width of the board
-    protected int height;  // height of the board
-    protected Cell[][] grid; // grid of cells
-    protected Map<Integer, List<Cell>> allPath; // all paths
-    protected List<Tower> towers; // list of towers
-    protected List<Balloon> balloons; // list of balloons
-    protected List<Projectil> activeProjectiles; // active projectiles
-    protected List<Balloon> escapedBalloons = new ArrayList<>(); // balloons that escaped
-    protected List<Cell> allCells; // list of all cells
+    /**
+     * width of the board
+     * height of the board
+     * grid of cells
+     * all paths, means every cell in the board which is path
+     * list of towers
+     * list of balloons
+     * active projectiles
+     * balloons that escaped
+     * list of all cells
+     */
+    protected int width; 
+    protected int height;
+    protected Cell[][] grid; 
+    protected Map<Integer, List<Cell>> allPath;
+    protected List<Tower> towers; 
+    protected List<Balloon> balloons; 
+    protected List<Projectil> activeProjectiles; 
+    protected List<Balloon> escapedBalloons = new ArrayList<>(); 
+    protected List<Cell> allCells;
 
     /**
      * Creates a new board with given height and width.

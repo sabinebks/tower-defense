@@ -11,9 +11,19 @@ import round.RoundManager;
 import ui.BoardRenderer;
 
 import java.util.List;
-
+/**
+ * Class for game
+ */
 public class Game implements ClockListener, GameContext {
 
+    /**
+     * A board for the game
+     * The player
+     * A round manager
+     * A clock for real time  render
+     * A boolean type verify if the game is running
+     * A board renderer
+     */
     private final Board board;
     private final Player player;
     private final RoundManager roundManager;

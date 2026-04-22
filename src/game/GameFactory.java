@@ -11,9 +11,9 @@ import player.*;
 import round.*;
 
 import java.util.*;
-/*helper class to create game 
-instances with different configurations.
- */
+/**helper class to create game 
+*instances with different configurations.
+*/
 public class GameFactory {
     /**
      * Function create a game with optional custom number of paths for board B.
@@ -22,6 +22,7 @@ public class GameFactory {
      * @param nbChemins number of straight paths for board B
      * @param isPlateauB verify the type of board
      * @param isAuto verify the game mode
+     * @return the game we are gonna play
      */
     public static Game build(int height, int width, int nbChemins, boolean isPlateauB, boolean isAuto) {
 

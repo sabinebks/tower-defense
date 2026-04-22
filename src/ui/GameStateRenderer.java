@@ -83,6 +83,7 @@ public class GameStateRenderer {
 
     /**
      * Victory display
+     * @param lives the lives remaining
      */
     public static void printVictory(int lives) {
         System.out.println("\n=====================");

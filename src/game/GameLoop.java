@@ -3,8 +3,15 @@ package game;
 import player.Player;
 import player.Shop;
 
+/**
+ * Class of game loop
+ */
 public class GameLoop {
-
+    /**
+     * The game we are playing
+     * The player
+     * THe games shop
+     */
     private final Game game;
     private final Player player;
     private final Shop shop;
@@ -22,9 +29,9 @@ public class GameLoop {
         this.player = player;
         this.shop = shop;
     }
-     /*
-        * main game loop
-      */
+    /**
+     * Main loop of the game
+     */
     public void run() {
 
         System.out.println("=== DEBUT DU JEU ===");

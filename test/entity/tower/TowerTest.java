@@ -94,7 +94,6 @@ void testTowerDistanceCalculation() {
 
     @Test
     void testAttackLogic() {
-        Position loin = new Position(50, 50);
         balloons.clear();
         Balloon b = new Balloon(3, 50, 50, BalloonType.STRONG);
         b.setPath(List.of(

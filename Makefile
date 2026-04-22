@@ -38,6 +38,9 @@ jar: classes
 	jar cvfe jar/towerdefense-b-interactive.jar Livrables.LauncherBInteractive -C classes .
 	jar cvfe jar/towerdefense-b-random.jar Livrables.LauncherBRandom -C classes .
 
+	# jars attendus par gitlab
+	jar cvfe LivrableA.jar Livrables.LauncherAInteractive -C classes .
+	jar cvfe LivrableB.jar Livrables.LauncherBInteractive -C classes .
 docs:
 	javadoc -d doc \
 		src/board/*.java \
@@ -56,4 +59,4 @@ docs:
 		src/round/*.java
 
 clean:
-	rm -rf classes doc jar/*.jar
+	rm -rf classes doc jar *.jar

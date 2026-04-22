@@ -8,7 +8,23 @@ import board.Position;
  * balloon class
  */
 public class Balloon {
-
+    /**
+     * Balloon id
+     * Balloons column
+     * Balloons row
+     * Balloons speed
+     * Balloons health
+     * Balloons tpye
+     * Balloons active state
+     * Balloons escape or not
+     * Balloons exit time
+     * Timer for freeze
+     * Timer for slow
+     * Slow factor
+     * List of position ( path for balloon)
+     * Index of the path
+     * Progression of the balloon (where it is on the board)
+     */
     protected int id;
     protected double posColonne;
     protected double posLigne;

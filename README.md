@@ -557,11 +557,66 @@ Malgré les améliorations apportées, certaines difficultés restent à résoud
 
 #### Atteinte des objectifs
 
-*(à compléter)*
+Ce livrable finalise le projet en proposant un jeu Tower Defense complet et jouable, intégrant l'ensemble des fonctionnalités développées lors des livrables précédents. L'architecture a été consolidée autour de nouvelles classes dédiées à la création et à la gestion du jeu.
+
+##### Point d'entrée unifié et Launchers
+
+La classe `Livrable6` sert de point d'entrée unique. Elle analyse les arguments en ligne de commande pour déterminer le type de plateau (`a` pour `DefinedBoard`, `b` pour `FreeBoard`), le mode de jeu (`interactive` ou `random`), ainsi que les dimensions et le nombre de chemins. Quatre classes Launcher simplifient le lancement :
+- `LauncherAInteractive` : plateau A en mode interactif
+- `LauncherARandom` : plateau A en mode automatique
+- `LauncherBInteractive` : plateau B en mode interactif
+- `LauncherBRandom` : plateau B en mode automatique
+
+##### GameFactory
+
+La classe `GameFactory` centralise la construction du jeu. Elle instancie le plateau (selon le type choisi), le joueur , le `ListChooser` adapté au mode (humain ou automatique), et génère 10 rounds contenant au moins 15 ballons répartis entre les types `BASIC`, `MEDIUM` et `STRONG`. Le tout est assemblé dans un objet `Game`.
+
+##### GameLoop
+
+La classe `GameLoop` orchestre la boucle principale du jeu en alternant deux phases :
+1. **Phase d'action** : le joueur interagit via un menu (acheter/vendre/évoluer une tour, ne rien faire, quitter) construit par `ActionBuilder`.
+2. **Phase de combat** : `Game.runOneRound()` fait avancer la simulation tick par tick — les tours tirent sur les ballons à portée, les projectiles se déplacent, les ballons avancent le long du chemin, et les ballons détruits rapportent des crédits.
+
+La partie se termine par un Game Over si le joueur perd toutes ses vies, ou par une victoire s'il survit aux 10 rounds.
+
+##### Affichage console (UI)
+
+Deux nouvelles classes gèrent l'affichage :
+- `BoardRenderer` : affiche la grille du plateau à chaque tick .
+- `GameStateRenderer` : affiche les informations détaillées à chaque tick (numéro du tick, vies, crédits, position et HP de chaque ballon) ainsi que les messages de début/fin de round, de Game Over et de victoire.
+
+##### Boutique et tours
+
+La classe `Shop` propose 7 types de tours . Chaque tour possède des évolutions possibles que le joueur peut acheter ou revendre via le menu d'actions.
+
+En mode interactif, le joueur choisit la position de placement de chaque tour. En mode automatique, une position disponible est sélectionnée aléatoirement par le système.
+
+#### Commandes
+
+```bash
+make clean       # Nettoyage des fichiers .class et JARs
+make             # Compilation de toutes les classes
+make tests       # Compilation des tests
+make runtests    # Lancer les tests
+make jar         # Création des 4 JARs
+
+# Plateau A (DefinedBoard) - mode interactif
+java -jar jar/towerdefense-a-interactive.jar <largeur> <hauteur>
+
+# Plateau A (DefinedBoard) - mode automatique
+java -jar jar/towerdefense-a-random.jar <largeur> <hauteur>
+
+# Plateau B (FreeBoard) - mode interactif
+java -jar jar/towerdefense-b-interactive.jar <largeur> <hauteur> <nbChemins>
+
+# Plateau B (FreeBoard) - mode automatique
+java -jar jar/towerdefense-b-random.jar <largeur> <hauteur> <nbChemins>
+```
 
 #### Difficultés restant à résoudre
 
-*(à compléter)*
+Il reste des améliorations à faire dans certaines classes. Quelques méthodes sont encore trop longues, donc on doit les simplifier. On a encore un peu de code dupliqué à corriger.
+
 
 ---
 
@@ -708,6 +763,19 @@ pour le jeu afffiche a chaque tick d'horloge
 des ballons sorties mais le jeu dit encore parfait)
 
 **Objectifs pour la semaine suivante :Fixer les petits bugs et completer le projet
+
+### Semaine 12 : 
+**Ce qui a ete realise : 
+
+  - Finalisation du livrable 6.
+  - Ajout de GameFactory pour centraliser l’initialisation du jeu.
+  - Ajout de GameLoop pour clarifier la boucle principale.
+  - Ajout/validation des launchers pour exécuter facilement les variantes A/B en mode interactif ou aléatoire.
+  
+**Difficultés rencontrées :
+
+  - Ajustement des responsabilités entre classes (initialisation, boucle de jeu, actions joueur).
+  - Débogage de cas limites liés aux ballons qui s’échappent et à la mise à jour des vies.
 
 ---
 

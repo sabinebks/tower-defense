@@ -1,6 +1,13 @@
 package Livrables;
 
+/**
+ * Launch an interactive game of FreeBoard
+ */
 public class LauncherBInteractive {
+    /**
+     * Main function
+     * @param args input from terminal
+     */
     public static void main(String[] args) {
         if (args.length < 3) {
             System.out.println("Usage: java -cp classes Livrables.LauncherBInteractive <largeur> <hauteur> <nbChemins>");

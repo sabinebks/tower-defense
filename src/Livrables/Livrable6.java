@@ -2,9 +2,14 @@ package Livrables;
 
 import game.*;
 import player.Shop;
-
+/**
+ * Main game
+ */
 public class Livrable6 {
-
+    /**
+     * Main function of the whole game
+     * @param args input from terminal
+     */
     public static void main(String[] args) {
 
         if (args.length < 4) {

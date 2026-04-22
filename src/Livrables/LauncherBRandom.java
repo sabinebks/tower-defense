@@ -1,6 +1,12 @@
 package Livrables;
-
+/**
+ * Launcher for random game of FreeBoard
+ */
 public class LauncherBRandom {
+    /**
+     * Main function
+     * @param args input from terminal
+     */
     public static void main(String[] args) {
         if (args.length < 3) {
             System.out.println("Usage: java -cp classes Livrables.LauncherBRandom <largeur> <hauteur> <nbChemins>");

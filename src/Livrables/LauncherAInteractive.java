@@ -1,6 +1,13 @@
 package Livrables;
 
+/**
+ * Launch an interactive game of DefinedBoard
+ */
 public class LauncherAInteractive {
+    /**
+     * Main function run the game
+     * @param args the input of users
+     */
     public static void main(String[] args) {
         if (args.length < 2) {
             System.out.println("Usage: java -cp classes Livrables.LauncherAInteractive <largeur> <hauteur>");

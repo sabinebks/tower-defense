@@ -16,17 +16,6 @@ instances with different configurations.
  */
 public class GameFactory {
     /**
-     * Function create a game, could be a FreeBoard or DefinedBoard with 2 differents mode
-     * @param height height of the board
-     * @param width width of the board
-     * @param isPlateauB verify the type of board
-     * @param isAuto verify the game mode
-     */
-    public static Game build(int height, int width, boolean isPlateauB, boolean isAuto) {
-        return build(height, width, 5, isPlateauB, isAuto);
-    }
-
-    /**
      * Function create a game with optional custom number of paths for board B.
      * @param height height of the board
      * @param width width of the board

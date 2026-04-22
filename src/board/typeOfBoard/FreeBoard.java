@@ -21,9 +21,9 @@ public class FreeBoard extends Board {
     /**
      * Create a free board with a given size.
      *
-     * @param height board height
-     * @param width board width
-     * @param nbChemins number of road 
+     * @param height    board height
+     * @param width     board width
+     * @param nbChemins number of road
      */
     public FreeBoard(int height, int width, int nbChemins) {
         super(height, width);
@@ -36,14 +36,7 @@ public class FreeBoard extends Board {
      */
     @Override
     public void init() {
-        grid = new Cell[height][width];
-
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                grid[i][j] = new Cell(new Position(i, j));
-            }
-        }
-
+        initGrid();
         calculerPath();
     }
 
@@ -58,7 +51,8 @@ public class FreeBoard extends Board {
         this.allPath.clear();
         this.allCells.clear();
 
-        if (nbCheminsVoulus <= 0) nbCheminsVoulus = NBCHEMIN;
+        if (nbCheminsVoulus <= 0)
+            nbCheminsVoulus = NBCHEMIN;
 
         Random rand = new Random();
         List<Position> borders = getBorderPositions();
@@ -93,7 +87,7 @@ public class FreeBoard extends Board {
      * Build a straight path between two positions.
      *
      * @param start start position
-     * @param end end position
+     * @param end   end position
      * @return list of cells in the path
      */
     private List<Cell> buildPath(Position start, Position end) {
@@ -146,9 +140,12 @@ public class FreeBoard extends Board {
      * @return end position
      */
     public Position getFinChemin(Position start) {
-        if (start.getRow() == 0) return new Position(height - 1, start.getCol());
-        if (start.getRow() == height - 1) return new Position(0, start.getCol());
-        if (start.getCol() == 0) return new Position(start.getRow(), width - 1);
+        if (start.getRow() == 0)
+            return new Position(height - 1, start.getCol());
+        if (start.getRow() == height - 1)
+            return new Position(0, start.getCol());
+        if (start.getCol() == 0)
+            return new Position(start.getRow(), width - 1);
         return new Position(start.getRow(), 0);
     }
 
@@ -161,7 +158,7 @@ public class FreeBoard extends Board {
     public Position[] retourneLesChemins(int num) {
         if (num >= 0 && num < cmp) {
             Position debut = numChemins.get(num);
-            return new Position[]{debut, chemins.get(debut)};
+            return new Position[] { debut, chemins.get(debut) };
         }
         throw new IllegalArgumentException("Invalid path number");
     }
@@ -191,7 +188,8 @@ public class FreeBoard extends Board {
      */
     @Override
     public List<Position> getPathPositions() {
-        if (allPath.isEmpty()) return new ArrayList<>();
+        if (allPath.isEmpty())
+            return new ArrayList<>();
 
         Random rand = new Random();
         List<Cell> randomPath = allPath.get(rand.nextInt(allPath.size()));
@@ -213,11 +211,12 @@ public class FreeBoard extends Board {
      */
     @Override
     public boolean isCellAvailable(int row, int col) {
-        if (!isInside(row, col)) return false;
+        if (!isInside(row, col))
+            return false;
 
         for (Tower t : towers) {
             if (t.getPosition().getRow() == row &&
-                t.getPosition().getCol() == col) {
+                    t.getPosition().getCol() == col) {
                 return false;
             }
         }
@@ -225,5 +224,4 @@ public class FreeBoard extends Board {
         return true;
     }
 
-   
 }

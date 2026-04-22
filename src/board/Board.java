@@ -217,4 +217,14 @@ public abstract class Board {
         int n = rand.nextInt(availabeCells.size());
         return availabeCells.get(n);
     }
+    /** Initializes the grid with empty cells. */
+    protected void initGrid() {
+    grid = new Cell[height][width];
+
+    for (int r = 0; r < height; r++) {
+        for (int c = 0; c < width; c++) {
+            grid[r][c] = new Cell(new Position(r, c));
+        }
+    }
+}
 }

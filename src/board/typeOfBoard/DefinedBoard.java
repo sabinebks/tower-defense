@@ -5,6 +5,7 @@ import entity.tower.Tower;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 /**
  * This class represents a defined board.
  * The path is generated randomly but must stay connected
@@ -25,7 +26,7 @@ public class DefinedBoard extends Board {
      * Create a defined board.
      *
      * @param height board height
-     * @param width board width
+     * @param width  board width
      */
     public DefinedBoard(int height, int width) {
 
@@ -38,13 +39,7 @@ public class DefinedBoard extends Board {
      */
     @Override
     public void init() {
-        grid = new Cell[height][width];
-
-        for (int r = 0; r < height; r++) {
-            for (int c = 0; c < width; c++) {
-                grid[r][c] = new Cell(new Position(r, c));
-            }
-        }
+        initGrid();
         calculerPath();
     }
 
@@ -189,6 +184,7 @@ public class DefinedBoard extends Board {
 
         return path;
     }
+
     /**
      * Check if a cell is available (no path and no tower).
      *
@@ -209,7 +205,7 @@ public class DefinedBoard extends Board {
 
         for (Tower t : towers) {
             if (t.getPosition().getRow() == row &&
-                t.getPosition().getCol() == col) {
+                    t.getPosition().getCol() == col) {
                 return false;
             }
         }

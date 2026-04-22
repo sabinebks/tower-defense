@@ -45,7 +45,7 @@ public class GameFactory {
                 : new HumanListChooser<>();
 
         Player player = new Player(2500, chooser);
-        Shop shop = new Shop(board);
+        
 
         List<Round> rounds = generateRounds(board);
 

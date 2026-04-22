@@ -89,6 +89,7 @@ public class Player {
                     + " | Vies : " + lives);
             List<Action> menu = ActionBuilder.buildMenu(this, shop);
             Action chosen = chooseAction(menu, ctx);
+            if (chosen == null) return;
             chosen.execute(ctx);
             if (chosen instanceof DoNothingAction) done = true;
         }

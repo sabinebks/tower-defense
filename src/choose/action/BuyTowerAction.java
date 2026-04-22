@@ -1,12 +1,10 @@
 package choose.action;
 
-
 import board.Position;
 import game.GameContext;
 import player.Player;
 import entity.tower.Tower;
 import java.util.*;;
-
 
 /**
  * buy tower action
@@ -23,6 +21,7 @@ public class BuyTowerAction extends Action {
 
     /**
      * constructor
+     * 
      * @param t the tower to buy
      * @param p the position to place it
      */
@@ -34,6 +33,7 @@ public class BuyTowerAction extends Action {
     @Override
     /**
      * execute the action: buy and place the tower
+     * 
      * @param game the game context
      */
     public void execute(GameContext game) {
@@ -47,8 +47,12 @@ public class BuyTowerAction extends Action {
         if (p == null) {
             p = getPos(game);
         }
+        if (p == null)
+            return;
+
         player.buyTower(this.tower);
         game.getBoard().placeTower(this.tower, p);
+
         this.pos = p;
 
         System.out.println(tower.getName() + " placee en " + p);
@@ -57,6 +61,7 @@ public class BuyTowerAction extends Action {
     @Override
     /**
      * description of the action
+     * 
      * @return text description
      */
     public String getDescription() {
@@ -65,6 +70,7 @@ public class BuyTowerAction extends Action {
 
     /**
      * Fucntion that return a valid position to place the tower
+     * 
      * @param game the game context
      * @return a valid position
      */

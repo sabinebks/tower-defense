@@ -27,10 +27,11 @@ public class Balloon {
 
     /**
      * constructor
-     * @param id balloon id
-     * @param startLigne start row
+     * 
+     * @param id           balloon id
+     * @param startLigne   start row
      * @param startColonne start column
-     * @param type balloon type
+     * @param type         balloon type
      */
     public Balloon(int id, double startLigne, double startColonne, BalloonType type) {
         this.id = id;
@@ -46,11 +47,14 @@ public class Balloon {
 
     /**
      * move balloon
+     * 
      * @return true if still active
      */
     public boolean move() {
-        if (!active) return false;
-        if (path == null || path.isEmpty()) return false;
+        if (!active)
+            return false;
+        if (path == null || path.isEmpty())
+            return false;
 
         if (pathIndex >= path.size()) {
             active = false;
@@ -58,10 +62,12 @@ public class Balloon {
             return false;
         }
 
-        if (freezeTimer > 0) return true;
+        if (freezeTimer > 0)
+            return true;
 
         double speed = getEffectiveSpeed();
-        if (speed <= 0) return true;
+        if (speed <= 0)
+            return true;
 
         double remaining = speed;
 
@@ -111,6 +117,7 @@ public class Balloon {
 
     /**
      * get effective speed
+     * 
      * @return speed
      */
     public double getEffectiveSpeed() {
@@ -121,6 +128,7 @@ public class Balloon {
 
     /**
      * apply damage
+     * 
      * @param damage damage value
      * @return true if dead
      */
@@ -139,15 +147,18 @@ public class Balloon {
      * update timers
      */
     public void update() {
-        if (freezeTimer > 0) freezeTimer--;
+        if (freezeTimer > 0)
+            freezeTimer--;
         if (slowTimer > 0) {
             slowTimer--;
-            if (slowTimer == 0) slowFactor = 1.0;
+            if (slowTimer == 0)
+                slowFactor = 1.0;
         }
     }
 
     /**
      * freeze balloon
+     * 
      * @param duration duration
      */
     public void freeze(int duration) {
@@ -158,7 +169,8 @@ public class Balloon {
 
     /**
      * slow balloon
-     * @param factor slow factor
+     * 
+     * @param factor   slow factor
      * @param duration duration
      */
     public void slow(double factor, int duration) {
@@ -177,6 +189,7 @@ public class Balloon {
 
     /**
      * check escape
+     * 
      * @return true if escaped
      */
     public boolean hasEscaped() {
@@ -185,6 +198,7 @@ public class Balloon {
 
     /**
      * check active
+     * 
      * @return true if active
      */
     public boolean isActive() {
@@ -193,6 +207,7 @@ public class Balloon {
 
     /**
      * get id
+     * 
      * @return id
      */
     public int getId() {
@@ -201,6 +216,7 @@ public class Balloon {
 
     /**
      * get speed
+     * 
      * @return speed
      */
     public double getSpeed() {
@@ -209,6 +225,7 @@ public class Balloon {
 
     /**
      * get health
+     * 
      * @return health
      */
     public int getHealth() {
@@ -217,6 +234,7 @@ public class Balloon {
 
     /**
      * get type
+     * 
      * @return type
      */
     public BalloonType getType() {
@@ -225,6 +243,7 @@ public class Balloon {
 
     /**
      * get exit time
+     * 
      * @return exit time
      */
     public int getExitTime() {
@@ -233,6 +252,7 @@ public class Balloon {
 
     /**
      * get column
+     * 
      * @return column
      */
     public double getColonne() {
@@ -241,6 +261,7 @@ public class Balloon {
 
     /**
      * get row
+     * 
      * @return row
      */
     public double getLigne() {
@@ -249,6 +270,7 @@ public class Balloon {
 
     /**
      * get path
+     * 
      * @return path
      */
     public List<Position> getPath() {
@@ -256,7 +278,21 @@ public class Balloon {
     }
 
     /**
+     * reset position
+     * 
+     * @param ligne   row
+     * @param colonne column
+     */
+    private void resetPosition(double ligne, double colonne) {
+        this.posLigne = ligne + 0.5;
+        this.posColonne = colonne + 0.5;
+        this.pathIndex = 0;
+        this.progression = 0.0;
+    }
+
+    /**
      * set path
+     * 
      * @param path path list
      */
     public void setPath(List<Position> path) {
@@ -264,22 +300,17 @@ public class Balloon {
 
         if (path != null && !path.isEmpty()) {
             Position start = path.get(0);
-            this.posLigne = start.getRow() + 0.5;
-            this.posColonne = start.getCol() + 0.5;
-            this.pathIndex = 0;
-            this.progression = 0.0;
+            resetPosition(start.getRow(), start.getCol());
         }
     }
 
     /**
      * set start position
-     * @param ligne row
+     * 
+     * @param ligne   row
      * @param colonne column
      */
     public void setStartPosition(double ligne, double colonne) {
-        this.posLigne = ligne + 0.5;
-        this.posColonne = colonne + 0.5;
-        this.pathIndex = 0;
-        this.progression = 0.0;
+        resetPosition(ligne, colonne);
     }
 }

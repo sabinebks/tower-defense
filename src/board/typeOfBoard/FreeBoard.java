@@ -23,10 +23,12 @@ public class FreeBoard extends Board {
      *
      * @param height board height
      * @param width board width
+     * @param nbChemins number of road 
      */
-    public FreeBoard(int height, int width) {
+    public FreeBoard(int height, int width, int nbChemins) {
         super(height, width);
-        this.nbCheminsVoulus = NBCHEMIN;
+        this.nbCheminsVoulus = nbChemins;
+        init();
     }
 
     /**
@@ -56,7 +58,7 @@ public class FreeBoard extends Board {
         this.allPath.clear();
         this.allCells.clear();
 
-        if (nbCheminsVoulus == 0) nbCheminsVoulus = NBCHEMIN;
+        if (nbCheminsVoulus <= 0) nbCheminsVoulus = NBCHEMIN;
 
         Random rand = new Random();
         List<Position> borders = getBorderPositions();

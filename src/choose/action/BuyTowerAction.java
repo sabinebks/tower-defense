@@ -51,7 +51,7 @@ public class BuyTowerAction extends Action {
         game.getBoard().placeTower(this.tower, p);
         this.pos = p;
 
-        System.out.println(tower.getName() + " placée en " + p);
+        System.out.println(tower.getName() + " placee en " + p);
     }
 
     @Override

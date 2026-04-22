@@ -147,14 +147,23 @@ public class Game implements ClockListener, GameContext {
     public int getEscapedCount() {
         return roundManager.getEscapedCount();
     }
-    /* 
-        * handle rewards for popped balloons
+    /** 
+    * handle rewards for popped balloons
+    * @param removed list of ballons that has been removed 
      */
-    private void handleRewards(List<Balloon> removed) {
-    for (Balloon b : removed) {
-        if (!b.hasEscaped()) {
-            player.addCredit(b.getType().reward);
+    public void handleRewards(List<Balloon> removed) {
+        for (Balloon b : removed) {
+            if (!b.hasEscaped()) {
+                player.addCredit(b.getType().reward);
+            }
         }
     }
-}
+
+    /**
+     * Function help verify there are still more round
+     * @return true if not finished, false if not 
+    */
+    public boolean roundPasFini() {
+        return !roundManager.isFinished();
+    }
 }

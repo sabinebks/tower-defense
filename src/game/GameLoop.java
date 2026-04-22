@@ -33,15 +33,15 @@ public class GameLoop {
 
             System.out.println("\n=== PHASE ACTION ===");
             player.runActionPhase(game, shop);
-
             System.out.println("\n=== PHASE COMBAT ===");
             game.runOneRound();
-
             if (game.hasPlayerLost()) {
                 System.out.println("GAME OVER");
                 return;
             }
-
+            if (!game.roundPasFini()) {
+                break;
+            }
             player.addCredit(REWARD);
             System.out.println("Recompense : +" + REWARD + " credits");
         }

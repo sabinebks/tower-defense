@@ -12,6 +12,12 @@ public class AutoListChooser<T extends choose.action.Action> implements ListChoo
     private final Random random = new Random();
 
     @Override
+    /**
+     * Function help choose an action 
+     * @param p 
+     * @param options list of actions to choose
+     * @return a list of action choosed randomly
+     */
     public T choose(String p, List<T> options) {
         if (options == null || options.isEmpty()) {
             return null;

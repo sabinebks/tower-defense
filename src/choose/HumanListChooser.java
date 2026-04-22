@@ -40,7 +40,7 @@ public class HumanListChooser<T extends Action> implements ListChooser<T> {
                 System.out.print("votre choix : ");
                 index = Integer.parseInt(scanner.nextLine());
             } catch (Exception e) {
-                System.out.println("Entrée invalide, reessaie.");
+                System.out.println("Entree invalide, reessaie");
             }
         }
 

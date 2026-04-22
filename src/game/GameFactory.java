@@ -16,16 +16,17 @@ instances with different configurations.
  */
 public class GameFactory {
     /**
-     * Function create a game, could be a FreeBoard or DefinedBoard with 2 differents mode
+     * Function create a game with optional custom number of paths for board B.
      * @param height height of the board
      * @param width width of the board
+     * @param nbChemins number of straight paths for board B
      * @param isPlateauB verify the type of board
      * @param isAuto verify the game mode
      */
-    public static Game build(int height, int width, int nbBalloon,boolean isPlateauB, boolean isAuto) {
+    public static Game build(int height, int width, int nbChemins, boolean isPlateauB, boolean isAuto) {
 
         Board board = isPlateauB
-                ? new FreeBoard(height, width, nbBalloon)
+                ? new FreeBoard(height, width, nbChemins)
                 : new DefinedBoard(height, width);
 
         ListChooser<Action> chooser = isAuto
@@ -33,7 +34,7 @@ public class GameFactory {
                 : new HumanListChooser<>();
 
         Player player = new Player(2500, chooser);
-        Shop shop = new Shop(board);
+        
 
         List<Round> rounds = generateRounds(board);
 

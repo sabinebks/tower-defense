@@ -43,7 +43,7 @@ public class GameLoop {
             }
 
             player.addCredit(REWARD);
-            System.out.println("Récompense : +" + REWARD + " crédits");
+            System.out.println("Recompense : +" + REWARD + " credits");
         }
 
         System.out.println("FIN DU JEU");

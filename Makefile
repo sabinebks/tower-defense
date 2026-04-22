@@ -32,6 +32,7 @@ runtests: tests
 	java -jar junit-console.jar -classpath classes --scan-class-path
 
 jar: classes
+	mkdir -p jar
 	jar cvfe jar/towerdefense-a-interactive.jar Livrables.LauncherAInteractive -C classes .
 	jar cvfe jar/towerdefense-a-random.jar Livrables.LauncherARandom -C classes .
 	jar cvfe jar/towerdefense-b-interactive.jar Livrables.LauncherBInteractive -C classes .

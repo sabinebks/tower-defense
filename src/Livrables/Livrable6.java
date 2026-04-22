@@ -7,20 +7,46 @@ public class Livrable6 {
 
     public static void main(String[] args) {
 
-        if (args.length < 5) {
-            System.out.println("Usage: largeur hauteur mode plateau");
+        if (args.length < 4) {
+            System.out.println("Usage plateau a : largeur hauteur mode plateau");
+            System.out.println("Usage plateau b : largeur hauteur nbChemins mode plateau");
             System.out.println("mode : interactive | random");
             System.out.println("plateau : a | b");
             return;
         }
 
-        int width = Integer.parseInt(args[0]);
-        int height = Integer.parseInt(args[1]);
-        int nbBallon = Integer.parseInt(args[2]);
-        boolean isAuto = args[3].equalsIgnoreCase("random");
-        boolean isPlateauB = args[4].equalsIgnoreCase("b");
+        int width;
+        int height;
+        int nbChemins = 1;
+        boolean isAuto;
+        boolean isPlateauB;
 
-        Game game = GameFactory.build(height, width, nbBallon,isPlateauB, isAuto);
+        try {
+            width = Integer.parseInt(args[0]);
+            height = Integer.parseInt(args[1]);
+
+            if (args.length == 5) {
+                nbChemins = Integer.parseInt(args[2]);
+                isAuto = args[3].equalsIgnoreCase("random");
+                isPlateauB = args[4].equalsIgnoreCase("b");
+            } else {
+                isAuto = args[2].equalsIgnoreCase("random");
+                isPlateauB = args[3].equalsIgnoreCase("b");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Erreur: largeur/hauteur/nbChemins doivent etre des nombres.");
+            System.out.println("mode : interactive | random");
+            System.out.println("plateau : a | b");
+            return;
+        }
+
+        if (isPlateauB && args.length != 5) {
+            System.out.println("Erreur: pour le plateau b, donne aussi nbChemins.");
+            System.out.println("Exemple: 11 5 6 interactive b");
+            return;
+        }
+
+        Game game = GameFactory.build(height, width, nbChemins, isPlateauB, isAuto);
 
         GameLoop loop = new GameLoop(
                 game,

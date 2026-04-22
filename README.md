@@ -698,11 +698,16 @@ Gérer les actions du joueur.
 ---
 
 ### Semaine 11
-**Ce qui a été réalisé :** *(à compléter)*
+**Ce qui a été réalisé :
+- Livrable 5 deja fini
+- Ajouter les ListChooser, les actions du joueur, les tests, aussi que le clock
+pour le jeu afffiche a chaque tick d'horloge
+- Ajouter les classes UI simple du jeu
 
-**Difficultés rencontrées :** *(à compléter)*
+**Difficultés rencontrées :les tours sont place aleatoirement sans demande au joueur de choisir la position, et quelque petit bugs ( le dernier ballon quitte le jeu ne diminue pas la vie, il y a
+des ballons sorties mais le jeu dit encore parfait)
 
-**Objectifs pour la semaine suivante :** *(à compléter)*
+**Objectifs pour la semaine suivante :Fixer les petits bugs et completer le projet
 
 ---
 

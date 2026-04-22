@@ -8,9 +8,9 @@ import entity.balloon.Balloon;
 public abstract class Projectil {
     /**
      * position
-     * target
-     * type
-     * speed
+     * the balloons get targeted
+     * type of projectile
+     * speed of the projectile
      * active state
      */
     protected double x, y;

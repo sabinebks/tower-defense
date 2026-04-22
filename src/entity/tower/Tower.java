@@ -12,6 +12,18 @@ import java.util.List;
  * tower base class
  */
 public abstract class Tower {
+    /**
+     * Position of the tower
+     * Type of projectile of the tower
+     * Price of the tower
+     * Porte of the tower
+     * Cadence of the tower
+     * Verify if tower can be evolue
+     * Effect type of the tower
+     * Evolution available of the tower
+     * Degats increase after upgrade
+     * Tick since the last shot from tower
+     */
     protected Position position;
     protected ProjectilType type;
     protected int cout;
@@ -221,10 +233,18 @@ public abstract class Tower {
      */
     public abstract int getCoutEvolution(TypeEvolution evolution);
 
+    /**
+     * return tower row
+     * @return tower row
+     */
     public double getrow() {
         return position.getRow();
     }
 
+    /**
+     * Return towers column
+     * @return towers column
+     */
     public double getcol() {
         return position.getCol();
     }

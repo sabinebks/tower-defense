@@ -5,6 +5,13 @@ package entity.tower.evolution;
  */
 public enum TypeEvolution {
 
+    /**
+     * Every evolution type
+     * Portee
+     * Cadence
+     * Puissance
+     * Projectiles
+     */
     PORTEE,
     CANDENCE,
     PUISSANCE,

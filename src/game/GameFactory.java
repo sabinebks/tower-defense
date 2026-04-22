@@ -23,9 +23,21 @@ public class GameFactory {
      * @param isAuto verify the game mode
      */
     public static Game build(int height, int width, boolean isPlateauB, boolean isAuto) {
+        return build(height, width, 5, isPlateauB, isAuto);
+    }
+
+    /**
+     * Function create a game with optional custom number of paths for board B.
+     * @param height height of the board
+     * @param width width of the board
+     * @param nbChemins number of straight paths for board B
+     * @param isPlateauB verify the type of board
+     * @param isAuto verify the game mode
+     */
+    public static Game build(int height, int width, int nbChemins, boolean isPlateauB, boolean isAuto) {
 
         Board board = isPlateauB
-                ? new FreeBoard(height, width)
+                ? new FreeBoard(height, width, nbChemins)
                 : new DefinedBoard(height, width);
 
         ListChooser<Action> chooser = isAuto

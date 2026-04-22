@@ -11,8 +11,6 @@ import java.util.*;
  */
 public class FreeBoard extends Board {
 
-    private static final int NBCHEMIN = 5;
-
     private Map<Integer, Position> numChemins;
     private Map<Position, Position> chemins;
     private int cmp = 0;
@@ -26,7 +24,21 @@ public class FreeBoard extends Board {
      */
     public FreeBoard(int height, int width) {
         super(height, width);
-        this.nbCheminsVoulus = NBCHEMIN;
+        this.nbCheminsVoulus = Math.max(1, Math.min(height, width) / 2);
+        calculerPath();
+    }
+
+    /**
+     * Create a free board with a custom number of straight paths.
+     *
+     * @param height board height
+     * @param width board width
+     * @param nbChemins number of paths wanted
+     */
+    public FreeBoard(int height, int width, int nbChemins) {
+        super(height, width);
+        this.nbCheminsVoulus = nbChemins > 0 ? nbChemins : 1;
+        calculerPath();
     }
 
     /**
@@ -56,7 +68,7 @@ public class FreeBoard extends Board {
         this.allPath.clear();
         this.allCells.clear();
 
-        if (nbCheminsVoulus == 0) nbCheminsVoulus = NBCHEMIN;
+        if (nbCheminsVoulus <= 0) nbCheminsVoulus = 1;
 
         Random rand = new Random();
         List<Position> borders = getBorderPositions();

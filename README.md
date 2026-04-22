@@ -617,6 +617,7 @@ java -jar jar/towerdefense-b-random.jar <largeur> <hauteur> <nbChemins>
 
 Il reste des améliorations à faire dans certaines classes. Quelques méthodes sont encore trop longues, donc on doit les simplifier. On a encore un peu de code dupliqué à corriger.
 
+Le jeu n'arrete pas meme si apres un round a fini dans le mode auto 
 
 ---
 
@@ -780,8 +781,11 @@ des ballons sorties mais le jeu dit encore parfait)
 ---
 
 ### Semaine 12
-**Ce qui a été réalisé :** *(à compléter)*
+**Ce qui a été réalisé :
+- Le jeu complet est fini
 
-**Difficultés rencontrées :** *(à compléter)*
+**Difficultés rencontrées :
+- Il reste encore les petits erreurs dans l'operation du code ( code trop long, difficile a lire, 
+le jeu n'arrete pas quand un round fini dans mode auto)
 
-**Objectifs pour finaliser le projet :** *(à compléter)*
+**Objectifs pour finaliser le projet :

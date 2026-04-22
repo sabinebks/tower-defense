@@ -16,7 +16,7 @@ public class GameLoop {
     private final Player player;
     private final Shop shop;
 
-    private static final int REWARD = 150;
+    private static final int REWARD = 10;
     /** this class manages the main game loop,
      * alternating between action and combat phases
      * until the player loses

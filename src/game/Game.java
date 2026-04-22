@@ -51,12 +51,7 @@ public class Game implements ClockListener, GameContext {
 
         List<Balloon> removed = roundManager.update(tickCount);
 
-        for (Balloon b : removed) {
-            if (!b.hasEscaped()) {
-                int reward = b.getType().reward;
-                player.addCredit(reward);
-            }
-        }
+        handleRewards(removed);
 
         renderer.render(board);
     }
@@ -72,13 +67,7 @@ public class Game implements ClockListener, GameContext {
             tickCount++;
             System.out.println("TICK " + tickCount);
             List<Balloon> removed = roundManager.update(tickCount);
-
-            for (Balloon b : removed) {
-                if (!b.hasEscaped()) {
-                    int reward = b.getType().reward;
-                    player.addCredit(reward);
-                }
-            }
+            handleRewards(removed);
 
             GameStateRenderer.printTick(tickCount, board, player);
 
@@ -158,4 +147,14 @@ public class Game implements ClockListener, GameContext {
     public int getEscapedCount() {
         return roundManager.getEscapedCount();
     }
+    /* 
+        * handle rewards for popped balloons
+     */
+    private void handleRewards(List<Balloon> removed) {
+    for (Balloon b : removed) {
+        if (!b.hasEscaped()) {
+            player.addCredit(b.getType().reward);
+        }
+    }
+}
 }

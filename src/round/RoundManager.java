@@ -12,6 +12,18 @@ import java.util.List;
  */
 public class RoundManager {
 
+    /**
+     * Spawn interval of balloons
+     * List of round
+     * Board of the game
+     * The player
+     * The current index of round
+     * Spawn tick
+     * Verify if round started
+     * Verify if round finished
+     * Number of balloons escaped
+     * First tick of the round
+     */
     private static final int SPAWN_INTERVAL = 5;
     private final List<Round> rounds;
     private final Board board;

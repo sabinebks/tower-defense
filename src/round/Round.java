@@ -9,7 +9,12 @@ import entity.balloon.Balloon;
  * round
  */
 public class Round {
-
+    /**
+     * Number of the round
+     * List of balloon in the current round
+     * State
+     * List of escaped balloons
+     */
     private int number;
     private List<Balloon> balloons;
     private boolean state;

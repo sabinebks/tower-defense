@@ -24,9 +24,7 @@ public class FreeBoardTest {
      */
     @BeforeEach
     public void setUp() {
-        fb = new FreeBoard(HEIGHT, WIDTH);
-        fb.init(); 
-        fb.calculerPath(); 
+        fb = new FreeBoard(HEIGHT, WIDTH,5); 
     }
 
     /**

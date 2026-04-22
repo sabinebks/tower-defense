@@ -10,13 +10,13 @@ public class ShopTest {
 
       @Test
       void listeToursDisponiblesNonVide() {
-          Shop shop = new Shop(new FreeBoard(6, 6));
+          Shop shop = new Shop(new FreeBoard(6, 6,5));
           assertEquals(7, shop.getAvailableTowers().size());
       }
 
       @Test
       void trouveUnePositionLibre() {
-          Shop shop = new Shop(new FreeBoard(6, 6));
+          Shop shop = new Shop(new FreeBoard(6, 6,5));
           assertNotNull(shop.getBoard().findAvailablePosition());
       }
 

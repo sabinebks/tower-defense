@@ -25,13 +25,28 @@ public class GameSetup {
     private static final int NB_ROUNDS  = 10;
     private static final int FPS = 3;
 
+    /**
+     * The board of the game
+     * The player
+     * The games shop
+     * The game
+     * Numbers of balloons
+     * Verify if human/bot is playing
+     */
     private final Board board;
     private final Player player;
     private final Shop shop;
     private final Game game;
     private final int nbBallons;
     private final boolean isHuman;
-
+    /**
+     * Constructeur
+     * @param hauteur height of board
+     * @param largeur width of board
+     * @param nbBallons numbers of balloons
+     * @param typePlateau type of board
+     * @param typeJoueur the games mode
+     */
     public GameSetup(int hauteur, int largeur, int nbBallons,
                      String typePlateau, String typeJoueur) {
 
@@ -59,6 +74,13 @@ public class GameSetup {
         this.game = new Game(player, board, rounds, FPS);
     }
 
+    /**
+     * Return a list of created balloons
+     * @param count numbers of balloons to create
+     * @param type type of balloons
+     * @param path theirs path
+     * @return a list of created balloons
+     */
     private List<Balloon> makeBalloons(int count, BalloonType type, List<Position> path) {
         List<Balloon> list = new ArrayList<>();
         for (int i = 0; i < count; i++) {
@@ -72,9 +94,29 @@ public class GameSetup {
         return list;
     }
 
+    /**
+     * Board getter
+     * @return board
+     */
     public Board  getBoard()   { return board;   }
+    /**
+     * Player getter
+     * @return player
+     */
     public Player getPlayer()  { return player;  }
+    /**
+     * Shop getter
+     * @return shop
+     */
     public Shop   getShop()    { return shop;    }
+    /**
+     * Game getter
+     * @return game
+     */
     public Game   getGame()    { return game;    }
+    /**
+     * Verify if is human or not
+     * @return true if human, false if not
+     */
     public boolean isHuman()   { return isHuman; }
 }

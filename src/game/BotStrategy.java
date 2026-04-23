@@ -17,6 +17,11 @@ import java.util.Random;
  */
 public class BotStrategy {
 
+    /**
+     * The player
+     * The games shop
+     * Random variable
+     */
     private final Player player;
     private final Shop shop;
     private final Random rng = new Random();
@@ -27,7 +32,8 @@ public class BotStrategy {
     }
 
     /**
-     * Place automatiquement des tours au debut de la partie.
+     * Put an random tower at the beginning 
+     * @parma game the game we are playing
      */
     public void placeInitialTowers(Game game) {
         System.out.println("[BOT] Placement initial de 2 tours de chaque type...");
@@ -38,9 +44,9 @@ public class BotStrategy {
     }
 
     /**
-     * Applique une evolution ou une suppression d'evolution selon le round.
-     * @param roundNum le numero du round courant
-     * @param game le contexte de jeu
+     * Do an upgrade/downgrade in each round
+     * @param roundNum number of the curr round
+     * @param game context of the game
      */
     public void applyRoundEvolution(int roundNum, Game game) {
         if (roundNum <= 5) {

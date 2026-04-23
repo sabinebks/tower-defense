@@ -1011,7 +1011,8 @@ java -jar jar/towerdefense-b-random.jar <largeur> <hauteur> <nbChemins>
 #### Difficultés restant à résoudre
 
 
-Il reste des améliorations à faire dans certaines classes. Quelques méthodes sont encore trop longues, donc on doit les simplifier. On a encore un peu de code dupliqué à corriger.
+- Il reste des améliorations à faire dans certaines classes. Quelques méthodes sont encore trop longues, donc on doit les simplifier. 
+- On a encore un peu de code dupliqué à corriger.
 - Joueur automatique : le comportement du joueur automatique (`AutoListChooser`) n'est pas encore optimal
 - Il reste des améliorations à faire dans certaines classes. Quelques méthodes sont encore trop longues, donc on doit les simplifier. On a encore un peu de code dupliqué à corriger.
 - Ajout de tests 

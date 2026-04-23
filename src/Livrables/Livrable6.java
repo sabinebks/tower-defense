@@ -1,64 +1,30 @@
 package Livrables;
 
-import game.*;
-import player.Shop;
+import game.GameLoop;
+import game.GameSetup;
+
 /**
- * Main game
+ * Point d'entree du Livrable 5.
  */
 public class Livrable6 {
-    /**
-     * Main function of the whole game
-     * @param args input from terminal
-     */
+
     public static void main(String[] args) {
+        int[] p = parseArgs(args);
+        new GameLoop(new GameSetup(p[0], p[1], p[2], args[3], args[4])).start();
+    }
 
-        if (args.length < 4) {
-            System.out.println("Usage plateau a : largeur hauteur mode plateau");
-            System.out.println("Usage plateau b : largeur hauteur nbChemins mode plateau");
-            System.out.println("mode : interactive | random");
-            System.out.println("plateau : a | b");
-            return;
-        }
+    private static int[] parseArgs(String[] args) {
+        if (args.length < 5) { printUsage(); System.exit(1); }
+        if (!args[3].equalsIgnoreCase("chemin") && !args[3].equalsIgnoreCase("libre"))
+        { System.err.println("Erreur : type plateau doit etre 'chemin' ou 'libre'."); System.exit(1); }
+        if (!args[4].equalsIgnoreCase("humain") && !args[4].equalsIgnoreCase("aleatoire"))
+        { System.err.println("Erreur : type joueur doit etre 'humain' ou 'aleatoire'."); System.exit(1); }
+        try { return new int[]{ Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]) }; }
+        catch (NumberFormatException e) { System.err.println("Erreur : hauteur, largeur et nb ballons doivent etre des entiers."); System.exit(1); return null; }
+    }
 
-        int width;
-        int height;
-        int nbChemins = 1;
-        boolean isAuto;
-        boolean isPlateauB;
-
-        try {
-            width = Integer.parseInt(args[0]);
-            height = Integer.parseInt(args[1]);
-
-            if (args.length == 5) {
-                nbChemins = Integer.parseInt(args[2]);
-                isAuto = args[3].equalsIgnoreCase("random");
-                isPlateauB = args[4].equalsIgnoreCase("b");
-            } else {
-                isAuto = args[2].equalsIgnoreCase("random");
-                isPlateauB = args[3].equalsIgnoreCase("b");
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Erreur: largeur/hauteur/nbChemins doivent etre des nombres.");
-            System.out.println("mode : interactive | random");
-            System.out.println("plateau : a | b");
-            return;
-        }
-
-        if (isPlateauB && args.length != 5) {
-            System.out.println("Erreur: pour le plateau b, donne aussi nbChemins.");
-            System.out.println("Exemple: 11 5 6 interactive b");
-            return;
-        }
-
-        Game game = GameFactory.build(height, width, nbChemins, isPlateauB, isAuto);
-
-        GameLoop loop = new GameLoop(
-                game,
-                game.getPlayer(),
-                new Shop(game.getBoard())
-        );
-
-        loop.run();
+    private static void printUsage() {
+        System.err.println("Usage: java -jar livrable5.jar <hauteur> <largeur> <nb ballons> <type plateau> <type joueur>");
+        System.err.println("  type plateau : chemin | libre  |  type joueur : humain | aleatoire");
     }
 }

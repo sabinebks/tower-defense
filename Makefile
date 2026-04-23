@@ -1,5 +1,3 @@
-.PHONY: all classes tests runtests jar docs clean
-
 all: classes
 
 classes:
@@ -58,5 +56,7 @@ docs:
 		src/player/*.java \
 		src/round/*.java
 
+
 clean:
-	rm -rf classes doc jar *.jar
+	rm -rf classes doc jar
+	ls *.jar | grep -v '^junit-console\.jar$$' | xargs rm -f

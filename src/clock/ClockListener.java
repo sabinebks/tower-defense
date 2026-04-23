@@ -1,12 +1,10 @@
 package clock;
 
-/**
- * clock listener interface
- */
 public interface ClockListener {
     /**
-     * called every tick of the clock
-     * @param tickCount number of ticks passed
+     * Appelé à chaque tick de l'horloge
+     *
+     * @param tickCount Le nombre de ticks écoulés
      */
     void onTick(int tickCount);
 }

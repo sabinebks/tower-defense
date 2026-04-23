@@ -200,320 +200,715 @@ Enfin, nous avons poursuivi nos efforts de refactorisation en réduisant les dup
 ```mermaid
 classDiagram
 
-%% ─── BOARD ───────────────────────────────────────────────
-class Board {
-    <<abstract>>
-    #int width
-    #int height
-    #Cell[][] grid
-    #Map~Integer,List~Cell~~ allPath
-    #List~Tower~ towers
-    #List~Balloon~ balloons
-    #List~Projectil~ activeProjectiles
-    #List~Balloon~ escapedBalloons
-    +calculerPath()*
-    +getChemins()* List~Cell~
-    +init()*
-    +getPathPositions()* List~Position~
-    +placeTower(Tower, Position)
-    +removeTower(Tower)
-    +spawnBalloon(Balloon)
-    +update() List~Balloon~
-    +isCellAvailable(int,int)* boolean
-}
-class DefinedBoard {
-    -List~Cell~ chemins
-    -Position cheminAv
-    -Position pointDeDepart
-    +calculerPath()
-    +getPathPositions() List~Position~
-    +isCellAvailable(int,int) boolean
-}
-class FreeBoard {
-    -int NBCHEMIN
-    -Map~Integer,Position~ numChemins
-    -Map~Position,Position~ chemins
-    -int nbCheminsVoulus
-    +calculerPath()
-    +retourneLesChemins(int) Position[]
-    +retourneNbrChemins() int
-    +getPathPositions() List~Position~
-    +isCellAvailable(int,int) boolean
-}
-class Cell {
-    -Position position
-    -boolean isPath
-    +assignChemin()
-    +isPath() boolean
-    +estVide() boolean
-}
-class Position {
-    -int row
-    -int col
-    +getRow() int
-    +getCol() int
-}
-class Direction {
-    <<enum>>
-    UP
-    DOWN
-    RIGHT
-    LEFT
-}
-Board <|-- DefinedBoard
-Board <|-- FreeBoard
-Board "1" *-- "many" Cell
-Cell *-- Position
+%% ─── BOARD ──────────────────────────────────────────────────────────────────
+    class Board {
+        <<abstract>>
+        #int width
+        #int height
+        #Cell[][] grid
+        #Map~Integer_List~Cell~~ allPath
+        #List~Tower~ towers
+        #List~Balloon~ balloons
+        #List~Projectil~ activeProjectiles
+        #List~Balloon~ escapedBalloons
+        #List~Cell~ allCells
+        +Board(int height, int width)
+        +calculerPath()*
+        +init()*
+        +getPathPositions()* List~Position~
+        +allCells()* List~Cell~
+        +isCellAvailable(int row, int col)* boolean
+        +getCell(int row, int col) Cell
+        +isInside(int row, int col) boolean
+        +placeTower(Tower tower, Position position)
+        +removeTower(Tower tower)
+        +spawnBalloon(Balloon balloon)
+        +update() List~Balloon~
+        +getTowers() List~Tower~
+        +getBalloons() List~Balloon~
+        +getEscapedBalloons() List~Balloon~
+        +clearEscapedBalloons()
+        +getWidth() int
+        +getHeight() int
+        +getGrid() Cell[][]
+        +getAllPath() Map~Integer_List~Cell~~
+        +getActiveProjectiles() List~Projectil~
+        +findAvailablePosition() Position
+    }
 
-%% ─── BALLOON ─────────────────────────────────────────────
-class Balloon {
-    #int id
-    #double posColonne
-    #double posLigne
-    #double speed
-    #int health
-    #BalloonType type
-    #boolean active
-    #boolean escaped
-    #List~Position~ path
-    #int pathIndex
-    +move() boolean
-    +update()
-    +hit(int) boolean
-    +freeze(int)
-    +slow(double, int)
-    +hasEscaped() boolean
-}
-class BalloonType {
-    <<enum>>
-    BASIC
-    MEDIUM
-    STRONG
-    +int health
-    +double speed
-    +int reward
-}
-Balloon --> BalloonType
+    class DefinedBoard {
+        -Position cheminAv
+        -Position pointDeDepart
+        +DefinedBoard(int height, int width)
+        +init()
+        +calculerPath()
+        +getPathPositions() List~Position~
+        +isCellAvailable(int row, int col) boolean
+        +allCells() List~Cell~
+        +getCheminLong() int
+        +isBord(Position p) boolean
+    }
 
-%% ─── TOWER ───────────────────────────────────────────────
-class Tower {
-    <<abstract>>
-    #Position position
-    #int cout
-    #int porte
-    #int cadence
-    #boolean evolution
-    #EffectType effectType
-    #ProjectilType type
-    #Evolution evolutions
-    #int degatsSup
-    +update(List~Balloon~, List~Projectil~)
-    +attack(List~Balloon~)* Projectil
-    +appliquerEvolution(TypeEvolution)* int
-    +getCoutEvolution(TypeEvolution)* int
-    +findTarget(List~Balloon~) Balloon
-    +getName()* String
-    +getSymbol()* String
-    +getCost() int
-}
-class DartMonkey { +attack() Projectil }
-class BombTower  { +attack() Projectil }
-class IceTower   { +attack() Projectil }
-class SlowTower  { +attack() Projectil }
-class TackShooter{ +attack() Projectil }
-class EliteSniper{ +attack() Projectil }
-class Gorilla    { +attack() Projectil }
-class EffectType {
-    <<enum>>
-    IMMEDIATE
-    AREA
-    SLOW
-    FREEZE
-}
-Tower <|-- DartMonkey
-Tower <|-- BombTower
-Tower <|-- IceTower
-Tower <|-- SlowTower
-Tower <|-- TackShooter
-Tower <|-- EliteSniper
-Tower <|-- Gorilla
-Tower --> EffectType
+    class FreeBoard {
+        -int NBCHEMIN$
+        -Map~Integer_Position~ numChemins
+        -int cmp
+        -Map~Position_Position~ chemins
+        -int nbCheminsVoulus
+        +FreeBoard(int height, int width, int nbChemin)
+        +init()
+        +calculerPath()
+        +getPathPositions() List~Position~
+        +isCellAvailable(int row, int col) boolean
+        +allCells() List~Cell~
+        +getDirection(Position depart, Position fin) Direction
+        +setNbCheminsVoulus(int nb)
+        +marquerCheminDroit(Position start, Position end)
+        +getFinChemin(Position start) Position
+        +retourneLesChemins(int num) Position[]
+        +retourneNbrChemins() int
+        +getCheminsMap() Map~Position_Position~
+    }
 
-%% ─── EVOLUTION ───────────────────────────────────────────
-class Evolution {
-    -List~TypeEvolution~ evolutions
-    -Map~TypeEvolution,Integer~ evolutionsPossedees
-    +addEvolution(TypeEvolution)
-    +deleteEvolutions(TypeEvolution)
-    +getEvolutions() List~TypeEvolution~
-    +getEvolutionsPossedees() Map
-}
-class TypeEvolution {
-    <<enum>>
-    PORTEE
-    CANDENCE
-    PUISSANCE
-    PROJECTILES
-}
-Tower *-- Evolution
-Evolution --> TypeEvolution
+    class Cell {
+        -Position position
+        -boolean isPath
+        -List~Balloon~ balloons
+        +Cell(Position position)
+        +getPosition() Position
+        +isPath() boolean
+        +assignChemin()
+        +estVide() boolean
+        +addBalloon(Balloon b)
+        +removeBalloon(Balloon b)
+        +getBalloons() List~Balloon~
+        +getNumBalloon() int
+        +equals(Object o) boolean
+    }
 
-%% ─── PROJECTIL ───────────────────────────────────────────
-class Projectil {
-    <<abstract>>
-    #double x
-    #double y
-    #Balloon target
-    #boolean active
-    +update()*
-    +isActive() boolean
-}
-class ProjectilSimple { +update() }
-class ProjectilBombe  { +update() }
-class ProjectilFreeze { +update() }
-class ProjectilSlow   { +update() }
-class ProjectilType {
-    <<enum>>
-    FLECHETTE
-    BOMBE
-    EXTRA_BOMBE
-    FLECHETTE_TRES_POINTUE
-    GLACON
-    RALENTISSEUR
-}
-class NotMatchException
-Projectil <|-- ProjectilSimple
-Projectil <|-- ProjectilBombe
-Projectil <|-- ProjectilFreeze
-Projectil <|-- ProjectilSlow
-Projectil --> Balloon
-Tower --> ProjectilType
+    class Position {
+        -int row
+        -int col
+        +Position(int row, int col)
+        +getRow() int
+        +getCol() int
+        +equals(Object obj) boolean
+        +hashCode() int
+        +toString() String
+    }
 
-%% ─── GAME ────────────────────────────────────────────────
-class Game {
-    -Board board
-    -Player player
-    -RoundManager roundManager
-    -Clock clock
-    -boolean isRunning
-    +runOneRound()
-    +onTick(int)
-    +hasPlayerLost() boolean
-}
-class GameContext {
-    <<interface>>
-    +getPlayer() Player
-    +getBoard() Board
-}
-Game ..|> GameContext
-Game ..|> ClockListener
-Game --> Board
-Game --> Player
-Game --> RoundManager
-Game --> Clock
+    class Direction {
+        <<enumeration>>
+        UP
+        DOWN
+        RIGHT
+        LEFT
+    }
 
-%% ─── ROUND ───────────────────────────────────────────────
-class Round {
-    -int number
-    -List~Balloon~ balloons
-    +getNumber() int
-    +getBalloons() List~Balloon~
-}
-class RoundManager {
-    -List~Round~ rounds
-    -Board board
-    -int currentIndex
-    -boolean playerLost
-    +update(int)
-    +isCurrentRoundFinished() boolean
-    +hasPlayerLost() boolean
-}
-RoundManager --> Round
-RoundManager --> Board
-Round *-- Balloon
+%% ─── ENTITY / BALLOON ───────────────────────────────────────────────────────
+    class Balloon {
+        #int id
+        #double posColonne
+        #double posLigne
+        #double speed
+        #int health
+        #BalloonType type
+        #boolean active
+        #boolean escaped
+        #int exitTime
+        #int freezeTimer
+        #int slowTimer
+        #double slowFactor
+        #List~Position~ path
+        #int pathIndex
+        -double progression
+        +Balloon(int id, double startLigne, double startColonne, BalloonType type)
+        +move() boolean
+        +hit(int damage) boolean
+        +update()
+        +freeze(int duration)
+        +slow(double factor, int duration)
+        +remove()
+        +hasEscaped() boolean
+        +isActive() boolean
+        +getEffectiveSpeed() double
+        +getId() int
+        +getSpeed() double
+        +getHealth() int
+        +getType() BalloonType
+        +getExitTime() int
+        +getColonne() double
+        +getLigne() double
+        +getPath() List~Position~
+        +setPath(List~Position~ path)
+        +setStartPosition(double ligne, double colonne)
+    }
 
-%% ─── PLAYER / SHOP ───────────────────────────────────────
-class Player {
-    -int credit
-    -List~Tower~ towers
-    -ListChooser~Action~ actionChooser
-    +buyTower(Tower)
-    +sellTower(Tower)
-    +chooseAction(List~Action~, GameContext) Action
-    +runActionPhase(GameContext, Shop)
-    +addCredit(int)
-    +removeCredit(int)
-}
-class Shop {
-    -Board board
-    +getAvailableTowers() List~Tower~
-    +findAvailablePosition() Position
-}
-Player --> ListChooser
-Player --> Tower
-Shop --> Board
+    class BalloonType {
+        <<enumeration>>
+        BASIC
+        MEDIUM
+        STRONG
+        +int health
+        +double speed
+        +int reward
+    }
 
-%% ─── CHOOSER / ACTION ────────────────────────────────────
-class ListChooser~T~ {
-    <<interface>>
-    +choose(String, List~T~) T
-}
-class HumanListChooser { +choose() Action }
-class AutoListChooser  { +choose() Action }
-ListChooser <|.. HumanListChooser
-ListChooser <|.. AutoListChooser
+%% ─── ENTITY / TOWER ─────────────────────────────────────────────────────────
+    class Tower {
+        <<abstract>>
+        #Position position
+        #ProjectilType type
+        #int cout
+        #int porte
+        #int cadence
+        #boolean evolution
+        #EffectType effectType
+        #Evolution evolutions
+        #int degatsSup
+        #int ticksSinceLastShot
+        +Tower(Position, int cout, int porte, int cadence, boolean evolution, EffectType, ProjectilType)
+        +update(List~Balloon~ balloons, List~Projectil~ activeProjectiles)
+        +attack(List~Balloon~ balloons)* Projectil
+        +appliquerEvolution(TypeEvolution typeEvo)* int
+        +getCoutEvolution(TypeEvolution evolution)* int
+        +getSymbol()* String
+        +getName()* String
+        +findTarget(List~Balloon~ balloons) Balloon
+        +distanceTo(Balloon b) double
+        +getPosition() Position
+        +getPorte() int
+        +getEvolution() boolean
+        +getEvolutions() Evolution
+        +getCost() int
+        +SellEvolution(TypeEvolution evo) int
+        +getSellPrice() int
+        +setPosition(Position position)
+        +getrow() double
+        +getcol() double
+    }
 
-class Action {
-    <<abstract>>
-    +execute(GameContext)*
-    +getDescription()* String
-}
-class BuyTowerAction    { +execute(GameContext) }
-class SellTowerAction   { +execute(GameContext) }
-class UpgradeTowerAction{ +execute(GameContext) }
-class SellTowerUpgradeAction{ +execute(GameContext) }
-class DoNothingAction   { +execute(GameContext) }
-class QuitAction        { +execute(GameContext) }
-class RetourAction      { +execute(GameContext) }
-class MenuAction {
-    -String label
-    -List~Action~ sousActions
-    +execute(GameContext)
-}
-class ActionBuilder {
-    +buildMenu(Player, Shop)$ List~Action~
-}
-Action <|-- BuyTowerAction
-Action <|-- SellTowerAction
-Action <|-- UpgradeTowerAction
-Action <|-- SellTowerUpgradeAction
-Action <|-- DoNothingAction
-Action <|-- QuitAction
-Action <|-- RetourAction
-Action <|-- MenuAction
-ActionBuilder --> Action
+    class DartMonkey {
+        +DartMonkey(Position pos)
+        +attack(List~Balloon~ balloons) Projectil
+        +appliquerEvolution(TypeEvolution typeEvo) int
+        +getCoutEvolution(TypeEvolution typeEvo) int
+        +getSymbol() String
+        +getName() String
+    }
 
-%% ─── CLOCK ───────────────────────────────────────────────
-class Clock {
-    -int fps
-    -int tickCount
-    -boolean running
-    +start()
-    +stop()
-    +reset()
-    +addListener(ClockListener)
-}
-class ClockListener {
-    <<interface>>
-    +onTick(int)
-}
-Clock --> ClockListener
+    class BombTower {
+        +BombTower(Position pos)
+        +attack(List~Balloon~ balloons) Projectil
+        +appliquerEvolution(TypeEvolution typeEvo) int
+        +getCoutEvolution(TypeEvolution typeEvo) int
+        +getSymbol() String
+        +getName() String
+    }
 
-%% ─── UI ──────────────────────────────────────────────────
-class BoardConsoleRenderer {
-    +render(Board)
-}
-Game --> BoardConsoleRenderer
+    class IceTower {
+        +IceTower(Position pos)
+        +attack(List~Balloon~ balloons) Projectil
+        +appliquerEvolution(TypeEvolution typeEvo) int
+        +getCoutEvolution(TypeEvolution typeEvo) int
+        +getSymbol() String
+        +getName() String
+    }
+
+    class SlowTower {
+        +SlowTower(Position pos)
+        +attack(List~Balloon~ balloons) Projectil
+        +appliquerEvolution(TypeEvolution typeEvo) int
+        +getCoutEvolution(TypeEvolution typeEvo) int
+        +getSymbol() String
+        +getName() String
+    }
+
+    class TackShooter {
+        +TackShooter(Position pos)
+        +attack(List~Balloon~ balloons) Projectil
+        +appliquerEvolution(TypeEvolution typeEvo) int
+        +getCoutEvolution(TypeEvolution typeEvo) int
+        +getSymbol() String
+        +getName() String
+    }
+
+    class EliteSniper {
+        +EliteSniper(Position pos)
+        +attack(List~Balloon~ balloons) Projectil
+        +appliquerEvolution(TypeEvolution typeEvo) int
+        +getCoutEvolution(TypeEvolution typeEvo) int
+        +getSymbol() String
+        +getName() String
+    }
+
+    class Gorilla {
+        +Gorilla(Position pos)
+        +attack(List~Balloon~ balloons) Projectil
+        +appliquerEvolution(TypeEvolution typeEvo) int
+        +getCoutEvolution(TypeEvolution typeEvo) int
+        +getSymbol() String
+        +getName() String
+    }
+
+    class EffectType {
+        <<enumeration>>
+        IMMEDIATE
+        AREA
+        SLOW
+        FREEZE
+    }
+
+    class Evolution {
+        -ArrayList~TypeEvolution~ typeEvolutions
+        -HashMap~TypeEvolution_Integer~ evolutionsPossedees
+        +Evolution()
+        +addEvolution(TypeEvolution typeEvolution)
+        +deleteEvolutions(TypeEvolution typeEvolutions)
+        +getEvolutions() ArrayList~TypeEvolution~
+        +vendreEvolution(TypeEvolution typeEvolution)
+        +getEvolutionsPossedees() HashMap~TypeEvolution_Integer~
+    }
+
+    class TypeEvolution {
+        <<enumeration>>
+        PORTEE
+        CANDENCE
+        PUISSANCE
+        PROJECTILES
+    }
+
+%% ─── ENTITY / PROJECTIL ─────────────────────────────────────────────────────
+    class Projectil {
+        <<abstract>>
+        #double x
+        #double y
+        #Balloon target
+        #ProjectilType type
+        #double speed
+        #boolean active
+        +Projectil(ProjectilType type, double startX, double startY, Balloon target)
+        +update()
+        +triggerImpact()*
+        +isActive() boolean
+    }
+
+    class ProjectilSimple {
+        +ProjectilSimple(ProjectilType, double startX, double startY, Balloon target)
+        +triggerImpact()
+    }
+
+    class ProjectilBombe {
+        -List~Balloon~ balloons
+        -double explosionRadius
+        +ProjectilBombe(ProjectilType, double startX, double startY, Balloon target, double radius, List~Balloon~ currentBalloons)
+        +triggerImpact()
+    }
+
+    class ProjectilFreeze {
+        +ProjectilFreeze(ProjectilType, double startX, double startY, Balloon target)
+        +triggerImpact()
+    }
+
+    class ProjectilSlow {
+        +ProjectilSlow(ProjectilType, double startX, double startY, Balloon target)
+        +triggerImpact()
+    }
+
+    class ProjectilType {
+        <<enumeration>>
+        NO_DAMAGE
+        FLECHETTE
+        FLECHETTE_POINTUE
+        FLECHETTE_TRES_POINTUE
+        AIGUILLE
+        BOMBE
+        EXTRA_BOMBE
+        -int degats
+        +getDegats() int
+    }
+
+    class NotMatchException {
+        +NotMatchException(String message)
+        +getMessage() String
+    }
+
+%% ─── CLOCK ──────────────────────────────────────────────────────────────────
+    class Clock {
+        -List~ClockListener~ listeners
+        -int fps
+        -int tickCount
+        -boolean running
+        -Thread thread
+        +Clock(int fps)
+        +addListener(ClockListener listener)
+        +removeListener(ClockListener listener)
+        +reset()
+        +start()
+        +stop()
+        +getTickCount() int
+        +getFps() int
+    }
+
+    class ClockListener {
+        <<interface>>
+        +onTick(int tickCount)
+    }
+
+%% ─── CHOOSE ─────────────────────────────────────────────────────────────────
+    class ListChooser~T~ {
+        <<interface>>
+        +choose(String p, List~T~ options) T
+    }
+
+    class HumanListChooser~T~ {
+        -Scanner scanner
+        +choose(String prompt, List~T~ options) T
+    }
+
+    class AutoListChooser~T~ {
+        -Random random
+        -int index
+        +choose(String p, List~T~ options) T
+    }
+
+    class Action {
+        <<abstract>>
+        +execute(GameContext game)*
+        +getDescription()* String
+        +isAllowedForAuto() boolean
+    }
+
+    class ActionBuilder {
+        +buildMenu(Player player, Shop shop)$ List~Action~
+        +buildAcheterTour(Player player, Shop shop)$ Action
+        +buildEvoluerTour(Player player)$ Action
+        +buildVendreTour(Player player)$ Action
+        +buildVendreEvolution(Player player)$ Action
+    }
+
+    class BuyTowerAction {
+        -Tower tower
+        -Board board
+        -ListChooser~Position~ positionChooser
+        +BuyTowerAction(Tower t, Board board, ListChooser~Position~ positionChooser)
+        +execute(GameContext game)
+        +getDescription() String
+    }
+
+    class SellTowerAction {
+        -Tower tower
+        +SellTowerAction(Tower tower)
+        +execute(GameContext game)
+        +getDescription() String
+    }
+
+    class Upgrade {
+        -Tower tower
+        -TypeEvolution typeEvo
+        +Upgrade(Tower t, TypeEvolution typeEvo)
+        +execute(GameContext game)
+        +getDescription() String
+    }
+
+    class DownGrade {
+        -Tower tower
+        -TypeEvolution evo
+        +DownGrade(Tower tower, TypeEvolution evo)
+        +execute(GameContext game)
+        +getDescription() String
+    }
+
+    class MenuAction {
+        -String des
+        -List~Action~ actions
+        +MenuAction(String des, List~Action~ actions)
+        +execute(GameContext ctx)
+        +getDescription() String
+    }
+
+    class DoNothingAction {
+        +execute(GameContext game)
+        +getDescription() String
+    }
+
+    class QuitAction {
+        +execute(GameContext ctx)
+        +getDescription() String
+        +isAllowedForAuto() boolean
+    }
+
+    class RetourAction {
+        +execute(GameContext ctx)
+        +getDescription() String
+    }
+
+%% ─── PLAYER ─────────────────────────────────────────────────────────────────
+    class Player {
+        +int INITIAL_LIVES$
+        -int credit
+        -List~Tower~ towers
+        -ListChooser~Action~ actionChooser
+        -ListChooser~Position~ positionChooser
+        -int lives
+        +Player(int credit, ListChooser~Action~, ListChooser~Position~)
+        +buyTower(Tower tower)
+        +sellTower(Tower tower)
+        +chooseAction(List~Action~ actions, GameContext ctx) Action
+        +runActionPhase(GameContext ctx, Shop shop)
+        +loseLife()
+        +isAlive() boolean
+        +getLives() int
+        +setLives(int lives)
+        +getCredit() int
+        +addCredit(int amount)
+        +removeCredit(int amount)
+        +getTowers() List~Tower~
+        +setCredit(int i)
+        +getPositionChooser() ListChooser~Position~
+    }
+
+    class Shop {
+        -Board board
+        +Shop(Board board)
+        +getBoard() Board
+        +getAvailableTowers() List~Tower~
+    }
+
+%% ─── ROUND ──────────────────────────────────────────────────────────────────
+    class Round {
+        -int number
+        -List~Balloon~ balloons
+        -boolean state
+        -List~Balloon~ escapedBalloons
+        +Round(int number, List~Balloon~ balloons)
+        +getNumber() int
+        +getBalloons() List~Balloon~
+        +getState() boolean
+        +addEscaped(Balloon b)
+        +getEscapedBalloons() List~Balloon~
+    }
+
+    class RoundManager {
+        -List~Round~ rounds
+        -Board board
+        -Player player
+        -int currentIndex
+        -int spawnTick
+        -boolean roundStarted
+        -boolean roundJustFinished
+        -int escapedCount
+        -boolean firstTick
+        -int SPAWN_INTERVAL$
+        +RoundManager(List~Round~ rounds, Board board, Player player)
+        +update(int tickCount) List~Balloon~
+        +advanceRound()
+        +isFinished() boolean
+        +hasPlayerLost() boolean
+        +getCurrentIndex() int
+        +isCurrentRoundFinished() boolean
+        +getEscapedCount() int
+        +getRounds() List~Round~
+    }
+
+%% ─── GAME ───────────────────────────────────────────────────────────────────
+    class GameContext {
+        <<interface>>
+        +getPlayer() Player
+        +getBoard() Board
+    }
+
+    class Game {
+        -Board board
+        -Player player
+        -RoundManager roundManager
+        -Clock clock
+        -boolean isRunning
+        -BoardRenderer renderer
+        +Game(Player player, Board board, List~Round~ rounds, int fps)
+        +onTick(int tickCount)
+        +runOneRound()
+        +start()
+        +stop()
+        +getPlayer() Player
+        +getBoard() Board
+        +getRoundCount() int
+        +hasPlayerLost() boolean
+        +getEscapedCount() int
+    }
+
+    class GameContext {
+        <<interface>>
+        +getPlayer() Player
+        +getBoard() Board
+    }
+
+    class GameSetup {
+        -int NB_ROUNDS$
+        -int FPS$
+        -Board board
+        -Player player
+        -Shop shop
+        -Game game
+        -int nbBallons
+        -boolean isHuman
+        +GameSetup(int hauteur, int largeur, int nbBallons, String typePlateau, String typeJoueur)
+        +getBoard() Board
+        +getPlayer() Player
+        +getShop() Shop
+        +getGame() Game
+        +isHuman() boolean
+    }
+
+    class GameLoop {
+        -int REWARD_PER_ROUND$
+        -Game game
+        -Player player
+        -Shop shop
+        -boolean isHuman
+        -BotStrategy bot
+        +GameLoop(GameSetup setup)
+        +start()
+    }
+
+    class BotStrategy {
+        -Player player
+        -Shop shop
+        -Random rng
+        +BotStrategy(Player player, Shop shop)
+        +placeInitialTowers(Game game)
+        +applyRoundEvolution(int roundNum, Game game)
+    }
+
+%% ─── UI ─────────────────────────────────────────────────────────────────────
+    class BoardRenderer {
+        +render(Board board)
+        +buildGrid(Board board) String[][]
+        +printGrid(String[][] display, Board board)
+    }
+
+    class GameRenderer {
+        +printBanner(Player player)$
+        +printRoundHeader(int roundNum, Player player)$
+        +printGameOver()$
+        +printVictory(int lives)$
+        +printRoundResult(int escaped, Player player, int reward)$
+        +printInitialBuyPhase()$
+        +printActionPhase()$
+    }
+
+%% ─── LIVRABLES ──────────────────────────────────────────────────────────────
+    class Livrable6 {
+        +main(String[] args)$
+        -parseArgs(String[] args)$ int[]
+        -printUsage()$
+    }
+
+    class LauncherAInteractive {
+        +main(String[] args)$
+    }
+
+    class LauncherARandom {
+        +main(String[] args)$
+    }
+
+    class LauncherBInteractive {
+        +main(String[] args)$
+    }
+
+    class LauncherBRandom {
+        +main(String[] args)$
+    }
+
+%% ─── RELATIONS ──────────────────────────────────────────────────────────────
+
+    Board <|-- DefinedBoard
+    Board <|-- FreeBoard
+    Board "1" *-- "many" Cell
+    Cell "1" *-- "1" Position
+
+    Balloon --> Position
+    Balloon --> BalloonType
+
+    Tower <|-- DartMonkey
+    Tower <|-- BombTower
+    Tower <|-- IceTower
+    Tower <|-- SlowTower
+    Tower <|-- TackShooter
+    Tower <|-- EliteSniper
+    Tower <|-- Gorilla
+    Tower --> Position
+    Tower --> EffectType
+    Tower --> ProjectilType
+    Tower --> Evolution
+    Evolution --> TypeEvolution
+
+    Projectil <|-- ProjectilSimple
+    Projectil <|-- ProjectilBombe
+    Projectil <|-- ProjectilFreeze
+    Projectil <|-- ProjectilSlow
+    Projectil --> Balloon
+    Projectil --> ProjectilType
+    ProjectilBombe ..> NotMatchException
+    ProjectilSimple ..> NotMatchException
+
+    ClockListener <|.. Game
+    Clock --> ClockListener
+
+    ListChooser <|.. HumanListChooser
+    ListChooser <|.. AutoListChooser
+
+    Action <|-- BuyTowerAction
+    Action <|-- SellTowerAction
+    Action <|-- Upgrade
+    Action <|-- DownGrade
+    Action <|-- MenuAction
+    Action <|-- DoNothingAction
+    Action <|-- QuitAction
+    Action <|-- RetourAction
+    BuyTowerAction --> Tower
+    BuyTowerAction --> Board
+    SellTowerAction --> Tower
+    Upgrade --> Tower
+    Upgrade --> TypeEvolution
+    DownGrade --> Tower
+    DownGrade --> TypeEvolution
+    ActionBuilder ..> Action
+
+    Player --> ListChooser
+    Player --> Tower
+    Shop --> Board
+    Shop ..> Tower
+
+    Round --> Balloon
+    RoundManager --> Round
+    RoundManager --> Board
+    RoundManager --> Player
+
+    GameContext <|.. Game
+    Game --> Board
+    Game --> Player
+    Game --> RoundManager
+    Game --> Clock
+    Game --> BoardRenderer
+    GameSetup --> Board
+    GameSetup --> Player
+    GameSetup --> Shop
+    GameSetup --> Game
+    GameLoop --> Game
+    GameLoop --> Player
+    GameLoop --> Shop
+    GameLoop --> BotStrategy
+    GameLoop --> GameRenderer
+    BotStrategy --> Player
+    BotStrategy --> Shop
+
+    Livrable6 ..> GameSetup
+    Livrable6 ..> GameLoop
+    LauncherAInteractive ..> Livrable6
+    LauncherARandom ..> Livrable6
+    LauncherBInteractive ..> Livrable6
+    LauncherBRandom ..> Livrable6
 ```
 
 #### Commandes

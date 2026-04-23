@@ -26,7 +26,7 @@ public class FreeBoard extends Board {
     private int nbCheminsVoulus;
 
     /**
-     * Constructeur de FreeBoard
+     * Constructeur de FreeBoard    
      * @param height hauteur du board
      * @param width largeur du board
      */
@@ -55,8 +55,8 @@ public class FreeBoard extends Board {
      * Un setter pour le nombre de chemins voulu
      * @param nb
      */
-    public void setNbCheminsVoulus(int nb) {
-        this.nbCheminsVoulus = nb;
+    public void setNbCheminsVoulus(int nb) { 
+        this.nbCheminsVoulus = nb; 
     }
 
     @Override

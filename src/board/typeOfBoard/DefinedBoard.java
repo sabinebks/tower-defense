@@ -63,7 +63,7 @@ public class DefinedBoard extends Board {
 
     /**
      * Creer un chemin aleatoire
-     * Le chemin commence du point de depart
+     * Le chemin commence du point de depart 
      */
     @Override
     public void calculerPath() {

@@ -1,20 +1,10 @@
 package entity.tower.projectil;
 
 /**
- * projectile types
+ * enum pour les projectil
  */
 public enum ProjectilType {
 
-    /**
-     * Every type of projectile
-     * No damage type
-     * Type flechette
-     * Type flechette pointue
-     * Flechette tres pointue
-     * Type aiguille
-     * Type bombe ( area dmg )
-     * Type extra bombe
-     */
     NO_DAMAGE(0),
     FLECHETTE(1),
     FLECHETTE_POINTUE(2),
@@ -22,23 +12,15 @@ public enum ProjectilType {
     AIGUILLE(1),
     BOMBE(2),
     EXTRA_BOMBE(3);
-    /**
-     * degats
-     */
+
     private final int degats;
 
-    /**
-     * constructor
-     * @param degats damage value
-     */
+    // constructeur
     ProjectilType(int degats) {
         this.degats = degats;
     }
 
-    /**
-     * get damage
-     * @return damage
-     */
+    // getter
     public int getDegats() {
         return degats;
     }

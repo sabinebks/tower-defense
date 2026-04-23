@@ -1,29 +1,23 @@
 package choose.action;
 
 import game.GameContext;
-/**
- * quit action
- */
-public class QuitAction extends Action {
 
+public class QuitAction extends Action {
     @Override
     /**
-     * execute quit action
-     * @param ctx the game context
+     * Methode execute la quittance du jeu
+     * @param ctx le context du jeu
      */
     public void execute(GameContext ctx) {
-        System.out.println("au revoir !");
+        System.out.println("Au revoir !");
         System.exit(0);
     }
-
     @Override
     /**
-     * description
-     * @return description
+     * La description du quittance
+     * @return une description
      */
-    public String getDescription() {
-        return "quitter le jeu";
-    }
+    public String getDescription() { return "Quitter le jeu"; }
 
     @Override
     public boolean isAllowedForAuto() {

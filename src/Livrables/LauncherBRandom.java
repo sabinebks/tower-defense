@@ -1,4 +1,3 @@
-
 package Livrables;
 /**
  * Launcher for random game of FreeBoard

@@ -32,7 +32,7 @@ public abstract class Board {
 
     /**
      * Constructeur
-     * @param height La hauteur
+     * @param height La hauteur 
      * @param width la largeur
      */
     public Board(int height, int width) {
@@ -98,7 +98,7 @@ public abstract class Board {
         return row >= 0 && row < height && col >= 0 && col < width;
     }
     /**
-     * Placer un tower
+     * Placer un tower 
      * @param tower tower a place
      * @param position la position voulu a placer
      */

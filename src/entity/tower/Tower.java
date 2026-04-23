@@ -1,5 +1,4 @@
 package entity.tower;
-
 import board.Position;
 import entity.balloon.*;
 import entity.tower.evolution.Evolution;
@@ -8,21 +7,20 @@ import entity.tower.projectil.*;
 
 import java.util.List;
 
-/**
- * tower base class
- */
 public abstract class Tower {
+
     /**
-     * Position of the tower
-     * Type of projectile of the tower
-     * Price of the tower
-     * Porte of the tower
-     * Cadence of the tower
-     * Verify if tower can be evolue
-     * Effect type of the tower
-     * Evolution available of the tower
-     * Degats increase after upgrade
-     * Tick since the last shot from tower
+     * les attributs :
+     * position : pour la position de la tour
+     * projectil : pour les projectil qu'elle dois lancer
+     * cout : le cout pour l'acheter
+     * porte : le rayon max des projectil
+     * cadence : vitesse de tire
+     * evolution : boolean pour savoir si elle est capable d'evoluer ou pas
+     * effectType : IMMEDIATE ou AREA ou FREEZE ..
+     * type pour le type de projectil
+     *
+     *
      */
     protected Position position;
     protected ProjectilType type;
@@ -33,17 +31,17 @@ public abstract class Tower {
     protected EffectType effectType;
     protected Evolution evolutions;
     protected int degatsSup;
+
     protected int ticksSinceLastShot = 0;
 
     /**
-     * constructor
+     * contructeur
      * @param position position
-     * @param cout cost
-     * @param porte range
-     * @param cadence fire rate
-     * @param evolution can evolve
-     * @param effectType effect type
-     * @param type projectile type
+     * @param cout le cout
+     * @param porte le rayon max
+     * @param cadence vitesse de tire
+     * @param evolution true or false
+     * @param effectType type d'effet
      */
     public Tower(Position position, int cout, int porte, int cadence, boolean evolution, EffectType effectType, ProjectilType type) {
         this.position = position;
@@ -54,198 +52,153 @@ public abstract class Tower {
         this.effectType = effectType;
         this.type = type;
         this.degatsSup = 0;
-
-        if (evolution) {
+        if(evolution) {
             this.evolutions = new Evolution();
         }
     }
-
     /**
-     * update tower
-     * @param balloons list of balloons
-     * @param activeProjectiles list of projectiles
-     * @throws NotMatchException error
+     * Methode pour mettre a jour apres un shot
+     * @param balloons liste des ballons
+     * @param activeProjectiles liste des projectils
+     * @throws NotMatchException
      */
     public void update(List<Balloon> balloons, List<Projectil> activeProjectiles) throws NotMatchException {
-
         ticksSinceLastShot++;
-
-        if (ticksSinceLastShot >= cadence) {
-
-            System.out.println("tower at " + position + " shoots");
-
+        // On vérifie si la tour peut tirer selon sa cadence
+        if (ticksSinceLastShot >= cadence) { // Conversion simplifiée ms -> tics
+            System.out.println("Tower a " + position + " tire");
             try {
                 Projectil p = this.attack(balloons);
                 if (p != null) {
                     activeProjectiles.add(p);
                 }
-            } catch (NotMatchException e) {
+            }catch(NotMatchException e){
                 e.getMessage();
             }
-
             ticksSinceLastShot = 0;
         }
     }
 
     /**
-     * attack method
-     * @param balloons list of balloons
-     * @return projectile
-     * @throws NotMatchException error
+     * méthode abstraite pour l'attaque
+     * Au lieu de lancer des attaques differents dans des differents classes de towers, on va faire une seule
+     * methode d'attaque ici, puisque tous les towers faire une meme type d'attaque?
+     * @param balloons les ballon qui se retrouve a la grille
+     * @return bein eu ou pas
      */
     protected abstract Projectil attack(List<Balloon> balloons) throws NotMatchException;
 
+
     /**
-     * distance to balloon
-     * @param b balloon
-     * @return distance
+     * méthode pour calculer la distance entre la tour et le ballon b
+     * @param b le ballon b
+     * @return la distance
      */
     public double distanceTo(Balloon b) {
+    double towerRow = position.getRow() + 0.5;
+    double towerCol = position.getCol() + 0.5;
 
-        double towerRow = position.getRow() + 0.5;
-        double towerCol = position.getCol() + 0.5;
+    double balloonRow = b.getLigne() ;
+    double balloonCol = b.getColonne() ;
 
-        double balloonRow = b.getLigne();
-        double balloonCol = b.getColonne();
+    double dRow = towerRow - balloonRow;
+    double dCol = towerCol - balloonCol;
 
-        double dRow = towerRow - balloonRow;
-        double dCol = towerCol - balloonCol;
-
-        return Math.sqrt(dRow * dRow + dCol * dCol);
-    }
+    return Math.sqrt(dRow * dRow + dCol * dCol);
+}
 
     /**
-     * find target
-     * @param balloons list of balloons
-     * @return balloon target
+     * méthode permettant de déterminer le ballon ciblé par le tir
+     *
+     * @param balloons les ballons dans la grille
+     * @return baloon ciblé
      */
     public Balloon findTarget(List<Balloon> balloons) {
-
         for (Balloon b : balloons) {
-
             if (b != null && b.isActive()) {
-
                 double dist = distanceTo(b);
-                System.out.println("distance tower->balloon: " + dist + " range: " + porte);
-
+                System.out.println("Distance tour->ballon: " + dist + " portée: " + porte);
                 if (porte == -1 || dist <= porte) {
-
                     if (effectType == EffectType.FREEZE && b.getEffectiveSpeed() == 0) continue;
-
                     return b;
                 }
             }
         }
-
         return null;
     }
 
     /**
-     * get position
-     * @return position
+     * getter pour la position
+     * @return
      */
     public Position getPosition() {
         return position;
     }
 
-    /**
-     * get range
-     * @return range
-     */
     public int getPorte() {
         return porte;
     }
 
     /**
-     * can evolve
-     * @return boolean
+     * getter pour l'attribut evolution
+     * @return
      */
     public boolean getEvolution() {
         return evolution;
     }
 
     /**
-     * get evolutions
-     * @return evolution object
+     * getter pour l'attribut evolutions
+     * @return
      */
     public Evolution getEvolutions() {
         return evolutions;
     }
 
     /**
-     * get cost
-     * @return cost
+     * getter pour l'attribut count
+     * @return
      */
-    public int getCost() {
+    public int getCost(){
         return cout;
     }
 
     /**
-     * apply evolution
-     * @param typeEvo evolution type
-     * @return cost
+     * methode abstraite pour evoluer une tour
+     * chaque tout a ses evolution
+     * @param typeEvo type d'evolution qu'on veut appliquer
+     * @return retourner son cout
      */
     public abstract int appliquerEvolution(TypeEvolution typeEvo);
 
-    /**
-     * sell evolution
-     * @param evo evolution type
-     * @return refund
-     */
-    public int SellEvolution(TypeEvolution evo) {
+
+    public int SellEvolution(TypeEvolution evo){
         int cost = this.evolutions.getEvolutionsPossedees().get(evo);
         this.evolutions.getEvolutionsPossedees().remove(evo);
         return cost / 2;
     }
 
     /**
-     * get symbol
-     * @return symbol
+     * retourne le symbole de la tour pour l'affichage
+     * @return le symbole de la tour
      */
     public abstract String getSymbol();
-
-    /**
-     * get name
-     * @return name
-     */
     public abstract String getName();
-
-    /**
-     * set position
-     * @param position position
-     */
-    public void setPosition(Position position) {
+      // setter pour la position
+    public void setPosition(Position position){
         this.position = position;
     }
 
-    /**
-     * get sell price
-     * @return price
-     */
-    public int getSellPrice() {
+    public int getSellPrice(){
         return this.cout / 2;
     }
-
-    /**
-     * get evolution cost
-     * @param evolution evolution type
-     * @return cost
-     */
-    public abstract int getCoutEvolution(TypeEvolution evolution);
-
-    /**
-     * return tower row
-     * @return tower row
-     */
-    public double getrow() {
+   //getter 
+    public abstract int  getCoutEvolution(TypeEvolution evolution);
+  public double getrow() {
         return position.getRow();
     }
 
-    /**
-     * Return towers column
-     * @return towers column
-     */
     public double getcol() {
         return position.getCol();
-    }
+   }
 }

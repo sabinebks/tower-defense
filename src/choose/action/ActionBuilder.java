@@ -11,7 +11,7 @@ import java.util.List;
 import board.Position;
 
 public class ActionBuilder {
-
+    
     /**
      * Methode retourner une liste de action, donc dit menu
      * @param player le joueur
@@ -29,7 +29,7 @@ public class ActionBuilder {
         return menu;
     }
     /**
-     * Methode retourner l'action acheter un tour
+     * Methode retourner l'action acheter un tour 
      * @param player le joueur
      * @param shop le shop
      * @return une action de type BuyTowerAction

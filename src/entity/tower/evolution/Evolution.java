@@ -3,20 +3,19 @@ package entity.tower.evolution;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * evolution class
- */
 public class Evolution {
-
     /**
-     * list of evolutions
-     * owned evolutions map
+     * les attributs
+     * typeEvolutions : liste pour sauvgarder les evolution de chaque tour
+     * evolutionsPossedees : hashmap<typeEvolution,Integer> pour sauvgarder les evolution acheter pour les vendre apres
      */
     private ArrayList<TypeEvolution> typeEvolutions;
     private HashMap<TypeEvolution, Integer> evolutionsPossedees;
 
     /**
-     * constructor
+     * constructeur :
+     * cree un arrayList pour les type d'evolution
+     * cree un hashmap pour les evolution possédées
      */
     public Evolution() {
         this.typeEvolutions = new ArrayList<>();
@@ -24,40 +23,40 @@ public class Evolution {
     }
 
     /**
-     * add evolution type
-     * @param typeEvolution evolution type
+     * methode pour ajouter un typeEvolution
+     * @param typeEvolution
      */
     public void addEvolution(TypeEvolution typeEvolution) {
         this.typeEvolutions.add(typeEvolution);
     }
 
     /**
-     * delete evolution type
-     * @param typeEvolution evolution type
+     * methode pour supprimer un typeEvolution
+     * @param typeEvolutions
      */
-    public void deleteEvolutions(TypeEvolution typeEvolution) {
-        this.typeEvolutions.remove(typeEvolution);
+    public void deleteEvolutions(TypeEvolution typeEvolutions) {
+        this.typeEvolutions.remove(typeEvolutions);
     }
 
     /**
-     * get evolutions list
-     * @return list of evolutions
+     * getter pour le arrayList typeEvolution
+     * @return
      */
     public ArrayList<TypeEvolution> getEvolutions() {
         return typeEvolutions;
     }
 
     /**
-     * sell evolution
-     * @param typeEvolution evolution type
+     * methode pour vendre (supprimer) un TypeEvolution dans hashMap evolutionPossedees
+     * @param typeEvolution
      */
     public void vendreEvolution(TypeEvolution typeEvolution) {
         this.evolutionsPossedees.remove(typeEvolution);
     }
 
     /**
-     * get owned evolutions
-     * @return map of evolutions
+     * getter pour l'attribut evolutionPossedees
+     * @return
      */
     public HashMap<TypeEvolution, Integer> getEvolutionsPossedees() {
         return evolutionsPossedees;

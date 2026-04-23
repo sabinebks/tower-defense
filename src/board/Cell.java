@@ -1,59 +1,53 @@
 package board;
-
 import java.util.*;
-import entity.balloon.*;
 
+import entity.balloon.*;;
 /**
- * This class represents a cell on the game board.
- * Each cell has a position and can be a path or not.
- * A cell can also contain balloons.
+ * Represents a cell on the game board.
+ * Each cell has a position and can either be part of a path or empty.
  */
 public class Cell {
 
-    private Position position;   // position of the cell
-    private boolean isPath;      // true if the cell is part of a path
-    private List<Balloon> balloons; // list of balloons in the cell
+    private Position position;
+    private boolean isPath;
+    private List<Balloon> balloons; // la liste des ballons
 
     /**
-     * Creates a new cell with a given position.
-     *
-     * @param position the position of the cell
+     * creates a new cell at the given position
+     * @param position Position of the cell on the board
      */
     public Cell(Position position) {
         this.position = position;
-        this.isPath = false; // default: not a path
+        this.isPath = false; // by default, the cell is not part of a path
         this.balloons = new ArrayList<>();
     }
 
     /**
      * Returns the position of the cell.
-     *
-     * @return the position
+     * @return the cell position
      */
     public Position getPosition() {
         return position;
     }
 
     /**
-     * Checks if the cell is a path.
-     *
-     * @return true if it is a path, false otherwise
+     * Checks if the cell is part of a path.
+     * @return true if the cell is on a path, false otherwise
      */
     public boolean isPath() {
         return isPath;
     }
 
     /**
-     * Sets the cell as a path.
+     * Marks the cell as part of a path.
      */
     public void assignChemin() {
         this.isPath = true;
     }
 
     /**
-     * Checks if the cell is empty (not a path).
-     *
-     * @return true if empty, false otherwise
+     * Checks if the cell is free (not used in a path).
+     * @return true if the cell is empty, false if it is part of a path
      */
     public boolean estVide() {
         return !isPath;
@@ -61,9 +55,7 @@ public class Cell {
 
     /**
      * Returns a string representation of the cell.
-     * "C" means path, "X" means not a path.
-     *
-     * @return the cell as a string
+     * @return a string describing the cell
      */
     @Override
     public String toString() {
@@ -71,54 +63,47 @@ public class Cell {
     }
 
     /**
-     * Adds a balloon to the cell.
-     *
-     * @param b the balloon to add
+     * Ajouter un ballon dans le cell
+     * @param b ballon a ajouter
      */
     public void addBalloon(Balloon b) {
         balloons.add(b);
     }
 
     /**
-     * Removes a balloon from the cell.
-     *
-     * @param b the balloon to remove
+     * Effacer un ballon dans le cell
+     * @param b ballon a effacer
      */
     public void removeBalloon(Balloon b) {
         balloons.remove(b);
     }
 
     /**
-     * Returns the list of balloons in the cell.
-     *
-     * @return list of balloons
+     * Retourner la liste des ballons dans ce cell
+     * @return liste des ballons
      */
     public List<Balloon> getBalloons() {
         return this.balloons;
     }
 
     /**
-     * Returns the number of balloons in the cell.
-     *
-     * @return number of balloons
+     * Retourner le nombre de ballons dans ce cell
+     * @return n le nombre de ballons
      */
     public int getNumBalloon() {
         return balloons.size();
     }
-
-    /**
-     * Compares this cell with another object.
-     * Two cells are equal if they have the same position and same path state.
-     *
-     * @param o the object to compare
-     * @return true if equal, false otherwise
-     */
+    
     @Override
     public boolean equals(Object o){
         if(!(o instanceof Cell)){
             return false;
         }
         Cell other = (Cell) o;
-        return this.position.equals(other.getPosition()) && this.isPath == other.isPath;
+        if(this.position.equals(other.getPosition()) && this.isPath == other.isPath){
+            return true;
+        }
+        return false;
     }
+
 }

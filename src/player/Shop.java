@@ -3,39 +3,36 @@ package player;
 import java.util.ArrayList;
 import java.util.List;
 
-import board.Board;
-import entity.tower.BombTower;
-import entity.tower.DartMonkey;
-import entity.tower.EliteSniper;
-import entity.tower.Gorilla;
-import entity.tower.IceTower;
-import entity.tower.SlowTower;
-import entity.tower.TackShooter;
-import entity.tower.Tower;
+import board.*;
+import entity.tower.*;
 
-/**
- * shop
- */
 public class Shop {
-
     private Board board;
 
     /**
-     * constructor
-     * @param board board
+     * constructeur 
+     * @param board
      */
     public Shop(Board board) {
         this.board = board;
     }
 
     /**
-     * get available towers
-     * @return towers list
+     * Retourne le board associé au shop
+     * @return le board
+     */
+    public Board getBoard() {
+        return board;
+    }
+
+    /**
+     * retourne la liste des tours qu'on peut acheter
+     * @return liste des tours disponibles
      */
     public List<Tower> getAvailableTowers() {
         List<Tower> towers = new ArrayList<>();
 
-        towers.add(new DartMonkey(null));
+        towers.add(new DartMonkey(null)); // pos null parce qu'elles ne sont pas enocre placees
         towers.add(new BombTower(null));
         towers.add(new IceTower(null));
         towers.add(new SlowTower(null));
@@ -44,13 +41,8 @@ public class Shop {
         towers.add(new Gorilla(null));
 
         return towers;
+
     }
 
-    /**
-     * get board
-     * @return board
-     */
-    public Board getBoard() {
-        return this.board;
-    }
 }
+

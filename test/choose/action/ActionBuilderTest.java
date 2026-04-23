@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import choose.action.*;
+import choose.AutoListChooser;
 import player.Player;
 import player.Shop;
 import board.typeOfBoard.DefinedBoard;
@@ -13,9 +14,13 @@ import java.util.List;
 
 public class ActionBuilderTest {
 
+    private Player createPlayer(int credit) {
+        return new Player(credit, new AutoListChooser<>(), new AutoListChooser<>());
+    }
+
     @Test
     void testBuildMenu() {
-        Player player = new Player(1000, null);
+        Player player = createPlayer(1000);
         Board board = new DefinedBoard(5, 5);
         board.init();
         Shop shop = new Shop(board);
@@ -29,7 +34,7 @@ public class ActionBuilderTest {
 
     @Test
     void testBuildAcheterTour() {
-        Player player = new Player(1000, null);
+        Player player = createPlayer(1000);
         Board board = new DefinedBoard(5, 5);
         board.init();
 
@@ -41,7 +46,7 @@ public class ActionBuilderTest {
 
     @Test
     void testBuildEvoluerTour() {
-        Player player = new Player(1000, null);
+        Player player = createPlayer(1000);
 
         Action action = ActionBuilder.buildEvoluerTour(player);
 
@@ -50,7 +55,7 @@ public class ActionBuilderTest {
 
     @Test
     void testBuildVendreTour() {
-        Player player = new Player(1000, null);
+        Player player = createPlayer(1000);
 
         Action action = ActionBuilder.buildVendreTour(player);
 

@@ -3,6 +3,8 @@ package test.choose.action;
 import board.Board;
 import board.Position;
 import board.typeOfBoard.DefinedBoard;
+import choose.AutoListChooser;
+import choose.ListChooser;
 import choose.action.BuyTowerAction;
 import choose.action.DoNothingAction;
 import choose.action.DownGrade;
@@ -24,6 +26,24 @@ public class ActionSimpleTest {
 
     private Board board;
 
+    private Player createPlayer(int credit) {
+        return new Player(credit, new AutoListChooser<>(), new AutoListChooser<>());
+    }
+
+    private GameContext ctx(Player player) {
+        return new GameContext() {
+            @Override
+            public Player getPlayer() {
+                return player;
+            }
+
+            @Override
+            public Board getBoard() {
+                return board;
+            }
+        };
+    }
+
     @BeforeEach
     void setUp() {
         board = new DefinedBoard(6, 6);
@@ -31,11 +51,12 @@ public class ActionSimpleTest {
 
     @Test
     void testBuyTowerActionAcheteEtPlace() {
-        Player player = new Player(1000, null);
+        Player player = createPlayer(1000);
         Tower tower = new DartMonkey(null);
-        GameContext ctx = new FakeContext(player, board);
+        GameContext ctx = ctx(player);
+        ListChooser<Position> fixedChooser = (prompt, options) -> options.get(0);
 
-        BuyTowerAction action = new BuyTowerAction(tower, new Position(0, 0));
+        BuyTowerAction action = new BuyTowerAction(tower, board, fixedChooser);
         action.execute(ctx);
 
         assertTrue(player.getTowers().contains(tower));
@@ -45,11 +66,12 @@ public class ActionSimpleTest {
 
     @Test
     void testBuyTowerActionRefuseSiPasDeCredit() {
-        Player player = new Player(0, null);
+        Player player = createPlayer(0);
         Tower tower = new DartMonkey(null);
-        GameContext ctx = new FakeContext(player, board);
+        GameContext ctx = ctx(player);
+        ListChooser<Position> fixedChooser = (prompt, options) -> options.get(0);
 
-        BuyTowerAction action = new BuyTowerAction(tower, new Position(0, 0));
+        BuyTowerAction action = new BuyTowerAction(tower, board, fixedChooser);
         action.execute(ctx);
 
         assertFalse(player.getTowers().contains(tower));
@@ -59,11 +81,11 @@ public class ActionSimpleTest {
 
     @Test
     void testSellTowerActionRetireEtRendCredits() {
-        Player player = new Player(1000, null);
+        Player player = createPlayer(1000);
         Tower tower = new DartMonkey(null);
         player.buyTower(tower);
         board.placeTower(tower, new Position(0, 1));
-        GameContext ctx = new FakeContext(player, board);
+        GameContext ctx = ctx(player);
 
         SellTowerAction action = new SellTowerAction(tower);
         action.execute(ctx);
@@ -75,9 +97,9 @@ public class ActionSimpleTest {
 
     @Test
     void testUpgradeRetireLeCout() {
-        Player player = new Player(1000, null);
+        Player player = createPlayer(1000);
         Tower tower = new DartMonkey(new Position(0, 0));
-        GameContext ctx = new FakeContext(player, board);
+        GameContext ctx = ctx(player);
         Upgrade action = new Upgrade(tower, TypeEvolution.PORTEE);
         action.execute(ctx);
 
@@ -86,11 +108,11 @@ public class ActionSimpleTest {
 
     @Test
     void testDownGradeRendLaMoitie() {
-        Player player = new Player(1000, null);
+        Player player = createPlayer(1000);
         Tower tower = new DartMonkey(new Position(0, 0));
         player.buyTower(tower);
         tower.appliquerEvolution(TypeEvolution.PORTEE); // cout = 100
-        GameContext ctx = new FakeContext(player, board);
+        GameContext ctx = ctx(player);
         DownGrade action = new DownGrade(tower, TypeEvolution.PORTEE);
         action.execute(ctx);
         assertEquals(850, player.getCredit());
@@ -102,29 +124,10 @@ public class ActionSimpleTest {
         RetourAction retour = new RetourAction();
         QuitAction quit = new QuitAction();
 
-        assertEquals("ne rien faire", doNothing.getDescription());
-        assertEquals("retour", retour.getDescription());
-        assertEquals("quitter le jeu", quit.getDescription());
+        assertEquals("Ne rien faire", doNothing.getDescription());
+        assertEquals(" Retour", retour.getDescription());
+        assertEquals("Quitter le jeu", quit.getDescription());
         assertFalse(quit.isAllowedForAuto());
     }
 
-    private static class FakeContext implements GameContext {
-        private final Player player;
-        private final Board board;
-
-        FakeContext(Player player, Board board) {
-            this.player = player;
-            this.board = board;
-        }
-
-        @Override
-        public Player getPlayer() {
-            return player;
-        }
-
-        @Override
-        public Board getBoard() {
-            return board;
-        }
-    }
 }

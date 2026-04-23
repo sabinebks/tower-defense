@@ -11,7 +11,7 @@ public class PlayerTest {
 
     @BeforeEach
     void init() {
-        player = new Player(2500, new choose.AutoListChooser<>());
+        player = new Player(2500, new choose.AutoListChooser<>(), new choose.AutoListChooser<>());
     }
 
     @Test

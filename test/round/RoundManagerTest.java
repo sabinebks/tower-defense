@@ -26,7 +26,7 @@ package test.round;
       @BeforeEach
       void setUp() {
           board = new FakeBoard(3, 3);
-          player = new Player(100, new AutoListChooser<>());
+          player = new Player(100, new AutoListChooser<>(), new AutoListChooser<>());
 
           Balloon b = new Balloon(0, 0, 0, BalloonType.BASIC);
           Round round = new Round(1, new ArrayList<>(List.of(b)));

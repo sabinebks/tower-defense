@@ -45,5 +45,9 @@ public abstract class Projectil {
 
     protected abstract void triggerImpact();
 
+    /**
+     * Verify if projectile is active
+     * @return true if active, false if not
+     */
     public boolean isActive() { return active; }
 }

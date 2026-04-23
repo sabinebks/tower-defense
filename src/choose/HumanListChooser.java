@@ -13,6 +13,11 @@ public class HumanListChooser<T> implements ListChooser<T> {
     private final Scanner scanner = new Scanner(System.in);
 
     @Override
+    /**
+     * Function return action choosed by human
+     * @param prompt
+     * @param options list of options to choose
+     */
     public T choose(String prompt, List<T> options) {
         if (options.isEmpty()) {
             System.out.println("Aucune option disponible pour : " + prompt);
@@ -34,11 +39,11 @@ public class HumanListChooser<T> implements ListChooser<T> {
             try {
                 index = scanner.nextInt();
                 if (index < 0 || index >= options.size()) {
-                    System.out.print("Choix hors limites (0-" + (options.size() - 1) + "), réessaie : ");
+                    System.out.print("Choix hors limites (0-" + (options.size() - 1) + "), reessaie : ");
                 }
             } catch (Exception e) {
                 scanner.nextLine();
-                System.out.print("Index invalide, réessaie : ");
+                System.out.print("Index invalide, reessaie : ");
             }
         }
         return options.get(index);

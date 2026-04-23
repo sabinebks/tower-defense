@@ -65,8 +65,7 @@ public class BombTower extends Tower {
         }
         return cout;
     }
- /*  
-    * methode d'attaque de la BombTower
+    /** methode d'attaque de la BombTower
       * @param balloons la liste des ballons presents sur le plateau
       * @return un projectil si une cible est trouvee, sinon null
     */
@@ -79,6 +78,10 @@ public class BombTower extends Tower {
     }
 
     @Override
+    /**
+     * Return the price of each evolution
+     * @param typeEvo the evos type
+     */
     public int getCoutEvolution(TypeEvolution typeEvo) {
          switch (typeEvo) {
             case PUISSANCE:

@@ -60,8 +60,7 @@ public class DartMonkey extends Tower {
         }
         return cout;
     }
-  /*  
-    * methode d'attaque de la DartMonkey
+    /** methode d'attaque de la DartMonkey
       * @param balloons la liste des ballons presents sur le plateau
       * @return un projectil si une cible est trouvee, sinon null
     */
@@ -82,6 +81,10 @@ public class DartMonkey extends Tower {
         );
     }
     @Override
+    /**
+     * Return the price of each evolution
+     * @param typeEvo the evos type
+     */
     public int getCoutEvolution(TypeEvolution typeEvo) {
          switch (typeEvo) {
             case PUISSANCE:
@@ -103,6 +106,9 @@ public class DartMonkey extends Tower {
     public String getSymbol() { return "A"; }
 
     @Override
+    /**
+     * Return name of the towers
+     */
     public String getName() {
         return "DartMonkey";
     }

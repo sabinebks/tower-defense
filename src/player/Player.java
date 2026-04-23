@@ -19,6 +19,12 @@ public class Player {
     /** Initial number of lives for the player. */
     public static final int INITIAL_LIVES = 20;
 
+    /**
+     * The players credit
+     * List of towers of the player
+     * List of action choosed 
+     * List of position choosed
+     */
     private int credit;
     private final List<Tower> towers;
     private final ListChooser<Action> actionChooser;

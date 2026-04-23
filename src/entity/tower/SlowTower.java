@@ -44,6 +44,10 @@ public class SlowTower extends Tower {
     }
 
     @Override
+    /**
+     * Return the price of each evolution
+     * @param typeEvo the evos type
+     */
     public int getCoutEvolution(TypeEvolution typeEvo) {
         return 0;
     }
@@ -55,6 +59,9 @@ public class SlowTower extends Tower {
     public String getSymbol() { return "S"; }
 
     @Override
+    /**
+     * Return name of the towers
+     */
     public String getName() {
         return "SlowTower";
     }

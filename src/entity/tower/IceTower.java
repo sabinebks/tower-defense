@@ -43,6 +43,10 @@ public class IceTower extends Tower {
         return new ProjectilFreeze(this.type, startX, startY, target);
     }
     @Override
+    /**
+     * Return the price of each evolution
+     * @param typeEvo the evos type
+     */
     public int getCoutEvolution(TypeEvolution typeEvo) {
         return 0;
     }
@@ -55,6 +59,9 @@ public class IceTower extends Tower {
     public String getSymbol() { return "I"; }
 
     @Override
+    /**
+     * Return name of the towers
+     */
     public String getName() {
         return "IceTower";
     }

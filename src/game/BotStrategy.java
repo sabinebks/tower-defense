@@ -26,6 +26,11 @@ public class BotStrategy {
     private final Shop shop;
     private final Random rng = new Random();
 
+    /**
+     * Constructor
+     * @param player the player
+     * @param shop the games shop
+     */
     public BotStrategy(Player player, Shop shop) {
         this.player = player;
         this.shop   = shop;

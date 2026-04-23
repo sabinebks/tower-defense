@@ -9,6 +9,11 @@ public class AutoListChooser<T> implements ListChooser<T> {
 
     private int index = 0;
 
+    /**
+     * Function return action choosed randomly
+     * @param p
+     * @param options list of options to choose
+     */
     @Override
     public T choose(String p, List<T> options) {
         if (options.isEmpty()) {

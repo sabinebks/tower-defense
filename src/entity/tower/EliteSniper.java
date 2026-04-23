@@ -79,6 +79,10 @@ public class EliteSniper extends Tower {
     }
 
     @Override
+    /**
+     * Return the price of each evolution
+     * @param typeEvo the evos type
+     */
     public int getCoutEvolution(TypeEvolution typeEvo) {
         switch (typeEvo) {
             case PUISSANCE: 
@@ -98,6 +102,9 @@ public class EliteSniper extends Tower {
 
 
     @Override
+    /**
+     * Return name of the towers
+     */
     public String getName() {
         return "EliteSniper";
     }

@@ -79,6 +79,10 @@ public class TackShooter extends Tower {
     }
 
     @Override
+    /**
+     * Return the price of each evolution
+     * @param typeEvo the evos type
+     */
     public int getCoutEvolution(TypeEvolution typeEvo) {
         switch (typeEvo) {
             case PORTEE:
@@ -97,6 +101,9 @@ public class TackShooter extends Tower {
     public String getSymbol() { return "T"; }
 
     @Override
+    /**
+     * Return name of the towers
+     */
     public String getName() {
         return "TackShooter";
     }

@@ -6,6 +6,23 @@ import board.Position;
 
 public class Balloon {
 
+    /**
+     * id of the balloons
+     * Balloons pos column
+     * Balloons pos row
+     * Balloons speed
+     * Balloons health
+     * Balloons type
+     * Balloons state ( active/not)
+     * Balloons escaped or not
+     * Balloons exits time
+     * A timer for freeze
+     * A timer for sloow
+     * The slow factor
+     * The path of balloons
+     * The paths index
+     * Balloons progression
+     */
     protected int id;
     protected double posColonne;
     protected double posLigne;
@@ -217,29 +234,29 @@ public class Balloon {
     public BalloonType getType() {
         return type;
     }
-/* Retourne le temps d'évasion du ballon, ou -1 s'il n'a pas encore échappé.
+    /** Retourne le temps d'évasion du ballon, ou -1 s'il n'a pas encore échappé.
      * 
      * @return le temps d'évasion
      */
     public int getExitTime() { return exitTime; }
-    /* Retourne la position actuelle en colonne du ballon.
+    /** Retourne la position actuelle en colonne du ballon.
      * 
      * @return la position en colonne
      */
     public double getColonne() { return posColonne;     }
-    /* Retourne la position actuelle en ligne du ballon.
+    /** Retourne la position actuelle en ligne du ballon.
      * 
      * @return la position en ligne
      */
     public double getLigne() { return posLigne; }
-    /* Retourne le chemin que suit le ballon.
+    /** Retourne le chemin que suit le ballon.
      * 
      * @return la liste de positions du chemin
      */
     public List<Position> getPath() { return this.path; }
 
     // ===== SETTTERS =====
-   /* Définit le chemin que doit suivre le ballon. Réinitialise la position du ballon au début du chemin.
+   /** Définit le chemin que doit suivre le ballon. Réinitialise la position du ballon au début du chemin.
      * 
      * @param path la liste de positions formant le chemin
      */
@@ -253,7 +270,7 @@ public class Balloon {
             this.progression = 0.0;
         }
     }
- /* Définit la position de départ du ballon.
+    /** Définit la position de départ du ballon.
      * 
      * @param ligne la ligne de la position de départ
      * @param colonne la colonne de la position de départ

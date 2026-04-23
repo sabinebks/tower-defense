@@ -57,6 +57,10 @@ public class Gorilla extends Tower {
     }
 
     @Override
+    /**
+     * Return the price of each evolution
+     * @param typeEvo the evos type
+     */
     public int getCoutEvolution(TypeEvolution typeEvo) {
         switch (typeEvo) {
             case PUISSANCE: 
@@ -97,6 +101,9 @@ public class Gorilla extends Tower {
     public String getSymbol() { return "G"; }
 
     @Override
+    /**
+     * Return name of the towers
+     */
     public String getName() {
         return "Gorilla";
     }

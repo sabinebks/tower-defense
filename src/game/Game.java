@@ -1,6 +1,7 @@
+
+
 package game;
 
-import ui.GameStateRenderer;
 import board.Board;
 import clock.Clock;
 import clock.ClockListener;
@@ -11,18 +12,17 @@ import round.RoundManager;
 import ui.BoardRenderer;
 
 import java.util.List;
-/**
- * Class for game
- */
-public class Game implements ClockListener, GameContext {
 
+
+public class Game implements ClockListener, GameContext {
     /**
-     * A board for the game
-     * The player
-     * A round manager
-     * A clock for real time  render
-     * A boolean type verify if the game is running
-     * A board renderer
+     * Les attributs de Game
+     * Un board
+     * Un joueur
+     * Un manageur de round
+     * Un clock
+     * Un type boolean
+     * Un type BoardRenderer pour render le board
      */
     private final Board board;
     private final Player player;
@@ -31,13 +31,13 @@ public class Game implements ClockListener, GameContext {
     private volatile boolean isRunning;
     private final BoardRenderer renderer;
 
+
     /**
-     * constructor
-     * 
-     * @param player player
-     * @param board  board
-     * @param rounds rounds
-     * @param fps    fps
+     * Constructeur
+     * @param player le joueur
+     * @param board le board
+     * @param rounds le round
+     * @param fps le fps
      */
     public Game(Player player, Board board, List<Round> rounds, int fps) {
         this.player = player;
@@ -48,132 +48,78 @@ public class Game implements ClockListener, GameContext {
         this.clock.addListener(this);
     }
 
-    @Override
     /**
-     * tick update
-     * 
-     * @param tickCount tick
+     * Afficher le board a chaque tick du jeu (utilise uniquement par start/stop)
+     * @param tickCount le tick
      */
+    @Override
     public void onTick(int tickCount) {
-        if (!isRunning)
-            return;
+        if (!isRunning) return;
 
+        System.out.println("TICK " + tickCount);
 
         List<Balloon> removed = roundManager.update(tickCount);
 
-        handleRewards(removed);
-
-        renderer.render(board);
-    }
-
-    /**
-     * run one round
-     */
-    public void runOneRound() {
-        int tickCount = 0;
-        long delay = 1000L / clock.getFps();
-
-        while (!roundManager.isCurrentRoundFinished() && player.isAlive()) {
-            tickCount++;
-            System.out.println("TICK " + tickCount);
-            List<Balloon> removed = roundManager.update(tickCount);
-            handleRewards(removed);
-
-            GameStateRenderer.printTick(tickCount, board, player);
-
-            // affichage grille
-            renderer.render(board);
-
-            try {
-                Thread.sleep(delay);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+        for (Balloon b : removed) {
+            if (!b.hasEscaped()) {
+                int reward = b.getType().reward;
+                player.addCredit(reward);
+                System.out.println(">>> Ballon detruit ! +" + reward
+                        + " credits. Total: " + player.getCredit());
             }
         }
 
+        this.renderer.render(board);
+    }
+
+    /**
+     * Methode lancer 1 round du jeu de facon synchrone (sans thread Clock)
+     */
+    public void runOneRound() {
+        start();
+        while (!roundManager.isCurrentRoundFinished() && player.isAlive()) {
+            try { Thread.sleep(50); }
+            catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+        }
+        stop();
         roundManager.advanceRound();
         board.clearEscapedBalloons();
     }
 
     /**
-     * start game
+     * Methode pour lancer le jeu (mode continu avec Clock)
      */
-    public void start() {
-        isRunning = true;
-        clock.start();
-    }
+    public void start() { isRunning = true; clock.start(); }
 
     /**
-     * stop game
+     * Methode pour arreter le jeu
      */
-    public void stop() {
-        isRunning = false;
-        clock.stop();
-    }
+    public void stop()  { isRunning = false; clock.stop(); }
 
-    @Override
-    /**
-     * get player
-     * 
-     * @return player
-     */
-    public Player getPlayer() {
-        return player;
-    }
-
-    @Override
-    /**
-     * get board
-     * 
-     * @return board
-     */
-    public Board getBoard() {
-        return board;
-    }
+    @Override public Player getPlayer() { return player; }
+    @Override public Board getBoard()   { return board; }
 
     /**
-     * round count
-     * 
-     * @return rounds number
+     * Retourner le nombre de round
+     * @return le nombre de round
      */
     public int getRoundCount() {
         return roundManager.getRounds().size();
     }
 
     /**
-     * check lose
-     * 
-     * @return true if player lost
+     * Verifier si le joueur est mort ou pas
+     * @return true si joueur mort, false sinon
      */
     public boolean hasPlayerLost() {
         return roundManager.hasPlayerLost();
     }
 
     /**
-     * escaped balloons
-     * 
-     * @return escaped count
+     * Retourner le nombre de ballons echappes lors du dernier round
+     * @return nombre de ballons echappes
      */
     public int getEscapedCount() {
         return roundManager.getEscapedCount();
-    }
-    /** 
-    * handle rewards for popped balloons
-    * @param removed list of ballons that has been removed 
-     */
-    public void handleRewards(List<Balloon> removed) {
-        for (Balloon b : removed) {
-            if (!b.hasEscaped()) {
-                player.addCredit(b.getType().reward);
-            }
-        }
-    }
-
-    /**
-     * Function help verify there are still more round
-     * @return true if not finished, false if not 
-    */
-    public boolean roundPasFini() {
-        return !roundManager.isFinished();
     }
 }

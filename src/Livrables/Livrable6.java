@@ -34,7 +34,7 @@ public class Livrable6 {
             int largeur = Integer.parseInt(args[1]);
             int nbBallons = Integer.parseInt(args[2]);
 
-            if (nbBallons <= 15) {
+            if (nbBallons < 15) {
                 System.err.println("Erreur : le nombre de ballons doit etre >= 15.");
                 System.exit(1);
             }

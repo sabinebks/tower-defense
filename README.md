@@ -1009,16 +1009,13 @@ java -jar jar/towerdefense-b-random.jar <largeur> <hauteur> <nbChemins>
 ```
 
 #### Difficultés restant à résoudre
-<<<<<<< HEAD
+
 
 Il reste des améliorations à faire dans certaines classes. Quelques méthodes sont encore trop longues, donc on doit les simplifier. On a encore un peu de code dupliqué à corriger.
-
-Le jeu n'arrete pas meme si apres un round a fini dans le mode auto 
-=======
 - Joueur automatique : le comportement du joueur automatique (`AutoListChooser`) n'est pas encore optimal
 - Il reste des améliorations à faire dans certaines classes. Quelques méthodes sont encore trop longues, donc on doit les simplifier. On a encore un peu de code dupliqué à corriger.
 - Ajout de tests 
->>>>>>> a151cb784ee6d3ba64a7bfb62f315502bcfecf0e
+
 
 ---
 

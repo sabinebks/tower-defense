@@ -18,10 +18,10 @@ public abstract class Projectil {
 
     /**
      * Constructeur
-     * @param type
-     * @param startX
-     * @param startY
-     * @param target
+     * @param type type of projectile
+     * @param startX the pos x start of projectile
+     * @param startY the pos y start of projectile
+     * @param target the balloons target
      */
     public Projectil(ProjectilType type, double startX, double startY, Balloon target) {
         this.type = type;

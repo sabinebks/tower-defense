@@ -38,7 +38,7 @@ public class BotStrategy {
 
     /**
      * Put an random tower at the beginning 
-     * @parma game the game we are playing
+     * @param game the game we are playing
      */
     public void placeInitialTowers(Game game) {
         System.out.println("[BOT] Placement initial de 2 tours de chaque type...");

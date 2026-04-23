@@ -4,7 +4,7 @@ import choose.action.Action;
 import choose.action.ActionBuilder;
 import choose.action.DoNothingAction;
 import game.GameContext;
-import choose.*;
+import choose.ListChooser;
 import entity.tower.Tower;
 
 import java.util.ArrayList;
@@ -22,21 +22,34 @@ public class Player {
     private int credit;
     private final List<Tower> towers;
     private final ListChooser<Action> actionChooser;
+    private final ListChooser<board.Position> positionChooser;
 
     /** Number of lives remaining. One life is lost per balloon that escapes. */
     private int lives;
 
     /**
-     * Creates a new Player with a given credit amount and action chooser.
+     * Creates a new Player with a given credit amount, action chooser and position chooser.
      *
-     * @param credit  Starting credits
-     * @param chooser The action chooser (human or automatic)
+     * @param credit           Starting credits
+     * @param actionChooser    The action chooser (human or automatic)
+     * @param positionChooser  The position chooser (human or automatic)
      */
-    public Player(int credit, ListChooser<Action> chooser) {
+    public Player(int credit, ListChooser<Action> actionChooser, ListChooser<board.Position> positionChooser) {
         this.credit = credit;
         this.lives = INITIAL_LIVES;
         this.towers = new ArrayList<>();
-        this.actionChooser = chooser;
+        this.actionChooser = actionChooser;
+        this.positionChooser = positionChooser;
+    }
+
+    /**
+     * Returns the position chooser (used by BuyTowerAction to ask the player
+     * where to place a tower).
+     *
+     * @return position chooser
+     */
+    public ListChooser<board.Position> getPositionChooser() {
+        return positionChooser;
     }
 
     /**
@@ -89,7 +102,6 @@ public class Player {
                     + " | Vies : " + lives);
             List<Action> menu = ActionBuilder.buildMenu(this, shop);
             Action chosen = chooseAction(menu, ctx);
-            if (chosen == null) return;
             chosen.execute(ctx);
             if (chosen instanceof DoNothingAction) done = true;
         }
@@ -156,13 +168,5 @@ public class Player {
      */
     public void setCredit(int i) {
         this.credit = i;
-    }
-
-    /**
-     * Function help verify if a player is playing or auto
-     * @return true if manual mode, false if not
-     */
-    public boolean isHuman() {
-        return this.actionChooser instanceof HumanListChooser;
     }
 }

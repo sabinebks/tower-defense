@@ -1,38 +1,35 @@
 package choose;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- * auto list chooser
- */
-public class AutoListChooser<T extends choose.action.Action> implements ListChooser<T> {
+public class AutoListChooser<T> implements ListChooser<T> {
 
     private final Random random = new Random();
 
+    private int index = 0;
+
     @Override
-    /**
-     * Function help choose an action 
-     * @param p 
-     * @param options list of actions to choose
-     * @return a list of action choosed randomly
-     */
     public T choose(String p, List<T> options) {
-        if (options == null || options.isEmpty()) {
+        if (options.isEmpty()) {
             return null;
         }
 
-        List<T> allowed = new ArrayList<>();
-        for (T option : options) {
-            if (option.isAllowedForAuto()) {
-                allowed.add(option);
+        int size = options.size();
+
+        for (int i = 0; i < size; i++) {
+            T choice = options.get(index % size);
+            index++;
+
+            if (choice instanceof choose.action.Action action) {
+                if (action.isAllowedForAuto()) {
+                    return choice;
+                }
+            } else {
+                return options.get(random.nextInt(size));
             }
         }
 
-        if (allowed.isEmpty()) {
-            return options.get(random.nextInt(options.size()));
-        }
-        return allowed.get(random.nextInt(allowed.size()));
+        return options.get(0);
     }
 }

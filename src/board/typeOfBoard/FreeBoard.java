@@ -1,198 +1,228 @@
 package board.typeOfBoard;
 
 import board.*;
+import entity.balloon.Balloon;
 import entity.tower.Tower;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
-/**
- * This class represents a free board.
- * It generates random straight paths from one border to another.
- */
 public class FreeBoard extends Board {
 
+    /**
+     * Les attributs de FreeBoard
+     * Le nombre static de chemin
+     * Un map des pos de chemin et ses id
+     * Un map des positions du chemins
+     * Le nombre de chemin voulu
+     */
     private static final int NBCHEMIN = 5;
-
     private Map<Integer, Position> numChemins;
-    private Map<Position, Position> chemins;
     private int cmp = 0;
+    private Map<Position, Position> chemins;
     private int nbCheminsVoulus;
 
     /**
-     * Create a free board with a given size.
-     *
-     * @param height    board height
-     * @param width     board width
-     * @param nbChemins number of road
+     * Constructeur de FreeBoard
+     * @param height hauteur du board
+     * @param width largeur du board
      */
-    public FreeBoard(int height, int width, int nbChemins) {
+    public FreeBoard(int height, int width, int nbChemin) {
         super(height, width);
-        this.nbCheminsVoulus = nbChemins;
+        this.nbCheminsVoulus = nbChemin;
         init();
     }
 
     /**
-     * Initialize the board and create all cells.
+     * Retourner la direction du chemin
+     * @param depart la position depart
+     * @param fin la position fini
+     * @return la direction
      */
-    @Override
-    public void init() {
-        initGrid();
-        calculerPath();
+    public Direction getDirection(Position depart, Position fin) {
+        if (depart.getRow() == fin.getRow())
+            return depart.getCol() < fin.getCol() ? Direction.RIGHT : Direction.LEFT;
+        else if (depart.getCol() == fin.getCol())
+            return depart.getRow() < fin.getRow() ? Direction.DOWN : Direction.UP;
+        else
+            throw new IllegalArgumentException("Les positions doivent être alignées");
     }
 
     /**
-     * Generate random paths on the board.
+     * Un setter pour le nombre de chemins voulu
+     * @param nb
      */
+    public void setNbCheminsVoulus(int nb) {
+        this.nbCheminsVoulus = nb;
+    }
+
     @Override
+    /**
+     * Initialiser le board
+     */
+    public void init() {
+        grid = new Cell[height][width];
+        for (int i = 0; i < height; i++)
+            for (int j = 0; j < width; j++)
+                grid[i][j] = new Cell(new Position(i, j));
+        calculerPath();
+    }
+
+    @Override
+    /**
+     * Une methode pour auto genere le chemin aleatoirement
+     */
     public void calculerPath() {
         this.cmp = 0;
         this.numChemins = new HashMap<>();
         this.chemins = new HashMap<>();
         this.allPath.clear();
-        this.allCells.clear();
 
-        if (nbCheminsVoulus <= 0)
-            nbCheminsVoulus = NBCHEMIN;
+        // FIX : nbCheminsVoulus pas encore initialisé par le constructeur
+        // car calculerPath() est appelé AVANT via super() → on force la valeur
+        if (this.nbCheminsVoulus == 0) this.nbCheminsVoulus = NBCHEMIN;
 
         Random rand = new Random();
-        List<Position> borders = getBorderPositions();
-
-        while (cmp < nbCheminsVoulus && !borders.isEmpty()) {
-            Position start = borders.get(rand.nextInt(borders.size()));
-            Position end = getFinChemin(start);
-
-            if (borders.contains(end)) {
-                List<Cell> path = buildPath(start, end);
-
-                for (Cell c : path) {
-                    c.assignChemin();
-                }
-
-                borders.remove(start);
-                borders.remove(end);
-
-                chemins.put(start, end);
-                numChemins.put(cmp, start);
-                allPath.put(cmp, path);
-                allCells.addAll(path);
-
-                cmp++;
-            } else {
-                borders.remove(start);
-            }
-        }
-    }
-
-    /**
-     * Build a straight path between two positions.
-     *
-     * @param start start position
-     * @param end   end position
-     * @return list of cells in the path
-     */
-    private List<Cell> buildPath(Position start, Position end) {
-        List<Cell> list = new ArrayList<>();
-
-        int row = start.getRow();
-        int col = start.getCol();
-
-        int dRow = Integer.compare(end.getRow(), row);
-        int dCol = Integer.compare(end.getCol(), col);
-
-        while (true) {
-            list.add(getCell(row, col));
-
-            if (row == end.getRow() && col == end.getCol())
-                break;
-
-            row += dRow;
-            col += dCol;
-        }
-
-        return list;
-    }
-
-    /**
-     * Get all border positions of the board.
-     *
-     * @return list of border positions
-     */
-    private List<Position> getBorderPositions() {
-        List<Position> list = new ArrayList<>();
+        List<Position> listPositions = new ArrayList<>();
 
         for (int j = 0; j < width; j++) {
-            list.add(new Position(0, j));
-            list.add(new Position(height - 1, j));
+            listPositions.add(new Position(0, j));
+            listPositions.add(new Position(height - 1, j));
         }
-
         for (int i = 1; i < height - 1; i++) {
-            list.add(new Position(i, 0));
-            list.add(new Position(i, width - 1));
+            listPositions.add(new Position(i, 0));
+            listPositions.add(new Position(i, width - 1));
         }
 
-        return list;
+        while (cmp < nbCheminsVoulus && !listPositions.isEmpty()) {
+            Position pRandom = listPositions.get(rand.nextInt(listPositions.size()));
+            Position pFin = getFinChemin(pRandom);
+
+            if (listPositions.contains(pFin)) {
+                marquerCheminDroit(pRandom, pFin);
+                listPositions.remove(pRandom);
+                listPositions.remove(pFin);
+                chemins.put(pRandom, pFin);
+                numChemins.put(cmp, pRandom);
+                cmp++;
+            } else {
+                listPositions.remove(pRandom);
+            }
+        }
+
+        // Construire allPath une seule fois
+        for (int i = 0; i < cmp; i++) {
+            Position start = numChemins.get(i);
+            Position end = chemins.get(start);
+            if (start == null || end == null) continue;
+
+            Direction dir = getDirection(start, end);
+            List<Cell> list = new ArrayList<>();
+
+            switch (dir) {
+                case RIGHT:
+                    for (int c = start.getCol(); c <= end.getCol(); c++)
+                        list.add(getCell(start.getRow(), c));
+                    break;
+                case LEFT:
+                    for (int c = start.getCol(); c >= end.getCol(); c--)
+                        list.add(getCell(start.getRow(), c));
+                    break;
+                case DOWN:
+                    for (int r = start.getRow(); r <= end.getRow(); r++)
+                        list.add(getCell(r, start.getCol()));
+                    break;
+                case UP:
+                    for (int r = start.getRow(); r >= end.getRow(); r--)
+                        list.add(getCell(r, start.getCol()));
+                    break;
+            }
+            allPath.put(i, list);
+            this.allCells.addAll(list);
+        }
     }
 
     /**
-     * Get the end position of a path.
-     *
-     * @param start start position
-     * @return end position
+     * Fonction pour marquer le droit du chemin
+     * @param start le debut du chemin
+     * @param end la fin du chemin
+     */
+    public void marquerCheminDroit(Position start, Position end) {
+        Direction dir = getDirection(start, end);
+        switch (dir) {
+            case RIGHT:
+                for (int c = start.getCol(); c <= end.getCol(); c++)
+                    getCell(start.getRow(), c).assignChemin();
+                break;
+            case LEFT:
+                for (int c = start.getCol(); c >= end.getCol(); c--)
+                    getCell(start.getRow(), c).assignChemin();
+                break;
+            case DOWN:
+                for (int r = start.getRow(); r <= end.getRow(); r++)
+                    getCell(r, start.getCol()).assignChemin();
+                break;
+            case UP:
+                for (int r = start.getRow(); r >= end.getRow(); r--)
+                    getCell(r, start.getCol()).assignChemin();
+                break;
+            default:
+                throw new IllegalArgumentException("Positions non alignées !");
+        }
+    }
+
+    /**
+     * Retourner la fin du chemin
+     * @param start le depart du chemin
+     * @return la position fini
      */
     public Position getFinChemin(Position start) {
-        if (start.getRow() == 0)
-            return new Position(height - 1, start.getCol());
-        if (start.getRow() == height - 1)
-            return new Position(0, start.getCol());
-        if (start.getCol() == 0)
-            return new Position(start.getRow(), width - 1);
+        if (start.getRow() == 0) return new Position(height - 1, start.getCol());
+        if (start.getRow() == height - 1) return new Position(0, start.getCol());
+        if (start.getCol() == 0) return new Position(start.getRow(), width - 1);
         return new Position(start.getRow(), 0);
     }
 
     /**
-     * Get a path by its index.
-     *
-     * @param num index of the path
-     * @return start and end positions
+     * Retourner une liste des positions des chemins
+     * @param num le nombre de chemin
+     * @return une liste des positions
+     * @throws IllegalArgumentException si le nombre voulu est plus grand qu'au nombre cmp
      */
-    public Position[] retourneLesChemins(int num) {
+    public Position[] retourneLesChemins(int num) throws IllegalArgumentException {
         if (num >= 0 && num < cmp) {
             Position debut = numChemins.get(num);
-            return new Position[] { debut, chemins.get(debut) };
+            return new Position[]{debut, chemins.get(debut)};
         }
-        throw new IllegalArgumentException("Invalid path number");
+        throw new IllegalArgumentException("Numéro de chemin invalide");
     }
 
     /**
-     * Return number of generated paths.
-     *
-     * @return number of paths
+     * Retourner le nombre de chemin
+     * @return nombre de chemin
      */
-    public int retourneNbrChemins() {
-        return cmp;
-    }
+    public int retourneNbrChemins() { return cmp; }
 
     /**
-     * Get all paths.
-     *
-     * @return map of paths
+     * Retourner le map de chemin
+     * @return le map de chemin
      */
-    public Map<Position, Position> getCheminsMap() {
-        return chemins;
-    }
+    public Map<Position, Position> getCheminsMap() { return chemins; }
 
-    /**
-     * Get a random path from the board.
-     *
-     * @return list of positions
-     */
+
     @Override
+    /**
+     * Retourner la liste des positions du chemin
+     * @return une liste des positions
+     */
     public List<Position> getPathPositions() {
-        if (allPath.isEmpty())
-            return new ArrayList<>();
+        if (allPath.isEmpty()) return new ArrayList<>();
 
         Random rand = new Random();
-        List<Cell> randomPath = allPath.get(rand.nextInt(allPath.size()));
+        List<Cell> randomPath = new ArrayList<>(allPath.get(rand.nextInt(allPath.size())));
 
         List<Position> positions = new ArrayList<>();
         for (Cell cell : randomPath) {
@@ -202,26 +232,28 @@ public class FreeBoard extends Board {
         return positions;
     }
 
+    @Override
     /**
-     * Check if a cell is free for a tower.
-     *
-     * @param row row index
-     * @param col column index
-     * @return true if free, false otherwise
+     * Retourner si la position est disponible
+     * @param row le row du cell
+     * @param col la colonne du cell
+     * @return true si disponible, false sinon
+     */
+    public boolean isCellAvailable(int row, int col) {
+        if (!isInside(row, col)) return false;
+        for (Tower t : towers)
+            if (t.getPosition().getRow() == row && t.getPosition().getCol() == col) return false;
+        return true;
+    }
+
+
+    /**
+     * Retourner la liste des cells dans le board
+     * @return liste des cells
      */
     @Override
-    public boolean isCellAvailable(int row, int col) {
-        if (!isInside(row, col))
-            return false;
-
-        for (Tower t : towers) {
-            if (t.getPosition().getRow() == row &&
-                    t.getPosition().getCol() == col) {
-                return false;
-            }
-        }
-
-        return true;
+    public List<Cell> allCells(){
+        return allCells;
     }
 
 }

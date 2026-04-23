@@ -1,106 +1,86 @@
 package choose.action;
 
+import board.Board;
 import board.Position;
 import game.GameContext;
 import player.Player;
 import entity.tower.Tower;
-import java.util.*;;
+import choose.ListChooser;
 
-/**
- * buy tower action
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class BuyTowerAction extends Action {
-    /**
-     * a scanner to scan input from keyboard
-     * tower to buy
-     * position to place it
-     */
-    private Scanner scanner = new Scanner(System.in);
-    private Tower tower;
-    private Position pos;
 
     /**
-     * constructor
-     * 
-     * @param t the tower to buy
-     * @param p the position to place it
+     * Les attributs de BuyTowerAction
+     * La tour à acheter
+     * Le board pour trouver les positions disponibles
+     * Le chooser de position (humain ou auto)
      */
-    public BuyTowerAction(Tower t, Position p) {
+    private final Tower tower;
+    private final Board board;
+    private final ListChooser<Position> positionChooser;
+
+    /**
+     * Constructeur
+     * @param t               la tour à acheter
+     * @param board           le plateau de jeu
+     * @param positionChooser le chooser de position
+     */
+    public BuyTowerAction(Tower t, Board board, ListChooser<Position> positionChooser) {
         this.tower = t;
-        this.pos = p;
+        this.board = board;
+        this.positionChooser = positionChooser;
     }
 
     @Override
     /**
-     * execute the action: buy and place the tower
-     * 
-     * @param game the game context
+     * Exécute l'action : demande une position disponible au joueur puis achète et place la tour.
+     * Si aucune position n'est disponible, annule l'achat.
+     * @param game le game context
      */
     public void execute(GameContext game) {
         Player player = game.getPlayer();
-
         if (player.getCredit() < tower.getCost()) {
-            System.out.println("Pas assez de credits");
+            System.out.println("Crédits insuffisants pour acheter " + tower.getName() + ".");
             return;
         }
-        Position p = this.pos;
-        if (p == null) {
-            p = getPos(game);
+
+        List<Position> available = new ArrayList<>();
+        for (int i = 0; i < board.getHeight(); i++) {
+            for (int j = 0; j < board.getWidth(); j++) {
+                if (board.isCellAvailable(i, j)) {
+                    available.add(new Position(i, j));
+                }
+            }
         }
-        if (p == null)
+
+        if (available.isEmpty()) {
+            System.out.println("Aucune position disponible sur le plateau !");
             return;
+        }
 
-        player.buyTower(this.tower);
-        game.getBoard().placeTower(this.tower, p);
+        Position chosen = positionChooser.choose(
+                "Choisissez une position pour " + tower.getName() + " :", available);
 
-        this.pos = p;
+        if (chosen == null) {
+            System.out.println("Achat annulé.");
+            return;
+        }
 
-        System.out.println(tower.getName() + " placee en " + p);
+        player.buyTower(tower);
+        game.getBoard().placeTower(tower, chosen);
+        System.out.println(tower.getName() + " placé en " + chosen + ".");
     }
 
     @Override
     /**
-     * description of the action
-     * 
-     * @return text description
+     * La description de l'action
+     * @return un string de description
      */
     public String getDescription() {
-        return "buy " + tower.getName() + " (" + tower.getCost() + " credits)";
-    }
-
-    /**
-     * Fucntion that return a valid position to place the tower
-     * 
-     * @param game the game context
-     * @return a valid position
-     */
-    public Position getPos(GameContext game) {
-        List<Position> p = new ArrayList<>();
-        for (int row = 0; row < game.getBoard().getHeight(); row++) {
-            for (int col = 0; col < game.getBoard().getWidth(); col++) {
-                if (game.getBoard().isCellAvailable(row, col)) {
-                    p.add(new Position(row, col));
-                }
-            }
-        }
-        if (p.isEmpty()) {
-            System.out.println("Aucune case pour la tour");
-            return null;
-        }
-        System.out.println("Cases disponibles : " + p);
-        while (true) {
-            try {
-                System.out.print("Ligne : ");
-                int row = Integer.parseInt(scanner.nextLine());
-                System.out.print("Colonne : ");
-                int col = Integer.parseInt(scanner.nextLine());
-                if (game.getBoard().isCellAvailable(row, col)) {
-                    return new Position(row, col);
-                }
-                System.out.println("Case invalide");
-            } catch (NumberFormatException e) {
-                System.out.println("Entree invalide");
-            }
-        }
+        return "Acheter " + tower.getName() + " (" + tower.getCost() + " crédits)";
     }
 }
+

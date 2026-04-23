@@ -10,17 +10,13 @@ import java.util.List;
 
 import board.Position;
 
-/**
- * class that builds the action menu
- */
 public class ActionBuilder {
 
     /**
-     * returns a list of actions (menu)
-     *
-     * @param player the player
-     * @param shop the shop
-     * @return list of available actions
+     * Methode retourner une liste de action, donc dit menu
+     * @param player le joueur
+     * @param shop le shop
+     * @return une liste des actions a choisi
      */
     public static List<Action> buildMenu(Player player, Shop shop) {
         List<Action> menu = new ArrayList<>();
@@ -32,75 +28,59 @@ public class ActionBuilder {
         menu.add(new QuitAction());
         return menu;
     }
-
     /**
-     * builds buy tower action
-     *
-     * @param player the player
-     * @param shop the shop
-     * @return buy tower menu action
+     * Methode retourner l'action acheter un tour
+     * @param player le joueur
+     * @param shop le shop
+     * @return une action de type BuyTowerAction
      */
     public static Action buildAcheterTour(Player player, Shop shop) {
         List<Action> sousMenu = new ArrayList<>();
 
         for (Tower t : shop.getAvailableTowers()) {
-            if (player.getCredit() < t.getCost()) {
-                continue; 
-            }
-            if (player.isHuman()) {
-                sousMenu.add(new BuyTowerAction(t, null));
-            } else {
-                Position pos = shop.getBoard().findAvailablePosition();
-                if (pos != null) {
-                    sousMenu.add(new BuyTowerAction(t, pos));
-                }
+            if (player.getCredit() >= t.getCost()) {
+                // La position sera choisie au moment de execute(), pas ici
+                sousMenu.add(new BuyTowerAction(t, shop.getBoard(), player.getPositionChooser()));
             }
         }
         sousMenu.add(new RetourAction());
 
-        return new MenuAction("acheter une tour", sousMenu);
+        return new MenuAction("Acheter une tour", sousMenu);
     }
 
     /**
-     * builds upgrade tower action
-     *
-     * @param player the player
-     * @return upgrade tower menu action
+     * Methode retourner l'action d'evoluer un tour
+     * @param player
+     * @return une action de type evoluer tour
      */
     public static Action buildEvoluerTour(Player player) {
         List<Action> sousMenu = new ArrayList<>();
 
         for (Tower t : player.getTowers()) {
             if (!t.getEvolution()) continue;
-
             List<Action> evoMenu = new ArrayList<>();
-
             for (TypeEvolution evo : TypeEvolution.values()) {
+                // ← vérifier que l'évolution est disponible ET pas déjà achetée
                 if (!t.getEvolutions().getEvolutions().contains(evo)) continue;
                 if (t.getEvolutions().getEvolutionsPossedees().containsKey(evo)) continue;
-
                 int cost = t.getCoutEvolution(evo);
                 if (player.getCredit() >= cost) {
                     evoMenu.add(new Upgrade(t, evo));
                 }
             }
-
             evoMenu.add(new RetourAction());
-
             if (evoMenu.size() > 1) {
-                sousMenu.add(new MenuAction("evoluer " + t.getName(), evoMenu));
+                sousMenu.add(new MenuAction("Évoluer " + t.getName(), evoMenu));
             }
         }
-
         sousMenu.add(new RetourAction());
-        return new MenuAction("evoluer une tour", sousMenu);
+        return new MenuAction("Évoluer une tour", sousMenu);
     }
 
     /**
-     * builds sell tower action
-     *
-     * @param player the player
-     * @return sell tower menu action
+     * Methode retourner l'action vendre un tour
+     * @param player le joueur
+     * @return l'action de type vendre tour
      */
     public static Action buildVendreTour(Player player) {
         List<Action> sousMenu = new ArrayList<>();
@@ -108,37 +88,32 @@ public class ActionBuilder {
         for (Tower t : player.getTowers()) {
             sousMenu.add(new SellTowerAction(t));
         }
-
         sousMenu.add(new RetourAction());
-        return new MenuAction("vendre une tour", sousMenu);
+
+        return new MenuAction("Vendre une tour", sousMenu);
     }
 
     /**
-     * builds sell evolution action
-     *
-     * @param player the player
-     * @return sell evolution menu action
+     * Methode retourner l'action vendre une evolution de tour
+     * @param player le joueur
+     * @return l'action de type vendre evolution
      */
     public static Action buildVendreEvolution(Player player) {
         List<Action> sousMenu = new ArrayList<>();
 
         for (Tower t : player.getTowers()) {
             if (t.getEvolutions() == null) continue;
-
             var possedees = t.getEvolutions().getEvolutionsPossedees();
             if (possedees.isEmpty()) continue;
-
             List<Action> evoMenu = new ArrayList<>();
-
             for (TypeEvolution evo : possedees.keySet()) {
                 evoMenu.add(new DownGrade(t, evo));
             }
-
             evoMenu.add(new RetourAction());
-            sousMenu.add(new MenuAction("vendre evolution de " + t.getName(), evoMenu));
+            sousMenu.add(new MenuAction("Vendre évolution de " + t.getName(), evoMenu));
         }
-
         sousMenu.add(new RetourAction());
-        return new MenuAction("vendre une evolution", sousMenu);
+
+        return new MenuAction("Vendre une évolution", sousMenu);
     }
 }

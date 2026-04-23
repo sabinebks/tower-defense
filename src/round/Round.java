@@ -15,6 +15,7 @@ public class Round {
     private int number;
     private List<Balloon> balloons;
     private boolean state;
+    private List<Balloon> escapedBalloons = new ArrayList<>();
 
     /**
      * Constructeur
@@ -51,12 +52,17 @@ public class Round {
         return this.state;
     }
 
-    private List<Balloon> escapedBalloons = new ArrayList<>();
-
+    /**
+     * Add another escaped balloons to the escaped list
+     * @param b balloon to add
+     */
     public void addEscaped(Balloon b) {
         escapedBalloons.add(b);
     }
-
+    /**
+     * Return list of escaped balloons
+     * @return list of escaped balloons
+     */
     public List<Balloon> getEscapedBalloons() {
         return escapedBalloons;
     }

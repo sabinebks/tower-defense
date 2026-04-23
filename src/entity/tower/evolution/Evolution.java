@@ -56,7 +56,7 @@ public class Evolution {
 
     /**
      * getter pour l'attribut evolutionPossedees
-     * @return
+     * @return possedees of evolution
      */
     public HashMap<TypeEvolution, Integer> getEvolutionsPossedees() {
         return evolutionsPossedees;

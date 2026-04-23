@@ -160,6 +160,10 @@ public class DefinedBoard extends Board {
         this.allPath.put(0, this.allCells);
     }
 
+    /**
+     * Return a list of position of the path
+     * @return list of position ( path)
+     */
     public List<Position> getPathPositions() {
         List<Position> path = new ArrayList<>();
 

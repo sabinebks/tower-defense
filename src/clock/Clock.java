@@ -4,31 +4,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Clock {
+
+    /**
+     * List of clock listener
+     * Fps
+     * The tick counter
+     * Verify if clock is running or not
+     * Thread
+     */
     private final List<ClockListener> listeners = new ArrayList<>();
     private final int fps;
     private int tickCount = 0;
     private boolean running = false;
     private Thread thread;
-  /** Constructeur de la classe Clock.
+    /** 
+     * Constructeur de la classe Clock.
      * @param fps le nombre de ticks par seconde
      */
     public Clock(int fps) {
         this.fps = fps;
     }
- /** Ajoute un écouteur au horloge.
+    /** 
+     * Ajoute un écouteur au horloge.
      * @param listener l'écouteur à ajouter
      */
     public void addListener(ClockListener listener) { listeners.add(listener); }
-        /** Retire un écouteur du horloge.
-        * @param listener l'écouteur à retirer
-        */
+    /** Retire un écouteur du horloge.
+    * @param listener l'écouteur à retirer
+    */
     public void removeListener(ClockListener listener) { listeners.remove(listener); }
-    /** Réinitialise le compteur de ticks à zéro.
+    /** 
+     * Réinitialise le compteur de ticks à zéro.
      */
     public void reset() {
         tickCount = 0;
     }
-/** Démarre le horloge.
+    /** 
+     * Démarre le horloge.
      */
     public void start() {
         running = true;
@@ -51,7 +63,8 @@ public class Clock {
         thread.setDaemon(false);
         thread.start();
     }
-/** Arrête le horloge.
+    /** 
+     * Arrête le horloge.
      */
     public void stop() {
         running = false;
@@ -60,11 +73,11 @@ public class Clock {
             catch (InterruptedException e) { Thread.currentThread().interrupt(); }
         }
     }
-/** Retourne le nombre de ticks écoulés depuis le démarrage du horloge.
+    /** Retourne le nombre de ticks écoulés depuis le démarrage du horloge.
      * @return le nombre de ticks
      */
     public int getTickCount() { return tickCount; }
-/** Retourne le nombre de ticks par seconde (FPS) du horloge.
+    /** Retourne le nombre de ticks par seconde (FPS) du horloge.
      * @return le nombre de ticks par seconde
      */
     public int getFps() { return fps; }

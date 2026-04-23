@@ -106,6 +106,9 @@ public class BombTower extends Tower {
     public String getSymbol() { return "B"; }
 
     @Override
+    /**
+     * Return name of the towers
+     */
     public String getName() {
         return "BombTower";
     }

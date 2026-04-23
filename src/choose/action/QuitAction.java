@@ -20,6 +20,10 @@ public class QuitAction extends Action {
     public String getDescription() { return "Quitter le jeu"; }
 
     @Override
+    /**
+     * Return true if this action is allowed for auto
+     * @return true if allowed, false if not
+     */
     public boolean isAllowedForAuto() {
         return false;
     }

@@ -13,6 +13,6 @@ public class LauncherAInteractive {
             System.out.println("Usage: java -cp classes Livrables.LauncherAInteractive <largeur> <hauteur>");
             return;
         }
-        Livrable6.main(new String[]{args[0], args[1], "4","chemin", "humain" });
+        Livrable6.main(new String[]{args[0], args[1], "15","chemin", "humain" });
     }
 }

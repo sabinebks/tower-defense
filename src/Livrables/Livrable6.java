@@ -14,13 +14,38 @@ public class Livrable6 {
     }
 
     private static int[] parseArgs(String[] args) {
-        if (args.length < 5) { printUsage(); System.exit(1); }
-        if (!args[3].equalsIgnoreCase("chemin") && !args[3].equalsIgnoreCase("libre"))
-        { System.err.println("Erreur : type plateau doit etre 'chemin' ou 'libre'."); System.exit(1); }
-        if (!args[4].equalsIgnoreCase("humain") && !args[4].equalsIgnoreCase("aleatoire"))
-        { System.err.println("Erreur : type joueur doit etre 'humain' ou 'aleatoire'."); System.exit(1); }
-        try { return new int[]{ Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]) }; }
-        catch (NumberFormatException e) { System.err.println("Erreur : hauteur, largeur et nb ballons doivent etre des entiers."); System.exit(1); return null; }
+        if (args.length < 5) {
+            printUsage();
+            System.exit(1);
+        }
+
+        if (!args[3].equalsIgnoreCase("chemin") && !args[3].equalsIgnoreCase("libre")) {
+            System.err.println("Erreur : type plateau doit etre 'chemin' ou 'libre'.");
+            System.exit(1);
+        }
+
+        if (!args[4].equalsIgnoreCase("humain") && !args[4].equalsIgnoreCase("aleatoire")) {
+            System.err.println("Erreur : type joueur doit etre 'humain' ou 'aleatoire'.");
+            System.exit(1);
+        }
+
+        try {
+            int hauteur = Integer.parseInt(args[0]);
+            int largeur = Integer.parseInt(args[1]);
+            int nbBallons = Integer.parseInt(args[2]);
+
+            if (nbBallons <= 15) {
+                System.err.println("Erreur : le nombre de ballons doit etre >= 15.");
+                System.exit(1);
+            }
+
+            return new int[]{ hauteur, largeur, nbBallons };
+
+        } catch (NumberFormatException e) {
+            System.err.println("Erreur : hauteur, largeur et nb ballons doivent etre des entiers.");
+            System.exit(1);
+            return null;
+        }
     }
 
     private static void printUsage() {

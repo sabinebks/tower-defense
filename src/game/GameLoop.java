@@ -2,57 +2,43 @@ package game;
 
 import player.Player;
 import player.Shop;
+import ui.GameRenderer;
 
 /**
- * Class of game loop
+ * Boucle principale du jeu : gere les rounds, les phases d'achat, et l'affichage des resultats.
  */
 public class GameLoop {
-    /**
-     * The game we are playing
-     * The player
-     * THe games shop
-     */
-    private final Game game;
+
+    private static final int REWARD_PER_ROUND = 150;
+
+    private final Game   game;
     private final Player player;
-    private final Shop shop;
+    private final Shop   shop;
+    private final boolean isHuman;
+    private final BotStrategy bot;
 
-    private static final int REWARD = 10;
-    /** this class manages the main game loop,
-     * alternating between action and combat phases
-     * until the player loses
-     * @param game the game we playing
-     * @param player the player
-     * @param shop the shop of the game
-    */
-    public GameLoop(Game game, Player player, Shop shop) {
-        this.game = game;
-        this.player = player;
-        this.shop = shop;
+    public GameLoop(GameSetup setup) {
+        this.game    = setup.getGame();
+        this.player  = setup.getPlayer();
+        this.shop    = setup.getShop();
+        this.isHuman = setup.isHuman();
+        this.bot     = new BotStrategy(player, shop);
     }
-    /**
-     * Main loop of the game
-     */
-    public void run() {
 
-        System.out.println("=== DEBUT DU JEU ===");
+    public void start() {
+        GameRenderer.printBanner(player);
+        if (!isHuman) bot.placeInitialTowers(game);
+        GameRenderer.printInitialBuyPhase();
+        player.runActionPhase(game, shop);
 
-        while (player.isAlive()) {
-
-            System.out.println("\n=== PHASE ACTION ===");
-            player.runActionPhase(game, shop);
-            System.out.println("\n=== PHASE COMBAT ===");
+        for (int i = 0; i < game.getRoundCount(); i++) {
+            GameRenderer.printRoundHeader(i + 1, player);
+            if (!isHuman) bot.applyRoundEvolution(i + 1, game);
             game.runOneRound();
-            if (game.hasPlayerLost()) {
-                System.out.println("GAME OVER");
-                return;
-            }
-            if (!game.roundPasFini()) {
-                break;
-            }
-            player.addCredit(REWARD);
-            System.out.println("Recompense : +" + REWARD + " credits");
+            if (game.hasPlayerLost()) { GameRenderer.printGameOver(); return; }
+            GameRenderer.printRoundResult(game.getEscapedCount(), player, REWARD_PER_ROUND);
+            if (i < game.getRoundCount() - 1) { GameRenderer.printActionPhase(); player.runActionPhase(game, shop); }
         }
-
-        System.out.println("FIN DU JEU");
+        GameRenderer.printVictory(player.getLives());
     }
 }

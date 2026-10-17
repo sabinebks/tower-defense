@@ -303,3 +303,27 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/java,linux,windows,macos,eclipse,visualstudiocode,intellij
+
+
+# Local credentials and environment
+.env
+.env.*
+!.env.example
+!.env.template
+*.pem
+*.key
+# Generated files and local tooling
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.tsbuildinfo
+
+classes/
+*.class
+doc/
+jar/
+sources.txt
+
+# Test runner supplied with the original project
+!junit-console.jar

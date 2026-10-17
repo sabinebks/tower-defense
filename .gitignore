@@ -327,3 +327,7 @@ sources.txt
 
 # Test runner supplied with the original project
 !junit-console.jar
+
+# Keep the original project report as portfolio documentation
+!docs/
+!docs/README-livrables.md
